@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ffcs.dp.shiro.dao.SysUserMapper">
+	
+	<select id="listForPage" resultType="SysUserEntity">
+		SELECT
+			user_id,
+			username,
+			email,
+			phone,
+			status,
+			create_date
+		FROM
+			pms_sys_user
+		<where>
+			<if test="userIdCreate != null">
+				and user_id_create = #{userIdCreate} 
+			</if>
+			<if test="username != null and username.trim() != ''">
+				AND username LIKE '%'||#{username}||'%'
+				OR email LIKE '%'||#{username}||'%'
+				OR phone LIKE '%'||#{username}||'%'
+			</if>
+		</where>
+		ORDER BY 
+			user_id DESC
+	</select>
+	
+	<select id="getByUserName" resultType="SysUserEntity">
+		SELECT
+			user_id,
+			username,
+			password,
+			email,
+		    phone,
+			status
+		FROM
+			pms_sys_user
+		WHERE
+			username = #{username}
+	</select>
+	
+	<select id="listAllMenuId" resultType="long">
+		SELECT DISTINCT
+			rm.menu_id
+		FROM
+			pms_sys_user_role ur
+		LEFT JOIN pms_sys_role_menu rm ON ur.role_id = rm.role_id
+		WHERE
+			ur.user_id = #{userId}
+	</select>
+	
+	<insert id="save" parameterType="SysUserEntity">
+		<selectKey keyProperty="userId" resultType="long" order="BEFORE">
+			select pms_sys_user_seq.nextval from dual
+		</selectKey>
+		INSERT INTO pms_sys_user (
+		    user_id,
+			username,
+			password,
+			email,
+		    phone,
+			status,
+			user_id_create,
+			create_date
+		)
+		VALUES (
+			#{userId},
+			#{username},
+			#{password},
+			#{email},
+			#{mobile},
+			#{status},
+			#{userIdCreate},
+			sysdate
+		)
+	</insert>
+	
+	<select id="getObjectById" resultType="SysUserEntity">
+		SELECT
+			user_id,
+			username,
+			password,
+			email,
+			phone,
+			status
+		FROM 
+			pms_sys_user
+		WHERE
+			user_id = #{value}
+	</select>
+	
+	<update id="update">
+		UPDATE pms_sys_user
+		<set> 
+			<if test="username != null">username = #{username}, </if>
+			<if test="email != null">email = #{email}, </if>
+			<if test="phone != null">phone = #{mobile}, </if>
+			<if test="status != null">status = #{status}, </if>
+			modified_date = sysdate
+		</set>
+		where user_id = #{userId}
+	</update>
+	
+	<delete id="batchRemove">
+		DELETE
+		FROM
+			pms_sys_user
+		WHERE
+			user_id IN
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+	
+	<update id="updatePswdByUser">
+		UPDATE pms_sys_user
+		SET
+			password = #{newPswd}
+		WHERE
+			user_id = #{userId} AND password = #{pswd}
+	</update>
+	
+	<update id="updateUserStatus">
+		UPDATE pms_sys_user
+		SET
+			status = #{status}
+		WHERE
+			user_id IN
+		<foreach item="userId" collection="id" open="(" separator="," close=")">
+			#{userId}
+		</foreach> 
+	</update>
+	
+	<update id="updatePswd">
+		UPDATE pms_sys_user
+		SET
+			password = #{password}
+		WHERE
+			user_id = #{userId}
+	</update>
+
+</mapper>

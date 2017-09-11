@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.ffcs.dp</groupId>
+    <artifactId>pms</artifactId>
+    <!--<version>${pms-version}</version>-->
+    <version>1.2.0</version>
+  </parent>
+  <artifactId>pms-web</artifactId>
+  <packaging>war</packaging>
+  <name>pms-web Maven Webapp</name>
+  <url></url>
+  <description>管理后台</description>
+  
+  <dependencies>
+    
+    <dependency>
+      <groupId>com.ffcs.dp</groupId>
+      <artifactId>pms-common</artifactId>
+      <version>${pms-version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>com.ffcs.dp</groupId>
+      <artifactId>pms-shiro</artifactId>
+      <version>${pms-version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>com.ffcs.dp</groupId>
+      <artifactId>pms-orm</artifactId>
+      <version>${pms-version}</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>com.ffcs.dp</groupId>
+      <artifactId>pms-base</artifactId>
+      <version>${pms-version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.ffcs.dp</groupId>
+      <artifactId>pms-common</artifactId>
+      <version>1.2.0</version>
+    </dependency>
+
+  </dependencies>
+  
+  <build>
+    <finalName>pms</finalName>
+  </build>
+  
+</project>

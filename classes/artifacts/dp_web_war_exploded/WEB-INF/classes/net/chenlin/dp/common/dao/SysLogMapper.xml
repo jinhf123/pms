@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.chenlin.dp.common.dao.SysLogMapper">
+	
+	<select id="listForPage" resultType="SysLogEntity">
+		SELECT
+			id,
+			user_id,
+			user_name,
+			operation,
+			time,
+			method,
+			params,
+			ip,
+			create_date
+		FROM
+			pms_sys_log
+		<where>
+			<if test="user_name != null and user_name.trim() != ''">
+				AND user_name LIKE concat('%',#{username},'%')
+				OR operation LIKE concat('%',#{username},'%')
+			</if>
+		</where>
+		ORDER BY
+			create_date DESC
+	</select>
+	
+	<insert id="save">
+		<selectKey keyProperty="id" resultType="long" order="BEFORE">
+			select pms_sys_log_seq.nextval from dual
+		</selectKey>
+		INSERT INTO pms_sys_log (
+		    id,
+			user_id,
+			user_name,
+			operation,
+			time,
+			method,
+			params,
+			ip,
+			create_date
+		)
+		VALUES (
+		    #{id},
+			#{userId,jdbcType=NUMERIC},
+			#{username,jdbcType=VARCHAR},
+			#{operation,jdbcType=VARCHAR},
+			#{time,jdbcType=NUMERIC},
+			#{method,jdbcType=VARCHAR},
+			#{params,jdbcType=VARCHAR},
+			#{ip,jdbcType=VARCHAR},
+			sysdate
+		)
+	</insert>
+	
+	<delete id="batchRemove">
+		DELETE
+		FROM
+			pms_sys_log
+		WHERE
+			id IN
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+	
+	<delete id="batchRemoveAll">
+		DELETE
+		FROM
+			pms_sys_log
+	</delete>
+
+</mapper>
