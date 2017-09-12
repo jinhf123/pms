@@ -3,13 +3,14 @@
  */
 
 $(function () {
+	alert(888);
     initialPage();
     getGrid();
 });
 
 function initialPage() {
 	$(window).resize(function() {
-
+        // height:$(window).height()-54
 		console.log("加载数据，重新调整窗口大小");
 	});
 }
