@@ -3,46 +3,59 @@
 <head>
     <title>项目列表</title>
     #parse("include/header.html")
-    <link rel="stylesheet" href="${rc.contextPath}/statics/js/ProjMan/projectList.css">
+    <link rel="stylesheet" href="${rc.contextPath}/statics/css/projMan/projectList.css">
 </head>
 <body>
 
 
-
 <div id="dpLTE" class="container-fluid" v-cloak>
 
-    <span>项目管理列表</span>
     <div class="row">
-        <div class="col-md-2 column">
-            <div class="btn-group">
-                <button class="btn btn-default">Action</button>
-                <button data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a href="#">xxxxx[2017]</a>
-                    </li>
-                    <li class="disabled">
-                        <a href="#">xxxxx[2016]</a>
-                    </li>
-                    <li class="divider">
-                    </li>
-                    <li>
-                        <a href="#">其它</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="col-md-6 column">
+        <div class="col-md-12 column">
             <div class="tabbable" id="tabs-551353">
-                <ul class="nav nav-tabs">
+
+                <div class="col-md-4 column">
+                    <div class="btn-group">
+                        <button class="btn btn-default">XXXX[2017]</button>
+                        <button data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="#">XXXX[2016]</a>
+                            </li>
+                            <li class="disabled">
+                                <a href="#">XXXX[2015]</a>
+                            </li>
+                            <li class="divider">
+                            </li>
+                            <li>
+                                <a href="#">其它</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <ul class="nav nav-tabs col-md-4 column top-tab">
                     <li class="active">
-                        <a href="#panel-766718" data-toggle="tab">Section 1</a>
+                        <a href="#panel-766718" data-toggle="tab">项目</a>
                     </li>
                     <li>
-                        <a href="#panel-59308" data-toggle="tab">Section 2</a>
+                        <a href="#panel-59308" data-toggle="tab">日程</a>
+                    </li>
+                    <li>
+                        <a href="#panel-48716" data-toggle="tab">周报</a>
+                    </li>
+                    <li>
+                        <a href="#panel-37425" data-toggle="tab">统计</a>
                     </li>
                 </ul>
-                <div class="tab-content">
+
+                <div class="col-md-4 column">
+                    <div class="btn-group btn-group-sm">
+                        <button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-left"></em> 左</button> <button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-center"></em> 中</button> <button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-right"></em> 右</button> <button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-justify"></em> 全</button>
+                    </div>
+                </div>
+
+                <div class="tab-content col-md-12 column">
                     <div class="tab-pane active" id="panel-766718">
                         <div class="row clearfix">
                             <div class="col-md-2 column leftBar">
@@ -76,23 +89,29 @@
                     </div>
                     <div class="tab-pane" id="panel-59308">
                         <p>
-                            Howdy, I'm in Section 2.
+                            Howdy, I'm in Section 2 日程.
+                        </p>
+                    </div>
+                    <div class="tab-pane" id="panel-48716">
+                        <p>
+                            Howdy, I'm in Section 3 周报.
+                        </p>
+                    </div>
+                    <div class="tab-pane" id="panel-37425">
+                        <p>
+                            Howdy, I'm in Section 4 统计.
                         </p>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 column">
-            <div class="btn-group btn-group-sm">
-                <button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-left"></em> 左</button> <button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-center"></em> 中</button> <button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-right"></em> 右</button> <button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-justify"></em> 全</button>
-            </div>
-        </div>
     </div>
+
 </div>
 
 
 #parse("include/footer.html")
-<script src="${rc.contextPath}/statics/js/ProjMan/projectList.js?_${date.systemTime}"></script>
+<script src="${rc.contextPath}/statics/js/projMan/projectList.js?_${date.systemTime}"></script>
 
 
 </body>
