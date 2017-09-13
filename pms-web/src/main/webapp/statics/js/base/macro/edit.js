@@ -29,7 +29,7 @@ var vm = new Vue({
 		setForm: function() {
 			$.SetForm({
 				url: '../../sys/macro/info?_' + $.now(),
-		    	param: vm.macro.macroId,
+		    	param: vm.macro.id,
 		    	success: function(data) {
 		    		vm.macro = data;
 		    	}

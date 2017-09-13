@@ -33,7 +33,7 @@ public class SysMacroServiceImpl implements SysMacroService {
 	public List<SysMacroEntity> listNotMacro() {
 		List<SysMacroEntity> macros = sysMacroManager.listNotMacro();
 		SysMacroEntity macro = new SysMacroEntity();
-		macro.setMacroId(0L);
+		macro.setId(0L);
 		macro.setParentId(-1L);
 		macro.setName("一级目录");
 		macro.setOpen(true);

@@ -15,7 +15,7 @@ public class SysMacroEntity implements Serializable {
 	/**
 	 * 字典id
 	 */
-	private Long macroId;
+	private Long id;
 	
 	/**
 	 * 类型id
@@ -78,12 +78,12 @@ public class SysMacroEntity implements Serializable {
 		super();
 	}
 
-	public Long getMacroId() {
-		return macroId;
+	public Long getId() {
+		return id;
 	}
 
-	public void setMacroId(Long macroId) {
-		this.macroId = macroId;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public Long getParentId() {
