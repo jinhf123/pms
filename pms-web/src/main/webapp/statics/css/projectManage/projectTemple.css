@@ -1,0 +1,15 @@
+.leftBar{
+    background-color: rgba(91, 191, 221, 1);
+}
+
+
+
+.top-tab{
+    border-bottom:0;
+}
+
+
+.top-tab > li.active > a:hover{
+    color: #333333;
+    border: 0;
+}
