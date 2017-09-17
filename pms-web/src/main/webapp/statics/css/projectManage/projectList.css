@@ -6,7 +6,7 @@ body{
     font-style: normal;
     color: #333333;
     overflow-y: hidden;
-    overflow-x: auto;
+    overflow-x: visible;
 }
 .subTitle{
     font-size: 13px;
@@ -24,12 +24,18 @@ body{
 }
 
 .float-right{
-     float: right;
+     float: right !important;
  }
+
+.display-flex{
+    display: -ms-inline-flexbox;
+    display: -webkit-box;
+}
 
 .transparent-btn {
     display: inline-block;
-    margin-bottom: 0px;
+    margin: 4px 0px;
+    padding: 0px;
     font-size: 14px;
     font-weight: 400;
     line-height: 1.4285;
@@ -47,6 +53,27 @@ body{
     border: 1px solid transparent;
     border-radius: 4px;
 }
+
+
+
+
+/*下拉按钮组样式*/
+.dropdown-group{
+    display: inline-flex;
+    border: 1px solid rgb(221, 221, 221);
+    border-radius: 4px;
+}
+
+
+/*搜索按钮样式*/
+.serach-div > input{ display: none;}
+.serach-div:active > input{
+    display: block;
+}
+.serach-div:hover > input{
+    display: block;
+}
+
 
 
 /*项目管理首页页签*/
@@ -97,8 +124,6 @@ body{
 .project-type > a:hover{
     color: #ffffff;
 }
-
-
 
 
 /*快捷操作按钮*/

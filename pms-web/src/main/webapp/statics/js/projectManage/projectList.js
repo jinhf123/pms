@@ -66,6 +66,7 @@ var vm = new Vue({
 
 
 		// 默认值
+        keyWord : null,
         projectGroup:{ text: '中国电信XXX项目组[2017]', value: '1' },
         groups: [
             { text: '中国电信XXX项目组[2017]', value: '1' },
@@ -74,7 +75,7 @@ var vm = new Vue({
         ],
         projectType: { text: '新建类', value: '2' },
         types: [
-            { text: '改进类', value: '1', icon: '/statics/img/projectManage/u5.png'},
+            { text: '改进类*', value: '1', icon: '/statics/img/projectManage/u5.png', isSelected: true },
             { text: '新建类', value: '2', icon: '/statics/img/projectManage/u6.png'},
             { text: '延续类', value: '3', icon: '/statics/img/projectManage/u7.png'},
             { text: '研究类', value: '4', icon: '/statics/img/projectManage/u8.png'},
@@ -106,7 +107,7 @@ var vm = new Vue({
             alert("删除项目");
         },
         projListOn : function (e) {
-
+            alert("选中列表中的记录projListOn");
         },
         addGroup:function(){
             alert("新增所属项目组");
@@ -114,14 +115,20 @@ var vm = new Vue({
         selectGroup:function(group){
             vm.projectGroup = group;
             console.log("选中项目分组" + vm.projectGroup.value);
+            alert("选中项目分组" + vm.projectGroup.value);
             //TODO 查找项目列表
             getGrid()
         },
         selectType:function(type){
             vm.projectType = type;
             console.log("选中项目类型" + vm.projectType.text);
+            alert("选中项目类型" + vm.projectType.text);
             //TODO 查找项目列表
             getGrid()
+        },
+        query:function () {
+            alert(vm.keyWord);
+
         }
 	}
 })
