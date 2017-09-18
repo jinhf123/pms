@@ -1,0 +1,75 @@
+.column{
+    padding-left:0px;
+    padding-right: 0px;
+}
+.datePicker{
+    width: 120px;
+}
+.title {
+    text-align: left;
+    font-family: "微软雅黑 Regular", "微软雅黑";
+    font-weight: 400;
+    font-style: normal;
+    font-size: 18px;
+    color: #999999;
+}
+
+.float-right{
+    float: right;
+}
+
+.transparent-btn {
+    display: inline-block;
+    margin: 4px 0px;
+    padding: 0px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.4285;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+
+
+
+
+.center-panel-grid{
+    height: calc(100vh - 100px);
+}
+
+
+
+
+
+.right-panel{
+    border-left: 1px solid rgb(221, 221, 221);
+}
+.right-panel-serach{
+    display: inline-flex;
+    border-top: 1px solid rgb(221, 221, 221);
+    padding: 10px 0px 10px 20px;
+}
+.right-panel-title {
+    padding:14px 5px;
+    font-family: "Arial Normal", "Arial";
+    font-weight: 400;
+    font-style: normal;
+    font-size: 13px;
+    color: #333333;
+    text-align: left;
+    line-height: normal;
+}
+.right-panel-grid{
+    height: calc(100vh - 130px);
+}

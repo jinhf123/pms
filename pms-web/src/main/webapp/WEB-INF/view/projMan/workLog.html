@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>用户管理</title>
+#parse("include/header.html")
+<link rel="stylesheet" href="${rc.contextPath}/statics/css/projectManage/workLog.css">
+
+</head>
+<body>
+<div id="dpLTE" class="container-fluid" v-cloak>
+
+
+    <div>
+        <div class="clearfix">
+            <div class="col-md-10 column">
+                <span class="title">
+                    工作日志
+                </span>
+            </div>
+            <div class="col-md-2 column float-right">
+                <div class="btn-group btn-group-sm">
+                    <button class="transparent-btn" type="button">
+                        <img :src="icon_Notice">
+                    </button>
+                    <button class="transparent-btn" type="button">
+                        <img :src="icon_Log">
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="clearfix">
+            <div class="col-md-1 column ">
+                日期显示
+            </div>
+
+
+            <div class="col-md-7 column">
+                <div class="clearfix">
+                    <div class="col-md-6 column">
+                        <input id="workLogData" v-model="workLogData" class="form-control datePicker" />
+                    </div>
+                    <div class="col-md-6 column ">
+                        <button type="button" class="btn btn-sm btn-link">编辑</button>
+                        <button type="button" class="btn btn-link btn-sm">导出xls</button>
+                        <button type="button" class="btn btn-sm btn-link">导入xls</button>
+                    </div>
+                </div>
+
+
+
+                <div class="clearfix">
+                    <div class="col-md-12 column center-panel-grid">
+                        日志内容列表显示
+                        {{workLogData}}
+                    </div>
+                </div>
+
+
+                <div class="clearfix">
+                    <div class="col-md-12 column">
+                        <button type="button" class="btn btn-sm btn-link">新增工作日志</button>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="col-md-4 column right-panel">
+                <div class="clearfix right-panel-title">
+                        <span >工时统计</span>
+                </div>
+                <div class="clearfix right-panel-serach">
+                    <input id="startDate" v-model="startDate" class="form-control datePicker" />
+                    <span style="padding:7px;"> - </span>
+                    <input id="endDate" v-model="endDate" class="form-control datePicker" />
+                </div>
+                <div class="clearfix right-panel-grid">
+                   工时统计查询结果显示列表
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+</div>
+#parse("include/footer.html")
+<script src="${rc.contextPath}/statics/js/projectManage/workLog.js?_${date.systemTime}"></script>
+
+</body>
+</html>
