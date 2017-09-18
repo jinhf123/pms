@@ -15,7 +15,7 @@
 			pms_sys_user
 		<where>
 			<if test="userIdCreate != null">
-				and user_id_create = #{userIdCreate} 
+				and create_id = #{userIdCreate}
 			</if>
 			<if test="username != null and username.trim() != ''">
 				AND username LIKE '%'||#{username}||'%'
@@ -62,7 +62,7 @@
 			email,
 		    phone,
 			status,
-			user_id_create,
+			create_id,
 			create_date
 		)
 		VALUES (
@@ -96,7 +96,7 @@
 		<set> 
 			<if test="username != null">username = #{username}, </if>
 			<if test="email != null">email = #{email}, </if>
-			<if test="phone != null">phone = #{mobile}, </if>
+			<if test="mobile != null">phone = #{mobile}, </if>
 			<if test="status != null">status = #{status}, </if>
 			modified_date = sysdate
 		</set>

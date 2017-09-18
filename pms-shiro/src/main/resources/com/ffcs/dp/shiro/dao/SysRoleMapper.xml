@@ -24,7 +24,7 @@
 			pms_sys_role
 		<where>
 			<if test="userIdCreate != null">
-				and user_id_create = #{userIdCreate} 
+				and create_id = #{userIdCreate}
 			</if>
 			<if test="roleName != null and roleName.trim() != ''">
 				AND role_name LIKE '%'||#{roleName}||'%'
@@ -43,7 +43,7 @@
 			role_name,
 			role_sign,
 			remark,
-			user_id_create,
+			create_id,
 			create_date
 		)
 		VALUES (
