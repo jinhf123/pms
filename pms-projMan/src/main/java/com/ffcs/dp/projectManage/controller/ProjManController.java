@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +38,28 @@ public class ProjManController extends AbstractController {
         }
         return projManService.listProject(params);
     }
+
+/*    @RequestMapping("/dataGrid")
+    public Map dataGrid (@RequestBody Map<String, Object> params) {
+        if(getUserId() != SystemConstant.SUPER_ADMIN) {
+            params.put("userIdCreate", getUserId());
+        }
+        List<ProjManEntity> list = projManService.listProject(params);
+        Map map = new HashMap();
+        map.put("list", list);
+        map.put("size", list.size());
+        return map;
+    }*/
+
+
+    @RequestMapping("/dataGrid")
+    public List<ProjManEntity> dataGrid(@RequestBody Map<String, Object> params) {
+        if(getUserId() != SystemConstant.SUPER_ADMIN) {
+            params.put("userIdCreate", getUserId());
+        }
+        return projManService.listProject(params);
+    }
+
 
 
 

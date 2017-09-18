@@ -66,12 +66,25 @@ body{
 
 
 /*搜索按钮样式*/
-.serach-div > input{ display: none;}
+.serach-div > input{
+    padding: 0px;
+    border: 0;
+    width: 0px;
+    transition:width 2s;
+    -moz-transition:width 2s; /* Firefox 4 */
+    -webkit-transition:width 2s; /* Safari and Chrome */
+    -o-transition:width 2s; /* Opera */
+    /*display: none;*/
+}
 .serach-div:active > input{
-    display: block;
+    /*display: block;*/
+    width: 200px;
+    border: 1px solid #ccc;
 }
 .serach-div:hover > input{
-    display: block;
+    /*display: block;*/
+    width: 200px;
+    border: 1px solid #ccc;
 }
 
 
@@ -109,7 +122,8 @@ body{
 /*项目类型按钮组*/
 .project-type-group{
     /*height: 425px;*/
-    max-height:calc(100vh - 90px);
+    /*max-height:calc(100vh - 90px);*/
+    height:calc(100vh - 90px);
     overflow-y:auto;
 }
 
@@ -124,6 +138,11 @@ body{
 .project-type > a:hover{
     color: #ffffff;
 }
+/*li.active>a{*/
+    /*color: #ffffff;*/
+ /*}*/
+
+
 
 
 /*快捷操作按钮*/
