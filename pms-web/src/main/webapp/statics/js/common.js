@@ -110,6 +110,52 @@ $.fn.bootstrapTableEx = function(opt){
 }
 
 
+
+
+/*
+符号	意义
+p	12小时制且小写(‘am’ or ‘pm’)
+P	12小时制且大写(‘AM’ or ‘PM’)
+s	秒，前面不补0
+ss	秒，前面补0
+i	分，前面不补0
+ii	分，前面补0
+h	时，24小时制，前面不补0
+hh	时，24小时制，前面补0
+H	时，12小时制，前面不补0
+HH	时，12小时制，前面补0
+d	日，前面不补0
+dd	日，前面补0
+m	月，数字表示，前面不补0 如：4
+mm	月，数字表示，前面补0 如：04
+M	月，缩写表示，前面补0 如：Apr
+MM	月，全称表示，前面补0 如：April
+yy	年，后两位 如：16
+yyyy	年，全部 如：2016
+*/
+//全局设置日期选择插件的参数.
+$.fn.datetimepicker.defaults = {
+    language:  'zh-CN',
+    format:'yyyy-mm-dd',
+    autoclose:true,//自动关闭
+    minView:2,//最精准的时间选择为日期:0-分 1-时 2-日 3-月 4-年
+	weekStart:0,//一周从哪一天开始: 0（星期日）到6（星期六）
+    // maxView:4,//最高能展示的时间 0-分 1-时 2-日 3-月 4-年
+    // minuteStep:5, //步进值,此数值被当做步进值用于构建小时视图。就是最小的视图是每5分钟可选一次。是以分钟为单位的。
+    // startDate: 1900-01-01,//开始日期
+    // endDate: 2200-01-01,//结束日期
+    // daysOfWeekDisabled: [0,4,6],//一周的周几不能选 0（星期日）到6（星期六） 可以有多个。
+    // pickerPosition:bottom-right, //选择框位置 默认值：’bottom-right’ 还支持 : ‘bottom-left’，’top-right’，’top-left’
+    // initialDate：new Date()//在打开时默认选当时的时间，显示在View中
+
+
+
+
+
+};
+
+
+
 /** 格式化日期
  *  使用示例：
  *  formatDate(item,"yyyy-MM-dd")
