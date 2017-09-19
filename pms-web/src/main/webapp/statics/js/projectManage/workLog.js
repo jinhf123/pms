@@ -7,16 +7,24 @@ $(function () {
 });
 
 function initialPage() {
-    $("#workLogData").datetimepicker({
-        // format:'yyyy-mm-dd hh:ii',
-        // minView:0//最精准的时间选择为日期:0-分 1-时 2-日 3-月
+    //初始化日期框
+    $("#workLogDate").datetimepicker().on('hide', function (ev) {
+        vm.workLogDate = $("#workLogDate").val();
     });
-    $("#startDate").datetimepicker();
-    $("#endDate").datetimepicker();
+    $("#startDate").datetimepicker().on('hide', function (ev) {
+        vm.startDate = $("#startDate").val();
+    });
+    $("#endDate").datetimepicker().on('hide', function (ev) {
+        vm.endDate = $("#endDate").val();
+    });
+
+    //初始化滚动条
+    $(".center-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
 
 
     $(window).resize(function() {
         vm.styleObject.height = ($(window).height()-45)+"px";
+        $(".center-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     });
 }
 
@@ -29,7 +37,8 @@ var vm = new Vue({
         icon_Notice :"/statics/img/projectManage/u3.png",
         icon_Log    :"/statics/img/projectManage/u4.png",
         styleObject:{height: ($(window).height()-45)+'px'},
-        workLogData: formatDate(new Date(),"yyyy-MM-dd"),
+        day: formatDate(new Date(),"dd"),
+        workLogDate: formatDate(new Date(),"yyyy-MM-dd"),
         startDate:"",
         endDate:""
     },
@@ -43,4 +52,27 @@ var vm = new Vue({
         remove: function() {
         }
     }
-})
+    ,computed: {
+        lastDay: function () {
+            var date = new Date(this.workLogDate);
+            date.setDate(date.getDate()-1);
+            return formatDate(date,"dd");
+        },
+        nextDay: function () {
+            var date = new Date(this.workLogDate);
+            date.setDate(date.getDate()+1);
+            return formatDate(date,"dd");
+        },
+        lastMonth: function () {
+            var date = new Date(this.workLogDate);
+            date.setDate(date.getDate()-1);
+            return formatDate(date,"MM");
+        }
+    }
+
+
+});
+
+
+
+

@@ -30,16 +30,22 @@
         </div>
 
 
-        <div class="clearfix">
-            <div class="col-md-1 column ">
-                日期显示
+        <div class="clearfix left-panel">
+            <div class="col-md-1 column left-panel-container">
+                <div class="timeline-line"></div>
+                <span v-if="lastDay=='01'"> {{lastMonth}}月—</span>
+                <div class="timeline-img-min"><span>{{lastDay==day ? '今' : lastDay}}</span></div>
+                <span v-if="workLogDate.substring(8,10)=='01'"> {{lastMonth}}月—</span>
+                <div class="timeline-img"><span>{{workLogDate.substring(8,10)==day?'今':workLogDate.substring(8,10)}}</span></div>
+                <span v-if="nextDay=='01'" class="timeline-bottom-span"> {{lastMonth}}月—</span>
+                <div class="timeline-img-min timeline-bottom"><span>{{nextDay==day ? '今' : nextDay}}</span></div>
             </div>
 
 
             <div class="col-md-7 column">
                 <div class="clearfix">
                     <div class="col-md-6 column">
-                        <input id="workLogData" v-model="workLogData" class="form-control datePicker" />
+                        <input id="workLogDate" v-model="workLogDate" class="form-control datePicker" />
                     </div>
                     <div class="col-md-6 column ">
                         <button type="button" class="btn btn-sm btn-link">编辑</button>
@@ -53,7 +59,7 @@
                 <div class="clearfix">
                     <div class="col-md-12 column center-panel-grid">
                         日志内容列表显示
-                        {{workLogData}}
+                        {{workLogDate}}
                     </div>
                 </div>
 
@@ -79,6 +85,7 @@
                 </div>
                 <div class="clearfix right-panel-grid">
                    工时统计查询结果显示列表
+                    {{startDate}}-{{endDate}}
                 </div>
             </div>
         </div>

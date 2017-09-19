@@ -134,6 +134,7 @@ yy	年，后两位 如：16
 yyyy	年，全部 如：2016
 */
 //全局设置日期选择插件的参数.
+if($.fn.datetimepicker)
 $.fn.datetimepicker.defaults = {
     language:  'zh-CN',
     format:'yyyy-mm-dd',
@@ -147,11 +148,6 @@ $.fn.datetimepicker.defaults = {
     // daysOfWeekDisabled: [0,4,6],//一周的周几不能选 0（星期日）到6（星期六） 可以有多个。
     // pickerPosition:bottom-right, //选择框位置 默认值：’bottom-right’ 还支持 : ‘bottom-left’，’top-right’，’top-left’
     // initialDate：new Date()//在打开时默认选当时的时间，显示在View中
-
-
-
-
-
 };
 
 
