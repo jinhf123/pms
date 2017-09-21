@@ -1,9 +1,25 @@
+select{
+    background-color: #fff;
+    border: 1px solid #ccc;
+    height: 36px;
+    line-height: 36px;
+    vertical-align: middle;
+    margin-bottom: 10px;
+    color: #555;
+}
 .column{
     padding-left:0px;
     padding-right: 0px;
 }
 .datePicker{
     width: 120px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    height: 30px;
+    vertical-align: middle;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    padding: 4px 6px;
 }
 .title {
     text-align: left;
@@ -39,11 +55,21 @@
     border: 1px solid transparent;
     border-radius: 4px;
 }
+.btn-blue{
+    color: #ffffff;
+    background-color:#5bbfdd;
+    border-radius: 3px;
+}
+.focus.btn-blue, .btn-blue:focus, .btn-blue:hover {
+    color: #ffffff;
+    text-decoration: none;
+}
 
 
 
 .left-panel-container{
     height: calc(100vh - 40px);
+    max-width:70px;
 }
 
 .timeline-img{
@@ -93,7 +119,6 @@
     position: relative;
     top: calc(100vh - 210px);
 }
-
 .timeline-line{
     width:2px;
     height:100%;
@@ -104,7 +129,6 @@
     z-index:8;
     left:0;
     margin-left: 34px;
-    /*margin-top:-30px;*/
 }
 
 
@@ -112,16 +136,113 @@
 
 
 
-
-
-
-
-
-
-
+.center-btn-group-top{
+    text-align: right;
+}
 .center-panel-grid{
-    height: calc(100vh - 100px);
+    height: calc(100vh - 105px);
 }
+.center-li{
+    list-style-type:none;
+}
+.center-div{
+    display: inline-flex;
+}
+.center-li-index {
+    width: 20px;
+    height: 20px;
+    margin: auto 10px;
+    background: inherit;
+    background-color: rgba(255, 255, 255, 1);
+    box-sizing: border-box;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgba(91, 192, 222, 1);
+    border-radius: 4px;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    color: #5bc0de;
+    text-align: center;
+}
+
+
+.li-projectWork-label{
+    width: 70px;
+    height: 24px;
+    margin: auto 10px;
+    padding-top: 3px;
+    text-align: center;
+    font-family: "微软雅黑 Regular", "微软雅黑";
+    font-weight: 400;
+    font-style: normal;
+    font-size: 12px;
+    color: #ffffff;
+    border-radius: 12px;
+    background-color: #5bbfdd;
+}
+.label-color-blue{
+    color: #ffffff;
+    background-color:#5bbfdd;
+}
+.label-color-orange{
+    color: #ffffff;
+    background-color: #fd8831;
+}
+
+.center-li .divider {
+    height: 1px;
+    margin: 10px 10px 10px -10px;
+    overflow: hidden;
+    background-color: #e5e5e5;
+}
+
+
+
+
+
+
+.select-project{
+    width: 30%;
+}
+.select-task{
+    width: calc(70% - 13px);
+}
+.isProjectWork{
+    text-align: right;
+    padding-right: 10px;
+}
+.input-workDetails{
+    width: calc(100% - 10px);
+    background-color: #fff;
+    border: 1px solid #ccc;
+    height: 36px;
+    color: #555;
+    line-height: 36px;
+    vertical-align: middle;
+    margin-bottom: 10px;
+    /*border-radius: 4px;*/
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -133,7 +254,7 @@
 .right-panel-serach{
     display: inline-flex;
     border-top: 1px solid rgb(221, 221, 221);
-    padding: 10px 0px 10px 20px;
+    padding: 10px 0px 0px 20px;
 }
 .right-panel-title {
     padding:14px 5px;
