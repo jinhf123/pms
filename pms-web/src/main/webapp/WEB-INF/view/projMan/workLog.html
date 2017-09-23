@@ -11,6 +11,7 @@
 
 
     <div>
+        <!--标题栏-->
         <div class="clearfix">
             <div class="col-md-10 column">
                 <span class="title">
@@ -31,8 +32,10 @@
 
 
 
+        <!--内容-->
+        <div class="clearfix">
 
-        <div class="clearfix left-panel">
+            <!--左侧面板日期选择-->
             <div class="col-md-1 column left-panel-container">
                 <div class="timeline-line"></div>
                 <span v-if="lastDay=='01'"> {{nextMonth}}月-</span>
@@ -43,7 +46,7 @@
                 <div class="timeline-img-min timeline-bottom" @click="plusDate"><span>{{nextDay==today ? '今' : nextDay.substring(8,10)}}</span></div>
             </div>
 
-
+            <!--中间面板工作日志展示-->
             <div class="col-md-8 column">
                 <div class="clearfix">
                     <div class="col-md-6 column">
@@ -67,8 +70,8 @@
 
                             <div id="workLogGrid">
 
-                                <li v-for="(data,index) in workLogs" class="row clearfix center-li" >
-                                    <div class="center-div">
+                                <li v-for="(data,index) in workLogs" class="row clearfix for-li" >
+                                    <div class="for-li-div">
                                         <div class="center-li-index">{{index+1}}</div>
                                         <div> {{data.startTime}} - {{data.endTime}}</div>
                                         <div class="li-projectWork-label"
@@ -83,43 +86,55 @@
                                     <div class="col-md-12 column divider"></div>
                                 </li>
 
-                                <li v-show="isAdd" >
-                                    <div class="col-md-9 column center-div">
+                                <li v-show="isAdd" style="height: 120px;">
+                                    <div class="col-md-9 column for-li-div">
                                         <input id="startTime" v-model="startTime" class="form-control datePicker" />
                                         <span style="padding:7px;"> - </span>
                                         <input id="endTime" v-model="endTime" class="form-control datePicker" />
-                                        <span style="padding:5px;">{{diffTime}}</span>
+                                        <span style="padding:5px;" v-show="minutes>0&&minutes<60" >共{{minutes}}分钟</span>
+                                        <span style="padding:5px;" v-show="minutes>=60" >共{{Math.floor(minutes/60)}}小时{{minutes%60}}分钟</span>
                                     </div>
                                     <div class="col-md-1 column isProjectWork">
-                                        <input id="isProjectWork" type="checkbox" v-model="isProjectWork" />
+                                        <input id="isProjectWork" type="checkbox" v-model="isProjectWork" @click="changeWorkLogType"/>
                                     </div>
                                     <div class="col-md-2 column">
                                         <apan>是否项目工作</apan>
                                     </div>
-                                    <div class="col-md-10 column">
-                                        <select v-model="project" class="select-project">
-                                            <option v-for="option in projects" :value="option.value">
-                                                {{ option.text }}
-                                            </option>
-                                        </select>
-                                        <select v-model="task" class="select-task">
-                                            <option v-for="option in tasks" :value="option.value">
-                                                {{ option.text }}
-                                            </option>
-                                        </select>
+                                    <div v-show="isProjectWork==1">
+                                        <div class="col-md-10 column">
+                                            <select v-model="project" class="select-project">
+                                                <option v-for="option in projects" :value="option.value">
+                                                    {{ option.text }}
+                                                </option>
+                                            </select>
+                                            <select v-model="task" class="select-projTask">
+                                                <option v-for="option in projTasks" :value="option.value">
+                                                    {{ option.text }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2 column ">
+                                        </div>
                                     </div>
-                                    <div class="col-md-2 column ">
+                                    <div v-show="isProjectWork!=1">
+                                        <div class="col-md-10 column ">
+                                            <select v-model="task" class="select-task">
+                                                <option v-for="option in tasks" :value="option.value">
+                                                    {{ option.text }}
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2 column ">
+                                        </div>
                                     </div>
                                     <div class="col-md-10 column">
                                         <input id="workDetails" v-model="workDetails" class="input-workDetails" placeholder="请输入工作详情"/>
                                     </div>
                                     <div class="col-md-2 column ">
-                                        <button type="button" class="btn btn-sm btn-blue">保存</button>
+                                        <button type="button" class="btn btn-sm btn-blue" @click="save">保存</button>
                                         <button type="button" class="btn btn-sm btn-blue">取消</button>
                                     </div>
                                 </li>
-
-
                             </div>
                         </div>
                     </div>
@@ -134,7 +149,7 @@
             </div>
 
 
-
+            <!--右侧面板工时统计-->
             <div class="col-md-3 column right-panel">
                 <div class="clearfix right-panel-title">
                         <span >工时统计</span>
@@ -145,8 +160,24 @@
                     <input id="endDate" v-model="endDate" class="form-control datePicker" />
                 </div>
                 <div class="clearfix right-panel-grid">
-                   工时统计查询结果显示列表
-                    {{startDate}}-{{endDate}}
+                   <!--工时统计查询结果显示列表-->
+                    <!--{{startDate}}-{{endDate}}-->
+                    <div class="right-slimScroll">
+                        <div id="workHoursGrid">
+                            <li v-for="(data,index) in workHours" class="row clearfix for-li" >
+                                <div class="for-li-div">
+                                    <div class="col-md-12 column">{{workDate}日</div>
+                                    <div class="col-md-12 column divider"></div>
+                                    <div class="col-md-12 column">
+                                        <div class="col-md-10 column">{{taskTitle}}</div>
+                                        <div class="col-md-2  column">{{hours}}[占{{ratio}}%]</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 column divider"></div>
+                            </li>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

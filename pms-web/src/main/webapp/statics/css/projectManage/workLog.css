@@ -1,8 +1,8 @@
 select{
     background-color: #fff;
     border: 1px solid #ccc;
-    height: 36px;
-    line-height: 36px;
+    height: 32px;
+    line-height: 32px;
     vertical-align: middle;
     margin-bottom: 10px;
     color: #555;
@@ -133,6 +133,13 @@ select{
 
 
 
+.for-li{
+    list-style-type:none;
+}
+.for-li-div{
+    display: inline-flex;
+}
+
 
 
 
@@ -141,12 +148,6 @@ select{
 }
 .center-panel-grid{
     height: calc(100vh - 105px);
-}
-.center-li{
-    list-style-type:none;
-}
-.center-div{
-    display: inline-flex;
 }
 .center-li-index {
     width: 20px;
@@ -205,8 +206,11 @@ select{
 .select-project{
     width: 30%;
 }
-.select-task{
+.select-projTask{
     width: calc(70% - 13px);
+}
+.select-task{
+    width: calc(100% - 12px);
 }
 .isProjectWork{
     text-align: right;
@@ -216,9 +220,9 @@ select{
     width: calc(100% - 10px);
     background-color: #fff;
     border: 1px solid #ccc;
-    height: 36px;
+    height: 32px;
     color: #555;
-    line-height: 36px;
+    line-height: 32px;
     vertical-align: middle;
     margin-bottom: 10px;
     /*border-radius: 4px;*/
@@ -269,4 +273,3 @@ select{
 .right-panel-grid{
     height: calc(100vh - 140px);
 }
-

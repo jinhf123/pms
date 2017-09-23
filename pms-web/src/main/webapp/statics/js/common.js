@@ -6,7 +6,7 @@ var url = function(name) {
 	var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
 	var r = window.location.search.substr(1).match(reg);
 	if(r!=null)return  unescape(r[2]); return null;
-}
+};
 
 //全局配置
 $.ajaxSetup({
@@ -39,7 +39,7 @@ $.ajaxSetup({
 //			}, 2000);
 //		}     
 	}
-})
+});
 
 //权限判断
 function hasPermission(permission) {
@@ -61,7 +61,7 @@ function hasPermission(permission) {
 **/
 toUrl = function(href) {
 	window.location.href = href;
-}
+};
 
 
 /** 带分页栏的DataGrid
@@ -104,10 +104,10 @@ $.fn.bootstrapTableEx = function(opt){
 		sidePagination: 'server',
 		queryParamsType : null,
 		columns: []
-	}
+	};
 	var option = $.extend({}, defaults, opt);
 	$(this).bootstrapTable(option);
-}
+};
 
 
 
@@ -183,7 +183,7 @@ formatDate = function (v, format) {
         }
     }
     return format;
-}
+};
 
 isNullOrEmpty = function (obj) {
     if ((typeof (obj) == "string" && obj == "") || obj == null || obj == undefined) {
@@ -191,7 +191,7 @@ isNullOrEmpty = function (obj) {
     } else {
         return false;
     }
-}
+};
 
 isNotNullOrEmpty = function (obj) {
     if ((typeof (obj) == "string" && obj == "") || obj == null || obj == undefined) {
@@ -199,7 +199,7 @@ isNotNullOrEmpty = function (obj) {
     } else {
         return true;
     }
-}
+};
 
 checkedArray = function (id) {
     var isOK = true;
@@ -208,7 +208,7 @@ checkedArray = function (id) {
         dialogMsg('您没有选中任何数据项！');
     }
     return isOK;
-}
+};
 
 checkedRow = function (id) {
     var isOK = true;
@@ -220,12 +220,12 @@ checkedRow = function (id) {
         dialogMsg('您只能选择一条数据项！');
     }
     return isOK;
-}
+};
 
 reload = function () {
     location.reload();
     return false;
-}
+};
 
 dialogOpen = function(opt){
 	var defaults = {
@@ -239,7 +239,7 @@ dialogOpen = function(opt){
 		btn: ['确定', '取消'],
 		success: function(){},
 		yes: function(){}
-	}
+	};
 	var option = $.extend({}, defaults, opt), content = null;
 	if(option.scroll){
 		content = [option.url]
@@ -265,7 +265,7 @@ dialogOpen = function(opt){
 			option.yes(option.id);
 		}
     });
-}
+};
 
 dialogContent = function(opt){
 	var defaults = {
@@ -277,7 +277,7 @@ dialogContent = function(opt){
 		btn: ['确定', '取消'],
 		success: null,
 		yes: null
-	}
+	};
 	var option = $.extend({}, defaults, opt);
 	return top.layer.open({
 	  	type : 1,
@@ -294,7 +294,7 @@ dialogContent = function(opt){
 		success: option.success,
 		yes: option.yes
     });
-}
+};
 
 dialogAjax = function(opt){
 	var defaults = {
@@ -306,7 +306,7 @@ dialogAjax = function(opt){
 		btn: ['确定', '取消'],
 		success: null,
 		yes: null
-	}
+	};
 	var option = $.extend({}, defaults, opt);
 	$.post(option.url, null, function(content){
 		layer.open({
@@ -325,7 +325,7 @@ dialogAjax = function(opt){
 			yes: option.yes
 	    });
 	});
-}
+};
 
 dialogAlert = function (content, type) {
 	var msgType = {
@@ -344,7 +344,7 @@ dialogAlert = function (content, type) {
         btnAlign: 'c',
 		isOutAnim: false
     });
-}
+};
 
 dialogConfirm = function (content, callBack) {
 	top.layer.confirm(content, {
@@ -357,7 +357,7 @@ dialogConfirm = function (content, callBack) {
         btnAlign: 'c',
     	yes: callBack
     });
-}
+};
 
 dialogMsg = function(msg, type) {
 	var msgType = {
@@ -373,12 +373,12 @@ dialogMsg = function(msg, type) {
 		icon: msgType[type],
 		time: 2000
 	}); 
-}
+};
 
 dialogClose = function() {
 	var index = top.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
 	top.layer.close(index); //再执行关闭 
-}
+};
 
 dialogLoading = function(flag) {
 	if(flag){
@@ -389,7 +389,7 @@ dialogLoading = function(flag) {
 	}else{
 		top.layer.closeAll('loading');
 	}
-}
+};
 
 $.fn.GetWebControls = function (keyValue) {
     var reVal = "";
@@ -444,8 +444,8 @@ $.fn.SetWebControls = function (data) {
             }
         }
     }
-}
+};
 
 $.currentIframe = function () {
     return $(window.parent.document).contents().find('#main')[0].contentWindow;;
-}
+};

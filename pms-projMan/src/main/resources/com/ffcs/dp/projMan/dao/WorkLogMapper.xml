@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffcs.dp.projectManage.dao.WorkLogMapper">
+
+
+	<select id="getWorkLogList" resultType="WorkLogEntity" parameterType="Map">
+		SELECT T.ID,
+			   T.WORK_DATE,
+			   T.START_TIME,
+			   T.END_TIME,
+			   T.IS_PROJECT_WORK,
+			   T.PROJ_ID,
+			   T.TASK_ID,
+			   T.WORK_DETAILS,
+		       T.CREATOR
+		  FROM PMS_PROJ_WORK_LOG T
+		WHERE T.WORK_DATE = #{workLogDate}
+		AND t.CREATOR = #{userId}
+	</select>
+
+
+	<select id="getWorkHoursList" resultMap="List" parameterType="Map">
+		SELECT W.WORK_DATE,
+			   T.TASK_ID,
+			   T.TASK_TITLE,
+			   SUM(W.MINUTES / 60) HOURS,
+			   100 * ROUND(RATIO_TO_REPORT(SUM(W.MINUTES / 60)) OVER(), 4) RATIO
+		  FROM PMS_PROJ_WORK_LOG W, PMS_PROJ_TASK T
+		 WHERE TO_DATE(W.WORK_DATE, 'YYYY-MM-DD') BETWEEN
+			   TO_DATE(#{startDate}, 'YYYY-MM-DD') AND
+			   TO_DATE(#{endDate}, 'YYYY-MM-DD')
+		   AND W.CREATOR = #{userId}
+		   AND W.TASK_ID = T.TASK_ID
+		 GROUP BY W.WORK_DATE, W.TASK_ID, T.TASK_TITLE, T.TASK_ID
+		 ORDER BY T.TASK_ID
+	</select>
+
+
+	<insert id="insertWorkLog">
+		<selectKey keyProperty="workLogId" resultType="long" order="BEFORE">
+			SELECT PMS_PROJ_WORK_LOG_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		insert into PMS_PROJ_WORK_LOG (ID, WORK_DATE, START_TIME, END_TIME, IS_PROJECT_WORK, PROJ_ID, TASK_ID, WORK_DETAILS, CREATOR, MINUTES)
+		values (#{workLogId}, #{workLogDate}, #{startTime}, #{endTime}, #{isProjectWork}, #{project}, #{task}, #{workDetails}, #{userId}, #{minutes})
+	</insert>
+
+
+	<update id="updateWorkLog">
+		UPDATE PMS_PROJ_WORK_LOG
+		<set>
+			<if test="startTime != null">START_TIME = #{startTime}, </if>
+			<if test="endTime != null">END_TIME = #{endTime}, </if>
+			<if test="isProjectWork != null">IS_PROJECT_WORK = #{isProjectWork}, </if>
+			<if test="project != null">PROJ_ID = #{project}, </if>
+			<if test="task != null">TASK_ID = #{task}, </if>
+			<if test="workDetails != null">WORK_DETAILS = #{workDetails}, </if>
+			<if test="minutes != null">MINUTES = #{minutes} </if>
+		</set>
+		WHERE
+		id = #{workLogId}
+	</update>
+
+
+
+
+</mapper>
