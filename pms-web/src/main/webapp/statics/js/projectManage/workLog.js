@@ -15,14 +15,14 @@ function initialPage() {
         vm.workLogDate = $("#workLogDate").val();
         getGrid();
     });
-    $("#startDate").datetimepicker({
-
-    }).on('hide', function () {
+    $("#startDate").datetimepicker().on('hide', function () {
         vm.startDate = $("#startDate").val();
+        getWorkHoursGrid();
         $("#endDate").datetimepicker('setStartDate',getDateLimit($("#startDate").val(),"00:00"));
     });
     $("#endDate").datetimepicker().on('hide', function () {
         vm.endDate = $("#endDate").val();
+        getWorkHoursGrid();
         $("#startDate").datetimepicker('setEndDate',getDateLimit($("#endDate").val(),"24:00"));
     });
 
@@ -90,23 +90,25 @@ function getGrid() {
 }
 
 function getWorkHoursGrid() {
-    $.ajax({
-        url: '../../projMan/workLog/getWorkHoursList?_' + $.now(),
-        data: JSON.stringify({
-            "startDate" : vm.startDate,
-            "endDate" : vm.endDate
-        }),
-        type: "post",
-        dataType: "json",
-        contentType: 'application/json',
-        success: function (data) {
-            vm.workHours = data;
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            dialogLoading(false);
-            dialogMsg(errorThrown, 'error');
-        }
-    });
+    if(vm.startDate!=""&&vm.endDate!=""){
+        $.ajax({
+            url: '../../projMan/workLog/getWorkHoursList?_' + $.now(),
+            data: JSON.stringify({
+                "startDate" : vm.startDate,
+                "endDate" : vm.endDate
+            }),
+            type: "post",
+            dataType: "json",
+            contentType: 'application/json',
+            success: function (data) {
+                vm.workHours = data;
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                dialogLoading(false);
+                dialogMsg(errorThrown, 'error');
+            }
+        });
+    }
 }
 
 

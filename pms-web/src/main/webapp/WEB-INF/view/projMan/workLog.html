@@ -83,7 +83,7 @@
                                             {{data.projId}}{{data.taskId}}{{data.workDetails}}
                                         </div>
                                     </div>
-                                    <div class="col-md-12 column divider"></div>
+                                    <div class="col-md-12 column center-panel-divider"></div>
                                 </li>
 
                                 <li v-show="isAdd" style="height: 120px;">
@@ -165,15 +165,14 @@
                     <div class="right-slimScroll">
                         <div id="workHoursGrid">
                             <li v-for="(data,index) in workHours" class="row clearfix for-li" >
-                                <div class="for-li-div">
-                                    <div class="col-md-12 column">{{workDate}日</div>
-                                    <div class="col-md-12 column divider"></div>
-                                    <div class="col-md-12 column">
-                                        <div class="col-md-10 column">{{taskTitle}}</div>
-                                        <div class="col-md-2  column">{{hours}}[占{{ratio}}%]</div>
+                                <div class="">
+                                    <div class="col-md-12 workHours-title">{{data.week}}周</div>
+                                    <div class="col-md-12 workHours-divider">&nbsp;</div>
+                                    <div v-for="(item,index) in data.items" class="col-md-12 workHours-content" >
+                                        <div class="col-md-7 column">{{item.task}}</div>
+                                        <div class="col-md-5 column align-right">{{item.hours}}[占{{data.rat}}%]</div>
                                     </div>
                                 </div>
-                                <div class="col-md-12 column divider"></div>
                             </li>
                         </div>
                     </div>

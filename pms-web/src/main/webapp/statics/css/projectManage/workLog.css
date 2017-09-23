@@ -191,7 +191,7 @@ select{
     background-color: #fd8831;
 }
 
-.center-li .divider {
+.center-panel-divider {
     height: 1px;
     margin: 10px 10px 10px -10px;
     overflow: hidden;
@@ -272,4 +272,27 @@ select{
 }
 .right-panel-grid{
     height: calc(100vh - 140px);
+}
+.workHours-title {
+    padding:10px 5px 5px 5px;
+    font-family: "Arial Normal", "Arial";
+    font-weight: 600;
+    font-style: normal;
+    font-size: 13px;
+    color: #333333;
+    text-align: left;
+    line-height: normal;
+}
+.workHours-divider {
+    height: 1px;
+    margin: 0px -5px 10px 5px;
+    overflow: hidden;
+    background-color: #e5e5e5;
+}
+.workHours-content{
+    padding:0px 0px 0px 10px;
+    font-size: 13px;
+}
+.align-right{
+    text-align: right;
 }
