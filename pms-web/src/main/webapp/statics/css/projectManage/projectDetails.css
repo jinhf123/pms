@@ -1,0 +1,151 @@
+body{
+    font-family: "应用字体 Regular", "应用字体";
+    /*font-family: "微软雅黑 Regular", "微软雅黑";*/
+    font-size: 14px;
+    font-weight: 400;
+    font-style: normal;
+    color: #333333;
+    overflow-y: hidden;
+    overflow-x: visible;
+}
+.subTitle{
+    font-size: 13px;
+    font-style: normal;
+    color: #999999;
+}
+
+.column{
+    padding-left:0px;
+    padding-right: 0px;
+}
+
+.fa-color{
+    color: #1cae99
+}
+
+.float-right{
+    float: right !important;
+    text-align: right;
+}
+
+.display-flex{
+    display: inline-flex;
+}
+
+.transparent-btn {
+    display: inline-block;
+    margin: 4px 0px;
+    padding: 0px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.4285;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+
+/*页签*/
+.top-tabs{
+    border-bottom:0;
+}
+.top-tabs>li>a:hover{
+    border-color:#eee
+}
+.top-tabs > li > a:focus, .top-tabs > li > a:hover {
+    text-decoration: none;
+    background-color: #fff;
+}
+.top-tabs > li.active > a, .top-tabs > li.active > a:focus, .top-tabs > li.active > a:hover {
+    font-size: 16px;
+    color: #333333;
+    cursor: default;
+    background-color: #fff;
+    border: 0;
+    border-bottom-color: transparent;
+}
+
+.point{
+    height: 12px;
+    width: 12px;
+    border-radius: 6px;
+    margin: 3px 1px;
+}
+.color-blue{
+    background-color: #6fc7e1;
+}
+.color-orange{
+    background-color: #efac4e;
+}
+.color-gray{
+    background-color: #e3e3e3;
+}
+.color-lightGray{
+    background-color: #f5f5f5;
+}
+
+
+.left-panel-title{
+    display: inline-flex;
+    background-color: #f5f5f5;
+    height: 40px;
+    vertical-align: middle;
+    text-align: center;
+    padding: 12px 0px;
+    font-family: "微软雅黑 Regular", "微软雅黑";
+    font-weight: 400;
+    font-style: normal;
+    font-size: 12px;
+    color: #999999;
+}
+.left-panel-list{
+    height:100%;/*calc(100% - 100px);*/
+    border-right: 1px solid #f5f5f5;
+}
+
+
+
+
+
+
+
+.center-panel-title{
+
+}
+.center-panel-list{
+
+}
+.vertical-divider{
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

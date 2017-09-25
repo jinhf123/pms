@@ -49,7 +49,6 @@ function getGrid() {
 
 
 
-
 var vm = new Vue({
 	el:'#dpLTE',
 	data: {
@@ -120,6 +119,21 @@ var vm = new Vue({
             console.log("查询按钮" + vm.keyWord);
             // alert(vm.keyWord);
             getGrid();
+        },
+        location:function(act){
+            var url;
+            if(act=="add"){
+                //todo 跳转到新增页面
+            }
+            if(act=="log"){
+                url = "workLog.html";
+            }
+            window.location=url;
+        },
+        shwoDetails:function(id){
+            //todo 跳转到项目详情页面
+            alert("#projMan/projectDetails.html");
+            window.location="#projMan/projectDetails.html";
         }
 	}
 })

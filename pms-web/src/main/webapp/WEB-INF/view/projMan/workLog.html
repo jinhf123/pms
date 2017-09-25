@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>用户管理</title>
+<title>工作日志</title>
 #parse("include/header.html")
 <link rel="stylesheet" href="${rc.contextPath}/statics/css/projectManage/workLog.css">
 
@@ -170,7 +170,7 @@
                                     <div class="col-md-12 workHours-divider">&nbsp;</div>
                                     <div v-for="(item,index) in data.items" class="col-md-12 workHours-content" >
                                         <div class="col-md-7 column">{{item.task}}</div>
-                                        <div class="col-md-5 column align-right">{{item.hours}}[占{{data.rat}}%]</div>
+                                        <div class="col-md-5 column align-right">{{item.hours}}[占{{item.rat}}%]</div>
                                     </div>
                                 </div>
                             </li>

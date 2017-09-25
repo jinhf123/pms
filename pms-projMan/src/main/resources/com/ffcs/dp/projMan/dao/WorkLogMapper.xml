@@ -35,9 +35,9 @@
 			   ), 4) rat
 		  FROM PMS_PROJ_WORK_LOG W, PMS_PROJ_TASK T
 		 WHERE TO_DATE(W.WORK_DATE, 'YYYY-MM-DD') BETWEEN
-			   TO_DATE('2017-09-11', 'YYYY-MM-DD') AND
-			   TO_DATE('2017-09-24', 'YYYY-MM-DD')
-		   AND W.CREATOR = 1
+			   TO_DATE( #{startDate}, 'YYYY-MM-DD') AND
+			   TO_DATE( #{endDate}  , 'YYYY-MM-DD')
+		   AND W.CREATOR = #{userId}
 		   AND W.TASK_ID = T.TASK_ID
 		 GROUP BY to_char(next_day(TO_DATE(W.WORK_DATE, 'YYYY-MM-DD') + 15 / 24 - 7, 2),
 						  'MM-DD') || '~' ||

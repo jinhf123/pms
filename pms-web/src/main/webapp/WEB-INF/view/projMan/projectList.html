@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-    <title>项目列表</title>
+    <title>项目管理</title>
     #parse("include/header.html")
     <link rel="stylesheet" href="${rc.contextPath}/statics/css/projectManage/projectList.css">
 </head>
@@ -51,18 +51,18 @@
                 <div class="col-md-4 column display-flex">
                     <div class="serach-div display-flex">
                         <input v-model="keyWord" @keyup.enter="load" type="text" class="form-control" placeholder="请输入查询关键字" />
-                        <button class="transparent-btn" type="button" @click="query" >
+                        <button class="transparent-btn" type="button" title="查询" @click="query" >
                             <img :src="icon_Serach">
                         </button>
                     </div>
                     <div class="btn-group btn-group-sm float-right">
-                        <button class="transparent-btn" type="button">
+                        <button class="transparent-btn" type="button" title="新建项目"  @click="location('add')">
                             <img :src="icon_Add">
                         </button>
-                        <button class="transparent-btn" type="button">
+                        <button class="transparent-btn" type="button" title="通知">
                             <img :src="icon_Notice">
                         </button>
-                        <button class="transparent-btn" type="button">
+                        <button class="transparent-btn" type="button" title="工作日志" @click="location('log')">
                             <img :src="icon_Log">
                         </button>
                     </div>
@@ -101,7 +101,8 @@
                                 <div class="projGrid">
                                     <div class="project-slimScroll">
 
-                                        <div v-for="project in projects" class="row clearfix projList" :class="project.isSelected?'active':''" >
+                                        <div v-for="project in projects" class="row clearfix projList" :class="project.isSelected?'active':''"
+                                             @click="shwoDetails( project.projId )" >
                                         <div class="col-md-12 column projList-task">
                                            <a>风险项:2</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a>待处理任务:6</a> <p></p>
                                         </div>

@@ -32,6 +32,7 @@ select{
 
 .float-right{
     float: right;
+    text-align: right;
 }
 
 .transparent-btn {
