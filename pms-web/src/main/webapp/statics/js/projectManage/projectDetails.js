@@ -67,17 +67,17 @@ var vm = new Vue({
             {stepName:"步骤10",stepOrder:"10", unCompleted:"4",allTask:"16"}
         ],
         tasks:[
-            {taskId:"1",parentTask:"",taskTitle:"一级任务1",startDate:"2017-09-22",taskStaff:"admin",rate:"30%",isExpand:true ,
+            {taskId:"1",parentTask:"",taskTitle:"一级任务1",startDate:"09-22",taskStaff:"admin",rate:"100%",state:"2",isExpand:false ,
                 subTask:[
-                    {taskId:"3",parentTask:"",taskTitle:"二级任务1",startDate:"2017-09-22",taskStaff:"",rate:"30%",isExpand:false },
-                    {taskId:"4",parentTask:"",taskTitle:"二级任务2",startDate:"2017-09-22",taskStaff:"",rate:"30%",isExpand:false },
-                    {taskId:"5",parentTask:"",taskTitle:"二级任务3",startDate:"2017-09-22",taskStaff:"",rate:"30%",isExpand:false }
+                    {taskId:"3",parentTask:"",taskTitle:"二级任务1",startDate:"09-22",taskStaff:"洪婕",rate:"100%",state:"2"},
+                    {taskId:"4",parentTask:"",taskTitle:"二级任务2",startDate:"09-22",taskStaff:"洪婕",rate:"30%",state:"1"},
+                    {taskId:"5",parentTask:"",taskTitle:"二级任务3",startDate:"09-22",taskStaff:"洪婕",rate:"30%",state:"1"}
                 ]},
-            {taskId:"2",parentTask:"",taskTitle:"一级任务2",startDate:"2017-09-22",taskStaff:"测试",rate:"30%",isExpand:false,
+            {taskId:"2",parentTask:"",taskTitle:"一级任务2",startDate:"09-22",taskStaff:"测试",rate:"30%",state:"1",isExpand:false,
                 subTask:[
-                    {taskId:"6",parentTask:"",taskTitle:"二级任务1",startDate:"2017-09-22",taskStaff:"",rate:"30%",isExpand:false },
-                    {taskId:"7",parentTask:"",taskTitle:"二级任务2",startDate:"2017-09-22",taskStaff:"",rate:"30%",isExpand:false },
-                    {taskId:"8",parentTask:"",taskTitle:"二级任务3",startDate:"2017-09-22",taskStaff:"",rate:"30%",isExpand:false }
+                    {taskId:"6",parentTask:"",taskTitle:"二级任务1",startDate:"09-22",taskStaff:"",rate:"0%",state:"0"},
+                    {taskId:"7",parentTask:"",taskTitle:"二级任务2",startDate:"09-22",taskStaff:"",rate:"100%",state:"2"},
+                    {taskId:"8",parentTask:"",taskTitle:"二级任务3",startDate:"09-22",taskStaff:"",rate:"0%",state:"0"}
                 ]}
         ],
         schedule:[]
@@ -98,7 +98,22 @@ var vm = new Vue({
                 url = "workLog.html";
             }
             window.location=url;
+        },
+        stateIcon:function(state){
+            if(state==0){
+                return "";
+            }
+            if(state==1){
+                return "";
+            }
+            if(state==2){
+                return "";
+            }
+
         }
+    },
+    computed: {
+
     }
 });
 

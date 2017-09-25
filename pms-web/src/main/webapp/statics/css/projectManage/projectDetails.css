@@ -75,11 +75,37 @@ body{
     border-bottom-color: transparent;
 }
 
+.btn-group-right{
+    margin: 0px 15px;
+    float: right;
+    text-align: right;
+}
+
+
+
 .point{
     height: 12px;
     width: 12px;
     border-radius: 6px;
     margin: 3px 1px;
+}
+.triangle-orange{
+    width:0;
+    height:0;
+    border-width:10px;
+    border-color:transparent transparent transparent #efac4e;
+    font-size:0;
+    line-height:0;
+    border-style:solid dashed dashed;
+}
+.square{
+    width:0;
+    height:0;
+    border-width: 7px;
+    border-color:#e3e3e3;
+    font-size:0;
+    line-height:0;
+    border-style: solid dashed;
 }
 .color-blue{
     background-color: #6fc7e1;
@@ -90,9 +116,16 @@ body{
 .color-gray{
     background-color: #e3e3e3;
 }
+.color-green{
+    background-color: #51C1B1;
+}
 .color-lightGray{
     background-color: #f5f5f5;
 }
+
+
+
+
 
 
 .left-panel-title{
@@ -126,13 +159,68 @@ body{
 
 }
 .vertical-divider{
-
+    width: 1px;
+    margin: 3px 5px;
+    overflow: hidden;
+    background-color: #e5e5e5;
+}
+.horizontal-divider {
+    height: 1px;
+    width: calc(100% - 30px);
+    margin: 5px 10px;
+    overflow: hidden;
+    background-color: #e5e5e5;
+}
+.panel-heading-task{
+    display: inline-flex;
+    width: 100%;
+    padding: 5px 10px
+}
+.panel-body-task{
+    height: 40px;
+    padding-top: 15px;
 }
 
 
-
-
-
+.btn-triangle-gray{
+    width:0;
+    height:0;
+    border-width:10px;
+    border-color:transparent transparent transparent #e3e3e3;
+    font-size:0;
+    line-height:0;
+    border-style:solid dashed dashed;
+    display: inline-block;
+    padding: 0px;
+    text-align: center;
+    white-space: nowrap;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: transparent;
+}
+.btn-square-gray{
+    height: 20px;
+    width: 20px;
+    border-radius: 10px;
+    border:2px solid #e3e3e3;
+    padding: 0px;
+    text-align: left;
+    font-size: 15px;
+    font-weight: 900;
+    white-space: nowrap;
+    user-select: none;
+    color: #e3e3e3;
+    background-color: transparent;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
 
 
 

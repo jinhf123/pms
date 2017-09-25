@@ -16,27 +16,29 @@
                 <div class="col-md-4 column">
                     <span style="line-height: 45px; vertical-align: middle;">【显示项目名称】</span>
                 </div>
-
-                <div class="nav nav-tabs col-md-6 column top-tabs">
-                    <li class="active">
-                        <a href="#panel-1" data-toggle="tab">项目信息</a>
-                    </li>
-                    <li>
-                        <a href="#panel-2" data-toggle="tab">进度任务</a>
-                    </li>
-                    <li>
-                        <a href="#panel-3" data-toggle="tab">资源使用</a>
-                    </li>
-                    <li>
-                        <a href="#panel-4" data-toggle="tab">风险问题</a>
-                    </li>
-                    <li>
-                        <a href="#panel-5" data-toggle="tab">文档管理</a>
-                    </li>
+                <div class="col-md-6 column">
+                    <ul class="nav nav-tabs top-tabs">
+                        <li class="active">
+                            <a href="#panel-1" data-toggle="tab">项目信息</a>
+                        </li>
+                        <li>
+                            <a href="#panel-2" data-toggle="tab">进度任务</a>
+                        </li>
+                        <li>
+                            <a href="#panel-3" data-toggle="tab">资源使用</a>
+                        </li>
+                        <li>
+                            <a href="#panel-4" data-toggle="tab">风险问题</a>
+                        </li>
+                        <li>
+                            <a href="#panel-5" data-toggle="tab">文档管理</a>
+                        </li>
+                    </ul>
                 </div>
 
-                <div class="col-md-2 column display-flex">
-                    <div class="btn-group btn-group-sm float-right">
+
+               <!-- <div class="col-md-2 column display-flex">-->
+                    <div class="btn-group btn-group-sm btn-group-right">
                         <button class="transparent-btn" type="button" title="通知">
                             <img :src="icon_Notice">
                         </button>
@@ -44,11 +46,19 @@
                             <img :src="icon_Log">
                         </button>
                     </div>
-                </div>
+              <!--  </div>-->
 
 
                 <div class="tab-content col-md-12 column">
+
                     <div class="tab-pane active" id="panel-1">
+                        <!--进度任务-->
+                        <p>
+                            项目信息功能正在开发中...
+                        </p>
+                    </div>
+                    <div class="tab-pane" id="panel-2">
+                        <!--进度任务-->
                         <div class="clearfix">
                             <div class="col-md-2 column" :style="styleObj">
                                 <div class="col-md-12 column left-panel-title">
@@ -77,25 +87,42 @@
                                     </div>
                                     <div class="col-md-12 column">
                                         <div class="panel-group" id="panel-organ">
-                                            <div v-for="data in tasks" class="panel panel-default">
-                                                <div class="panel-heading">
-                                                    <div class=""  >
+                                            <div v-for="(data,index) in tasks" class="panel panel-default">
+                                                <div class="panel-heading panel-heading-task">
+                                                    <div class="col-md-11 column" style="margin: 2px auto" >
+                                                        <!--,
+                                                        -->
+                                                        <span :class="{'square':(data.state==0)}" ></span>
                                                         <span>{{data.taskTitle}}</span>
+                                                        <span>{{data.startDate}}{{data.taskStaff}}</span>
                                                     </div>
-                                                    <div class="" >
-
+                                                    <div class="col-md-1 column" style="display: inline-flex;">
+                                                        <button class="btn-triangle-gray" type="button" title="开始任务"></button>
+                                                        <button class="btn-square-gray" type="button" title="完成任务"><span>&radic;</span>
+                                                        </button>
                                                     </div>
-                                                    <div class="" >
+                                                    <div class="display-flex float-right " >
                                                         <div class="vertical-divider"></div>
-                                                        <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-organ" href="#panel-element-task">
-                                                            <span v-show="" class="treegrid-expander glyphicon glyphicon-chevron-right"></span>
-                                                            <span v-show="" class="treegrid-expander glyphicon glyphicon-chevron-right"></span>
+                                                        <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-organ" :href="'#panel-element-'+index">
+                                                            <span v-show="data.isExpand"  @click="data.isExpand=!data.isExpand" class="treegrid-expander glyphicon glyphicon-chevron-right"></span>
+                                                            <span v-show="!data.isExpand" @click="data.isExpand=!data.isExpand" class="treegrid-expander glyphicon glyphicon-chevron-down" ></span>
                                                         </a>
                                                     </div>
                                                 </div>
-                                                <div id="panel-element-task" class="panel-collapse collapse">
+                                                <div :id="'panel-element-'+index" class="panel-collapse collapse">
                                                     <div class="panel-body">
-                                                        二级任务
+
+                                                        <div v-for="(item, index) in data.subTask" class="panel-body-task">
+                                                            <div class="col-md-11 ">
+                                                                <span>{{item.taskTitle}}</span>
+                                                                <span>{{item.startDate}}{{item.taskStaff}}</span>
+                                                            </div>
+                                                            <div class="col-md-1 column" >
+                                                                按钮按钮
+                                                            </div>
+                                                            <div class="col-md-12 column horizontal-divider"></div>
+                                                        </div>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -116,30 +143,23 @@
                                     </div>
 
                                 </div>
-
                             </div>
-
-
-
-
                         </div>
                     </div>
-                    <div class="tab-pane" id="panel-2">
-                        <p>
-                            进度任务功能正在开发中...
-                        </p>
-                    </div>
                     <div class="tab-pane" id="panel-3">
+                        <!--资源使用-->
                         <p>
                             资源使用功能正在开发中...
                         </p>
                     </div>
                     <div class="tab-pane" id="panel-4">
+                        <!--风险问题-->
                         <p>
                             风险问题功能正在开发中...
                         </p>
                     </div>
                     <div class="tab-pane" id="panel-5">
+                        <!--文档管理-->
                         <p>
                             文档管理功能正在开发中...
                         </p>
