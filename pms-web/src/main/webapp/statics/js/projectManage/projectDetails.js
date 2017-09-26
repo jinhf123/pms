@@ -5,20 +5,28 @@
 $(function () {
     initialPage();
     getProjectInfo();
-    getGrid();
+
+
+    var param = JSON.stringify({
+        "projId":vm.projId,
+        "stepId":vm.stepId,
+        "taskId":vm.taskId
+    });
+    getTaskGrid(param);
+    getScheGrid(param);
 });
 
 
 function initialPage() {
     //初始化滚动条
     $(".left-panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
-    // $(".project-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
+    $(".center-panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
 
     //窗口大小改变重新调整大小
     $(window).resize(function() {
         vm.styleObj.height = ($(window).height()-45)+"px";
         $(".left-panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
-        // $(".project-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
+        $(".center-panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     });
 }
 
@@ -27,32 +35,51 @@ function getProjectInfo(){
 
 }
 
-//获取数据列表
-function getGrid() {
-    console.log("获取详情列表");
-   /* $.ajax({
-        url: '../../projMan/project/dataGrid?_' + $.now(),
-        data: JSON.stringify({
-            "group" : vm.projectGroup.value,
-            "type" : vm.projectType.value,
-            "keyWord": vm.keyWord
-        }),
-        type: "post",
-        dataType: "json",
-        contentType: 'application/json',
-        success: function (data) {
-            vm.projects = data;
-            vm.length = data.length;
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            dialogLoading(false);
-            dialogMsg(errorThrown, 'error');
-        }
-    });*/
-}
+//获取任务数据列表
+function getTaskGrid() {
+    alert("获取任务数据列表");
+    //todo 加载任务列表
+    /* $.ajax({
+     url: '../../projMan/project/dataGrid?_' + $.now(),
+     data: JSON.stringify({
+     "projId":vm.projId,
+     "stepId":vm.stepId,
+     "taskId":vm.taskId
+     }),
+     type: "post",
+     dataType: "json",
+     contentType: 'application/json',
+     success: function (data) {
+     vm.projects = data;
+     vm.length = data.length;
+     },
+     error: function (XMLHttpRequest, textStatus, errorThrown) {
+     dialogLoading(false);
+     dialogMsg(errorThrown, 'error');
+     }
+     });*/
+};
 
-
-
+//获取日程数据列表
+function getScheGrid(param) {
+    alert("获取日程数据列表");
+    //todo 加载日程列表
+    /* $.ajax({
+     url: '../../projMan/project/dataGrid?_' + $.now(),
+     data: param,
+     type: "post",
+     dataType: "json",
+     contentType: 'application/json',
+     success: function (data) {
+     vm.projects = data;
+     vm.length = data.length;
+     },
+     error: function (XMLHttpRequest, textStatus, errorThrown) {
+     dialogLoading(false);
+     dialogMsg(errorThrown, 'error');
+     }
+     });*/
+};
 
 
 var vm = new Vue({
@@ -62,20 +89,24 @@ var vm = new Vue({
         icon_Log    :"/statics/img/projectManage/u4.png",
         styleObj:{height: ($(window).height()-45)+'px'},
         isEdit:false,
+        projId:"",
+        stepId:"",
+        taskId:"",
 
-
+        unComTaskNum:"5",//未完成任务数
+        unComScheNum:"2",//未完成日程
 
         steps:[
-            {stepName:"步骤1",stepOrder:"1", unCompleted:"13",allTask:"16",state:"2"},
-            {stepName:"步骤2",stepOrder:"2", unCompleted:"12",allTask:"16",state:"2"},
-            {stepName:"步骤3",stepOrder:"3", unCompleted:"11",allTask:"16",state:"2"},
-            {stepName:"步骤4",stepOrder:"4", unCompleted:"10",allTask:"16",state:"2"},
-            {stepName:"步骤5",stepOrder:"5", unCompleted:"9",allTask:"16",state:"2"},
-            {stepName:"步骤6",stepOrder:"6", unCompleted:"8",allTask:"16",state:"1"},
-            {stepName:"步骤7",stepOrder:"7", unCompleted:"7",allTask:"16",state:"0"},
-            {stepName:"步骤8",stepOrder:"8", unCompleted:"6",allTask:"16",state:"0"},
-            {stepName:"步骤9",stepOrder:"9", unCompleted:"5",allTask:"16",state:"0"},
-            {stepName:"步骤10",stepOrder:"10", unCompleted:"4",allTask:"16",state:"0"}
+            {stepId:"1",stepName:"步骤1",stepOrder:"1", unCompleted:"13",allTask:"16",state:"2",unComNum:"0",total:"15"},
+            {stepId:"2",stepName:"步骤2",stepOrder:"2", unCompleted:"12",allTask:"16",state:"2",unComNum:"0",total:"15"},
+            {stepId:"3",stepName:"步骤3",stepOrder:"3", unCompleted:"11",allTask:"16",state:"2",unComNum:"0",total:"15"},
+            {stepId:"4",stepName:"步骤4",stepOrder:"4", unCompleted:"10",allTask:"16",state:"2",unComNum:"0",total:"15"},
+            {stepId:"5",stepName:"步骤5",stepOrder:"5", unCompleted:"9",allTask:"16",state:"2",unComNum:"0",total:"15"},
+            {stepId:"6",stepName:"步骤6",stepOrder:"6", unCompleted:"8",allTask:"16",state:"1",unComNum:"10",total:"15"},
+            {stepId:"7",stepName:"步骤7",stepOrder:"7", unCompleted:"7",allTask:"16",state:"0",unComNum:"15",total:"15"},
+            {stepId:"8",stepName:"步骤8",stepOrder:"8", unCompleted:"6",allTask:"16",state:"0",unComNum:"15",total:"15"},
+            {stepId:"9",stepName:"步骤9",stepOrder:"9", unCompleted:"5",allTask:"16",state:"0",unComNum:"15",total:"15"},
+            {stepId:"10",stepName:"步骤10",stepOrder:"10", unCompleted:"4",allTask:"16",state:"0",unComNum:"15",total:"15"}
         ],
         tasks:[
             {taskId:"1",parentTask:"",taskTitle:"一级任务1",startDate:"09-22",taskStaff:"admin",rate:"100%",state:"2",isExpand:false ,
@@ -100,35 +131,50 @@ var vm = new Vue({
 
     },
     methods : {
-        load: function() {
+        load: function(id) {//加载列表
+            this.stepId = id;
+            var param = JSON.stringify({
+                "projId":vm.projId,
+                "stepId":vm.stepId,
+                "taskId":vm.taskId
+            });
+            getTaskGrid(param);
+            getScheGrid(param);
         },
-        save: function() {
+        queryAllTask: function(){//查看所有任务
+            var param = JSON.stringify({
+                "projId":vm.projId,
+                "stepId":"",
+                "taskId":vm.taskId
+            });
+            getTaskGrid(param);
         },
-        edit: function() {
+        queryAllSche: function(){//查看所有日程
+            var param = JSON.stringify({
+                "projId":vm.projId,
+                "stepId":"",
+                "taskId":vm.taskId
+            });
+            getScheGrid(param);
         },
-        editTask:function () {
+        editTask: function(){//任务编辑
             this.isEdit=!this.isEdit;
         },
-        remove: function() {
-        },
-        location:function(act){
+        location: function(act){
             var url;
             if(act=="log"){
                 url = "workLog.html";
             }
             window.location=url;
         },
-        stateIcon:function(state){
-            if(state==0){
-                return "";
-            }
-            if(state==1){
-                return "";
-            }
-            if(state==2){
-                return "";
-            }
-
+        finishStage: function(id) {//完成本阶段
+            alert("完成本阶段！"+id);
+        },
+        startTask: function(){
+            alert("开始任务");
+        },
+        finishTask: function(){
+            alert("完成任务");
         }
     },
     computed: {
