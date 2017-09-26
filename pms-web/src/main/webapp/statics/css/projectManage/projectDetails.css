@@ -24,7 +24,7 @@ body{
 }
 
 .float-right{
-    float: right !important;
+    float: right;
     text-align: right;
 }
 
@@ -80,15 +80,31 @@ body{
     float: right;
     text-align: right;
 }
-
-
+.btn-link-group{
+    float: right;
+    text-align: right;
+    font-size: 13px;
+}
+.btn-link-group>a{color: #428ac9;}
+/*.btn-link-group-editor {border: 1px solid #f1f1f1;}
+.btn-link-group-editor >span{ background-color: #f1f1f1;}*/
 
 .point{
     height: 12px;
     width: 12px;
     border-radius: 6px;
     margin: 3px 1px;
+    z-index:8;
 }
+.circular-green{
+    height: 20px;
+    width: 20px;
+    padding: 2px 0px;
+    text-align: center;
+    white-space: nowrap;
+    background: url("/statics/img/projectManage/u11.png") no-repeat;
+}
+
 .triangle-orange{
     width:0;
     height:0;
@@ -106,79 +122,6 @@ body{
     font-size:0;
     line-height:0;
     border-style: solid dashed;
-}
-.color-blue{
-    background-color: #6fc7e1;
-}
-.color-orange{
-    background-color: #efac4e;
-}
-.color-gray{
-    background-color: #e3e3e3;
-}
-.color-green{
-    background-color: #51C1B1;
-}
-.color-lightGray{
-    background-color: #f5f5f5;
-}
-
-
-
-
-
-
-.left-panel-title{
-    display: inline-flex;
-    background-color: #f5f5f5;
-    height: 40px;
-    vertical-align: middle;
-    text-align: center;
-    padding: 12px 0px;
-    font-family: "微软雅黑 Regular", "微软雅黑";
-    font-weight: 400;
-    font-style: normal;
-    font-size: 12px;
-    color: #999999;
-}
-.left-panel-list{
-    height:100%;/*calc(100% - 100px);*/
-    border-right: 1px solid #f5f5f5;
-}
-
-
-
-
-
-
-
-.center-panel-title{
-
-}
-.center-panel-list{
-
-}
-.vertical-divider{
-    width: 1px;
-    margin: 3px 5px;
-    overflow: hidden;
-    background-color: #e5e5e5;
-}
-.horizontal-divider {
-    height: 1px;
-    width: calc(100% - 30px);
-    margin: 5px 10px;
-    overflow: hidden;
-    background-color: #e5e5e5;
-}
-.panel-heading-task{
-    display: inline-flex;
-    width: 100%;
-    padding: 5px 10px
-}
-.panel-body-task{
-    height: 40px;
-    padding-top: 15px;
 }
 
 
@@ -203,27 +146,167 @@ body{
     user-select: none;
     background-color: transparent;
 }
-.btn-square-gray{
-    height: 20px;
-    width: 20px;
-    border-radius: 10px;
-    border:2px solid #e3e3e3;
+.btn-circular-gray{
+    height: 22px;
+    width: 22px;
     padding: 0px;
-    text-align: left;
-    font-size: 15px;
-    font-weight: 900;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.4285;
+    text-align: center;
     white-space: nowrap;
-    user-select: none;
-    color: #e3e3e3;
-    background-color: transparent;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    background: url("/statics/img/projectManage/u12.png") no-repeat;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+.color-blue{
+    background-color: #6fc7e1;
+}
+.color-orange{
+    background-color: #efac4e;
+}
+.color-gray{
+    background-color: #e3e3e3;
+}
+.color-green{
+    background-color: #51C1B1;
+}
+.color-lightGray{
+    background-color: #f5f5f5;
+}
+.gradient-blue-orange{
+    /*FILTER: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#6fc7e1,endColorStr=#efac4e); !*IE 6 7 8*!*/
+    background: -ms-linear-gradient(top, #6fc7e1,  #efac4e);        /* IE 10 */
+    background:-moz-linear-gradient(top,#6fc7e1,#efac4e);/*火狐*/
+    background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#6fc7e1), to(#efac4e));/*谷歌*/
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#6fc7e1), to(#efac4e));      /* Safari 4-5, Chrome 1-9*/
+    background: -webkit-linear-gradient(top, #6fc7e1, #efac4e);   /*Safari5.1 Chrome 10+*/
+    background: -o-linear-gradient(top, #6fc7e1, #efac4e);  /*Opera 11.10+*/
+}
+
+.left-panel-title{
+    display: inline-flex;
+    background-color: #f5f5f5;
+    height: 40px;
+    vertical-align: middle;
+    text-align: center;
+    padding: 12px 0px;
+    font-family: "微软雅黑 Regular", "微软雅黑";
+    font-weight: 400;
+    font-style: normal;
+    font-size: 12px;
+    color: #999999;
+}
+.left-panel-list{
+    height:calc(100vh - 85px);/*100%;*/
+    margin-top: 40px;
+    border-right: 1px solid #f5f5f5;
+    font-size: 13px;
+}
+.left-panel-step{
+    height: 50px;
+    width: 100%;
+}
+.btn-step-operation{
+    text-align: right;
+    color:#428ac9 ;
+}
+.left-panel-begin-step{
+    height: 50px;
+    width: 100%;
+    margin-bottom: -50px;
+}
+.progress-line-begin{
+    height: 12px;
+    width: 20px;
+    border-radius: 6px;
+    margin: 3px 1px 3px 0px;
+    z-index:8;
+}
+.progress-line{
+    width:2px;
+    height: 50px;
+    /*border-left:1px solid transparent;*/
+    /*border-right:1px solid transparent;*/
+    position:relative;
+    margin-left: 6px;
+    margin-top: 0px;
+}
+.progress-line-stage{
+
 }
 
 
 
+
+
+
+
+
+
+#panel-organ{
+    font-size: 13px;
+}
+.vertical-divider{
+    width: 1px;
+    margin: 3px 0px;
+    overflow: hidden;
+    background-color: #e5e5e5;
+}
+.horizontal-divider {
+    height: 1px;
+    width: calc(100% - 30px);
+    margin: 5px 10px;
+    overflow: hidden;
+    background-color: #e5e5e5;
+}
+.panel-heading-task{
+    display: inline-flex;
+    width: 100%;
+    padding: 5px 10px
+}
+.panel-heading-title>span{
+    margin-right: 10px;
+}
+
+.panel-body-task{
+    height: 40px;
+    padding-top: 15px;
+}
+.panel-body-task-icon{
+    margin: 5px 0px;
+}
+
+
+.panel-heading-task>div{
+    display: inline-flex;
+}
+
+
+
+
+.label-gray{
+    color: #666666;
+    background-color: #e3e3e3;
+    border: 1px solid #e3e3e3;
+    border-radius: 10px;
+    padding: 2px 5px;
+}
+.label-pink{
+    color: #ea9066;
+    background-color: #f4d1d0;
+    border: 1px solid #f4d1d0;
+    border-radius: 10px;
+    padding: 2px 5px;
+}
 
 
 

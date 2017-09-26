@@ -33,7 +33,7 @@ a:hover,a:active,a:focus{outline:none;text-decoration:none;color:#72afd2}
 .main-header .sidebar-toggle .icon-bar{display:none}
 .main-header .navbar .nav>li.user>a>.fa,.main-header .navbar .nav>li.user>a>.glyphicon,.main-header .navbar .nav>li.user>a>.ion{margin-right:5px}
 .main-header .navbar .nav>li>a>.label{position:absolute;top:9px;right:7px;text-align:center;font-size:9px;padding:2px 3px;line-height:.9}
-.main-header .logo{-webkit-transition:width .3s ease-in-out;-o-transition:width .3s ease-in-out;transition:width .3s ease-in-out;display:block;float:left;height:50px;font-size:20px;line-height:50px;text-align:center;width:230px;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;padding:0 15px;font-weight:300;overflow:hidden}
+.main-header .logo{-webkit-transition:width .3s ease-in-out;-o-transition:width .3s ease-in-out;transition:width .3s ease-in-out;display:block;float:left;height:52px;font-size:20px;line-height:50px;text-align:center;width:230px;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;padding:0 15px;font-weight:300;overflow:hidden}
 .main-header .logo .logo-lg{display:block;font-weight: bold;font-size: 25px;text-shadow: 3px 3px 7px #000;}
 .main-header .logo .logo-lg strong{font-size: 20px;padding-left:3px;}
 .main-header .logo .logo-mini{display:none;font-weight: bold;font-size: 25px;text-shadow: 3px 3px 7px #000;}

@@ -1,5 +1,5 @@
 html,body { overflow-x:hidden; font-family:微软雅黑,Helvetica,Arial,sans-serif,'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif;}
-.content-header {position: relative;padding: 0 0 3px 8px}
+.content-header {position: relative;padding: 0 0 0 8px}
 .content-header>.breadcrumb {position: relative;top: 0;right: 0;float: none;margin-top: 0px;padding-left: 10px;background: #ecf0f5;}
 .main-footer {padding: 7px;margin-left: 230px;color: #444;border-top: 1px solid #eee;background: #fff;}
 [v-cloak] {display: none;}

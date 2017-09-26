@@ -18,6 +18,11 @@ $.fn.Validform = function () {
             switch (checkexpession) {
                 case "NotNull":
                     {
+                        var type=$(this).attr("type");
+                        if(type=="radio" || type=="checkbox"){
+                            var td=$(this).parent().parent();
+                            value=$(this).parent().parent().find("input[type="+type+"]:checked").length>0 ? "1" : "";
+                        }
                         if (isNotNull(value)) {
                             Validatemsg = errormsg + "不能为空！\n";
                             Validateflag = false;
