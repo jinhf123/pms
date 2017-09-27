@@ -100,7 +100,7 @@ var vm = new Vue({
         isAddSche:false,
 
         //查询参数
-        projId:"",
+        projId:"1",
         stepId:"",
         taskId:"",
 
@@ -113,12 +113,11 @@ var vm = new Vue({
         participant:"",
         scheEndDate:"",
 
-
-
         unComTaskNum:"5",//未完成任务数
         unComScheNum:"2",//未完成日程
 
-        steps:[
+        steps:[],
+            /*[
             {stepId:"1",stepName:"步骤1",stepOrder:"1", unCompleted:"13",allTask:"16",state:"2",unComNum:"0",total:"15"},
             {stepId:"2",stepName:"步骤2",stepOrder:"2", unCompleted:"12",allTask:"16",state:"2",unComNum:"0",total:"15"},
             {stepId:"3",stepName:"步骤3",stepOrder:"3", unCompleted:"11",allTask:"16",state:"2",unComNum:"0",total:"15"},
@@ -129,7 +128,7 @@ var vm = new Vue({
             {stepId:"8",stepName:"步骤8",stepOrder:"8", unCompleted:"6",allTask:"16",state:"0",unComNum:"15",total:"15"},
             {stepId:"9",stepName:"步骤9",stepOrder:"9", unCompleted:"5",allTask:"16",state:"0",unComNum:"15",total:"15"},
             {stepId:"10",stepName:"步骤10",stepOrder:"10", unCompleted:"4",allTask:"16",state:"0",unComNum:"15",total:"15"}
-        ],
+        ],*/
         tasks:[
             {taskId:"1",parentTask:"",taskTitle:"一级任务1",startDate:"09-22",taskStaff:"admin",rate:"100%",state:"2",isExpand:false ,
                 subTask:[
