@@ -37,7 +37,7 @@ function getProjectInfo(){
 
 //获取任务数据列表
 function getTaskGrid() {
-    alert("获取任务数据列表");
+    // alert("获取任务数据列表");
     //todo 加载任务列表
     /* $.ajax({
      url: '../../projMan/project/dataGrid?_' + $.now(),
@@ -62,7 +62,7 @@ function getTaskGrid() {
 
 //获取日程数据列表
 function getScheGrid(param) {
-    alert("获取日程数据列表");
+    // alert("获取日程数据列表");
     //todo 加载日程列表
     /* $.ajax({
      url: '../../projMan/project/dataGrid?_' + $.now(),
@@ -80,6 +80,10 @@ function getScheGrid(param) {
      }
      });*/
 };
+//保存任务信息
+function saveTask() {
+
+}
 
 
 var vm = new Vue({
@@ -87,11 +91,29 @@ var vm = new Vue({
     data: {
         icon_Notice :"/statics/img/projectManage/u3.png",
         icon_Log    :"/statics/img/projectManage/u4.png",
+        icon_Title : "/statics/img/projectManage/u15.png",
+        icon_User : "/statics/img/projectManage/u16.png",
+        icon_Date : "/statics/img/projectManage/u17.png",
         styleObj:{height: ($(window).height()-45)+'px'},
         isEdit:false,
+        isAddTask:false,
+        isAddSche:false,
+
+        //查询参数
         projId:"",
         stepId:"",
         taskId:"",
+
+        //新增任务参数
+        taskTitle:"",
+        taskStaff:"",
+        taskEndDate:"",
+        //新增日程参数
+        content:"",
+        participant:"",
+        scheEndDate:"",
+
+
 
         unComTaskNum:"5",//未完成任务数
         unComScheNum:"2",//未完成日程
@@ -128,7 +150,6 @@ var vm = new Vue({
             {date:"09-28",content:"最后能将这部分工作交给客户自己去做。",participant:"李四、王五"},
             {date:"09-29",content:"开例会。",participant:"李四、王五"}
         ]
-
     },
     methods : {
         load: function(id) {//加载列表
@@ -140,27 +161,7 @@ var vm = new Vue({
             });
             getTaskGrid(param);
             getScheGrid(param);
-        },
-        queryAllTask: function(){//查看所有任务
-            var param = JSON.stringify({
-                "projId":vm.projId,
-                "stepId":"",
-                "taskId":vm.taskId
-            });
-            getTaskGrid(param);
-        },
-        queryAllSche: function(){//查看所有日程
-            var param = JSON.stringify({
-                "projId":vm.projId,
-                "stepId":"",
-                "taskId":vm.taskId
-            });
-            getScheGrid(param);
-        },
-        editTask: function(){//任务编辑
-            this.isEdit=!this.isEdit;
-        },
-        location: function(act){
+        },location: function(act){
             var url;
             if(act=="log"){
                 url = "workLog.html";
@@ -170,12 +171,65 @@ var vm = new Vue({
         finishStage: function(id) {//完成本阶段
             alert("完成本阶段！"+id);
         },
-        startTask: function(){
-            alert("开始任务");
+
+
+        queryAllTask: function(){//查看所有任务
+            var param = JSON.stringify({
+                "projId":vm.projId,
+                "stepId":"",
+                "taskId":vm.taskId
+            });
+            getTaskGrid(param);
         },
-        finishTask: function(){
-            alert("完成任务");
+        editTask: function(){//任务编辑
+            this.isEdit=!this.isEdit;
+            this.isAddTask=false;
+
+        },
+        startTask: function(id){
+            alert("开始任务"+id);
+        },
+        finishTask: function(id){
+            alert("完成任务"+id);
+        },
+        delTask:function(id){
+            alert("删除任务"+id);
+        },
+        addTaskPanel:function(){
+            // alert("新增子任务");
+            this.isAddTask=true;
+        },
+        addTask:function(){
+            this.isAddTask=!this.isAddTask;
+            saveTask();
+        },
+        closeTaskPanel:function () {
+            this.isAddTask=!this.isAddTask;
+        },
+
+
+        queryAllSche: function(){//查看所有日程
+            var param = JSON.stringify({
+                "projId":vm.projId,
+                "stepId":"",
+                "taskId":vm.taskId
+            });
+            getScheGrid(param);
+        },
+        addSchePanel:function(){
+            this.isAddSche=true;
+        },
+        addSche:function(){
+            this.isAddSche=!this.isAddSche;
+            saveTask();
+        },
+        closeSchePanel:function () {
+            this.isAddSche=!this.isAddSche;
         }
+
+
+
+
     },
     computed: {
 
