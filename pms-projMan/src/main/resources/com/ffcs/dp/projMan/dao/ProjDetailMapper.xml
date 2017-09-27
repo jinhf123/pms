@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffcs.dp.projectManage.dao.ProjDetailMapper">
+
+
+	<!--获取项目信息-->
+	<select id="getProjectInfo" resultType="java.util.HashMap" parameterType="Map">
+
+
+	</select>
+
+	<!--获取步骤列表信息-->
+	<select id="getStepList" resultType="StepEntity" parameterType="Map">
+
+
+	</select>
+
+
+	<!--获取任务列表信息-->
+	<select id="getTaskList" resultType="TaskEntity" parameterType="Map">
+
+
+	</select>
+
+	<!--获取日程列表信息-->
+	<select id="getScheduleList" resultType="ScheduleEntity" parameterType="Map">
+
+
+	</select>
+
+	<!--更新任务信息-->
+	<update id="updateTask" parameterType="Map">
+
+
+	</update>
+
+	<!--插入任务信息-->
+	<insert id="insertTask" parameterType="Map">
+		<selectKey keyProperty="taskId" resultType="long" order="BEFORE">
+			SELECT  .NEXTVAL FROM DUAL
+		</selectKey>
+
+	</insert>
+
+	<!--更新日程信息-->
+	<update id="updateSchedule" parameterType="Map">
+
+
+	</update>
+
+	<!--插入日程信息-->
+	<insert id="insertSchedule" parameterType="Map">
+		<selectKey keyProperty="scheduleId" resultType="long" order="BEFORE">
+			SELECT  .NEXTVAL FROM DUAL
+		</selectKey>
+
+	</insert>
+
+	<!--删除任务信息-->
+	<delete id="deleteTask" parameterType="Map">
+
+
+	</delete>
+
+	<!--删除日程信息-->
+	<delete id="deleteSchedule" parameterType="Map">
+
+
+	</delete>
+
+	<!--更新步骤状态信息-->
+	<update id="updateStepState" parameterType="Map">
+
+
+	</update>
+
+	<!--更新任务状态信息-->
+	<update id="updateTaskState" parameterType="Map">
+
+
+	</update>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>
