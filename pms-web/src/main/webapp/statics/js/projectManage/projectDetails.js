@@ -5,12 +5,10 @@
 $(function () {
     initialPage();
     getProjectInfo();
-
-
+    getStepList();
     var param = JSON.stringify({
         "projId":vm.projId,
-        "stepId":vm.stepId,
-        "taskId":vm.taskId
+        "stepId":vm.stepId
     });
     getTaskGrid(param);
     getScheGrid(param);
@@ -32,58 +30,89 @@ function initialPage() {
 
 //获取项目信息
 function getProjectInfo(){
-
+    $.ajax({
+        url: '../../projMan/projDetail/getProjectInfo?_' + $.now(),
+        data: JSON.stringify({
+            "projId" : vm.projId,
+        }),
+        type: "post",
+        dataType: "json",
+        contentType: 'application/json',
+        success: function (data) {
+            vm.projectInfo = data;
+        },
+        error: function (xmlhttprequest, textstatus, errorthrown) {
+            dialogloading(false);
+            dialogmsg(errorthrown, 'error');
+        }
+    });
 }
+//获取项目步骤数据
+function getStepList() {
+    $.ajax({
+        url: '../../projMan/projDetail/getStepList?_' + $.now(),
+        data: JSON.stringify({
+            "projId": vm.projId
+        }),
+        type: "post",
+        dataType: "json",
+        contentType: 'application/json',
+        success: function (data) {
+            debugger;
+            vm.steps = data;
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            dialogLoading(false);
+            dialogMsg(errorThrown, 'error');
+        }
+    });
+};
 
 //获取任务数据列表
-function getTaskGrid() {
-    // alert("获取任务数据列表");
-    //todo 加载任务列表
-    /* $.ajax({
-     url: '../../projMan/project/dataGrid?_' + $.now(),
-     data: JSON.stringify({
-     "projId":vm.projId,
-     "stepId":vm.stepId,
-     "taskId":vm.taskId
-     }),
-     type: "post",
-     dataType: "json",
-     contentType: 'application/json',
-     success: function (data) {
-     vm.projects = data;
-     vm.length = data.length;
-     },
-     error: function (XMLHttpRequest, textStatus, errorThrown) {
-     dialogLoading(false);
-     dialogMsg(errorThrown, 'error');
-     }
-     });*/
+function getTaskGrid(param) {
+    $.ajax({
+        url: '../../projMan/projDetail/getTaskList?_' + $.now(),
+        data: param,
+        type: "post",
+        dataType: "json",
+        contentType: 'application/json',
+        success: function (data) {
+            debugger;
+            vm.tasks = data;
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            dialogLoading(false);
+            dialogMsg(errorThrown, 'error');
+        }
+    });
 };
 
 //获取日程数据列表
 function getScheGrid(param) {
-    // alert("获取日程数据列表");
-    //todo 加载日程列表
-    /* $.ajax({
-     url: '../../projMan/project/dataGrid?_' + $.now(),
-     data: param,
-     type: "post",
-     dataType: "json",
-     contentType: 'application/json',
-     success: function (data) {
-     vm.projects = data;
-     vm.length = data.length;
-     },
-     error: function (XMLHttpRequest, textStatus, errorThrown) {
-     dialogLoading(false);
-     dialogMsg(errorThrown, 'error');
-     }
-     });*/
+    $.ajax({
+        url: '../../projMan/projDetail/getScheduleList?_' + $.now(),
+        data: param,
+        type: "post",
+        dataType: "json",
+        contentType: 'application/json',
+        success: function (data) {
+            vm.schedules = data;
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            dialogLoading(false);
+            dialogMsg(errorThrown, 'error');
+        }
+    });
 };
-//保存任务信息
-function saveTask() {
 
-}
+//保存任务
+function saveTask(){
+    console.log("保存任务");
+};
+
+
+
+
 
 
 var vm = new Vue({
@@ -99,9 +128,12 @@ var vm = new Vue({
         isAddTask:false,
         isAddSche:false,
 
+        //项目信息
+        projectInfo:{projectName:"",allStep:"",unCompStep:"",unCompTask:"",unCompSchedule:""},
+
         //查询参数
         projId:"1",
-        stepId:"",
+        stepId:"9",
         taskId:"",
 
         //新增任务参数
@@ -112,9 +144,6 @@ var vm = new Vue({
         content:"",
         participant:"",
         scheEndDate:"",
-
-        unComTaskNum:"5",//未完成任务数
-        unComScheNum:"2",//未完成日程
 
         steps:[],
             /*[
@@ -130,24 +159,24 @@ var vm = new Vue({
             {stepId:"10",stepName:"步骤10",stepOrder:"10", unCompleted:"4",allTask:"16",state:"0",unComNum:"15",total:"15"}
         ],*/
         tasks:[
-            {taskId:"1",parentTask:"",taskTitle:"一级任务1",startDate:"09-22",taskStaff:"admin",rate:"100%",state:"2",isExpand:false ,
+            /*{taskId:"1",parentTask:"",taskTitle:"一级任务1",startDate:"09-22",taskStaff:"admin",rate:"100%",state:"2",expand:false ,
                 subTask:[
                     {taskId:"3",parentTask:"",taskTitle:"二级任务1",startDate:"09-22",isTimeOut:true,taskStaff:"洪婕",rate:"100%",state:"2"},
                     {taskId:"4",parentTask:"",taskTitle:"二级任务2",startDate:"09-22",taskStaff:"洪婕",rate:"30%",state:"1"},
                     {taskId:"5",parentTask:"",taskTitle:"二级任务3",startDate:"09-22",taskStaff:"洪婕",rate:"30%",state:"1"}
                 ]},
-            {taskId:"2",parentTask:"",taskTitle:"一级任务2",startDate:"09-22",taskStaff:"测试",rate:"30%",state:"1",isExpand:false,
+            {taskId:"2",parentTask:"",taskTitle:"一级任务2",startDate:"09-22",taskStaff:"测试",rate:"30%",state:"1",expand:false,
                 subTask:[
                     {taskId:"6",parentTask:"",taskTitle:"二级任务1",startDate:"09-22",isTimeOut:true,taskStaff:"洪婕",rate:"0%",state:"0"},
                     {taskId:"7",parentTask:"",taskTitle:"二级任务2",startDate:"09-22",taskStaff:"洪婕",rate:"100%",state:"2"},
                     {taskId:"8",parentTask:"",taskTitle:"二级任务3",startDate:"09-22",taskStaff:"洪婕",rate:"0%",state:"0"}
-                ]}
+                ]}*/
         ],
         schedules:[
-            {date:"09-26",content:"由王辉组织集团ITSM监控小组制定如何帮忙他们提升监控部署效率的专项。",participant:"陈立、张三、李四、王五"},
+            /*{date:"09-26",content:"由王辉组织集团ITSM监控小组制定如何帮忙他们提升监控部署效率的专项。",participant:"陈立、张三、李四、王五"},
             {date:"09-27",content:"最终目标仍然是把监控部署实施的工作降低下来。",participant:"陈立、李四、王五"},
             {date:"09-28",content:"最后能将这部分工作交给客户自己去做。",participant:"李四、王五"},
-            {date:"09-29",content:"开例会。",participant:"李四、王五"}
+            {date:"09-29",content:"开例会。",participant:"李四、王五"}*/
         ]
     },
     methods : {

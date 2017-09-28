@@ -26,11 +26,10 @@ public interface ProjDetailMapper extends BaseMapper<WorkLogEntity> {
 
     List<ScheduleEntity> getScheduleList(Map<String, Object> params);
 
-    void updateTask(Map<String, Object> params);
+//    void updateTask(Map<String, Object> params);
+//    void updateSchedule(Map<String, Object> params);
 
     void insertTask(Map<String, Object> params);
-
-    void updateSchedule(Map<String, Object> params);
 
     void insertSchedule(Map<String, Object> params);
 
@@ -41,5 +40,6 @@ public interface ProjDetailMapper extends BaseMapper<WorkLogEntity> {
     int updateStepState(Map<String, Object> params);
 
     int updateTaskState(Map<String, Object> params);
+
 
 }

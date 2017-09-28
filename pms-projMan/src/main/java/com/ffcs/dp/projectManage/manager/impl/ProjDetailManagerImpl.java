@@ -5,11 +5,11 @@ import com.ffcs.dp.projectManage.entity.ScheduleEntity;
 import com.ffcs.dp.projectManage.entity.StepEntity;
 import com.ffcs.dp.projectManage.entity.TaskEntity;
 import com.ffcs.dp.projectManage.manager.ProjDetailManager;
+import org.apache.commons.collections.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component("projDetailManager")
 public class ProjDetailManagerImpl implements ProjDetailManager {
@@ -20,17 +20,59 @@ public class ProjDetailManagerImpl implements ProjDetailManager {
 
     @Override
     public Map getProjectInfo(Map<String, Object> params) {
-        return projDetailMapper.getProjectInfo(params);
+        Map resultMap = new HashMap();
+        Map map = projDetailMapper.getProjectInfo(params);
+        resultMap.put("projectName",map.get("PROJ_NAME"));
+        resultMap.put("allStep",map.get("ALL_STEP"));
+        resultMap.put("unCompStep",map.get("UN_COMP_STEP"));
+        resultMap.put("unCompTask",map.get("UN_COMP_TASK"));
+        resultMap.put("unCompSchedule",map.get("UN_COMP_SCHEDULE"));
+        return resultMap;
     }
 
     @Override
     public List<StepEntity> getStepList(Map<String, Object> params) {
-        return projDetailMapper.getStepList(params);
+        List<StepEntity> result = projDetailMapper.getStepList(params);
+
+
+        return result;
     }
 
     @Override
     public List<TaskEntity> getTaskList(Map<String, Object> params) {
-        return projDetailMapper.getTaskList(params);
+        List<TaskEntity> result = new ArrayList<>();
+        List<TaskEntity> list = projDetailMapper.getTaskList(params);
+        List<TaskEntity> parTaskList = new ArrayList<>();
+        List<TaskEntity> subTaskList = new ArrayList<>();
+        Iterator<TaskEntity> it = list.iterator();
+        while(it.hasNext()){
+            TaskEntity x = it.next();
+            if(x.getParentTask()!=null&&!"".equals(x.getParentTask())){
+                subTaskList.add(x);
+            }else{
+                parTaskList.add(x);
+            }
+        }
+
+        Iterator<TaskEntity> pIt = parTaskList.iterator();
+        while(pIt.hasNext()){
+            TaskEntity x = pIt.next();
+            List<TaskEntity> delList = new ArrayList<>();
+            for(TaskEntity s:subTaskList){
+                if(s.getParentTask()==x.getTaskId()){
+                    if(x.getSubTaskList()==null){
+                        x.setSubTaskList(new ArrayList<TaskEntity>());
+                    }
+                    List<TaskEntity> newList = x.getSubTaskList();
+                    newList.add(s);
+                    x.setSubTaskList(newList);
+                    delList.add(s);
+                }
+            }
+            subTaskList.removeAll(delList);
+            x.setExpand(false);
+        }
+        return result;
     }
 
     @Override
@@ -40,21 +82,20 @@ public class ProjDetailManagerImpl implements ProjDetailManager {
 
     @Override
     public void saveTask(Map<String, Object> params) {
-
-        if (!"".equals(params.get("scheduleId"))&&params.get("scheduleId")!=null){
+        /*if (!"".equals(params.get("scheduleId"))&&params.get("scheduleId")!=null){
             projDetailMapper.updateTask(params);
-        }else{
+        }else{*/
             projDetailMapper.insertTask(params);
-        }
+        /*}*/
     }
 
     @Override
     public void saveSchedule(Map<String, Object> params) {
-        if (!"".equals(params.get("scheduleId"))&&params.get("scheduleId")!=null){
+       /* if (!"".equals(params.get("scheduleId"))&&params.get("scheduleId")!=null){
             projDetailMapper.updateSchedule(params);
-        }else{
+        }else{*/
             projDetailMapper.insertSchedule(params);
-        }
+        /*}*/
     }
 
     @Override

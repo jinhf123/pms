@@ -14,7 +14,7 @@
             <div class="tabbable" id="tabs">
 
                 <div class="col-md-4 column">
-                    <span style="line-height: 45px; vertical-align: middle;">【显示项目名称】</span>
+                    <span style="line-height: 45px; vertical-align: middle;">{{projectInfo.projectName}}</span>
                 </div>
                 <div class="col-md-6 column">
                     <ul class="nav nav-tabs top-tabs">
@@ -74,7 +74,7 @@
                                             </div>
                                             <div>
                                                 <div><span>全部阶段</span></div>
-                                                <div><span>[完成情况:0/15]</span></div>
+                                                <div><span>[完成情况:{{projectInfo.unCompStep}}/{{projectInfo.allStep}}]</span></div>
                                             </div>
                                         </div>
                                         <div v-for="(item, index) in steps" class="left-panel-step">
@@ -103,7 +103,7 @@
                                     <!--任务列表面板-->
                                     <div class="col-md-12 column">
                                         <div class="col-md-6 column ">
-                                            <span style="font-weight: bold;">任务</span>[ 未完成任务：{{unComTaskNum}}]
+                                            <span style="font-weight: bold;">任务</span>[ 未完成任务：{{projectInfo.unCompTask}}]
                                         </div>
                                         <div class="col-md-6 column btn-link-group">
                                                 <a v-show="isEdit" href="#">xls导入任务</a>&nbsp;&nbsp;
@@ -132,14 +132,14 @@
                                                     <div class="display-flex float-right " >
                                                         <div class="vertical-divider"></div>
                                                         <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-organ" :href="'#panel-element-'+index">
-                                                            <span v-show="data.isExpand"  @click="data.isExpand=!data.isExpand" class="treegrid-expander glyphicon glyphicon-chevron-up"></span>
-                                                            <span v-show="!data.isExpand" @click="data.isExpand=!data.isExpand" class="treegrid-expander glyphicon glyphicon-chevron-down" ></span>
+                                                            <span v-show="data.expand"  @click="data.expand=!data.expand" class="treegrid-expander glyphicon glyphicon-chevron-up"></span>
+                                                            <span v-show="!data.expand" @click="data.expand=!data.expand" class="treegrid-expander glyphicon glyphicon-chevron-down" ></span>
                                                         </a>
                                                     </div>
                                                 </div>
                                                 <div :id="'panel-element-'+index" class="panel-collapse collapse">
                                                     <div class="panel-body">
-                                                        <div v-for="(item, index) in data.subTask" class="panel-body-task">
+                                                        <div v-for="(item, index) in data.subTaskList" class="panel-body-task">
                                                             <div class="col-md-11 panel-heading-title">
                                                                  <span :class="{'square':(item.state==0),
                                                                  'triangle-orange':(item.state==1),
@@ -194,7 +194,7 @@
                                     <!--日程列表面板-->
                                     <div class="col-md-12 column">
                                         <div class="col-md-6 column">
-                                            <span style="font-weight: bold;">日程</span>[ 未完成日程：{{unComScheNum}}]
+                                            <span style="font-weight: bold;">日程</span>[ 未完成日程：{{projectInfo.unCompSchedule}}]
                                         </div>
                                         <div class="col-md-6 column btn-link-group">
                                             <a href="#" @click="addSchePanel">添加日程</a>&nbsp;&nbsp;

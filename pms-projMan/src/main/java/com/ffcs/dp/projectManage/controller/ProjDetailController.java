@@ -32,7 +32,7 @@ public class ProjDetailController extends AbstractController {
 
     //获取项目信息
     @RequestMapping("/getProjectInfo")
-    public Map getProjectInfo(@RequestBody Map<String, Object> params) {
+    public Map getProjectInfo(@RequestBody Map<String, Object> params) throws Exception{
         params.put("userId", getUserId());
         return projDetailService.getProjectInfo(params);
     }

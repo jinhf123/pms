@@ -6,20 +6,132 @@ public class StepEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-//    private Long id;//工作日志编号
-//    private String workDate;//工作日志日期
-//    private String startTime;//开始时间
-//    private String endTime;//结束时间
-//    private String isProjectWork;//是否项目工作
-//    private Long projId;//项目编号
-//    private Long taskId;//任务编号
-//    private String workDetails;//工作详情
-//    private Long creator;//创建者
+    private Long stepId;//步骤编号
+    private Long projId;//项目编号
+    private Long stepMod;//步骤模版
+    private String defaultDate;//默认完成日期
+    private String trueDate;//实际完成日期
+    private String state;//状态
+    private Long finishStaff;//完成人员编号
+    private Long finishStaffName;//完成人员名称
+
+
+    private String stepName;//
+    private String stepSort;//
+    private String stepContent;//
+    private String unCompTask;//
+    private String allTask;//
+
+
+
 
     public StepEntity() {
         super();
     }
 
 
+    public Long getStepId() {
+        return stepId;
+    }
 
+    public void setStepId(Long stepId) {
+        this.stepId = stepId;
+    }
+
+    public Long getProjId() {
+        return projId;
+    }
+
+    public void setProjId(Long projId) {
+        this.projId = projId;
+    }
+
+    public Long getStepMod() {
+        return stepMod;
+    }
+
+    public void setStepMod(Long stepMod) {
+        this.stepMod = stepMod;
+    }
+
+    public String getDefaultDate() {
+        return defaultDate;
+    }
+
+    public void setDefaultDate(String defaultDate) {
+        this.defaultDate = defaultDate;
+    }
+
+    public String getTrueDate() {
+        return trueDate;
+    }
+
+    public void setTrueDate(String trueDate) {
+        this.trueDate = trueDate;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public Long getFinishStaff() {
+        return finishStaff;
+    }
+
+    public void setFinishStaff(Long finishStaff) {
+        this.finishStaff = finishStaff;
+    }
+
+    public Long getFinishStaffName() {
+        return finishStaffName;
+    }
+
+    public void setFinishStaffName(Long finishStaffName) {
+        this.finishStaffName = finishStaffName;
+    }
+
+
+    public String getStepName() {
+        return stepName;
+    }
+
+    public void setStepName(String stepName) {
+        this.stepName = stepName;
+    }
+
+    public String getStepSort() {
+        return stepSort;
+    }
+
+    public void setStepSort(String stepSort) {
+        this.stepSort = stepSort;
+    }
+
+    public String getStepContent() {
+        return stepContent;
+    }
+
+    public void setStepContent(String stepContent) {
+        this.stepContent = stepContent;
+    }
+
+    public String getUnCompTask() {
+        return unCompTask;
+    }
+
+    public void setUnCompTask(String unCompTask) {
+        this.unCompTask = unCompTask;
+    }
+
+    public String getAllTask() {
+        return allTask;
+    }
+
+    public void setAllTask(String allTask) {
+        this.allTask = allTask;
+    }
 }

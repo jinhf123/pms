@@ -7,7 +7,9 @@
 	<select id="getProjectInfo" resultType="java.util.HashMap" parameterType="Map">
 		select P.PROJ_ID,
 			   P.PROJ_NAME,
-			   (select count(1) from PMS_PROJ_STEP S where S.PROJ_ID = P.PROJ_ID) ALL_STEP,
+			   (select count(1)
+		          from PMS_PROJ_STEP S
+		         where S.PROJ_ID = P.PROJ_ID) ALL_STEP,
 			   (select count(1)
 				  from PMS_PROJ_STEP S
 				 where S.PROJ_ID = P.PROJ_ID
@@ -15,7 +17,11 @@
 			   (select count(1)
 				  from PMS_PROJ_TASK K
 				 where K.PROJ_ID = P.PROJ_ID
-				   and K.STATE in (0, 1)) UN_COMP_TASK
+				   and K.STATE in (0, 1)) UN_COMP_TASK,
+		       (select count(1)
+				  from PMS_PROJ_SCHEDULE
+				 where PROJ_ID = P.PROJ_ID
+				   and STATE in (0, 1)) UN_COMP_SCHEDULE
 		  From PMS_PROJECT_INFO P
 		 where P.PROJ_ID = #{projId}
 	</select>
@@ -56,20 +62,38 @@
 
 	<!--获取日程列表信息-->
 	<select id="getScheduleList" resultType="ScheduleEntity" parameterType="Map">
-
-
+		SELECT S.SCHEDULE_ID,
+		       S.END_DATE,
+			   S.CONTENT,
+			   (SELECT WM_CONCAT(USERNAME)
+				  FROM PMS_SYS_USER
+				 WHERE INSTR(PARTICIPANT, USER_ID) > 0) PARTICIPANT_NAME
+		  FROM PMS_PROJ_SCHEDULE S
+		 WHERE S.PROJ_ID = #{projId}
+		<if test="stepId != null and '' != stepId">
+			and S.STEP_ID = #{stepId}
+		</if>
 	</select>
 
 	<!--更新任务信息-->
-	<update id="updateTask" parameterType="Map">
+<!--	<update id="updateTask" parameterType="Map">
 		UPDATE PMS_PROJ_TASK
 		<set>
 			<if test="state != null and state != ''">STATE = #{state} </if>
 		</set>
 		WHERE
 		TASK_ID = #{taskId}
+	</update>-->
 
-	</update>
+	<!--更新日程信息-->
+<!--	<update id="updateSchedule" parameterType="Map">
+		UPDATE PMS_PROJ_SCHEDULE
+		<set>
+			<if test="state != null and state != ''">STATE = #{state} </if>
+		</set>
+		WHERE
+		SCHEDULE_ID = #{scheduleId}
+	</update>-->
 
 	<!--插入任务信息-->
 	<insert id="insertTask" parameterType="Map">
@@ -79,16 +103,10 @@
 
 	</insert>
 
-	<!--更新日程信息-->
-	<update id="updateSchedule" parameterType="Map">
-
-
-	</update>
-
 	<!--插入日程信息-->
 	<insert id="insertSchedule" parameterType="Map">
 		<selectKey keyProperty="scheduleId" resultType="long" order="BEFORE">
-			SELECT  .NEXTVAL FROM DUAL
+			SELECT  PMS_PROJ_SCHEDULE_SEQ.NEXTVAL FROM DUAL
 		</selectKey>
 
 	</insert>
@@ -100,8 +118,7 @@
 
 	<!--删除日程信息-->
 	<delete id="deleteSchedule" parameterType="Map">
-
-
+		delete PMS_PROJ_SCHEDULE where SCHEDULE_ID = #{scheduleId}
 	</delete>
 
 	<!--更新步骤状态信息-->
@@ -116,26 +133,13 @@
 
 	<!--更新任务状态信息-->
 	<update id="updateTaskState" parameterType="Map">
-
-
+		UPDATE PMS_PROJ_TASK
+		<set>
+			<if test="state != null and state != ''">STATE = #{state} </if>
+		</set>
+		WHERE
+		TASK_ID = #{taskId}
 	</update>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 </mapper>
