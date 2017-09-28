@@ -32,6 +32,7 @@
 			   T.STEP_NAME,
 			   T.STEP_SORT,
 			   T.STEP_CONTENT,
+			   S.STATE,
 			   (select count(1)
 				  from PMS_PROJ_TASK
 				 where STEP_ID = S.STEP_ID

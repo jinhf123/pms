@@ -13,6 +13,7 @@ public class ScheduleEntity implements Serializable {
     private Long taskId;
     private Date startDate;
     private Date endDate;
+    private String date;
     private String content;
     private String participant;
     private String participantName;
@@ -109,5 +110,13 @@ public class ScheduleEntity implements Serializable {
 
     public void setCreator(Long creator) {
         this.creator = creator;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

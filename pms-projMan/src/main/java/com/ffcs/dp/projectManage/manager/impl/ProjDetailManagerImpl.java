@@ -1,5 +1,6 @@
 package com.ffcs.dp.projectManage.manager.impl;
 
+import com.ffcs.dp.common.utils.DateUtils;
 import com.ffcs.dp.projectManage.dao.ProjDetailMapper;
 import com.ffcs.dp.projectManage.entity.ScheduleEntity;
 import com.ffcs.dp.projectManage.entity.StepEntity;
@@ -71,13 +72,21 @@ public class ProjDetailManagerImpl implements ProjDetailManager {
             }
             subTaskList.removeAll(delList);
             x.setExpand(false);
+            result.add(x);
         }
         return result;
     }
 
     @Override
     public List<ScheduleEntity> getScheduleList(Map<String, Object> params) {
-        return projDetailMapper.getScheduleList(params);
+        List<ScheduleEntity> result = new ArrayList<>();
+        List<ScheduleEntity> list = projDetailMapper.getScheduleList(params);
+        for(ScheduleEntity se:list){
+            String date = DateUtils.format(se.getEndDate(),"MM-dd");
+            se.setDate(date);
+            result.add(se);
+        }
+        return result;
     }
 
     @Override

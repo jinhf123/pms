@@ -58,7 +58,6 @@ function getStepList() {
         dataType: "json",
         contentType: 'application/json',
         success: function (data) {
-            debugger;
             vm.steps = data;
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -77,7 +76,6 @@ function getTaskGrid(param) {
         dataType: "json",
         contentType: 'application/json',
         success: function (data) {
-            debugger;
             vm.tasks = data;
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -96,6 +94,7 @@ function getScheGrid(param) {
         dataType: "json",
         contentType: 'application/json',
         success: function (data) {
+            debugger;
             vm.schedules = data;
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
