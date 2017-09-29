@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>项目信息</title>
+    #parse("include/header.html")
+    <link rel="stylesheet" href="${rc.contextPath}/statics/css/projectManage/projInfo.css">
+</head>
+<body>
+
+
+
+<div id="projInfo" class="container-fluid" v-cloak>
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th class="tableTitle">
+                        项目项目信息
+                    </th>
+                    <th colspan="5">
+                    </th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="col-md-12 column">
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <td class="fieldLabel request">
+                            <span>*</span>项目名称：
+                        </td>
+                        <td colspan="5">
+                            {{projInfo.projName}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fieldLabel request">
+                            <span>*</span>项目类型：
+                        </td>
+                        <td>
+                            {{projInfo.projType}}
+                        </td>
+                        <td class="fieldLabel">
+                            建设方式：
+                        </td>
+                        <td>
+                            {{projInfo.consMode}}
+                        </td>
+                        <td class="fieldLabel">
+                            项目等级：
+                        </td>
+                        <td>
+                            {{projInfo.projLevel}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fieldLabel request">
+                            <span>*</span>归属项目群：
+                        </td>
+                        <td>
+                            {{projInfo.beloProjGroup}}
+                        </td>
+                        <td class="fieldLabel request">
+                            <span>*</span>是否年内完成：
+                        </td>
+                        <td>
+                            {{projInfo.isCompletInAYear}}
+                        </td>
+                        <td class="fieldLabel">
+                            承接方式：
+                        </td>
+                        <td>
+                            {{projInfo.undertakeMode}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fieldLabel request">
+                            <span>*</span>项目开始时间：
+                        </td>
+                        <td>
+                            {{projInfo.startDate}}
+                        </td>
+                        <td class="fieldLabel request">
+                            <span>*</span>项目结束时间：
+                        </td>
+                        <td>
+                            {{projInfo.endDate}}
+                        </td>
+                        <td class="fieldLabel">
+                            项目模版：
+                        </td>
+                        <td>
+                            {{projInfo.tempName}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <div class="horizontal-divider"></div>
+            <div class="display-flex">
+                <div class="step-div">
+                    <div class="step-title-div">
+                        列入计划
+                    </div>
+                    <div class="step-date-div">
+                        2017-08-16
+                    </div>
+                </div>
+                <div class = "step-horizontal-divider">&nbsp;</div>
+                <div class = "step-vertical-divider">&nbsp;</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th class="tableTitle">
+                        项目干系人
+                    </th>
+                    <th colspan="5">
+                    </th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="col-md-12 column">
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <td class="fieldLabel request">
+                        <span>*</span>项目群经理：
+                    </td>
+                    <td>
+                        {{projInfo.projGroupManager}}
+                    </td>
+                    <td class="fieldLabel">
+                        大项目经理：
+                    </td>
+                    <td>
+                        {{projInfo.bigProjManager}}
+                    </td>
+                    <td class="fieldLabel">
+                        项目经理：
+                    </td>
+                    <td>
+                        {{projInfo.projManager}}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fieldLabel request">
+                        <span>*</span>需求经理：
+                    </td>
+                    <td>
+                        {{projInfo.demaManager}}
+                    </td>
+                    <td class="fieldLabel">
+                        技术经理：
+                    </td>
+                    <td colspan="3">
+                        {{projInfo.techManager}}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fieldLabel request">
+                        <span>*</span>项目成员：
+                    </td>
+                    <td colspan="5">
+                        {{projInfo.projMembers}}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th colspan="1" class="tableTitle">
+                        项目规模
+                    </th>
+                    <th></th><th></th><th></th>
+                    <th></th><th></th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="col-md-12 column">
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <td class="fieldLabel request">
+                        <span>*</span>人力资源总需求：
+                    </td>
+                    <td>
+                        {{projInfo.persMontTotal}}人月
+                    </td>
+                    <td class="fieldLabel request">
+                        <span>*</span>资源成本估算：
+                    </td>
+                    <td>
+                        {{projInfo.resourceCost}} 万元
+                    </td>
+                    <td class="fieldLabel">
+                        外包工作量估算：
+                    </td>
+                    <td>
+                        {{projInfo.persMontOutsource}} 人年
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fieldLabel">
+                        外包资源成本评估：
+                    </td>
+                    <td colspan="5">
+                        {{projInfo.outsourceCost}} 万元
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+#parse("include/footer.html")
+<script src="${rc.contextPath}/statics/js/projectManage/projInfo.js?_${date.systemTime}"></script>
+</body>
+</html>
