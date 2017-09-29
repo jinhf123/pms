@@ -10,6 +10,8 @@ import java.util.Map;
 
 public interface ProjDetailManager {
 
+    Map getProjInfo(Map<String, Object> params);
+
     Map getProjectInfo(Map<String, Object> params);
 
     List<StepEntity> getStepList(Map<String, Object> params);

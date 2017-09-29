@@ -3,6 +3,58 @@
 <mapper namespace="com.ffcs.dp.projectManage.dao.ProjDetailMapper">
 
 
+	<!--获取项目基本信息-->
+	<select id="getProjInfo" resultType="java.util.HashMap" parameterType="Map">
+		select
+		/*项目信息*/
+		 t.temp_name,
+		 p.proj_name,
+		 p.proj_type,
+		 p.belo_proj_group,
+		 p.proj_level,
+		 p.cons_mode,
+		 p.undertake_mode,
+		 p.is_complet_in_a_year,
+		 to_char(p.start_date, 'yyyy-MM-dd') start_date,
+		 to_char(p.end_date, 'yyyy-MM-dd') end_date,
+		 p.state,
+		 /*项目干系人*/
+		 (SELECT WM_CONCAT(USERNAME)
+			FROM PMS_SYS_USER
+		   WHERE INSTR(s.proj_group_manager, USER_ID) > 0) proj_group_manager,
+		 (SELECT WM_CONCAT(USERNAME)
+			FROM PMS_SYS_USER
+		   WHERE INSTR(s.big_proj_manager, USER_ID) > 0) big_proj_manager,
+		 (SELECT WM_CONCAT(USERNAME)
+			FROM PMS_SYS_USER
+		   WHERE INSTR(s.Proj_Manager, USER_ID) > 0) Proj_Manager,
+		 (SELECT WM_CONCAT(USERNAME)
+			FROM PMS_SYS_USER
+		   WHERE INSTR(s.dema_manager, USER_ID) > 0) dema_manager,
+		 (SELECT WM_CONCAT(USERNAME)
+			FROM PMS_SYS_USER
+		   WHERE INSTR(s.tech_manager, USER_ID) > 0) tech_manager,
+		 (SELECT WM_CONCAT(USERNAME)
+			FROM PMS_SYS_USER
+		   WHERE INSTR(s.proj_members, USER_ID) > 0) proj_members,
+		 /*项目规模*/
+		 c.pers_mont_total,
+		 c.resource_cost,
+		 c.pers_mont_outsource,
+		 c.outsource_cost
+		  from pms_project_info     p,
+			   pms_proj_template    t,
+			   PMS_PROJ_COST        c,
+			   PMS_PROJ_STAKEHOLDER s
+		 where p.temp_id = t.temp_id
+		   and p.proj_scale_id = c.proj_scale_id
+		   and p.proj_stakeholder_id = s.proj_stakeholder_id
+		   and P.PROJ_ID = #{projId}
+	</select>
+
+
+
+
 	<!--获取项目信息-->
 	<select id="getProjectInfo" resultType="java.util.HashMap" parameterType="Map">
 		select P.PROJ_ID,
@@ -25,6 +77,7 @@
 		  From PMS_PROJECT_INFO P
 		 where P.PROJ_ID = #{projId}
 	</select>
+
 
 	<!--获取步骤列表信息-->
 	<select id="getStepList" resultType="StepEntity" parameterType="Map">

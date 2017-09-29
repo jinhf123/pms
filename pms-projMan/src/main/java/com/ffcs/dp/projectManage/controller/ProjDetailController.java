@@ -30,6 +30,17 @@ public class ProjDetailController extends AbstractController {
     private ProjDetailService projDetailService;
 
 
+    /*********************项目信息*********************/
+    @RequestMapping("/getProjInfo")
+    public Map getProjInfo(@RequestBody Map<String, Object> params) throws Exception{
+        params.put("userId", getUserId());
+        return projDetailService.getProjInfo(params);
+    }
+
+
+
+
+    /*********************进度任务*********************/
     //获取项目信息
     @RequestMapping("/getProjectInfo")
     public Map getProjectInfo(@RequestBody Map<String, Object> params) throws Exception{
@@ -112,6 +123,16 @@ public class ProjDetailController extends AbstractController {
         result.put("success","true");
         return result;
     }
+
+
+    /*********************风险问题*********************/
+
+
+
+
+
+    /*********************文档管理*********************/
+
 
 
 

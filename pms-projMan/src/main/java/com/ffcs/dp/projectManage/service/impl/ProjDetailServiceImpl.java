@@ -23,6 +23,14 @@ public class ProjDetailServiceImpl implements ProjDetailService {
     @Autowired
     private ProjDetailManager projDetailManager;
 
+
+    @Override
+    public Map getProjInfo(Map<String, Object> params) {
+        return projDetailManager.getProjInfo(params);
+    }
+
+
+
     @Override
     public Map getProjectInfo(Map<String, Object> params) {
         return projDetailManager.getProjectInfo(params);

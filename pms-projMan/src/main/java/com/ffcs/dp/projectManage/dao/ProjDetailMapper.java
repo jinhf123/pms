@@ -18,6 +18,8 @@ import java.util.Map;
 @Repository
 public interface ProjDetailMapper extends BaseMapper<WorkLogEntity> {
 
+    Map getProjInfo(Map<String, Object> params);
+
     Map getProjectInfo(Map<String, Object> params);
 
     List<StepEntity> getStepList(Map<String, Object> params);

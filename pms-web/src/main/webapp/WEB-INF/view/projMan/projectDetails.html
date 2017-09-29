@@ -49,13 +49,14 @@
 
                 <div class="tab-content col-md-12 column">
 
-                    <div class="tab-pane" id="panel-1">
+                    <div class="tab-pane active" id="panel-1">
                         <!--进度任务-->
-                        <p>
-                            项目信息功能正在开发中...
-                        </p>
+                        <iframe scrolling="yes" frameborder="0"
+                                style="width: 100%;overflow: visible; background: #fff;" :style="styleObj"
+                                src="projInfo.html" id="projectInfo" name="projectInfo">
+                        </iframe>
                     </div>
-                    <div class="tab-pane active" id="panel-2">
+                    <div class="tab-pane" id="panel-2">
                         <!--进度任务-->
                         <div class="clearfix">
 
@@ -125,9 +126,9 @@
                                                     </div>
                                                     <div class="col-md-1 column" >
                                                         <button v-show="isEdit" class="btn-add-gray" type="button" title="新增子任务" @click="startTask(data.taskId)"></button>
-                                                        <button v-show="isEdit" class="btn-delete-red" type="button" title="删除任务" @click="finishTask(data.taskId)"></button>
+                                                        <button v-show="isEdit" class="btn-delete-red" type="button" title="删除任务" @click="delTask(data.taskId)"></button>
                                                         <button v-show="!isEdit" class="btn-triangle-gray" type="button" title="开始任务" @click="startTask(data.taskId)"></button>
-                                                        <button v-show="!isEdit" class="btn-circular-gray" type="button" title="完成任务" @click="finishTask(data.taskId)"></button>
+                                                        <button v-show="!isEdit" class="btn-circular-gray" type="button" title="完成任务" @click="finishTask(data.taskId,1)"></button>
                                                     </div>
                                                     <div class="display-flex float-right " >
                                                         <div class="vertical-divider"></div>
@@ -154,7 +155,7 @@
                                                                 <button v-show="(!isEdit)&&item.state==0"    class="btn-triangle-gray"
                                                                         type="button" title="开始任务" @click="startTask(item.taskId)"></button>
                                                                 <button v-show="(!isEdit)&&!(item.state==2)" class="btn-circular-gray"
-                                                                        type="button" title="完成任务" @click="finishTask(item.taskId)"></button>
+                                                                        type="button" title="完成任务" @click="finishTask(item.taskId,2)"></button>
                                                             </div>
                                                             <div class="col-md-12 column horizontal-divider"></div>
                                                         </div>

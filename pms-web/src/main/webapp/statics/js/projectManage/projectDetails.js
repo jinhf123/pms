@@ -20,11 +20,16 @@ function initialPage() {
     $(".left-panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     $(".center-panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
 
+
+    $(".slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
+
     //窗口大小改变重新调整大小
     $(window).resize(function() {
-        vm.styleObj.height = ($(window).height()-45)+"px";
+        vm.styleObj.height = ($(window).height()-55)+"px";
         $(".left-panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
         $(".center-panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
+
+        $(".slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     });
 }
 
@@ -94,7 +99,6 @@ function getScheGrid(param) {
         dataType: "json",
         contentType: 'application/json',
         success: function (data) {
-            debugger;
             vm.schedules = data;
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -122,7 +126,7 @@ var vm = new Vue({
         icon_Title : "/statics/img/projectManage/u15.png",
         icon_User : "/statics/img/projectManage/u16.png",
         icon_Date : "/statics/img/projectManage/u17.png",
-        styleObj:{height: ($(window).height()-45)+'px'},
+        styleObj:{height: ($(window).height()-55)+'px'},
         isEdit:false,
         isAddTask:false,
         isAddSche:false,
@@ -216,7 +220,12 @@ var vm = new Vue({
         startTask: function(id){
             alert("开始任务"+id);
         },
-        finishTask: function(id){
+        finishTask: function(id,level){
+            if(level==1){
+
+
+            }
+
             alert("完成任务"+id);
         },
         delTask:function(id){

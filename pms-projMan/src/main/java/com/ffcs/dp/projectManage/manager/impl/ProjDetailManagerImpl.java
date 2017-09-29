@@ -19,6 +19,44 @@ public class ProjDetailManagerImpl implements ProjDetailManager {
     private ProjDetailMapper projDetailMapper;
 
 
+
+
+
+    @Override
+    public Map getProjInfo(Map<String, Object> params) {
+        Map resultMap = new HashMap();
+        Map map = projDetailMapper.getProjInfo(params);
+        //项目信息
+        resultMap.put("tempName",map.get("TEMP_NAME"));
+        resultMap.put("projName",map.get("PROJ_NAME"));
+        resultMap.put("projType",map.get("PROJ_TYPE"));
+        resultMap.put("beloProjGroup",map.get("BELO_PROJ_GROUP"));
+        resultMap.put("projLevel",map.get("PROJ_LEVEL"));
+        resultMap.put("consMode",map.get("CONS_MODE"));
+        resultMap.put("undertakeMode",map.get("UNDERTAKE_MODE"));
+        resultMap.put("isCompletInAYear",map.get("IS_COMPLET_IN_A_YEAR"));
+        resultMap.put("startDate",map.get("START_DATE"));
+        resultMap.put("endDate",map.get("END_DATE"));
+        resultMap.put("state",map.get("STATE"));
+        //项目干系人
+        resultMap.put("projGroupManager",map.get("PROJ_GROUP_MANAGER"));
+        resultMap.put("bigProjManager",map.get("BIG_PROJ_MANAGER"));
+        resultMap.put("projManager",map.get("proj_manager"));
+        resultMap.put("demaManager",map.get("DEMA_MANAGER"));
+        resultMap.put("techManager",map.get("TECH_MANAGER"));
+        resultMap.put("projMembers",map.get("PROJ_MEMBERS"));
+        //项目规模
+        resultMap.put("persMontTotal",map.get("PERS_MONT_TOTAL"));
+        resultMap.put("resourceCost",map.get("RESOURCE_COST"));
+        resultMap.put("persMontOutsource",map.get("PERS_MONT_OUTSOURCE"));
+        resultMap.put("outsourceCost",map.get("OUTSOURCE_COST"));
+        return resultMap;
+    }
+
+
+
+
+
     @Override
     public Map getProjectInfo(Map<String, Object> params) {
         Map resultMap = new HashMap();
@@ -91,20 +129,12 @@ public class ProjDetailManagerImpl implements ProjDetailManager {
 
     @Override
     public void saveTask(Map<String, Object> params) {
-        /*if (!"".equals(params.get("scheduleId"))&&params.get("scheduleId")!=null){
-            projDetailMapper.updateTask(params);
-        }else{*/
-            projDetailMapper.insertTask(params);
-        /*}*/
+        projDetailMapper.insertTask(params);
     }
 
     @Override
     public void saveSchedule(Map<String, Object> params) {
-       /* if (!"".equals(params.get("scheduleId"))&&params.get("scheduleId")!=null){
-            projDetailMapper.updateSchedule(params);
-        }else{*/
-            projDetailMapper.insertSchedule(params);
-        /*}*/
+        projDetailMapper.insertSchedule(params);
     }
 
     @Override
