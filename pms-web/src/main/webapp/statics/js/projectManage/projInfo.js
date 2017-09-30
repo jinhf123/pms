@@ -17,10 +17,10 @@ function initialPage() {
         contentType: 'application/json',
         success: function (data) {
             vm.projInfo = data;
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            dialogMsg(errorThrown, 'error');
         }
+        /*,
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+        }*/
     });
 
 
@@ -38,10 +38,10 @@ function initialPage() {
             }else{
                 vm.steps = data;
             }
-        },
+        }/*,
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            dialogMsg(errorThrown, 'error');
-        }
+
+        }*/
     });
 
 
@@ -51,7 +51,7 @@ function initialPage() {
 var vm = new Vue({
     el:'#projInfo',
     data: {
-        styleObj:{width: ($(window).width()-200)+'px'},
+        styleObj:{/*width: ($(window).width()-200)+'px'*/},
         projId:"1",
         projInfo: {},
         steps: {}
