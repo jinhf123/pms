@@ -27,7 +27,7 @@
 		   WHERE INSTR(s.big_proj_manager, USER_ID) > 0) big_proj_manager,
 		 (SELECT WM_CONCAT(USERNAME)
 			FROM PMS_SYS_USER
-		   WHERE INSTR(s.Proj_Manager, USER_ID) > 0) Proj_Manager,
+		   WHERE INSTR(s.Proj_Manager, USER_ID) > 0) proj_manager,
 		 (SELECT WM_CONCAT(USERNAME)
 			FROM PMS_SYS_USER
 		   WHERE INSTR(s.dema_manager, USER_ID) > 0) dema_manager,
@@ -81,7 +81,8 @@
 
 	<!--获取步骤列表信息-->
 	<select id="getStepList" resultType="StepEntity" parameterType="Map">
-		select S. STEP_ID,
+		select S.STEP_ID,
+		       S.DEFAULT_DATE,
 			   T.STEP_NAME,
 			   T.STEP_SORT,
 			   T.STEP_CONTENT,

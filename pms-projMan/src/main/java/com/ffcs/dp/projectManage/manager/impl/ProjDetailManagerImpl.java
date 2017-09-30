@@ -41,7 +41,7 @@ public class ProjDetailManagerImpl implements ProjDetailManager {
         //项目干系人
         resultMap.put("projGroupManager",map.get("PROJ_GROUP_MANAGER"));
         resultMap.put("bigProjManager",map.get("BIG_PROJ_MANAGER"));
-        resultMap.put("projManager",map.get("proj_manager"));
+        resultMap.put("projManager",map.get("PROJ_MANAGER"));
         resultMap.put("demaManager",map.get("DEMA_MANAGER"));
         resultMap.put("techManager",map.get("TECH_MANAGER"));
         resultMap.put("projMembers",map.get("PROJ_MEMBERS"));

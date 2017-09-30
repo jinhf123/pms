@@ -68,11 +68,12 @@ body{
     z-index: -1;
 }
 
-
+.step{
+    padding-right: 30px;
+}
 
 .step-div {
-    margin-left: 20px;
-    margin-bottom: 10px;
+    margin: 0px 20px 10px 20px;
     height: 80px;
 }
 .step-title-div {
@@ -121,7 +122,9 @@ body{
     position: relative;
     top: 64px;
     height: 1px;
-    width: 10px;
+    /*width: 10px;*/
+    width: 20px;
+    margin-left: -20px;
     overflow: hidden;
     background-color: #e5e5e5;
 }

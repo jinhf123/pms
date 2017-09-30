@@ -21,6 +21,7 @@ public class StepEntity implements Serializable {
     private String stepContent;//
     private String unCompTask;//
     private String allTask;//
+    private String date;//
 
 
 
