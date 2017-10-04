@@ -7,6 +7,9 @@ $(function () {
 });
 
 function initialPage(){
+    $(window).resize(function() {
+        vm.styleObj.height = ($(window).height()-50)+"px";
+    });
     //获取项目信息
     $.ajax({
         url: '../../projMan/projDetail/getProjectInfo?_' + $.now(),
@@ -18,6 +21,9 @@ function initialPage(){
         contentType: 'application/json',
         success: function (data) {
             vm.projectInfo = data;
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            debugger;
         }
     });
 }
@@ -27,7 +33,7 @@ var vm = new Vue({
     data: {
         icon_Notice :"/statics/img/projectManage/u3.png",
         icon_Log    :"/statics/img/projectManage/u4.png",
-        styleObj:{height: ($(window).height()-55)+'px'},
+        styleObj:{height: ($(window).height()-50)+'px'},
         projId:"1",
         projectInfo:{projectName:"",allStep:"",unCompStep:"",unCompTask:"",unCompSchedule:""}
     },

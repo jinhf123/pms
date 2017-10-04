@@ -223,7 +223,7 @@
     color: #999999;
 }
 .left-panel-list{
-    height:calc(100vh - 85px);/*100%;*/
+    height:calc(100vh - 45px);/*100%;*/
     margin-top: 40px;
     border-right: 1px solid #f5f5f5;
     font-size: 13px;
@@ -268,7 +268,10 @@
 
 
 
-
+/*中间面板样式*/
+.center-panel-list{
+    height:calc(100vh - 5px);/*100%;*/
+}
 #panel-organ{
     font-size: 13px;
     margin-bottom: 5px;

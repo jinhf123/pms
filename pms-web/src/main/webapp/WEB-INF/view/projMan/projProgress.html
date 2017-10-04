@@ -22,7 +22,7 @@
                     <div class="progress-line-begin color-blue" >
                     </div>
                     <div>
-                        <div><span>全部阶段</span></div>
+                        <div><span @click="load(null)">全部阶段</span></div>
                         <div><span>[完成情况:{{projectInfo.unCompStep}}/{{projectInfo.allStep}}]</span></div>
                     </div>
                 </div>
@@ -47,149 +47,153 @@
     </div>
     <!--列表-->
     <div class="col-md-10" :style="styleObj">
-        <div class="center-panel-slimScroll">
-            <!--任务列表面板-->
-            <div class="col-md-12 column">
-                <div class="col-md-6 column ">
-                    <span style="font-weight: bold;">任务</span>[ 未完成任务：{{projectInfo.unCompTask}}]
+        <div class="center-panel-list" >
+            <div class="center-panel-slimScroll">
+                <!--任务列表面板-->
+                <div class="col-md-12 column">
+                    <div class="col-md-6 column ">
+                        <span style="font-weight: bold;">任务</span>[ 未完成任务：{{projectInfo.unCompTask}}]
+                    </div>
+                    <div class="col-md-6 column btn-link-group">
+                        <a v-show="isEdit" href="#">xls导入任务</a>&nbsp;&nbsp;
+                        <a v-show="isEdit" href="#" @click="addTaskPanel">添加任务</a>&nbsp;&nbsp;
+                        <a v-show="isEdit" href="#" @click="editTask">完成编辑</a>
+                        <a v-show="!isEdit" href="#" @click="editTask">任务编辑</a>&nbsp;&nbsp;
+                        <a href="#">查看所有任务</a>
+                    </div>
                 </div>
-                <div class="col-md-6 column btn-link-group">
-                    <a v-show="isEdit" href="#">xls导入任务</a>&nbsp;&nbsp;
-                    <a v-show="isEdit" href="#" @click="addTaskPanel">添加任务</a>&nbsp;&nbsp;
-                    <a v-show="isEdit" href="#" @click="editTask">完成编辑</a>
-                    <a v-show="!isEdit" href="#" @click="editTask">任务编辑</a>&nbsp;&nbsp;
-                    <a href="#">查看所有任务</a>
-                </div>
-            </div>
-            <div class="col-md-12 column">
-                <div class="panel-group" id="panel-organ">
-                    <div v-for="(data,index) in tasks" class="panel panel-default">
-                        <div class="panel-heading panel-heading-task">
-                            <div class="col-md-11 column panel-heading-title" >
-                                                        <span :class="{'square':(data.state==0),'triangle-orange':(data.state==1),'circular-green':(data.state==2)}" >
-                                                        </span>
-                                <span>{{data.taskTitle}}</span>
-                                <span :class="data.isTimeOut?'label-gray':'label-pink'">{{data.startDate}}{{data.taskStaff}}</span>
+                <div class="col-md-12 column">
+                    <div class="panel-group" id="panel-organ">
+                        <div v-for="(data,index) in tasks" class="panel panel-default">
+                            <div class="panel-heading panel-heading-task">
+                                <div class="col-md-11 column panel-heading-title" >
+                                                            <span :class="{'square':(data.state==0),'triangle-orange':(data.state==1),'circular-green':(data.state==2)}" >
+                                                            </span>
+                                    <span>{{data.taskTitle}}</span>
+                                    <span :class="data.isTimeOut?'label-gray':'label-pink'">{{data.startDate}}{{data.taskStaff}}</span>
+                                </div>
+                                <div class="col-md-1 column" >
+                                    <button v-show="isEdit" class="btn-add-gray" type="button" title="新增子任务" @click="startTask(data.taskId)"></button>
+                                    <button v-show="isEdit" class="btn-delete-red" type="button" title="删除任务" @click="delTask(data.taskId)"></button>
+                                    <button v-show="!isEdit" class="btn-triangle-gray" type="button" title="开始任务" @click="startTask(data.taskId)"></button>
+                                    <button v-show="!isEdit" class="btn-circular-gray" type="button" title="完成任务" @click="finishTask(data.taskId,1)"></button>
+                                </div>
+                                <div class="display-flex float-right " >
+                                    <div class="vertical-divider"></div>
+                                    <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-organ" :href="'#panel-element-'+index">
+                                        <span v-show="data.expand"  @click="data.expand=!data.expand" class="treegrid-expander glyphicon glyphicon-chevron-up"></span>
+                                        <span v-show="!data.expand" @click="data.expand=!data.expand" class="treegrid-expander glyphicon glyphicon-chevron-down" ></span>
+                                    </a>
+                                </div>
                             </div>
-                            <div class="col-md-1 column" >
-                                <button v-show="isEdit" class="btn-add-gray" type="button" title="新增子任务" @click="startTask(data.taskId)"></button>
-                                <button v-show="isEdit" class="btn-delete-red" type="button" title="删除任务" @click="delTask(data.taskId)"></button>
-                                <button v-show="!isEdit" class="btn-triangle-gray" type="button" title="开始任务" @click="startTask(data.taskId)"></button>
-                                <button v-show="!isEdit" class="btn-circular-gray" type="button" title="完成任务" @click="finishTask(data.taskId,1)"></button>
-                            </div>
-                            <div class="display-flex float-right " >
-                                <div class="vertical-divider"></div>
-                                <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-organ" :href="'#panel-element-'+index">
-                                    <span v-show="data.expand"  @click="data.expand=!data.expand" class="treegrid-expander glyphicon glyphicon-chevron-up"></span>
-                                    <span v-show="!data.expand" @click="data.expand=!data.expand" class="treegrid-expander glyphicon glyphicon-chevron-down" ></span>
-                                </a>
-                            </div>
-                        </div>
-                        <div :id="'panel-element-'+index" class="panel-collapse collapse">
-                            <div class="panel-body">
-                                <div v-for="(item, index) in data.subTaskList" class="panel-body-task">
-                                    <div class="col-md-11 panel-heading-title">
-                                                                 <span :class="{'square':(item.state==0),
-                                                                 'triangle-orange':(item.state==1),
-                                                                 'circular-green':(item.state==2)}" >
-                                                                     &nbsp;&nbsp;&nbsp;&nbsp;
-                                                                </span>
-                                        <span>{{item.taskTitle}}</span>
-                                        <span :class="item.isTimeOut?'label-gray':'label-pink'">{{item.startDate}}{{item.taskStaff}}</span>
+                            <div :id="'panel-element-'+index" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div v-for="(item, index) in data.subTaskList" class="panel-body-task">
+                                        <div class="col-md-11 panel-heading-title">
+                                                                     <span :class="{'square':(item.state==0),
+                                                                     'triangle-orange':(item.state==1),
+                                                                     'circular-green':(item.state==2)}" >
+                                                                         &nbsp;&nbsp;&nbsp;&nbsp;
+                                                                    </span>
+                                            <span>{{item.taskTitle}}</span>
+                                            <span :class="item.isTimeOut?'label-gray':'label-pink'">{{item.startDate}}{{item.taskStaff}}</span>
+                                        </div>
+                                        <div class="col-md-1 column display-flex" style="width: 50px" >
+                                            <button v-show="isEdit" class="btn-delete-red" type="button" title="删除任务" @click="delTask(item.taskId)"></button>
+                                            <button v-show="(!isEdit)&&item.state==0"    class="btn-triangle-gray"
+                                                    type="button" title="开始任务" @click="startTask(item.taskId)"></button>
+                                            <button v-show="(!isEdit)&&!(item.state==2)" class="btn-circular-gray"
+                                                    type="button" title="完成任务" @click="finishTask(item.taskId,2)"></button>
+                                        </div>
+                                        <div class="col-md-12 column horizontal-divider"></div>
                                     </div>
-                                    <div class="col-md-1 column display-flex" >
-                                        <button v-show="isEdit" class="btn-delete-red" type="button" title="删除任务" @click="delTask(item.taskId)"></button>
-                                        <button v-show="(!isEdit)&&item.state==0"    class="btn-triangle-gray"
-                                                type="button" title="开始任务" @click="startTask(item.taskId)"></button>
-                                        <button v-show="(!isEdit)&&!(item.state==2)" class="btn-circular-gray"
-                                                type="button" title="完成任务" @click="finishTask(item.taskId,2)"></button>
-                                    </div>
-                                    <div class="col-md-12 column horizontal-divider"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <!--新增子任务面板-->
-            <div v-show="isAddTask" class="col-md-12 column add-panel-task">
-                <div class="col-md-12 column display-flex">
-                    <div class="col-md-6 column display-flex">
-                        <label><img :src="icon_Title"></label>
-                        <input v-model="taskTitle" class="form-control" id="taskTitle" placeholder="请输入任务名称">
+                <!--新增子任务面板-->
+                <div v-show="isAddTask" class="col-md-12 column add-panel-task">
+                    <div class="col-md-12 column display-flex">
+                        <div class="col-md-6 column display-flex">
+                            <label><img :src="icon_Title"></label>
+                            <input v-model="taskTitle" class="form-control" id="taskTitle" placeholder="请输入任务名称">
+                        </div>
+                        <div class="col-md-3 column display-flex">
+                            <label><img :src="icon_User"></label>
+                            <input v-model="taskStaff" class="form-control" placeholder="请指定负责人">
+                        </div>
+                        <div class="col-md-3 column display-flex">
+                            <label><img :src="icon_Date"></label>
+                            <input v-model="taskEndDate" class="form-control" placeholder="截止时间">
+                        </div>
                     </div>
-                    <div class="col-md-3 column display-flex">
-                        <label><img :src="icon_User"></label>
-                        <input v-model="taskStaff" class="form-control" placeholder="请指定负责人">
-                    </div>
-                    <div class="col-md-3 column display-flex">
-                        <label><img :src="icon_Date"></label>
-                        <input v-model="taskEndDate" class="form-control" placeholder="截止时间">
-                    </div>
-                </div>
-                <div class="col-md-12 column display-flex">
-                    <div class="col-md-6">
-                        <button class="btn btn-sm btn-info" @click="saveTask">任务添加</button>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <span><a url="#" @click="closeTaskPanel">取消</a></span>
-                    </div>
-                    <div class="col-md-6 btn-link-group">
-                        <a href="#">如果要对任务进行描述或者检查项，请点击此处</a>
-                    </div>
-                </div>
-            </div>
-            <!--日程列表面板-->
-            <div class="col-md-12 column">
-                <div class="col-md-6 column">
-                    <span style="font-weight: bold;">日程</span>[ 未完成日程：{{projectInfo.unCompSchedule}}]
-                </div>
-                <div class="col-md-6 column btn-link-group">
-                    <a href="#" @click="addSchePanel">添加日程</a>&nbsp;&nbsp;
-                    <a href="#" @click="queryAllSche">查看所有日程</a>
-                </div>
-            </div>
-            <div class="col-md-12 column" id="panel-schedules" >
-                <div v-for="(item,index) in schedules" class="col-md-12 column">
-                    <div  class="col-md-1">{{item.date}}</div>
-                    <div  class="col-md-10 column">
-                        <span>{{item.content}}</span>
-                        <span class="label-gray">{{item.participantName}}</span>
-                    </div>
-                    <div class="col-md-12 column horizontal-divider"></div>
-                </div>
-            </div>
-            <!--日程添加面板-->
-            <div v-show="isAddSche" class="col-md-12 column add-panel-task">
-                <div class="col-md-12 column display-flex">
-                    <div class="col-md-6 column display-flex">
-                        <label><img :src="icon_Title"></label>
-                        <input v-model="content" class="form-control"  placeholder="请输入日程内容">
-                    </div>
-                    <div class="col-md-3 column display-flex">
-                        <label><img :src="icon_User"></label>
-                        <input v-model="participant" class="form-control" placeholder="请指定参与人">
-                    </div>
-                    <div class="col-md-3 column display-flex">
-                        <label><img :src="icon_Date"></label>
-                        <input v-model="scheEndDate" class="form-control" placeholder="截止时间">
+                    <div class="col-md-12 column display-flex">
+                        <div class="col-md-6">
+                            <button class="btn btn-sm btn-info" @click="saveTask">任务添加</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span><a url="#" @click="closeTaskPanel">取消</a></span>
+                        </div>
+                        <div class="col-md-6 btn-link-group">
+                            <a href="#">如果要对任务进行描述或者检查项，请点击此处</a>
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-12 column display-flex">
-                    <div class="col-md-6">
-                        <button class="btn btn-sm btn-info" @click="addSche">任务日程</button>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <span><a url="#" @click="closeSchePanel">取消</a></span>
+                <!--日程列表面板-->
+                <div class="col-md-12 column">
+                    <div class="col-md-6 column">
+                        <span style="font-weight: bold;">日程</span>[ 未完成日程：{{projectInfo.unCompSchedule}}]
                     </div>
-                    <div class="col-md-6 btn-link-group">
-                        <a href="#">要配置其他日程属性？点击配置</a>
+                    <div class="col-md-6 column btn-link-group">
+                        <a href="#" @click="addSchePanel">添加日程</a>&nbsp;&nbsp;
+                        <a href="#" @click="queryAllSche">查看所有日程</a>
+                    </div>
+                </div>
+                <div class="col-md-12 column" id="panel-schedules" >
+                    <div v-for="(item,index) in schedules" class="col-md-12 column">
+                        <div  class="col-md-1">{{item.date}}</div>
+                        <div  class="col-md-10 column">
+                            <span>{{item.content}}</span>
+                            <span class="label-gray">{{item.participantName}}</span>
+                        </div>
+                        <div class="col-md-12 column horizontal-divider"></div>
+                    </div>
+                </div>
+                <!--日程添加面板-->
+                <div v-show="isAddSche" class="col-md-12 column add-panel-task">
+                    <div class="col-md-12 column display-flex">
+                        <div class="col-md-6 column display-flex">
+                            <label><img :src="icon_Title"></label>
+                            <input v-model="content" class="form-control"  placeholder="请输入日程内容">
+                        </div>
+                        <div class="col-md-3 column display-flex">
+                            <label><img :src="icon_User"></label>
+                            <input v-model="participant" class="form-control" placeholder="请指定参与人">
+                        </div>
+                        <div class="col-md-3 column display-flex">
+                            <label><img :src="icon_Date"></label>
+                            <input v-model="scheEndDate" class="form-control" placeholder="截止时间">
+                        </div>
+                    </div>
+                    <div class="col-md-12 column display-flex">
+                        <div class="col-md-6">
+                            <button class="btn btn-sm btn-info" @click="addSche">任务日程</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span><a url="#" @click="closeSchePanel">取消</a></span>
+                        </div>
+                        <div class="col-md-6 btn-link-group">
+                            <a href="#">要配置其他日程属性？点击配置</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<script src="${rc.contextPath}/statics/libs/jquery.min.js"></script>
+<!--<script src="${rc.contextPath}/statics/libs/jquery.min.js"></script>
+<script src="${rc.contextPath}/statics/libs/bootstrap.min.js"></script>
 <script src="${rc.contextPath}/statics/libs/vue.min.js"></script>
 <script src="${rc.contextPath}/statics/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-<script src="${rc.contextPath}/statics/js/common.js"></script>
+<script src="${rc.contextPath}/statics/js/common.js"></script>-->
+#parse("include/footer.html")
 <script src="${rc.contextPath}/statics/js/projectManage/projProgress.js?_${date.systemTime}"></script>
 </body>
 </html>

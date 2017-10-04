@@ -19,16 +19,13 @@ function initialPage() {
     //初始化滚动条
     $(".left-panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     $(".center-panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
-
-
     $(".slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
-
     //窗口大小改变重新调整大小
     $(window).resize(function() {
         vm.styleObj.height = ($(window).height()-5)+"px";
+        console.log(($(window).height()-5)+"px");
         $(".left-panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
         $(".center-panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
-
         $(".slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     });
 }
@@ -41,6 +38,7 @@ function getProjectInfo(){
             "projId" : vm.projId,
         }),
         type: "post",
+        async: false,
         dataType: "json",
         contentType: 'application/json',
         success: function (data) {
@@ -56,6 +54,7 @@ function getStepList() {
             "projId": vm.projId
         }),
         type: "post",
+        async: false,
         dataType: "json",
         contentType: 'application/json',
         success: function (data) {
@@ -66,10 +65,12 @@ function getStepList() {
 
 //获取任务数据列表
 function getTaskGrid(param) {
+    vm.styleObj.height = ($(window).height()-5)+"px";
     $.ajax({
         url: '../../projMan/projDetail/getTaskList?_' + $.now(),
         data: param,
         type: "post",
+        async: false,
         dataType: "json",
         contentType: 'application/json',
         success: function (data) {
@@ -84,6 +85,7 @@ function getScheGrid(param) {
         url: '../../projMan/projDetail/getScheduleList?_' + $.now(),
         data: param,
         type: "post",
+        async: false,
         dataType: "json",
         contentType: 'application/json',
         success: function (data) {
