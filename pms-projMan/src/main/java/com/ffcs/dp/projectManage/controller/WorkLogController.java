@@ -1,5 +1,7 @@
 package com.ffcs.dp.projectManage.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.ffcs.dp.common.constant.SystemConstant;
 import com.ffcs.dp.common.controller.AbstractController;
 import com.ffcs.dp.projectManage.entity.WorkLogEntity;
@@ -35,21 +37,22 @@ public class WorkLogController extends AbstractController {
     }
 
 
-
-
-    //获取工作日志列表
+    //保存工作日志
     @RequestMapping("/saveWorkLog")
-    public void saveWorkLog(@RequestBody Map<String, Object> params) throws Exception{
+    public JSON saveWorkLog(@RequestBody Map<String, Object> params){
+        JSONObject json = new JSONObject();
+        String msg = "保存成功！";
         params.put("userId", getUserId());
-
-        System.out.print(params.keySet().size());
-        for(String str : params.keySet()){
-            System.out.print("\t"+str+"="+params.get(str));
+        try{
+            workLogManService.saveWorkLog(params);
+        }catch (Exception e){
+            e.printStackTrace();
+            msg = "保存失败"+e.getMessage();
         }
-        workLogManService.saveWorkLog(params);
+        json.put("success",true);
+        json.put("message",msg);
+        return json;
     }
-
-
 
 
 

@@ -116,8 +116,6 @@ function getWorkHoursGrid() {
 
 
 
-
-
 var vm = new Vue({
     el:'#dpLTE',
     data: {
@@ -132,7 +130,6 @@ var vm = new Vue({
         workHours:[],
         isAdd:false,
         isEdit:false,
-
         //新增保存参数
         workLogId:"",
         startTime:"",
@@ -148,9 +145,21 @@ var vm = new Vue({
     },
     methods : {
         add: function() {
-            vm.isAdd = !(vm.isAdd);
+            if(vm.isAdd){return;}
+            vm.isAdd = true;
+            vm.isEdit = false;
+            //清空输入内容
+            vm.workLogId = "";
+            vm.startTime = "";
+            vm.endTime = "";
+            vm.minutes = "";
+            vm.isProjectWork = 1;
+            vm.project  = "";
+            vm.task = "";
+            vm.workDetails = "";
         },
         save: function() {
+            dialogLoading(true);
             $.ajax({
                 url: '../../projMan/workLog/saveWorkLog?_' + $.now(),
                 data: JSON.stringify({
@@ -186,7 +195,55 @@ var vm = new Vue({
             });
         },
         edit: function() {
+            vm.isAdd = false;
             vm.isEdit = !(vm.isEdit);
+            vm.workLogId = "";
+        },
+        startEdit:function(data){//开始编辑
+            if(vm.isEdit){
+                vm.workLogId = data.id;
+                vm.startTime = data.startTime;
+                vm.endTime = data.endTime;
+                vm.minutes = data.minutes;
+                vm.isProjectWork = data.isProjectWork==1?true:false;
+                vm.project  = data.projId;
+                vm.task = data.taskId;
+                vm.workDetails = data.workDetails;
+            }
+
+            $("#startTime2").datetimepicker({
+                format:'hh:ii',
+                minView:0,
+                startView: 1,
+                minuteStep:30
+            }).on('show', function () {
+                $("#startTime2").datetimepicker('setStartDate', getDateLimit($("#workLogDate").val(),start));
+                $("#startTime2").datetimepicker('setEndDate', getDateLimit($("#workLogDate").val(),$("#endTime2").val()!=""?$("#endTime2").val():end));
+            }).on('change', function () {
+                $("#endTime2").datetimepicker('setStartDate',getDateLimit($("#workLogDate").val(),$("#startTime2").val()));
+                vm.startTime = $("#startTime2").val();
+                if(vm.endTime!=""){
+                    vm.minutes = getTimeDiff(vm.startTime,vm.endTime);
+                }
+            });
+            $("#endTime2").datetimepicker({
+                format:'hh:ii',
+                minView:0,
+                startView:1,
+                minuteStep:30
+            }).on('show', function () {
+                $("#endTime2").datetimepicker('setStartDate', getDateLimit($("#workLogDate").val(),$("#startTime2").val()!=""?$("#startTime2").val():start));
+                $("#endTime2").datetimepicker('setEndDate', getDateLimit($("#workLogDate").val(),end));
+            }).on('change', function () {
+                $("#startTime2").datetimepicker('setEndDate',getDateLimit($("#workLogDate").val(),$("#endTime2").val()));
+                vm.endTime = $("#endTime2").val();
+                vm.minutes = getTimeDiff(vm.startTime,vm.endTime);
+            });
+
+
+
+
+
         },
         changeWorkLogType: function() {//是否项目任务 动作
             vm.task="";
@@ -222,6 +279,8 @@ var vm = new Vue({
         }
 
     }
+
+
 
 
 });
