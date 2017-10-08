@@ -152,6 +152,18 @@ var vm = new Vue({
         },
         finishStage: function(id) {//完成本阶段
             alert("完成本阶段！"+id);
+            $.ajax({
+                url: '../../projMan/projDetail/finishStage?_' + $.now(),
+                data: JSON.stringify({
+                    stepId:id
+                }),
+                type: "post",
+                async: false,
+                dataType: "json",
+                contentType: 'application/json',
+                success: function (data) {
+                }
+            });
         },
         queryAllTask: function(){//查看所有任务
             var param = JSON.stringify({
@@ -167,15 +179,55 @@ var vm = new Vue({
         },
         startTask: function(id){
             alert("开始任务"+id);
+            $.ajax({
+                url: '../../projMan/projDetail/updateTaskState?_' + $.now(),
+                data: JSON.stringify({
+                    operation:"start",
+                    taskId:id
+                }),
+                type: "post",
+                async: false,
+                dataType: "json",
+                contentType: 'application/json',
+                success: function (data) {
+                }
+            });
         },
         finishTask: function(id,level){
             if(level==1){
 
             }
             alert("完成任务"+id);
+            $.ajax({
+                url: '../../projMan/projDetail/updateTaskState?_' + $.now(),
+                data: JSON.stringify({
+                    operation:"finish",
+                    taskId:id
+                }),
+                type: "post",
+                async: false,
+                dataType: "json",
+                contentType: 'application/json',
+                success: function (data) {
+
+                }
+            });
         },
         delTask:function(id){
             alert("删除任务"+id);
+            $.ajax({
+                url: '../../projMan/projDetail/deleteTask?_' + $.now(),
+                data: JSON.stringify({
+                    taskId:id
+                }),
+                type: "post",
+                async: false,
+                dataType: "json",
+                contentType: 'application/json',
+                success: function (data) {
+
+                }
+            });
         },
         addTaskPanel:function(){
             // alert("新增子任务");

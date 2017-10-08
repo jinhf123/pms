@@ -1,11 +1,12 @@
 package com.ffcs.dp.projectManage.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.ffcs.dp.common.controller.AbstractController;
 import com.ffcs.dp.projectManage.entity.ScheduleEntity;
 import com.ffcs.dp.projectManage.entity.StepEntity;
 import com.ffcs.dp.projectManage.entity.TaskEntity;
 import com.ffcs.dp.projectManage.service.ProjDetailService;
-import com.ffcs.dp.projectManage.service.WorkLogService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,13 +33,12 @@ public class ProjDetailController extends AbstractController {
 
     /*********************项目信息*********************/
     @RequestMapping("/getProjInfo")
-    public Map getProjInfo(@RequestBody Map<String, Object> params) throws Exception{
+    public JSON getProjInfo(@RequestBody Map<String, Object> params) throws Exception{
         params.put("userId", getUserId());
-        return projDetailService.getProjInfo(params);
+        Map map = projDetailService.getProjInfo(params);
+        JSONObject json = (JSONObject) JSON.toJSON(map);
+        return json;
     }
-
-
-
 
     /*********************进度任务*********************/
     //获取项目信息
@@ -104,12 +104,14 @@ public class ProjDetailController extends AbstractController {
         projDetailService.deleteSchedule(params);
     }
 
-    //修改步骤状态
-    @RequestMapping("/updateStepState")
-    public Map updateStepState(@RequestBody Map<String, Object> params) throws Exception{
+    //完成本阶段
+    @RequestMapping("/finishStage")
+    public Map finishStage(@RequestBody Map<String, Object> params) throws Exception{
         Map result = new HashMap();
         params.put("userId", getUserId());
-        int count = projDetailService.updateStepState(params);
+        params.put("state", "2");//已完成
+        System.out.print(params.get("stepId"));
+//        int count = projDetailService.updateStepState(params);
         result.put("success","true");
         return result;
     }
@@ -119,6 +121,15 @@ public class ProjDetailController extends AbstractController {
     public Map updateTaskState(@RequestBody Map<String, Object> params) throws Exception{
         Map result = new HashMap();
         params.put("userId", getUserId());
+
+        if("start".equals(params.get("operation"))){
+            params.put("state", "1");
+        }else if("finish".equals(params.get("operation"))){
+            params.put("state", "2");
+        }else{
+            return result;
+        }
+        if(1==1)return result;
         int count =  projDetailService.updateTaskState(params);
         result.put("success","true");
         return result;
