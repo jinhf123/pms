@@ -6,7 +6,6 @@ import com.ffcs.dp.projectManage.entity.ScheduleEntity;
 import com.ffcs.dp.projectManage.entity.StepEntity;
 import com.ffcs.dp.projectManage.entity.TaskEntity;
 import com.ffcs.dp.projectManage.manager.ProjDetailManager;
-import org.apache.commons.collections.IteratorUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -98,7 +97,7 @@ public class ProjDetailManagerImpl implements ProjDetailManager {
             TaskEntity x = pIt.next();
             List<TaskEntity> delList = new ArrayList<>();
             for(TaskEntity s:subTaskList){
-                if(s.getParentTask()==x.getTaskId()){
+                if(s.getParentTask().toString().equals(x.getTaskId().toString())){
                     if(x.getSubTaskList()==null){
                         x.setSubTaskList(new ArrayList<TaskEntity>());
                     }

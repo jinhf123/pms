@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,16 +35,18 @@ public class ProjDetailController extends AbstractController {
     public JSON getProjInfo(@RequestBody Map<String, Object> params) throws Exception{
         params.put("userId", getUserId());
         Map map = projDetailService.getProjInfo(params);
-        JSONObject json = (JSONObject) JSON.toJSON(map);
-        return json;
+        JSONObject result = (JSONObject) JSON.toJSON(map);
+        return result;
     }
 
     /*********************进度任务*********************/
     //获取项目信息
     @RequestMapping("/getProjectInfo")
-    public Map getProjectInfo(@RequestBody Map<String, Object> params) throws Exception{
+    public JSON getProjectInfo(@RequestBody Map<String, Object> params) throws Exception{
         params.put("userId", getUserId());
-        return projDetailService.getProjectInfo(params);
+        Map map = projDetailService.getProjectInfo(params);
+        JSONObject result = (JSONObject) JSON.toJSON(map);
+        return result;
     }
 
     //获取项目步骤列表信息
@@ -69,57 +70,98 @@ public class ProjDetailController extends AbstractController {
         return projDetailService.getScheduleList(params);
     }
 
-
     //保存任务信息
     @RequestMapping("/saveTask")
-    public Map saveTask(@RequestBody Map<String, Object> params) throws Exception{
-        Map result = new HashMap();
+    public JSON saveTask(@RequestBody Map<String, Object> params){
+        JSONObject result = new JSONObject();
+        String msg = "";
         params.put("userId", getUserId());
-        projDetailService.saveTask(params);
-        result.put("success","true");
+        try{
+            projDetailService.saveTask(params);
+        }catch (Exception e){
+            e.printStackTrace();
+            msg=e.getMessage();
+        }
+        result.put("success",true);
+        result.put("message",msg);
         return result;
     }
 
     //保存日程信息
     @RequestMapping("/saveSchedule")
-    public Map saveSchedule(@RequestBody Map<String, Object> params) throws Exception{
-        Map result = new HashMap();
+    public JSON saveSchedule(@RequestBody Map<String, Object> params){
+        JSONObject result = new JSONObject();
+        String msg="";
         params.put("userId", getUserId());
-        projDetailService.saveSchedule(params);
-        result.put("success","true");
+        try{
+            projDetailService.saveSchedule(params);
+        }catch (Exception e){
+            e.printStackTrace();
+            msg=e.getMessage();
+        }
+        result.put("success",true);
+        result.put("message",msg);
         return result;
     }
 
     //删除任务
     @RequestMapping("/deleteTask")
-    public void deleteTask(@RequestBody Map<String, Object> params) throws Exception{
+    public JSON deleteTask(@RequestBody Map<String, Object> params){
+        JSONObject result = new JSONObject();
+        String msg="";
         params.put("userId", getUserId());
-        projDetailService.deleteTask(params);
+        try{
+            projDetailService.deleteTask(params);
+        }catch (Exception e){
+            e.printStackTrace();
+            msg=e.getMessage();
+        }
+        result.put("success",true);
+        result.put("message",msg);
+        return result;
     }
 
     //删除日程
     @RequestMapping("/deleteSchedule")
-    public void deleteSchedule(@RequestBody Map<String, Object> params) throws Exception{
+    public JSON deleteSchedule(@RequestBody Map<String, Object> params){
+        JSONObject result = new JSONObject();
+        String msg="";
         params.put("userId", getUserId());
-        projDetailService.deleteSchedule(params);
+        try{
+            projDetailService.deleteSchedule(params);
+        }catch (Exception e){
+            e.printStackTrace();
+            msg=e.getMessage();
+        }
+        result.put("success",true);
+        result.put("message",msg);
+        return result;
     }
 
     //完成本阶段
     @RequestMapping("/finishStage")
-    public Map finishStage(@RequestBody Map<String, Object> params) throws Exception{
-        Map result = new HashMap();
+    public JSON finishStage(@RequestBody Map<String, Object> params){
+        JSONObject result = new JSONObject();
+        String msg="";
         params.put("userId", getUserId());
         params.put("state", "2");//已完成
         System.out.print(params.get("stepId"));
-//        int count = projDetailService.updateStepState(params);
-        result.put("success","true");
+        try{
+            projDetailService.updateStepState(params);
+        }catch (Exception e){
+            e.printStackTrace();
+            msg=e.getMessage();
+        }
+        result.put("success",true);
+        result.put("message",msg);
         return result;
     }
 
     //修改任务状态
     @RequestMapping("/updateTaskState")
-    public Map updateTaskState(@RequestBody Map<String, Object> params) throws Exception{
-        Map result = new HashMap();
+    public JSON updateTaskState(@RequestBody Map<String, Object> params){
+        JSONObject result = new JSONObject();
+        String msg="";
         params.put("userId", getUserId());
 
         if("start".equals(params.get("operation"))){
@@ -129,9 +171,14 @@ public class ProjDetailController extends AbstractController {
         }else{
             return result;
         }
-        if(1==1)return result;
-        int count =  projDetailService.updateTaskState(params);
-        result.put("success","true");
+        try{
+            projDetailService.updateTaskState(params);
+        }catch (Exception e){
+            e.printStackTrace();
+            msg=e.getMessage();
+        }
+        result.put("success",true);
+        result.put("message",msg);
         return result;
     }
 

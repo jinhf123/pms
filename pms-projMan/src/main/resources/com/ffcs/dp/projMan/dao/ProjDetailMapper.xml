@@ -155,7 +155,12 @@
 		<selectKey keyProperty="taskId" resultType="long" order="BEFORE">
 			SELECT PMS_PROJ_TASK_SEQ.NEXTVAL FROM DUAL
 		</selectKey>
-
+		insert into PMS_PROJ_TASK (TASK_ID, PROJ_ID, TASK_TITLE, TASK_STAFF, TASK_STAFF_ID, TASK_DATE, STATE, CTEATE_STAFF, STEP_ID, RATE, FINISH_DATE
+		<if test="parentTask != null and parentTask != ''">, PARENT_TASK</if>
+		)
+		values (#{taskId}, #{projId}, #{taskTitle}, #{taskStaff}, #{taskStaffId}, sysdate, '0', #{userId},  #{stepId}, '0%', to_date(#{finishDate}, 'yyyy-mm-dd')
+		<if test="parentTask != null and parentTask != ''">, #{parentTask}</if>
+		)
 	</insert>
 
 	<!--插入日程信息-->

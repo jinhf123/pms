@@ -7,7 +7,7 @@ $(function () {
 });
 
 function initialPage() {
-    $(window).resize(function() {     });
+    // $(window).resize(function() {     });
 }
 
 

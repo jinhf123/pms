@@ -72,9 +72,9 @@
                                     <span>{{data.taskTitle}}</span>
                                     <span :class="data.isTimeOut?'label-gray':'label-pink'">{{data.startDate}}{{data.taskStaff}}</span>
                                 </div>
-                                <div class="col-md-1 column" >
-                                    <button v-show="isEdit" class="btn-add-gray" type="button" title="新增子任务" @click="startTask(data.taskId)"></button>
-                                    <button v-show="isEdit" class="btn-delete-red" type="button" title="删除任务" @click="delTask(data.taskId)"></button>
+                                <div class="col-md-1 column" style="width: 50px">
+                                    <button v-show="isEdit" class="btn-add-gray" type="button" title="新增子任务" @click="addTaskPanel(data.taskId)"></button>
+                                    <button v-show="isEdit" class="btn-delete-red" type="button" title="删除任务" @click="delTask(data.taskId,data.subTaskList)"></button>
                                     <button v-show="!isEdit" class="btn-triangle-gray" type="button" title="开始任务" @click="startTask(data.taskId)"></button>
                                     <button v-show="!isEdit" class="btn-circular-gray" type="button" title="完成任务" @click="finishTask(data.taskId,1)"></button>
                                 </div>
@@ -117,7 +117,7 @@
                     <div class="col-md-12 column display-flex">
                         <div class="col-md-6 column display-flex">
                             <label><img :src="icon_Title"></label>
-                            <input v-model="taskTitle" class="form-control" id="taskTitle" placeholder="请输入任务名称">
+                            <input v-model="taskTitle" class="form-control" id="taskTitle" :placeholder="parentTask===''?'请输入任务名称':'请输入二级任务名称'">
                         </div>
                         <div class="col-md-3 column display-flex">
                             <label><img :src="icon_User"></label>
@@ -125,7 +125,7 @@
                         </div>
                         <div class="col-md-3 column display-flex">
                             <label><img :src="icon_Date"></label>
-                            <input v-model="taskEndDate" class="form-control" placeholder="截止时间">
+                            <input v-model="finishDate" class="form-control" placeholder="截止时间">
                         </div>
                     </div>
                     <div class="col-md-12 column display-flex">
