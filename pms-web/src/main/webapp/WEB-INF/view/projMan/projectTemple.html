@@ -86,27 +86,39 @@
                         <!-- Tab panes -->
                         <div class="tab-content tab-step">
                             <div class="tab-pane fade in active" id="home-pills">
-                                <div class="form-line">
-                                    <label for="inlineFormCustomSelect">默认完成时间：上一环节偏移</label>
-                                    <input class="custom-control input-number" type="text"/>
-                                    <select class="custom-select input-number" id="inlineFormCustomSelect">
-                                        <option value="1" selected>月</option>
-                                        <option value="2">天</option>
-                                    </select>
-                                    <label class="">当离完成时间</label>
-                                    <input class="custom-control " type="text"/>
-                                    <label class="">天,通知给</label>
-                                    <select class="js-example-basic-multiple form-control" name="states[]" multiple="multiple">
-                                        <option value="AL">Alabama</option>
-                                        <option value="WY">Wyoming</option>
-                                    </select>
+                                <div class="flex-container">
+                                    <div class="flex-left">
+                                        <label for="inlineFormCustomSelect">默认完成时间：上一环节偏移</label>
+                                        <input class="custom-control input-number" type="text"/>
+                                        <select class="custom-select input-number" id="inlineFormCustomSelect">
+                                            <option value="1" selected>月</option>
+                                            <option value="2">天</option>
+                                        </select>
+                                        <label class="">当离完成时间</label>
+                                        <input class="custom-control " type="text"/>
+                                        <label class="">天,通知给</label>
+                                    </div>
+                                    <div class="flex-right">
+                                        <select class="js-example-basic-multiple form-control" name="states[]"
+                                                multiple="multiple">
+                                            <option value="AL">Alabama</option>
+                                            <option value="WY">Wyoming</option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="form-line">
-                                    <label>当任务变更时，默认通知给</label>
-                                    <select class="js-example-basic-multiple" name="states[]" multiple="multiple">
-                                        <option value="AL">Alabama</option>
-                                        <option value="WY">Wyoming</option>
-                                    </select>
+                                    <div class="flex-container">
+                                        <div class="flex-left">
+                                            <label>当任务变更时，默认通知给</label>
+                                        </div>
+                                        <div class="flex-right">
+                                            <select class="js-example-basic-multiple form-control" name="states[]"
+                                                    multiple="multiple">
+                                                <option value="AL">Alabama</option>
+                                                <option value="WY">Wyoming</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-line">
                                     <label>当日程结束前</label>

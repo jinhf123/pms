@@ -1,5 +1,5 @@
 html{
-    min-width: 900px;
+    min-width: 1000px;
     overflow-x: auto;
     overflow-y: auto;
 }
@@ -27,7 +27,7 @@ html{
     margin-top: 10px;
 }
 
-.form-line label{
+.tab-pane label{
     font-weight:normal;
 }
 
@@ -82,3 +82,7 @@ html{
 .panel-body{
     margin-top: 15px;
 }
+
+.flex-container { display: flex ;}
+.flex-left { flex: none; }
+.flex-right { flex: 1 ;}
