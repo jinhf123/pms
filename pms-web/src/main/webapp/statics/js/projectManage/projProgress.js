@@ -16,6 +16,8 @@ $(function () {
 
 
 function initialPage() {
+    if(getQueryString('projId')!=null)
+    vm.projId = getQueryString('projId');
     //初始化滚动条
     $(".left-panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     $(".center-panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
@@ -26,6 +28,10 @@ function initialPage() {
         $(".left-panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
         $(".center-panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
         $(".slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
+    });
+
+    $("#finishDate").datetimepicker().on('change', function () {
+        vm.finishDate = $("#finishDate").val();
     });
 }
 
@@ -102,6 +108,7 @@ function saveTask(){
         "stepId":vm.stepId,
         "taskTitle":vm.taskTitle,
         "taskStaff":vm.taskStaff,
+        "taskStaffId":vm.taskStaffId,
         "finishDate":vm.finishDate,
     });
     $.ajax({
@@ -112,9 +119,11 @@ function saveTask(){
         dataType: "json",
         contentType: 'application/json',
         success: function (data) {
+            vm.isAddTask=false;
             vm.parentTask="";
             vm.taskTitle="";
             vm.taskStaff="";
+            vm.taskStaffId="";
             vm.finishDate="";
             var param2 = JSON.stringify({
                 "projId":vm.projId,
@@ -151,6 +160,7 @@ var vm = new Vue({
         parentTask:"",
         taskTitle:"",
         taskStaff:"",
+        taskStaffId:"",
         finishDate:"",
 
         //新增日程参数
@@ -172,12 +182,25 @@ var vm = new Vue({
             });
             getTaskGrid(param);
             getScheGrid(param);
-        },location: function(act){
-            var url;
-            if(act=="log"){
-                url = "workLog.html";
-            }
-            window.location=url;
+        },
+        showDetail:function(taskId){
+            toUrl('taskDetails.html?projId='+vm.projId+'&stepId='+vm.stepId+'&taskId='+taskId);
+        },
+        selectStaff: function() {
+            dialogOpen({
+                id: 'staffSelect',
+                title: '人员选择',
+                url: 'base/user/staff.html?_' + $.now(),
+                scroll : true,
+                width: "600px",
+                height: "600px",
+                yes : function(iframeId) {
+                    top.frames[0].projProgress.vm.taskStaff = top.frames[iframeId].vm.userName;
+                    top.frames[0].projProgress.vm.taskStaffId = top.frames[iframeId].vm.userId;
+                    var index = top.layer.getFrameIndex(iframeId); //先得到当前iframe层的索引
+                    top.layer.close(index); //再执行关闭
+                }
+            })
         },
         finishStage: function(id) {//完成本阶段
             $.ajax({
@@ -270,7 +293,6 @@ var vm = new Vue({
                 dataType: "json",
                 contentType: 'application/json',
                 success: function (data){
-                    debugger;
                     var param = JSON.stringify({
                         "projId":vm.projId,
                         "stepId":vm.stepId,
@@ -281,8 +303,12 @@ var vm = new Vue({
             });
         },
         addTaskPanel:function(id){
-            console.log("打开新增子任务面板");
-            vm.parentTask=id;
+            console.log("打开新增任务面板");
+            vm.parentTask=(id!=null&&id!="")?id:"";
+            vm.taskTitle="";
+            vm.taskStaff="";
+            vm.taskStaffId="";
+            vm.finishDate="";
             this.isAddTask=true;
         },
         addTask:function(){

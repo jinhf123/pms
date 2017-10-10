@@ -15,7 +15,16 @@
 .display-flex{
     display: inline-flex;
 }
-
+.datePicker{
+    width: 120px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    height: 30px;
+    vertical-align: middle;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    padding: 4px 6px;
+}
 
 /*按钮样式*/
 .transparent-btn {

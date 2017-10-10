@@ -7,7 +7,7 @@
 </head>
 <body>
 <!--进度任务-->
-<div id="projProgress" class="clearfix">
+<div id="projProgress" class="clearfix" v-cloak>
     <!--步骤-->
     <div class="col-md-2 column" :style="styleObj">
         <div class="col-md-12 column left-panel-title">
@@ -56,7 +56,7 @@
                     </div>
                     <div class="col-md-6 column btn-link-group">
                         <a v-show="isEdit" href="#">xls导入任务</a>&nbsp;&nbsp;
-                        <a v-show="isEdit" href="#" @click="addTaskPanel">添加任务</a>&nbsp;&nbsp;
+                        <a v-show="isEdit" href="#" @click="addTaskPanel('')">添加任务</a>&nbsp;&nbsp;
                         <a v-show="isEdit" href="#" @click="editTask">完成编辑</a>
                         <a v-show="!isEdit" href="#" @click="editTask">任务编辑</a>&nbsp;&nbsp;
                         <a href="#">查看所有任务</a>
@@ -69,7 +69,7 @@
                                 <div class="col-md-11 column panel-heading-title" >
                                                             <span :class="{'square':(data.state==0),'triangle-orange':(data.state==1),'circular-green':(data.state==2)}" >
                                                             </span>
-                                    <span>{{data.taskTitle}}</span>
+                                    <span @click="showDetail(data.taskId)">{{data.taskTitle}}</span>
                                     <span :class="data.isTimeOut?'label-gray':'label-pink'">{{data.startDate}}{{data.taskStaff}}</span>
                                 </div>
                                 <div class="col-md-1 column" style="width: 50px">
@@ -95,7 +95,7 @@
                                                                      'circular-green':(item.state==2)}" >
                                                                          &nbsp;&nbsp;&nbsp;&nbsp;
                                                                     </span>
-                                            <span>{{item.taskTitle}}</span>
+                                            <span @click="showDetail(item.taskId)">{{item.taskTitle}}</span>
                                             <span :class="item.isTimeOut?'label-gray':'label-pink'">{{item.startDate}}{{item.taskStaff}}</span>
                                         </div>
                                         <div class="col-md-1 column display-flex" style="width: 50px" >
@@ -121,11 +121,11 @@
                         </div>
                         <div class="col-md-3 column display-flex">
                             <label><img :src="icon_User"></label>
-                            <input v-model="taskStaff" class="form-control" placeholder="请指定负责人">
+                            <input v-model="taskStaff" class="form-control" @click="selectStaff" readonly placeholder="请指定负责人">
                         </div>
                         <div class="col-md-3 column display-flex">
                             <label><img :src="icon_Date"></label>
-                            <input v-model="finishDate" class="form-control" placeholder="截止时间">
+                            <input v-model="finishDate" id="finishDate" class="form-control datePicker" readonly placeholder="截止时间">
                         </div>
                     </div>
                     <div class="col-md-12 column display-flex">
