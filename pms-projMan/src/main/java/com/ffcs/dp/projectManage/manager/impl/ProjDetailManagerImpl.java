@@ -2,9 +2,7 @@ package com.ffcs.dp.projectManage.manager.impl;
 
 import com.ffcs.dp.common.utils.DateUtils;
 import com.ffcs.dp.projectManage.dao.ProjDetailMapper;
-import com.ffcs.dp.projectManage.entity.ScheduleEntity;
-import com.ffcs.dp.projectManage.entity.StepEntity;
-import com.ffcs.dp.projectManage.entity.TaskEntity;
+import com.ffcs.dp.projectManage.entity.*;
 import com.ffcs.dp.projectManage.manager.ProjDetailManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -70,10 +68,7 @@ public class ProjDetailManagerImpl implements ProjDetailManager {
 
     @Override
     public List<StepEntity> getStepList(Map<String, Object> params) {
-        List<StepEntity> result = projDetailMapper.getStepList(params);
-
-
-        return result;
+        return projDetailMapper.getStepList(params);
     }
 
     @Override
@@ -155,6 +150,45 @@ public class ProjDetailManagerImpl implements ProjDetailManager {
     public int updateTaskState(Map<String, Object> params) {
         return projDetailMapper.updateTaskState(params);
     }
+
+    @Override
+    public Map getTaskInfo(Map<String, Object> params) {
+        Map resultMap = new HashMap();
+        Map map = projDetailMapper.getTaskInfo(params);
+        resultMap.put("taskTitle",map.get("TASK_TITLE"));
+        return resultMap;
+    }
+
+    @Override
+    public void saveTaskInfo(Map<String, Object> params) {
+        projDetailMapper.updateTaskInfo(params);
+    }
+
+    @Override
+    public List<CheckItemEntity> getCheckItemList(Map<String, Object> params) {
+        return projDetailMapper.getCheckItemList(params);
+    }
+
+    @Override
+    public List<TaskLogEntity> getTaskLogList(Map<String, Object> params) {
+        return projDetailMapper.getTaskLogList(params);
+    }
+
+    @Override
+    public void saveCheckItem(Map<String, Object> params) {
+        if(params.get("id")!=null&&!"".equals(params.get("id"))){
+            projDetailMapper.updateCheckItem(params);
+        }else{
+            projDetailMapper.insertCheckItem(params);
+        }
+
+    }
+
+    @Override
+    public void saveTaskLog(Map<String, Object> params) {
+        projDetailMapper.insertTaskLog(params);
+    }
+
 
 
 }

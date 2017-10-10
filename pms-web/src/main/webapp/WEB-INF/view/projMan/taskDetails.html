@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>任务详情</title>
+    #parse("include/header.html")
+    <link rel="stylesheet" href="${rc.contextPath}/statics/css/projectManage/taskDetails.css">
+</head>
+<body>
+<!--v-cloak-->
+<div id="taskDetails" class="clearfix" >
+
+
+        <div class="row clearfix">
+            <div class="col-md-10 column">
+                <div class="row clearfix">
+                    <div class="col-md-12 column display-flex">
+                        <span>商务合同-编写商务合同、谈判</span><span>08-25  陈立</span>
+                    </div>
+                    <div class="col-md-12 column">
+                        <span>任务详情内容</span>
+                    </div>
+                    <div class="col-md-12 column">
+                        <span>添加<a href="#">任务详细</a>或者<a href="#">检查项</a></span>
+                    </div>
+                    <div class="col-md-12 column">
+                        <span>---------------------------分割线-------------------------------------</span>
+                    </div>
+                    <div class="col-md-12 column">
+                        <span><input type="checkbox">交付：《合同书》</span>
+                        <span><input type="checkbox">交付：《合同签订》</span>
+                    </div>
+                    <div class="col-md-12 column">
+                        <span>图标</span><input id="content"><span><a href="#">添加检查项</a></span>
+                    </div>
+
+                    <div class="col-md-12 column">
+                        <span>04-26  洪婕     启动任务</span><br>
+                        <span>04-26  洪婕     标记任务开始执行</span><br>
+                        <span>04-26  洪婕     国际公司项目，目前建设内容未确定，需要清明后多次去香港收集客户述求。预计整理出建设方案书要到5月中下旬</span><br>
+                        <span>04-26  洪婕     修改结束时间从6.30到7.09</span><br>
+                        <span>04-26  洪婕     国际公司项目，目前建设内容未确定，需要清明后多次去香港收集客户述求。预计整理出建设方案书要到5月中下旬</span><br>
+                    </div>
+                    <div class="col-md-12 column display-flex">
+                        <div class="col-md-6 column display-flex">
+                            <checkBox><span>添加工作日志</span></checkBox>
+                            <checkBox><span>添加到风险问题</span></checkBox>
+                            <checkBox><span>添加到本周周报</span></checkBox>
+                        </div>
+                        <div class="col-md-6 column">
+                            <a>上传附件</a>
+                        </div>
+                    </div>
+                    <div class="col-md-12 column">
+                        <input type="textarea" placeholder="请输入评论内容！">
+                    </div>
+
+                    <div class="col-md-12 column display-flex">
+                        <div class="col-md-6 column display-flex">
+                            <button class="btn btn-sm btn-info"><span>发表评论</span></button>
+                            <button class="btn btn-sm btn-link-info" @click="backTaskInfo"><span>取消</span></button>
+                        </div>
+                        <div class="col-md-6 column">
+                            <span>发送通知给</span><input >
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-2 column">
+
+                <div class="row clearfix">
+                    <div class="col-md-12 column">
+                        <p>完成</p>
+                        <p>标记开始</p>
+                        <p>删除</p>
+                        <p>编辑</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+#parse("include/footer.html")
+<script src="${rc.contextPath}/statics/js/projectManage/taskDetails.js?_${date.systemTime}"></script>
+</body>
+</html>

@@ -3,9 +3,7 @@ package com.ffcs.dp.projectManage.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ffcs.dp.common.controller.AbstractController;
-import com.ffcs.dp.projectManage.entity.ScheduleEntity;
-import com.ffcs.dp.projectManage.entity.StepEntity;
-import com.ffcs.dp.projectManage.entity.TaskEntity;
+import com.ffcs.dp.projectManage.entity.*;
 import com.ffcs.dp.projectManage.service.ProjDetailService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -181,6 +179,90 @@ public class ProjDetailController extends AbstractController {
         result.put("message",msg);
         return result;
     }
+
+
+
+
+    //获取项任务信息
+    @RequestMapping("/getTaskInfo")
+    public JSON getTaskInfo(@RequestBody Map<String, Object> params) throws Exception{
+        params.put("userId", getUserId());
+        Map map = projDetailService.getTaskInfo(params);
+        JSONObject result = (JSONObject) JSON.toJSON(map);
+        return result;
+    }
+
+    //保存任务信息
+    @RequestMapping("/saveTaskInfo")
+    public JSON saveTaskInfo(@RequestBody Map<String, Object> params){
+        JSONObject result = new JSONObject();
+        String msg = "";
+        params.put("userId", getUserId());
+        try{
+            projDetailService.saveTaskInfo(params);
+        }catch (Exception e){
+            e.printStackTrace();
+            msg=e.getMessage();
+        }
+        result.put("success",true);
+        result.put("message",msg);
+        return result;
+    }
+
+    //获取检查项列表
+    @RequestMapping("/getCheckItemList")
+    public List<CheckItemEntity> getCheckItemList(@RequestBody Map<String, Object> params) {
+        params.put("userId", getUserId());
+        return projDetailService.getCheckItemList(params);
+    }
+
+    //获取任务操作日志列表
+    @RequestMapping("/getTaskLogList")
+    public List<TaskLogEntity> getTaskLogList(@RequestBody Map<String, Object> params) {
+        params.put("userId", getUserId());
+        return projDetailService.getTaskLogList(params);
+    }
+
+
+    //保存检查项信息
+    @RequestMapping("/saveCheckItem")
+    public JSON saveCheckItem(@RequestBody Map<String, Object> params){
+        JSONObject result = new JSONObject();
+        String msg = "";
+        params.put("userId", getUserId());
+        try{
+            projDetailService.saveCheckItem(params);
+        }catch (Exception e){
+            e.printStackTrace();
+            msg=e.getMessage();
+        }
+        result.put("success",true);
+        result.put("message",msg);
+        return result;
+    }
+
+    //保存任务日志信息
+    @RequestMapping("/saveTaskLog")
+    public JSON saveTaskLog(@RequestBody Map<String, Object> params){
+        JSONObject result = new JSONObject();
+        String msg = "";
+        params.put("userId", getUserId());
+        try{
+            projDetailService.saveTaskLog(params);
+        }catch (Exception e){
+            e.printStackTrace();
+            msg=e.getMessage();
+        }
+        result.put("success",true);
+        result.put("message",msg);
+        return result;
+    }
+
+
+
+
+
+
 
 
     /*********************风险问题*********************/

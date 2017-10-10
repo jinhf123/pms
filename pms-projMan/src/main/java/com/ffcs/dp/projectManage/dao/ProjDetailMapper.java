@@ -1,10 +1,7 @@
 package com.ffcs.dp.projectManage.dao;
 
 import com.ffcs.dp.common.dao.BaseMapper;
-import com.ffcs.dp.projectManage.entity.ScheduleEntity;
-import com.ffcs.dp.projectManage.entity.StepEntity;
-import com.ffcs.dp.projectManage.entity.TaskEntity;
-import com.ffcs.dp.projectManage.entity.WorkLogEntity;
+import com.ffcs.dp.projectManage.entity.*;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.stereotype.Repository;
 
@@ -43,5 +40,19 @@ public interface ProjDetailMapper extends BaseMapper<WorkLogEntity> {
 
     int updateTaskState(Map<String, Object> params);
 
+
+    Map getTaskInfo(Map<String, Object> params);
+
+    void updateTaskInfo(Map<String, Object> params);
+
+    List<CheckItemEntity> getCheckItemList(Map<String, Object> params);
+
+    List<TaskLogEntity> getTaskLogList(Map<String, Object> params);
+
+    void updateCheckItem(Map<String, Object> params);
+
+    void insertCheckItem(Map<String, Object> params);
+
+    void insertTaskLog(Map<String, Object> params);
 
 }

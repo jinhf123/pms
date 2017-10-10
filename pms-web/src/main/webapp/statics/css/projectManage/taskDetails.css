@@ -1,0 +1,50 @@
+.column{
+    padding-left:0px;
+    padding-right: 0px;
+}
+
+.fa-color{
+    color: #1cae99
+}
+
+.float-right{
+    float: right;
+    text-align: right;
+}
+
+.display-flex{
+    display: inline-flex;
+}
+.datePicker{
+    width: 120px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    height: 30px;
+    vertical-align: middle;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    padding: 4px 6px;
+}
+
+/*按钮样式*/
+.transparent-btn {
+    display: inline-block;
+    margin: 4px 0px;
+    padding: 0px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.4285;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}

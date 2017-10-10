@@ -1,9 +1,6 @@
 package com.ffcs.dp.projectManage.manager;
 
-import com.ffcs.dp.projectManage.entity.ScheduleEntity;
-import com.ffcs.dp.projectManage.entity.StepEntity;
-import com.ffcs.dp.projectManage.entity.TaskEntity;
-import com.ffcs.dp.projectManage.entity.WorkLogEntity;
+import com.ffcs.dp.projectManage.entity.*;
 
 import java.util.List;
 import java.util.Map;
@@ -32,4 +29,15 @@ public interface ProjDetailManager {
 
     int updateTaskState(Map<String, Object> params);
 
+    Map getTaskInfo(Map<String, Object> params);
+
+    List<CheckItemEntity> getCheckItemList(Map<String, Object> params);
+
+    List<TaskLogEntity> getTaskLogList(Map<String, Object> params);
+
+    void saveCheckItem(Map<String, Object> params);
+
+    void saveTaskLog(Map<String, Object> params);
+
+    void saveTaskInfo(Map<String, Object> params);
 }
