@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>人员选择</title> #parse("include/header.html")
+<style>
+body {
+	font-family: 'Microsoft Yahei', Helvetica, Arial, sans-serif;
+	font-size: 10px;
+	color: #333333;
+}
+/*.row{
+    margin: 0px;
+    padding: 2px;
+}*/
+
+.fixed-table-pagination .pagination-detail, .fixed-table-pagination div.pagination{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+
+</style>
+</head>
+<body>
+	<div id="dpLTE" class="container-fluid" v-cloak>
+		<div id="staff" >
+			<div class="row">
+                <div class="form-inline pull-left" style="display: inline-flex;">
+                    <input v-model="keyword" @keyup.enter="load" class="form-control" placeholder="请输入查询关键字" style="width: 180px;" />&nbsp;&nbsp;&nbsp;
+                    <a class="btn btn-sm btn-info" @click="load"><i class="fa fa-search"></i>&nbsp;查询</a>
+                </div>
+            </div>
+            <div class="row" class="panel-slimScroll">
+				<table id="dataGrid"></table>
+			</div>
+
+
+
+
+		</div>
+			#parse("include/footer.html")
+			<script type="text/javascript">
+				/*$(function () {
+					$("#icons .fa-hover a").dblclick(function () {
+					    var icon = $(this).find('i').attr('class');
+					    top.layerForm.vm.menu.icon = icon;
+					    dialogClose();
+				    })
+				})*/
+
+                $(function () {
+                    initialPage();
+                    getGrid();
+                });
+
+                function initialPage() {
+                    $(".panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
+
+                    $(window).resize(function() {
+                        $('#dataGrid').bootstrapTable('resetView', {height: $(window).height()-54});
+                        $(".panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
+                    });
+                }
+
+                function getGrid() {
+                    $('#dataGrid').bootstrapTableEx({
+                        url: '../../sys/user/staffSelectList?_' + $.now(),
+                        singleSelect : true,
+                        height: $(window).height()-54,
+                        paginationPreText: '<<',
+                        paginationNextText: '>>',
+
+                        queryParams: function(params){
+                            params.username = vm.keyword;
+                            return params;
+                        },
+                        columns: [{
+                            checkbox: true
+                        }, {
+                            field : "userId",
+                            title : "人员编号",
+                            width : "100px"
+                        }, {
+                            field : "username",
+                            title : "用户名",
+                            width : "150px"
+                        }],
+                        onClickRow: function (row) {
+                            vm.userId = row.userId;
+                            vm.userName = row.username;
+                        }
+                    })
+                }
+
+                var vm = new Vue({
+                    el:'#dpLTE',
+                    data: {
+                        userId:"",
+                        userName:"",
+                        keyword: null
+                    },
+                    methods : {
+                        load: function() {
+                            $('#dataGrid').bootstrapTable('refresh');
+                        }
+                    }
+                })
+
+			</script>
+</body>
+</html>
