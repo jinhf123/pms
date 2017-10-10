@@ -2,6 +2,7 @@ package com.ffcs.dp.shiro.dao;
 
 import java.util.List;
 
+import com.ffcs.dp.common.entity.Page;
 import org.mybatis.spring.annotation.MapperScan;
 
 import com.ffcs.dp.common.dao.BaseMapper;
@@ -25,5 +26,9 @@ public interface SysUserMapper extends BaseMapper<SysUserEntity> {
 	int updateUserStatus(Query query);
 	
 	int updatePswd(SysUserEntity user);
+
+
+	List<SysUserEntity> staffSelectList(Page<SysUserEntity> page, Query query);
+
 	
 }

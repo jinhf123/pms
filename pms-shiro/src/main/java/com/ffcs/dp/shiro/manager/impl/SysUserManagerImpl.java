@@ -44,6 +44,11 @@ public class SysUserManagerImpl implements SysUserManager {
 	}
 
 	@Override
+	public List<SysUserEntity> staffSelectList(Page<SysUserEntity> page, Query search) {
+		return sysUserMapper.staffSelectList(page, search);
+	}
+
+	@Override
 	public SysUserEntity getByUserName(String username) {
 		return sysUserMapper.getByUserName(username);
 	}

@@ -15,7 +15,9 @@ public interface SysUserManager {
 	SysUserEntity getByUserName(String username);
 	
 	List<SysUserEntity> listUser(Page<SysUserEntity> page, Query search);
-	
+
+	List<SysUserEntity> staffSelectList(Page<SysUserEntity> page, Query search);
+
 	int saveUser(SysUserEntity user);
 	
 	SysUserEntity getById(Long userId);
