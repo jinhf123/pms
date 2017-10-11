@@ -32,6 +32,10 @@ function getTaskInfo(){
         contentType: 'application/json',
         success: function (data) {
             vm.taskInfo = data;
+            vm.taskTitle = vm.taskInfo.taskTitle;
+            vm.finishDate = vm.taskInfo.finishDate.substring(0,10);
+            vm.taskStaff = vm.taskInfo.taskStaff;
+            vm.taskContent = vm.taskInfo.taskContent;
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
         }
@@ -115,6 +119,7 @@ var vm = new Vue({
 
         isEdit:false,
         isAddCheckItem:false,
+        isAddTaskContent:false,
         projId:"",
         stepId:"",
         taskId:"",
@@ -137,10 +142,10 @@ var vm = new Vue({
             getTaskInfo();
             getCheckItemGrid();
             getTaskLogGrid();
-        },backTaskInfo: function(){
+        },backTaskInfo: function(){//跳转回到任务进度页面
             toUrl('projProgress.html?projId='+vm.projId+'&stepId='+vm.stepId);
         },
-        selectStaff: function() {
+        selectStaff: function() {//打开人员选择面板
             dialogOpen({
                 id: 'staffSelect',
                 title: '人员选择',
@@ -156,9 +161,9 @@ var vm = new Vue({
                 }
             })
         },
-        saveTaskInfo:function(){
+        saveTaskInfo:function(){//保存任务信息
             $.ajax({
-                url: '../../projMan/projDetail/getTaskInfo?_' + $.now(),
+                url: '../../projMan/projDetail/saveTaskInfo?_' + $.now(),
                 data: JSON.stringify({
                     "taskTitle" : vm.taskTitle,
                     "finishDate" : vm.finishDate,
@@ -178,37 +183,37 @@ var vm = new Vue({
                 }
             });
         },
-        startEdit:function(){
+        startEdit:function(){//开始编辑任务信息
             vm.taskTitle = vm.taskInfo.taskTitle;
-            vm.finishDate = vm.taskInfo.finishDate;
+            vm.finishDate = vm.taskInfo.finishDate.substring(0,10);
             vm.taskStaff = vm.taskInfo.taskStaff;
             vm.taskContent = vm.taskInfo.taskContent;
             vm.isEdit=true;
         },
-        cancelEdit:function(){
+        cancelEdit:function(){//取消编辑任务信息
             vm.isEdit=false;
         },
-        openAddCheckItem:function(){
-            vm.isAddCheckItem=true;
+        openAddTaskContent:function(){//打开\关闭新增项目详情面板
+            vm.isAddTaskContent = !vm.isAddTaskContent;
         },
-        cancelAddCheckItem:function(){
+        openAddCheckItem:function(){//打开\关闭新增检查项面板
+            vm.isAddCheckItem=!vm.isAddCheckItem;
+        },
+        cancelAddCheckItem:function(){//关闭新增检查项面板
             vm.isAddCheckItem=false;
         },
-        addCheckItem:function(){
+        addCheckItem:function(){//新增检查项保存
             if(vm.content==null||vm.content.trim()==""){
                 dialogMsg("请输入检查项内容!","warn");
                 return;
             }
             saveCheckItem();
         },
-        checkRadio:function(data){
+        checkRadio:function(data){//完成检查项保存
             if(data.state=="0")
             dialogConfirm("请确认检查项：\n\""+data.content+"\"\n是否完成!", function(){
                 vm.checkItemId = data.checkItemId;
                 vm.state = "1";
-
-
-
                 saveCheckItem();
             });
             getCheckItemGrid();
