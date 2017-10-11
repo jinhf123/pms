@@ -8,22 +8,24 @@ public class TaskLogEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long id;//任务操作日志编号
+    private Long taskLogId;//任务操作日志编号
     private Long taskId;//任务编号
     private String content;//任务操作日志内容
+    private String staffName;//操作者名称
     private Long operator;//操作者
-    private Date operateDate;//操作时间
+    private String operateDate;//操作时间
+    private String operateType;//操作类型
 
     public TaskLogEntity() {
         super();
     }
 
-    public Long getId() {
-        return id;
+    public Long getTaskLogId() {
+        return taskLogId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setTaskLogId(Long taskLogId) {
+        this.taskLogId = taskLogId;
     }
 
     public Long getTaskId() {
@@ -42,6 +44,14 @@ public class TaskLogEntity implements Serializable {
         this.content = content;
     }
 
+    public String getStaffName() {
+        return staffName;
+    }
+
+    public void setStaffName(String staffName) {
+        this.staffName = staffName;
+    }
+
     public Long getOperator() {
         return operator;
     }
@@ -50,11 +60,19 @@ public class TaskLogEntity implements Serializable {
         this.operator = operator;
     }
 
-    public Date getOperateDate() {
+    public String getOperateDate() {
         return operateDate;
     }
 
-    public void setOperateDate(Date operateDate) {
+    public void setOperateDate(String operateDate) {
         this.operateDate = operateDate;
+    }
+
+    public String getOperateType() {
+        return operateType;
+    }
+
+    public void setOperateType(String operateType) {
+        this.operateType = operateType;
     }
 }

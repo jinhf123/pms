@@ -167,8 +167,7 @@
 		<set>
 			<if test="state != null and state != ''">STATE = #{state} </if>
 		</set>
-		WHERE
-		STEP_ID = #{stepId}
+		 WHERE STEP_ID = #{stepId}
 	</update>
 
 	<!--更新任务状态信息-->
@@ -177,8 +176,7 @@
 		<set>
 			<if test="state != null and state != ''">STATE = #{state} </if>
 		</set>
-		WHERE
-		TASK_ID = #{taskId}
+		 WHERE TASK_ID = #{taskId}
 	</update>
 
 
@@ -191,32 +189,69 @@
 
     <!--获取任务信息-->
 	<select id="getTaskInfo" resultType="java.util.HashMap" parameterType="Map">
-
+		select T.TASK_ID,
+		       T.TASK_TITLE,
+			   T.TASK_STAFF,
+		       T.FINISH_DATE,
+			   T.TASK_CONTENT
+		  from PMS_PROJ_TASK T
+		 where T.TASK_ID = #{taskId}
 	</select>
 
     <!--更新任务信息-->
     <update id="updateTaskInfo" parameterType="Map">
-
+		UPDATE PMS_PROJ_TASK
+		<set>
+			<if test="taskTitle != null and taskTitle != ''">TASK_TITLE = #{taskTitle} ,</if>
+			<if test="taskStaff != null and taskStaff != ''">TASK_STAFF = #{taskStaff} ,</if>
+			<if test="taskStaffId != null and taskStaffId != ''">TASK_STAFF_ID = #{taskStaffId} ,</if>
+			<if test="taskContent != null and taskContent != ''">TASK_CONTENT = #{taskContent} ,</if>
+			<if test="finishDate != null and finishDate != ''">FINISH_DATE = #{finishDate} </if>
+		</set>
+		WHERE
+		TASK_ID = #{taskId}
     </update>
 
     <!--获取检查项列表-->
     <select id="getCheckItemList" resultType="CheckItemEntity" parameterType="Map">
-
+		select t.check_item_id,
+		       t.CONTENT,
+		       t.state
+		  from PMS_PROJ_TASK_CHECK_ITEM t
+		 where task_id = #{taskId}
+		 order by check_item_id asc
     </select>
 
     <!--获取任务操作日志列表-->
     <select id="getTaskLogList" resultType="TaskLogEntity" parameterType="Map">
-
+		select T.TASK_LOG_ID,
+		       to_char(T.OPERATE_DATE, 'MM-DD') OPERATE_DATE,
+			   U.USERNAME STAFF_NAME,
+			   T.OPERATOR,
+			   T.CONTENT,
+		       T.OPERATE_TYPE
+		  from PMS_PROJ_TASK_LOG T, PMS_SYS_USER U
+		 where T.OPERATOR = U.USER_ID
+		   and TASK_ID = #{taskId}
+		 order by TASK_LOG_ID asc
     </select>
 
     <!--更新检查项信息-->
     <update id="updateCheckItem" parameterType="Map">
-
+		UPDATE PMS_PROJ_TASK_CHECK_ITEM
+		<set>
+			<if test="state != null and state != ''">STATE = #{state} ,</if>
+		</set>
+		 WHERE CHECK_ITEM_ID = #{checkItemId}
     </update>
 
     <!--新增检查项信息-->
     <insert id="insertCheckItem" parameterType="Map">
-
+		<selectKey keyProperty="checkItemId" resultType="long" order="BEFORE">
+			SELECT PMS_PROJ_TASK_CHECK_ITEM_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		insert into PMS_PROJ_TASK_CHECK_ITEM(CHECK_ITEM_ID, TASK_ID, CONTENT, STATE, CREATOR, CREATE_DATE)
+		values (#{checkItemId}, #{taskId}, #{content}, '0' , #{userId}, sysdate)
     </insert>
 
     <!--新增任务操作日志信息-->

@@ -156,6 +156,9 @@ public class ProjDetailManagerImpl implements ProjDetailManager {
         Map resultMap = new HashMap();
         Map map = projDetailMapper.getTaskInfo(params);
         resultMap.put("taskTitle",map.get("TASK_TITLE"));
+        resultMap.put("taskStaff",map.get("TASK_STAFF"));
+        resultMap.put("finishDate",map.get("FINISH_DATE"));
+        resultMap.put("taskContent",map.get("TASK_CONTENT"));
         return resultMap;
     }
 
@@ -176,7 +179,7 @@ public class ProjDetailManagerImpl implements ProjDetailManager {
 
     @Override
     public void saveCheckItem(Map<String, Object> params) {
-        if(params.get("id")!=null&&!"".equals(params.get("id"))){
+        if(params.get("checkItemId")!=null&&!"".equals(params.get("checkItemId"))){
             projDetailMapper.updateCheckItem(params);
         }else{
             projDetailMapper.insertCheckItem(params);

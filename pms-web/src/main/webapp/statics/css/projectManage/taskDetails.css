@@ -48,3 +48,55 @@
     border: 1px solid transparent;
     border-radius: 4px;
 }
+
+
+.horizontal-divider {
+    height: 1px;
+    width: calc(100% - 30px);
+    margin: 5px 10px;
+    overflow: hidden;
+    background-color: #e5e5e5;
+}
+
+
+
+.date-staff-label{
+    width: 84px;
+    height: 20px;
+    margin: auto 10px;
+    padding: 2px 0px;
+    text-align: center;
+    font-family: "微软雅黑 Regular", "微软雅黑";
+    font-weight: 400;
+    font-style: normal;
+    font-size: 12px;
+    color: #666666;
+    border-radius: 12px;
+    background-color: #E3E3E3;
+}
+
+.add-panel {
+    background-color: #F1F1F1;
+    line-height: 2.45;
+    vertical-align: middle;
+    padding: 10px;
+    font-size: 13px;
+}
+
+.check-item {
+    background-color: #ffffff;
+    line-height: 1;
+    vertical-align: middle;
+    padding: 10px;
+    font-size: 13px;
+}
+
+.task-log {
+    background-color: #ffffff;
+    line-height: 2;
+    vertical-align: middle;
+    padding: 10px 5px;
+    font-size: 13px;
+}
+
+.task-log>span{padding: 0px 5px; }

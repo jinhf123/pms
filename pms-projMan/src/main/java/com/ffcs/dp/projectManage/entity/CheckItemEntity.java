@@ -7,21 +7,21 @@ public class CheckItemEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long id;//检查项编号
+    private Long checkItemId;//检查项编号
     private Long taskId;//任务编号
-    private String checkItemName;//检查项名称
+    private String content;//检查项名称
     private String state;//状态
 
     public CheckItemEntity() {
         super();
     }
 
-    public Long getId() {
-        return id;
+    public Long getCheckItemId() {
+        return checkItemId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setCheckItemId(Long checkItemId) {
+        this.checkItemId = checkItemId;
     }
 
     public Long getTaskId() {
@@ -32,12 +32,12 @@ public class CheckItemEntity implements Serializable {
         this.taskId = taskId;
     }
 
-    public String getCheckItemName() {
-        return checkItemName;
+    public String getContent() {
+        return content;
     }
 
-    public void setCheckItemName(String checkItemName) {
-        this.checkItemName = checkItemName;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getState() {
