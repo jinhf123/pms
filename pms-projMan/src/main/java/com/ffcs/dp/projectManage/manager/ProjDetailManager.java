@@ -29,6 +29,8 @@ public interface ProjDetailManager {
 
     int updateTaskState(Map<String, Object> params);
 
+    int getSubTaskCount(Map<String, Object> params);
+
     Map getTaskInfo(Map<String, Object> params);
 
     List<CheckItemEntity> getCheckItemList(Map<String, Object> params);
@@ -40,4 +42,5 @@ public interface ProjDetailManager {
     void saveTaskLog(Map<String, Object> params);
 
     void saveTaskInfo(Map<String, Object> params);
+
 }

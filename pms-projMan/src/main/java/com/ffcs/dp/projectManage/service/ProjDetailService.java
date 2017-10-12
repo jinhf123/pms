@@ -30,7 +30,7 @@ public interface ProjDetailService {
 
     int updateTaskState(Map<String, Object> params);
 
-
+    int getSubTaskCount(Map<String, Object> params);
 
     Map getTaskInfo(Map<String, Object> params);
 

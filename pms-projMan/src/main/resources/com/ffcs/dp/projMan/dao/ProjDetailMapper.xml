@@ -109,10 +109,11 @@
 			   K.STEP_ID,
 			   K.PARENT_TASK
 		  From PMS_PROJ_TASK K
-		  where K.PROJ_ID = #{projId}
-			<if test="stepId != null and '' != stepId">
-				and K.STEP_ID = #{stepId}
-			</if>
+		 where K.PROJ_ID = #{projId}
+		<if test="stepId != null and '' != stepId">
+		   and K.STEP_ID = #{stepId}
+		</if>
+		 order by K.TASK_ID asc
 	</select>
 
 	<!--获取日程列表信息-->
@@ -180,11 +181,12 @@
 	</update>
 
 
-
-
-
-
-
+	<!--获取子任务条数-->
+	<select id="getSubTaskCount" resultType="java.lang.Integer" parameterType="Map">
+		select count(1)
+		from PMS_PROJ_TASK T
+		where T.PARENT_TASK = #{taskId}
+	</select>
 
 
     <!--获取任务信息-->
@@ -193,7 +195,8 @@
 		       T.TASK_TITLE,
 			   T.TASK_STAFF,
 		       T.FINISH_DATE,
-			   T.TASK_CONTENT
+			   T.TASK_CONTENT,
+			   T.STATE
 		  from PMS_PROJ_TASK T
 		 where T.TASK_ID = #{taskId}
 	</select>
@@ -205,7 +208,7 @@
 			<if test="taskTitle != null and taskTitle != ''">TASK_TITLE = #{taskTitle} ,</if>
 			<if test="taskStaff != null and taskStaff != ''">TASK_STAFF = #{taskStaff} ,</if>
 			<if test="taskStaffId != null and taskStaffId != ''">TASK_STAFF_ID = #{taskStaffId} ,</if>
-			<if test="taskContent != null and taskContent != ''">TASK_CONTENT = #{taskContent} ,</if>
+			<if test="taskContent != null and taskContent != ''">TASK_CONTENT = to_date(#{taskContent},'YYYY-MM-DD') ,</if>
 			<if test="finishDate != null and finishDate != ''">FINISH_DATE = #{finishDate} </if>
 		</set>
 		WHERE

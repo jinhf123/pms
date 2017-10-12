@@ -80,6 +80,11 @@ public class ProjDetailServiceImpl implements ProjDetailService {
     }
 
     @Override
+    public int getSubTaskCount(Map<String, Object> params) {
+        return projDetailManager.getSubTaskCount(params);
+    }
+
+    @Override
     public Map getTaskInfo(Map<String, Object> params) {
         return projDetailManager.getTaskInfo(params);
     }

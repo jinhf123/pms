@@ -152,6 +152,11 @@ public class ProjDetailManagerImpl implements ProjDetailManager {
     }
 
     @Override
+    public int getSubTaskCount(Map<String, Object> params) {
+        return projDetailMapper.getSubTaskCount(params);
+    }
+
+    @Override
     public Map getTaskInfo(Map<String, Object> params) {
         Map resultMap = new HashMap();
         Map map = projDetailMapper.getTaskInfo(params);
@@ -159,6 +164,7 @@ public class ProjDetailManagerImpl implements ProjDetailManager {
         resultMap.put("taskStaff",map.get("TASK_STAFF"));
         resultMap.put("finishDate",map.get("FINISH_DATE"));
         resultMap.put("taskContent",map.get("TASK_CONTENT"));
+        resultMap.put("state",map.get("STATE"));
         return resultMap;
     }
 

@@ -36,6 +36,7 @@ function getTaskInfo(){
             vm.finishDate = vm.taskInfo.finishDate.substring(0,10);
             vm.taskStaff = vm.taskInfo.taskStaff;
             vm.taskContent = vm.taskInfo.taskContent;
+            vm.state = vm.taskInfo.state;
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
         }
@@ -73,6 +74,31 @@ function getTaskLogGrid(){
             vm.taskLogs = data;
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
+        }
+    });
+}
+
+function saveTaskDetail(params){
+    $.ajax({
+        url: '../../projMan/projDetail/saveTaskInfo?_' + $.now(),
+        data: params,
+        type: "post",
+        dataType: "json",
+        contentType: 'application/json',
+        success: function (data) {
+            if(data.success){
+                dialogMsg("操作成功！");
+                isEdit:false;
+                load();
+                vm.isEdit=false;
+                vm.isAddTaskContent=false;
+            }else{
+                dialogMsg("操作失败！"+data.msg,"error")
+            }
+
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            dialogMsg("操作失败！"+errorThrown,"error")
         }
     });
 }
@@ -116,14 +142,24 @@ var vm = new Vue({
         icon_oper_2: "/statics/img/projectManage/u18_2.png",
         icon_oper_3: "/statics/img/projectManage/u18_3.png",
         icon_oper_4: "/statics/img/projectManage/u18_4.png",
+        icon_oper_0: "/statics/img/projectManage/u18_0.png",
+        icon_btn_finish: "/statics/img/projectManage/u19_0.png",
+        icon_btn_start : "/statics/img/projectManage/u19_1.png",
+        icon_btn_delete: "/statics/img/projectManage/u19_2.png",
+        icon_btn_edit  : "/statics/img/projectManage/u19_3.png",
 
         isEdit:false,
         isAddCheckItem:false,
         isAddTaskContent:false,
+        //评论选项
+        addToWorkLog:false,
+        addToRiskIssues:false,
+        addToWeeklyReport:false,
+
         projId:"",
         stepId:"",
         taskId:"",
-        taskInfo:{taskTitle:"",finishDate:"",taskStaff:"",taskContent:""},
+        taskInfo:{taskTitle:"",finishDate:"",taskStaff:"",taskContent:"",state:""},
         checkItems:[],
         taskLogs:[],
 
@@ -132,6 +168,8 @@ var vm = new Vue({
         finishDate:"",
         taskStaff:"",
         taskContent:"",
+        state:"",
+
         //检查项新增
         checkItemId:"",
         content:"",
@@ -161,25 +199,45 @@ var vm = new Vue({
                 }
             })
         },
-        saveTaskInfo:function(){//保存任务信息
+
+        changeTaskState:function(type){//修改任务状态
+            debugger;
+            // 完成
+            if(type=="finish"&&vm.taskInfo.state!="2"){
+                var params = JSON.stringify({
+                    "taskId" : vm.taskId,
+                    "state" : "2"
+                });
+                saveTaskDetail(params);
+            }
+            // 标记开始
+            if(type=="start"&&vm.taskInfo.state=="2"&&vm.taskInfo.state=="1"){
+                var params = JSON.stringify({
+                    "taskId" : vm.taskId,
+                    "state" : "1"
+                });
+                saveTaskDetail(params);
+            }
+        },
+        delTaskState:function(){//删除
             $.ajax({
-                url: '../../projMan/projDetail/saveTaskInfo?_' + $.now(),
+                url: '../../projMan/projDetail/deleteTask?_' + $.now(),
                 data: JSON.stringify({
-                    "taskTitle" : vm.taskTitle,
-                    "finishDate" : vm.finishDate,
-                    "taskStaff" : vm.taskStaff,
-                    "taskContent" : vm.taskContent
+                    "taskId" : vm.taskId
                 }),
                 type: "post",
                 dataType: "json",
                 contentType: 'application/json',
                 success: function (data) {
-                    dialogMsg("保存成功！")
-                    isEdit:false;
-                    load();
+                    debugger;
+                    if(data.success){
+                        vm.backTaskInfo();
+                    }else{
+                        dialogMsg("删除失败！\n"+data.msg,"error")
+                    }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    dialogMsg("保存失败！"+errorThrown,"error")
+                    dialogMsg("操作失败！"+errorThrown,"error")
                 }
             });
         },
@@ -188,10 +246,28 @@ var vm = new Vue({
             vm.finishDate = vm.taskInfo.finishDate.substring(0,10);
             vm.taskStaff = vm.taskInfo.taskStaff;
             vm.taskContent = vm.taskInfo.taskContent;
+            vm.state = vm.taskInfo.state;
             vm.isEdit=true;
         },
         cancelEdit:function(){//取消编辑任务信息
             vm.isEdit=false;
+        },
+        addTaskContent:function(){
+            var params = JSON.stringify({
+                "taskId" : vm.taskId,
+                "taskContent" : vm.taskContent
+            });
+            saveTaskDetail(params);
+        },
+        saveTaskInfo:function(){//保存任务信息
+            var params = JSON.stringify({
+                "taskId" : vm.taskId,
+                "taskTitle" : vm.taskTitle,
+                "finishDate" : vm.finishDate,
+                "taskStaff" : vm.taskStaff,
+                "taskContent" : vm.taskContent
+            });
+            saveTaskDetail(params);
         },
         openAddTaskContent:function(){//打开\关闭新增项目详情面板
             vm.isAddTaskContent = !vm.isAddTaskContent;

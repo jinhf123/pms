@@ -107,14 +107,23 @@ public class ProjDetailController extends AbstractController {
     public JSON deleteTask(@RequestBody Map<String, Object> params){
         JSONObject result = new JSONObject();
         String msg="";
+        boolean success = true;
         params.put("userId", getUserId());
         try{
-            projDetailService.deleteTask(params);
+
+            int count = projDetailService.getSubTaskCount(params);
+            if(count==0){
+                projDetailService.deleteTask(params);
+            }else{
+                success=false;
+                msg="该任务存在子任务,请先删除子任务!";
+            }
         }catch (Exception e){
             e.printStackTrace();
+            success=false;
             msg=e.getMessage();
         }
-        result.put("success",true);
+        result.put("success",success);
         result.put("message",msg);
         return result;
     }
@@ -196,16 +205,18 @@ public class ProjDetailController extends AbstractController {
     @RequestMapping("/saveTaskInfo")
     public JSON saveTaskInfo(@RequestBody Map<String, Object> params){
         JSONObject result = new JSONObject();
+        boolean success = true;
         String msg = "";
         params.put("userId", getUserId());
         try{
             projDetailService.saveTaskInfo(params);
         }catch (Exception e){
             e.printStackTrace();
-            msg=e.getMessage();
+            success=false;
+            msg=e.getMessage().toString();
         }
-        result.put("success",true);
-        result.put("message",msg);
+        result.put("success",success);
+        result.put("msg",msg);
         return result;
     }
 

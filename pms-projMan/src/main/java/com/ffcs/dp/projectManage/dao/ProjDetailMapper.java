@@ -40,6 +40,7 @@ public interface ProjDetailMapper extends BaseMapper<WorkLogEntity> {
 
     int updateTaskState(Map<String, Object> params);
 
+    int getSubTaskCount(Map<String, Object> params);
 
     Map getTaskInfo(Map<String, Object> params);
 
@@ -54,5 +55,6 @@ public interface ProjDetailMapper extends BaseMapper<WorkLogEntity> {
     void insertCheckItem(Map<String, Object> params);
 
     void insertTaskLog(Map<String, Object> params);
+
 
 }
