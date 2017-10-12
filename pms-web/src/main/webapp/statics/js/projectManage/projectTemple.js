@@ -71,23 +71,47 @@ var templeForm = {
     "                                </div>"
 };
 
-var stepLi = {
-    template: "                            <li>\n" +
-    "                                <img class=\"badge-notify\" onclick=\"deleteStep(this)\"\n" +
-    "                                     src=\"/statics/img/step_delete.png\"/>\n" +
-    "                                <a href=\"#messages-pills\" data-toggle=\"tab\" title=\"科技立项\" ondblclick=\"changeStepName(this)\">科技立项</a>\n" +
-    "                            </li>"
-}
 
 var vm = new Vue({
     el: '#dpTemple',
-    data: {},
-    components: {
-        "temple-form": templeForm,
-        "step-li": stepLi
+    data: {
+        stepList: [
+            {text: '1', status: "show"},
+            {text: '2', status: "show"},
+            {text: '3', status: "show"}
+        ]
     },
-    methods: {}
+    components: {
+        "temple-form": templeForm
+    },
+
+    methods: {
+        addNewStep: function () {
+            this.stepList.push({text: "双击修改", status: "show"});
+            console.log(this.stepList)
+        },
+        removeStep: function (index) {
+            this.stepList.splice(index, 1);
+        },
+        changeStep: function (index) {
+            this.stepList.splice(index, 1, {text: "hello"});
+            // $(obj).html("<input onblur='changeText(this);' style='color: black; width: 56px' />");
+        },
+        show: function (index) {
+            this.stepList[index].status="show";
+        },
+        edit: function (index) {
+            this.stepList[index].status="edit";
+        }
+    }
 });
+Vue.directive('focus', {
+    // When the bound element is inserted into the DOM...
+    inserted: function (el) {
+        // Focus the element
+        el.focus()
+    }
+})
 
 function deleteStep(obj) {
     var li = $(obj).parent();

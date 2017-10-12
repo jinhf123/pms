@@ -65,13 +65,17 @@
                     <div class="panel-body">
                         <!-- Nav tabs -->
                         <ul class="nav nav-pills nav-step">
-                            <step-li></step-li>
-                            <step-li></step-li>
-                            <step-li></step-li>
-                            <step-li></step-li>
+                            <li v-for="(item, index) in stepList">
+                                <img class="badge-notify" @click="removeStep(index)"
+                                     src="/statics/img/step_delete.png"/>
+                                <a href="#messages-pills" data-toggle="tab" :title="item.text "
+                                   @dblclick="edit(index);">
+                                    <p v-if=" item.status == 'show' ">{{ item.text }}</p>
+                                    <input v-if=" item.status == 'edit'" style='color: black; width: 56px' v-model="stepList[index].text" @blur="show(index)" v-focus="true" /></a>
+                            </li>
                             <li class="add-step-li">
-                                <img class="badge-notify" >
-                                <a href="javascript:;" class="add-step" onclick="addNewStep(this)">新增模板</a>
+                                <img class="badge-notify">
+                                <a href="javascript:;" class="add-step" @click="addNewStep(this)">新增模板</a>
                             </li>
                         </ul>
 
@@ -100,7 +104,12 @@
         </form>
     </div>
 </div>
-
+<template id="myComponent">
+    <div>
+        <div>This is a component!</div>
+        <a @click="hello(this)">1</a>
+    </div>
+</template>
 
 #parse("include/footer.html")
 <script src="${rc.contextPath}/statics/plugins/tooltip.js"></script>
