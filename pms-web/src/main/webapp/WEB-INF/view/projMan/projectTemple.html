@@ -65,101 +65,29 @@
                     <div class="panel-body">
                         <!-- Nav tabs -->
                         <ul class="nav nav-pills nav-step">
-                            <li class="active">
-                                <img class="badge-notify" src="/statics/img/step_delete.png"/>
-                                <a href="#home-pills" data-toggle="tab">列入计划</a>
-                            </li>
-                            <li>
-                                <img class="badge-notify" src="/statics/img/step_delete.png"/>
-                                <a href="#profile-pills" data-toggle="tab">项目前期</a>
-                            </li>
-                            <li>
-                                <img class="badge-notify" src="/statics/img/step_delete.png"/>
-                                <a href="#messages-pills" data-toggle="tab">科技立项</a>
-                            </li>
-                            <li>
-                                <img class="badge-notify" src="/statics/img/step_delete.png"/>
-                                <a href="#settings-pills" data-toggle="tab">合同签订</a>
+                            <step-li></step-li>
+                            <step-li></step-li>
+                            <step-li></step-li>
+                            <step-li></step-li>
+                            <li class="add-step-li">
+                                <img class="badge-notify" >
+                                <a href="javascript:;" class="add-step" onclick="addNewStep(this)">新增模板</a>
                             </li>
                         </ul>
 
                         <!-- Tab panes -->
                         <div class="tab-content tab-step">
                             <div class="tab-pane fade in active" id="home-pills">
-                                <div class="flex-container">
-                                    <div class="flex-left">
-                                        <label for="inlineFormCustomSelect">默认完成时间：上一环节偏移</label>
-                                        <input class="custom-control input-number" type="text"/>
-                                        <select class="custom-select input-number" id="inlineFormCustomSelect">
-                                            <option value="1" selected>月</option>
-                                            <option value="2">天</option>
-                                        </select>
-                                        <label class="">当离完成时间</label>
-                                        <input class="custom-control " type="text"/>
-                                        <label class="">天,通知给</label>
-                                    </div>
-                                    <div class="flex-right">
-                                        <select class="js-example-basic-multiple form-control" name="states[]"
-                                                multiple="multiple">
-                                            <option value="AL">Alabama</option>
-                                            <option value="WY">Wyoming</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-line">
-                                    <div class="flex-container">
-                                        <div class="flex-left">
-                                            <label>当任务变更时，默认通知给</label>
-                                        </div>
-                                        <div class="flex-right">
-                                            <select class="js-example-basic-multiple form-control" name="states[]"
-                                                    multiple="multiple">
-                                                <option value="AL">Alabama</option>
-                                                <option value="WY">Wyoming</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-line">
-                                    <label>当日程结束前</label>
-                                    <input type="text" class="custom-control input-number"/>
-                                    <label>天，通知给参与人</label>
-                                </div>
-                                <div class="row">
-                                    <div class="div-inline">
-                                        <input type="checkbox" class=""/>
-                                    </div>
-                                    <div class="div-inline">
-                                        <div class="form-line">
-                                            <label>本环节需要上传文档 对上传文档要求</label>
-                                            <input type="checkbox" class="custom-control"/>
-                                            <label> word</label>
-                                            <input type="text" class="custom-control input-number"
-                                                   placeholder="个数"/>
-                                            <input type="checkbox" class="custom-control"/>
-                                            <label> xls</label>
-                                            <input type="text" class="custom-control input-number"
-                                                   placeholder="个数"/>
-                                            <input type="checkbox" class="custom-control"/>
-                                            <label> pdf</label>
-                                            <input type="text" class="custom-control input-number"
-                                                   placeholder="个数"/>
-                                        </div>
-                                        <div class="">
-                                            <input type="text" class="form-control" placeholder=" 对上传的文档进行具体说明">
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--<temple-form></temple-form>-->
+                                <temple-form></temple-form>
                             </div>
                             <div class="tab-pane fade" id="profile-pills">
-
+                                <temple-form></temple-form>
                             </div>
                             <div class="tab-pane fade" id="messages-pills">
-
+                                <temple-form></temple-form>
                             </div>
                             <div class="tab-pane fade" id="settings-pills">
-
+                                <temple-form></temple-form>
                             </div>
                         </div>
                     </div>
@@ -175,7 +103,8 @@
 
 
 #parse("include/footer.html")
-<script src="${rc.contextPath}/statics/js/projectManage/select2.min.js"></script>
+<script src="${rc.contextPath}/statics/plugins/tooltip.js"></script>
+<script src="${rc.contextPath}/statics/plugins/select2.min.js"></script>
 <script src="${rc.contextPath}/statics/js/projectManage/projectTemple.js"></script>
 
 </body>

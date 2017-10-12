@@ -29,6 +29,9 @@ html{
 
 .tab-pane label{
     font-weight:normal;
+    margin-top: 8px;
+    margin-bottom: 0;
+    margin-right:5px ;
 }
 
 .input-number{
@@ -41,6 +44,7 @@ html{
     top: -9px;
     left: 53%;
     z-index: 3;
+    cursor: pointer;
 }
 .nav-step{
     margin-left: 20px;
@@ -59,11 +63,28 @@ html{
     background-color:white;
     padding: 5px 10px 5px 10px;
     z-index: 2;
+    width: 80px;
+    height: 34px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-
 .nav-step>li.active>a, .nav-step>li.active>a:focus, .nav-step>li.active>a:hover{
     background-color: rgba(91, 192, 222, 1);
 }
+
+.nav-step>li>.add-step{
+    border: 1px dashed #999999;
+    color: #999999;
+}
+
+.nav-step>li>.add-step:hover,.nav-step>li>.add-step:visited, .nav-step>li>.add-step:focus{
+    background-color: white;
+}
+
+
+
 
 .tab-step{
     position:relative;
@@ -86,3 +107,8 @@ html{
 .flex-container { display: flex ;}
 .flex-left { flex: none; }
 .flex-right { flex: 1 ;}
+
+.flex-checkbox{
+    margin-top: 20px;
+    margin-right: 10px;
+}
