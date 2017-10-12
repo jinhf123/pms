@@ -10,6 +10,9 @@ $(function () {
 });
 
 function initialPage(){
+
+    $("#finishDate").datetimepicker();
+
     $(".panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     vm.projId = getQueryString('projId');
     vm.stepId = getQueryString('stepId');
@@ -36,7 +39,7 @@ function getTaskInfo(){
             vm.finishDate = vm.taskInfo.finishDate.substring(0,10);
             vm.taskStaff = vm.taskInfo.taskStaff;
             vm.taskContent = vm.taskInfo.taskContent;
-            vm.state = vm.taskInfo.state;
+            vm.taskState = vm.taskInfo.state;
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
         }
@@ -89,9 +92,9 @@ function saveTaskDetail(params){
             if(data.success){
                 dialogMsg("操作成功！");
                 isEdit:false;
-                load();
                 vm.isEdit=false;
                 vm.isAddTaskContent=false;
+                vm.load();
             }else{
                 dialogMsg("操作失败！"+data.msg,"error")
             }
@@ -168,12 +171,15 @@ var vm = new Vue({
         finishDate:"",
         taskStaff:"",
         taskContent:"",
-        state:"",
+        taskState:"",
 
         //检查项新增
         checkItemId:"",
         content:"",
-        state:""
+        state:"",
+
+        //发表评论
+        taskLogContent:""
     },
     methods : {
         load: function() {
@@ -211,7 +217,7 @@ var vm = new Vue({
                 saveTaskDetail(params);
             }
             // 标记开始
-            if(type=="start"&&vm.taskInfo.state=="2"&&vm.taskInfo.state=="1"){
+            if(type=="start"&&vm.taskInfo.state=="0"){
                 var params = JSON.stringify({
                     "taskId" : vm.taskId,
                     "state" : "1"
@@ -229,7 +235,6 @@ var vm = new Vue({
                 dataType: "json",
                 contentType: 'application/json',
                 success: function (data) {
-                    debugger;
                     if(data.success){
                         vm.backTaskInfo();
                     }else{
@@ -246,7 +251,7 @@ var vm = new Vue({
             vm.finishDate = vm.taskInfo.finishDate.substring(0,10);
             vm.taskStaff = vm.taskInfo.taskStaff;
             vm.taskContent = vm.taskInfo.taskContent;
-            vm.state = vm.taskInfo.state;
+            vm.taskState = vm.taskInfo.state;
             vm.isEdit=true;
         },
         cancelEdit:function(){//取消编辑任务信息
@@ -289,10 +294,36 @@ var vm = new Vue({
             if(data.state=="0")
             dialogConfirm("请确认检查项：\n\""+data.content+"\"\n是否完成!", function(){
                 vm.checkItemId = data.checkItemId;
+                vm.content = data.content;
                 vm.state = "1";
                 saveCheckItem();
             });
             getCheckItemGrid();
+        },
+        saveTaskLog:function(){//发表评论
+            $.ajax({
+                url: '../../projMan/projDetail/saveTaskLog?_' + $.now(),
+                data: JSON.stringify({
+                    "taskId" : vm.taskId,
+                    "content" : vm.taskLogContent,
+                    "operateType" : "0"
+                }),
+                type: "post",
+                dataType: "json",
+                contentType: 'application/json',
+                success: function (data) {
+                    if(data.success){
+                        dialogMsg("评论成功！");
+                        vm.taskLogContent = "";
+                        getTaskLogGrid();
+                    }else{
+                        dialogMsg("评论失败！"+data.msg,"error")
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    dialogMsg("操作失败！"+errorThrown,"error")
+                }
+            });
         }
 
     },

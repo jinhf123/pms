@@ -64,7 +64,13 @@
 
 
 
-
+.btn-link-group{
+    padding-top: 10px;
+    padding-left: 10px;
+}
+.btn-link-group>span>button{
+    margin-bottom: 3px;
+}
 
 .date-staff-label{
     width: 84px;
@@ -115,7 +121,7 @@
 .comment-btn-group>input{border: 1px solid #E4E4E4; height: 18px;width: 18px;}
 .comment-textarea-div{
     width: calc(100% - 10px);
-    height: 123px;
+    height: 125px;
     background: inherit;
     background: url("/statics/img/projectManage/u18.png") no-repeat;
     padding-top: 23px;
@@ -145,9 +151,15 @@
 }
 
 
+
+.center-bottom-bar{
+    padding-top: 10px;
+}
+
 .send-meg-div{
     float: right;
     text-align: right;
+    padding-right: 10px;
 }
 .send-meg-div>select{width: 200px;height: 25px;border: 1px solid #E4E4E4;border-radius: 5px;background: transparent;}
 select::-ms-expand {border: 0px solid transparent; background: transparent; }

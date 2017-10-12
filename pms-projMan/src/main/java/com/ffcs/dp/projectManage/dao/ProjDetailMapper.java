@@ -25,16 +25,14 @@ public interface ProjDetailMapper extends BaseMapper<WorkLogEntity> {
 
     List<ScheduleEntity> getScheduleList(Map<String, Object> params);
 
-//    void updateTask(Map<String, Object> params);
-//    void updateSchedule(Map<String, Object> params);
 
-    void insertTask(Map<String, Object> params);
+    int insertTask(Map<String, Object> params);
 
-    void insertSchedule(Map<String, Object> params);
+    int insertSchedule(Map<String, Object> params);
 
-    void deleteTask(Map<String, Object> params);
+    int deleteTask(Map<String, Object> params);
 
-    void deleteSchedule(Map<String, Object> params);
+    int deleteSchedule(Map<String, Object> params);
 
     int updateStepState(Map<String, Object> params);
 
@@ -44,17 +42,18 @@ public interface ProjDetailMapper extends BaseMapper<WorkLogEntity> {
 
     Map getTaskInfo(Map<String, Object> params);
 
-    void updateTaskInfo(Map<String, Object> params);
+    int updateTaskInfo(Map<String, Object> params);
 
     List<CheckItemEntity> getCheckItemList(Map<String, Object> params);
 
     List<TaskLogEntity> getTaskLogList(Map<String, Object> params);
 
-    void updateCheckItem(Map<String, Object> params);
+    int updateCheckItem(Map<String, Object> params);
 
-    void insertCheckItem(Map<String, Object> params);
+    int insertCheckItem(Map<String, Object> params);
 
-    void insertTaskLog(Map<String, Object> params);
+    int insertTaskLog(Map<String, Object> params);
 
+    int deleteTaskLog(Map<String, Object> params);
 
 }

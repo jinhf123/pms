@@ -27,8 +27,6 @@ public class ProjDetailServiceImpl implements ProjDetailService {
         return projDetailManager.getProjInfo(params);
     }
 
-
-
     @Override
     public Map getProjectInfo(Map<String, Object> params) {
         return projDetailManager.getProjectInfo(params);
@@ -45,28 +43,24 @@ public class ProjDetailServiceImpl implements ProjDetailService {
     }
 
     @Override
-    public List<ScheduleEntity> getScheduleList(Map<String, Object> params) {
-        return projDetailManager.getScheduleList(params);
+    public List<ScheduleEntity> getScheduleList(Map<String, Object> params) { return projDetailManager.getScheduleList(params);}
+
+    @Override
+    public int saveTask(Map<String, Object> params) {
+        return projDetailManager.saveTask(params);
     }
 
     @Override
-    public void saveTask(Map<String, Object> params) {
-        projDetailManager.saveTask(params);
+    public int saveSchedule(Map<String, Object> params) {
+        return projDetailManager.saveSchedule(params);
     }
 
     @Override
-    public void saveSchedule(Map<String, Object> params) {
-        projDetailManager.saveSchedule(params);
-    }
+    public int deleteTask(Map<String, Object> params) { return projDetailManager.deleteTask(params); }
 
     @Override
-    public void deleteTask(Map<String, Object> params) {
-        projDetailManager.deleteTask(params);
-    }
-
-    @Override
-    public void deleteSchedule(Map<String, Object> params) {
-        projDetailManager.deleteSchedule(params);
+    public int deleteSchedule(Map<String, Object> params) {
+        return projDetailManager.deleteSchedule(params);
     }
 
     @Override
@@ -80,9 +74,7 @@ public class ProjDetailServiceImpl implements ProjDetailService {
     }
 
     @Override
-    public int getSubTaskCount(Map<String, Object> params) {
-        return projDetailManager.getSubTaskCount(params);
-    }
+    public int getSubTaskCount(Map<String, Object> params) { return projDetailManager.getSubTaskCount(params); }
 
     @Override
     public Map getTaskInfo(Map<String, Object> params) {
@@ -90,28 +82,24 @@ public class ProjDetailServiceImpl implements ProjDetailService {
     }
 
     @Override
-    public void saveTaskInfo(Map<String, Object> params) {
-        projDetailManager.saveTaskInfo(params);
+    public int saveTaskInfo(Map<String, Object> params) {
+        return projDetailManager.saveTaskInfo(params);
     }
 
     @Override
-    public List<CheckItemEntity> getCheckItemList(Map<String, Object> params) {
-        return  projDetailManager.getCheckItemList(params);
+    public List<CheckItemEntity> getCheckItemList(Map<String, Object> params) { return projDetailManager.getCheckItemList(params); }
+
+    @Override
+    public List<TaskLogEntity> getTaskLogList(Map<String, Object> params) { return projDetailManager.getTaskLogList(params); }
+
+    @Override
+    public int saveCheckItem(Map<String, Object> params) {
+        return projDetailManager.saveCheckItem(params);
     }
 
     @Override
-    public List<TaskLogEntity> getTaskLogList(Map<String, Object> params) {
-        return  projDetailManager.getTaskLogList(params);
-    }
-
-    @Override
-    public void saveCheckItem(Map<String, Object> params) {
-        projDetailManager.saveCheckItem(params);
-    }
-
-    @Override
-    public void saveTaskLog(Map<String, Object> params) {
-        projDetailManager.saveTaskLog(params);
+    public int saveTaskLog(Map<String, Object> params) {
+        return projDetailManager.saveTaskLog(params);
     }
 
 

@@ -13,6 +13,9 @@
             <div class="col-md-10 column ">
                 <div class="row clearfix">
                     <div v-show="!isEdit" class="col-md-12 column display-flex">
+                        <span v-if="taskInfo.state=='0'"><img :src="icon_oper_1">&nbsp;</span>
+                        <span v-if="taskInfo.state=='1'"><img :src="icon_oper_2">&nbsp;</span>
+                        <span v-if="taskInfo.state=='2'"><img :src="icon_oper_4">&nbsp;</span>
                         <span>{{taskInfo.taskTitle}}</span><span class="date-staff-label">{{taskInfo.finishDate.substring(5,10)}}&nbsp;{{taskInfo.taskStaff}}</span>
                         <span v-show="(taskInfo.taskContent==''||taskInfo.taskContent==null)?false:true">{{taskInfo.taskContent}}</span>
                     </div>
@@ -44,24 +47,22 @@
                             </div>
                         </div>
                     </div>
-                    <!--<div v-show="(taskInfo.taskContent==''||taskInfo.taskContent==null)?false:true"  class="col-md-12 column">
-                        <span>{{taskInfo.taskContent}}</span>
-                    </div>-->
-                    <div class="col-md-12 column">
+                    <div class="col-md-12 column btn-link-group">
                         <span>添加</span>
                         <span v-show="(taskInfo.taskContent!=''&&taskInfo.taskContent!=null)?false:true">
-                            <button type="button" class="btn btn-sm btn-link " @click="openAddTaskContent">任务详细</button>或者
+                            <button type="button" class="btn btn-link column" @click="openAddTaskContent">任务详细</button>
+                            或者
                         </span>
                         <span>
-                            <button type="button" class="btn btn-sm btn-link " @click="openAddCheckItem">检查项</button>
+                            <button type="button" class="btn btn-link column" @click="openAddCheckItem">检查项</button>
                         </span>
                     </div>
                     <!--新增项目详情-->
                     <div v-if="isAddTaskContent" class="col-md-12 column display-flex add-panel">
                         <label><img :src="icon_Title"></label>
                         <input v-model="taskContent" class="form-control" placeholder="请输入项目详情!" required>
-                        <button type="button" class="btn btn-link " @click="addTaskContent">添加任务详细</button>
-                        <button type="button" class="btn btn-link column" @click="openAddTaskContent">取消</button>
+                        <button type="button" class="btn btn-sm btn-link " @click="addTaskContent">添加任务详细</button>
+                        <button type="button" class="btn btn-sm btn-link column" @click="openAddTaskContent">取消</button>
                     </div>
                     <div class="col-md-12 column horizontal-divider"></div>
                     <!--检查项列表-->
@@ -106,12 +107,12 @@
                             </div>
                         </div>
                         <div class="col-md-12 column comment-textarea-div">
-                            <textarea class="comment-textarea" placeholder="请输入评论内容！"></textarea>
+                            <textarea class="comment-textarea" v-model="taskLogContent" placeholder="请输入评论内容！"></textarea>
                         </div>
 
-                        <div class="col-md-12 column display-flex">
+                        <div class="col-md-12 column display-flex center-bottom-bar">
                             <div class="col-md-6 column display-flex">
-                                <button class="btn btn-sm btn-info"><span>发表评论</span></button>&nbsp;
+                                <button class="btn btn-sm btn-info" @click="saveTaskLog"><span>发表评论</span></button>&nbsp;
                                 <button class="btn btn-sm btn-link" @click="backTaskInfo"><span>取消</span></button>
                             </div>
                             <div class="col-md-6 column send-meg-div">
@@ -126,13 +127,29 @@
 
                 <div class="row clearfix">
                     <div class="col-md-12 column right-btn-group">
-                        <div class="col-md-12 column"><button class="btn btn-sm btn-link" @click="changeTaskState('finish')"><img :src="icon_btn_finish">&nbsp;&nbsp;完成</button></div>
+                        <div class="col-md-12 column">
+                            <button class="btn btn-sm btn-link" :disabled="taskInfo.state!='1'" @click="changeTaskState('finish')">
+                                <img :src="icon_btn_finish">&nbsp;&nbsp;完成
+                            </button>
+                        </div>
                         <div class="col-md-12 column horizontal-divider"></div>
-                        <div class="col-md-12 column"><button class="btn btn-sm btn-link" @click="changeTaskState('finish')"><img :src="icon_btn_start">&nbsp;&nbsp;标记开始</button></div>
+                        <div class="col-md-12 column">
+                            <button class="btn btn-sm btn-link" :disabled="taskInfo.state!='0'" @click="changeTaskState('start')">
+                                <img :src="icon_btn_start">&nbsp;&nbsp;标记开始
+                            </button>
+                        </div>
                         <div class="col-md-12 column horizontal-divider"></div>
-                        <div class="col-md-12 column"><button class="btn btn-sm btn-link" @click="delTaskState"><img :src="icon_btn_delete">&nbsp;&nbsp;删除</button></div>
+                        <div class="col-md-12 column">
+                            <button class="btn btn-sm btn-link" @click="delTaskState">
+                                <img :src="icon_btn_delete">&nbsp;&nbsp;删除
+                            </button>
+                        </div>
                         <div class="col-md-12 column horizontal-divider"></div>
-                        <div class="col-md-12 column"><button class="btn btn-sm btn-link" @click="startEdit"><img :src="icon_btn_edit">&nbsp;&nbsp;编辑</button></div>
+                        <div class="col-md-12 column">
+                            <button class="btn btn-sm btn-link" @click="startEdit">
+                                <img :src="icon_btn_edit">&nbsp;&nbsp;编辑
+                            </button>
+                        </div>
                     </div>
                 </div>
 

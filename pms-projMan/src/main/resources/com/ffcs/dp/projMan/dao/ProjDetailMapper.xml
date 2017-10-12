@@ -196,7 +196,7 @@
 			   T.TASK_STAFF,
 		       T.FINISH_DATE,
 			   T.TASK_CONTENT,
-			   T.STATE
+			   STATE
 		  from PMS_PROJ_TASK T
 		 where T.TASK_ID = #{taskId}
 	</select>
@@ -208,8 +208,9 @@
 			<if test="taskTitle != null and taskTitle != ''">TASK_TITLE = #{taskTitle} ,</if>
 			<if test="taskStaff != null and taskStaff != ''">TASK_STAFF = #{taskStaff} ,</if>
 			<if test="taskStaffId != null and taskStaffId != ''">TASK_STAFF_ID = #{taskStaffId} ,</if>
-			<if test="taskContent != null and taskContent != ''">TASK_CONTENT = to_date(#{taskContent},'YYYY-MM-DD') ,</if>
-			<if test="finishDate != null and finishDate != ''">FINISH_DATE = #{finishDate} </if>
+			<if test="taskContent != null and taskContent != ''">TASK_CONTENT = #{taskContent} ,</if>
+            <if test="state != null and state != ''">STATE = #{state} ,</if>
+			<if test="finishDate != null and finishDate != ''">FINISH_DATE =to_date(#{finishDate},'YYYY-MM-DD') </if>
 		</set>
 		WHERE
 		TASK_ID = #{taskId}
@@ -259,9 +260,16 @@
 
     <!--新增任务操作日志信息-->
     <insert id="insertTaskLog" parameterType="Map">
-
+        <selectKey keyProperty="taskLogId" resultType="long" order="BEFORE">
+            SELECT PMS_PROJ_TASK_LOG_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        insert into PMS_PROJ_TASK_LOG(TASK_LOG_ID,TASK_ID,CONTENT,OPERATOR,OPERATE_DATE,OPERATE_TYPE)
+        values(#{taskLogId},#{taskId},#{content},#{userId},sysdate,#{operateType})
     </insert>
 
-
+    <!--删除任务操作日志信息-->
+    <delete id="deleteTaskLog" parameterType="Map">
+        delete PMS_PROJ_TASK_LOG where TASK_ID = #{taskId}
+    </delete>
 
 </mapper>

@@ -122,23 +122,40 @@ public class ProjDetailManagerImpl implements ProjDetailManager {
     }
 
     @Override
-    public void saveTask(Map<String, Object> params) {
-        projDetailMapper.insertTask(params);
+    public int saveTask(Map<String, Object> params) {
+        int count = projDetailMapper.insertTask(params);
+        try {
+            Map map = new HashMap();
+            map.put("taskId",params.get("taskId"));
+            map.put("content","创建任务");
+            map.put("userId",params.get("userId"));
+            map.put("operateType","1");
+            projDetailMapper.insertTaskLog(map);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return count;
     }
 
     @Override
-    public void saveSchedule(Map<String, Object> params) {
-        projDetailMapper.insertSchedule(params);
+    public int saveSchedule(Map<String, Object> params) {
+        return projDetailMapper.insertSchedule(params);
     }
 
     @Override
-    public void deleteTask(Map<String, Object> params) {
-        projDetailMapper.deleteTask(params);
+    public int deleteTask(Map<String, Object> params) {
+        int count = projDetailMapper.deleteTask(params);
+        try{
+            projDetailMapper.deleteTaskLog(params);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return count;
     }
 
     @Override
-    public void deleteSchedule(Map<String, Object> params) {
-        projDetailMapper.deleteSchedule(params);
+    public int deleteSchedule(Map<String, Object> params) {
+        return projDetailMapper.deleteSchedule(params);
     }
 
     @Override
@@ -169,8 +186,30 @@ public class ProjDetailManagerImpl implements ProjDetailManager {
     }
 
     @Override
-    public void saveTaskInfo(Map<String, Object> params) {
-        projDetailMapper.updateTaskInfo(params);
+    public int saveTaskInfo(Map<String, Object> params) {
+        int count = projDetailMapper.updateTaskInfo(params);
+        try {
+            Map map = new HashMap();
+            String operateType = "3";
+            String content = "修改任务";
+            map.put("taskId",params.get("taskId"));
+            map.put("userId",params.get("userId"));
+
+            if("1".equals(params.get("state"))){
+                operateType = "2";
+                content = "标记任务开始执行";
+            }
+            if("2".equals(params.get("state"))){
+                operateType = "4";
+                content = "标记任务执行完成";
+            }
+            map.put("operateType",operateType);
+            map.put("content",content);
+            projDetailMapper.insertTaskLog(map);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return count;
     }
 
     @Override
@@ -184,18 +223,34 @@ public class ProjDetailManagerImpl implements ProjDetailManager {
     }
 
     @Override
-    public void saveCheckItem(Map<String, Object> params) {
+    public int saveCheckItem(Map<String, Object> params) {
+        int count;
+        String content = "添加检查项";
         if(params.get("checkItemId")!=null&&!"".equals(params.get("checkItemId"))){
-            projDetailMapper.updateCheckItem(params);
+            count = projDetailMapper.updateCheckItem(params);
+            content = "完成检查项:"+params.get("content").toString();
         }else{
-            projDetailMapper.insertCheckItem(params);
+            count = projDetailMapper.insertCheckItem(params);
+            content = "添加检查项:"+params.get("content").toString();
         }
+        try {
+            Map map = new HashMap();
+            String operateType = "3";
 
+            map.put("taskId",params.get("taskId"));
+            map.put("userId",params.get("userId"));
+            map.put("operateType",operateType);
+            map.put("content",content);
+            projDetailMapper.insertTaskLog(map);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return count;
     }
 
     @Override
-    public void saveTaskLog(Map<String, Object> params) {
-        projDetailMapper.insertTaskLog(params);
+    public int saveTaskLog(Map<String, Object> params) {
+       return projDetailMapper.insertTaskLog(params);
     }
 
 
