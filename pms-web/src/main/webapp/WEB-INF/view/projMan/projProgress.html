@@ -67,8 +67,8 @@
                         <div v-for="(data,index) in tasks" class="panel panel-default">
                             <div class="panel-heading panel-heading-task">
                                 <div class="col-md-11 column panel-heading-title" >
-                                                            <span :class="{'square':(data.state==0),'triangle-orange':(data.state==1),'circular-green':(data.state==2)}" >
-                                                            </span>
+                                    <span :class="{'square':(data.state==0),'triangle-orange':(data.state==1),'circular-green':(data.state==2)}" >
+                                    </span>
                                     <span @click="showDetail(data.taskId)">{{data.taskTitle}}</span>
                                     <span :class="data.isTimeOut?'label-gray':'label-pink'">{{data.startDate}}{{data.taskStaff}}</span>
                                 </div>

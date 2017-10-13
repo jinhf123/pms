@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>文档管理</title>
+    #parse("include/header.html")
+    <link rel="stylesheet" href="${rc.contextPath}/statics/css/projectManage/fileMan.css">
+
+</head>
+<body>
+<div id="dpLTE" class="clearfix" v-cloak>
+    <!--
+        0：文件夹  1：word文档  2：excel文档 3：PDF文档 4：PPT文档  5：其他
+    -->
+    <div class="clearfix" :style="styleObject">
+        <div class="col-md-12 column">
+            <div class="clearfix">
+                <div class="col-md-10 column">
+                    <span style="font-weight:bold;">项目文件夹</span>
+                </div>
+                <div class="col-md-2 column float-right">
+                    <button class="btn btn-link" >添加文件夹</button>
+                </div>
+            </div>
+            <div class="clearfix folderPanel">
+                <div class="north-slimScroll ">
+                    <div class="col-md-12 column">
+                        <div class="col-md-1 column folderDiv" v-for="folder in folders">
+                            <span><img :src="icon_Folder"><br>
+                                {{folder.fileName}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 column horizontal-divider">
+        </div>
+        <div class="col-md-12 column">
+            <div class="clearfix">
+                <div class="col-md-8 column">
+                    <span style="font-weight:bold;">列入计划</span>
+                </div>
+                <div class="col-md-4 column float-right">
+                    <button class="btn btn-link" >上传文件</button>
+                    <button class="btn btn-link" >删除文件夹</button>
+                </div>
+            </div>
+            <div class="clearfix">
+                <div class="col-md-12 column">
+                    本阶段需上传3个word文档，3个pdf。文档上传说明：xxxxxxxx
+                </div>
+            </div>
+            <div class="clearfix filePanel">
+                <div class="south-slimScroll">
+
+                    <div class="col-md-12 column fileDiv">
+                        <div class="col-md-8 column"><span><img :src="icon_File">2016EDW系统项目建议书文档</span></div>
+                        <div class="col-md-3 column file-describe-div"><span>张三上传于04-22 16:00:00</span></div>
+                        <div class="col-md-1 column float-right">
+                            <button class="btn btn-sm btn-link column" >下载</button>
+                            <button class="btn btn-sm btn-link column" >删除</button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 column fileDiv">
+                        <div class="col-md-8 column"><span><img :src="icon_File">2016EDW系统项目建议书文档</span></div>
+                        <div class="col-md-3 column file-describe-div"><span>张三上传于04-22 16:00:00</span></div>
+                        <div class="col-md-1 btn-link-group">
+                            <button class="btn btn-sm btn-link column" >下载</button>
+                            <button class="btn btn-sm btn-link column" >删除</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+</div>
+#parse("include/footer.html")
+<script src="${rc.contextPath}/statics/js/projectManage/fileMan.js?_${date.systemTime}"></script>
+</body>
+</html>
