@@ -81,7 +81,7 @@ public class ProjDetailController extends AbstractController {
             msg=e.getMessage();
         }
         result.put("success",true);
-        result.put("message",msg);
+        result.put("msg",msg);
         return result;
     }
 
@@ -98,7 +98,7 @@ public class ProjDetailController extends AbstractController {
             msg=e.getMessage();
         }
         result.put("success",true);
-        result.put("message",msg);
+        result.put("msg",msg);
         return result;
     }
 
@@ -124,7 +124,7 @@ public class ProjDetailController extends AbstractController {
             msg=e.getMessage();
         }
         result.put("success",success);
-        result.put("message",msg);
+        result.put("msg",msg);
         return result;
     }
 
@@ -141,7 +141,7 @@ public class ProjDetailController extends AbstractController {
             msg=e.getMessage();
         }
         result.put("success",true);
-        result.put("message",msg);
+        result.put("msg",msg);
         return result;
     }
 
@@ -160,7 +160,7 @@ public class ProjDetailController extends AbstractController {
             msg=e.getMessage();
         }
         result.put("success",true);
-        result.put("message",msg);
+        result.put("msg",msg);
         return result;
     }
 
@@ -185,7 +185,7 @@ public class ProjDetailController extends AbstractController {
             msg=e.getMessage();
         }
         result.put("success",true);
-        result.put("message",msg);
+        result.put("msg",msg);
         return result;
     }
 
@@ -248,7 +248,7 @@ public class ProjDetailController extends AbstractController {
             msg=e.getMessage();
         }
         result.put("success",true);
-        result.put("message",msg);
+        result.put("msg",msg);
         return result;
     }
 
@@ -265,7 +265,7 @@ public class ProjDetailController extends AbstractController {
             msg=e.getMessage();
         }
         result.put("success",true);
-        result.put("message",msg);
+        result.put("msg",msg);
         return result;
     }
 

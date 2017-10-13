@@ -22,9 +22,8 @@ function initialPage(){
         $(".panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     });
 }
-
+//获取任务信息
 function getTaskInfo(){
-    //获取任务信息
     $.ajax({
         url: '../../projMan/projDetail/getTaskInfo?_' + $.now(),
         data: JSON.stringify({
@@ -46,7 +45,7 @@ function getTaskInfo(){
     });
 }
 
-
+//获取检查项列表
 function getCheckItemGrid(){
     $.ajax({
         url: '../../projMan/projDetail/getCheckItemList?_' + $.now(),
@@ -63,7 +62,7 @@ function getCheckItemGrid(){
         }
     });
 }
-
+//获取任务日志列表
 function getTaskLogGrid(){
     $.ajax({
         url: '../../projMan/projDetail/getTaskLogList?_' + $.now(),
@@ -80,7 +79,7 @@ function getTaskLogGrid(){
         }
     });
 }
-
+//保存任务详细
 function saveTaskDetail(params){
     $.ajax({
         url: '../../projMan/projDetail/saveTaskInfo?_' + $.now(),
@@ -98,14 +97,13 @@ function saveTaskDetail(params){
             }else{
                 dialogMsg("操作失败！"+data.msg,"error")
             }
-
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             dialogMsg("操作失败！"+errorThrown,"error")
         }
     });
 }
-
+//保存检查项
 function saveCheckItem(){
     $.ajax({
         url: '../../projMan/projDetail/saveCheckItem?_' + $.now(),
@@ -119,18 +117,57 @@ function saveCheckItem(){
         dataType: "json",
         contentType: 'application/json',
         success: function (data) {
-            dialogMsg("保存成功！")
-            vm.isAddCheckItem=false;
-            vm.checkItemId="";
-            vm.content="";
-            vm.state="";
-            vm.load();
+            if(data.success){
+                dialogMsg("保存成功！")
+                vm.isAddCheckItem=false;
+                vm.checkItemId="";
+                vm.content="";
+                vm.state="";
+                vm.load();
+            }else{
+                dialogMsg("保存失败！"+data.msg,"error")
+            }
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             dialogMsg("保存失败！"+errorThrown,"error")
         }
     });
 }
+//添加到工作日志
+function addToWorkLog(){
+    if(vm.addToWorkLog)
+    $.ajax({
+        url: '../../projMan/workLog/saveWorkLog?_' + $.now(),
+        data: JSON.stringify({
+            "workLogDate" : formatDate(new Date(),"yyyy-MM-dd"),
+            "startTime" : "08:00",
+            "endTime" : "08:00",
+            "minutes" : 0,
+            "isProjectWork" : "1",
+            "project" : vm.projId,
+            "task" : vm.taskId,
+            "workDetails" : vm.taskLogContent
+        }),
+        type: "post",
+        dataType: "json",
+        contentType: 'application/json',
+        success: function (data) {
+        }
+    });
+}
+//添加到风险问题
+function addToRiskIssues(){
+    if(addToRiskIssues){
+        //TODO 添加到风险问题
+    }
+}
+//添加到本周周报
+function addToWeeklyReport(){
+    if(addToWeeklyReport){
+        //TODO 添加到本周周报
+    }
+}
+
 
 
 var vm = new Vue({
@@ -313,6 +350,9 @@ var vm = new Vue({
                 contentType: 'application/json',
                 success: function (data) {
                     if(data.success){
+                        addToWorkLog();
+                        addToRiskIssues();
+                        addToWeeklyReport();
                         dialogMsg("评论成功！");
                         vm.taskLogContent = "";
                         getTaskLogGrid();
