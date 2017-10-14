@@ -30,4 +30,9 @@ public class FileManServiceImpl implements FileManService {
     public int saveFileMan(Map<String, Object> params) {
         return fileManManager.saveFileMan(params);
     }
+
+    @Override
+    public int deleteFileMan(Map<String, Object> params) {
+        return fileManManager.deleteFileMan(params);
+    }
 }

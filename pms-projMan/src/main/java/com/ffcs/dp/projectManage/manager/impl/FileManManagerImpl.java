@@ -25,4 +25,9 @@ public class FileManManagerImpl implements FileManManager {
     public int saveFileMan(Map<String, Object> params) {
         return fileManMapper.insertFileMan(params);
     }
+
+    @Override
+    public int deleteFileMan(Map<String, Object> params) {
+        return fileManMapper.deleteFileMan(params);
+    }
 }

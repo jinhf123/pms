@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ffcs.dp.projectManage.dao.FileManEntity">
+<mapper namespace="com.ffcs.dp.projectManage.dao.FileManMapper">
 
 
 
@@ -8,6 +8,7 @@
 	<select id="getFileManList" resultType="FileManEntity" parameterType="Map">
 		select T.FILE_ID,
 			   T.FOLDER_ID,
+               T.FILE_TYPE,
 			   T.FILE_NAME,
 			   T.FILE_PATH,
 			   T.DESCRIPTION,
@@ -36,6 +37,8 @@
 	</insert>
 
 
-
+	<delete id="deleteFileMan" parameterType="Map">
+		delete PMS_PROJ_FILE_MANAGE where FILE_ID = #{fileId} or FOLDER_ID = #{fileId}
+	</delete>
 
 </mapper>

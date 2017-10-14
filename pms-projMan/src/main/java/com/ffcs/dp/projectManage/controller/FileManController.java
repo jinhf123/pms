@@ -39,7 +39,7 @@ public class FileManController extends AbstractController {
 
     //保存文件管理
     @RequestMapping("/saveFileMan")
-    public JSON saveWorkLog(@RequestBody Map<String, Object> params){
+    public JSON saveFileMan(@RequestBody Map<String, Object> params){
         JSONObject json = new JSONObject();
         String msg = "保存成功！";
         params.put("userId", getUserId());
@@ -56,7 +56,22 @@ public class FileManController extends AbstractController {
 
 
 
-
+    //删除文件管理
+    @RequestMapping("/deleteFileMan")
+    public JSON deleteFileMan(@RequestBody Map<String, Object> params){
+        JSONObject json = new JSONObject();
+        String msg = "删除成功！";
+        params.put("userId", getUserId());
+        try{
+            fileManService.deleteFileMan(params);
+        }catch (Exception e){
+            e.printStackTrace();
+            msg = "删除失败"+e.getMessage();
+        }
+        json.put("success",true);
+        json.put("message",msg);
+        return json;
+    }
 
 
 

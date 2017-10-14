@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 工作日志dao
+ * 文档管理dao
  */
 @MapperScan
 @Repository
@@ -18,4 +18,6 @@ public interface FileManMapper extends BaseMapper<FileManEntity> {
     List<FileManEntity> getFileManList(Map<String, Object> params);
 
     int insertFileMan(Map<String, Object> params);
+
+    int deleteFileMan(Map<String, Object> params);
 }

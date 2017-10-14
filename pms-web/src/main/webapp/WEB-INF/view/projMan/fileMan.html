@@ -8,11 +8,9 @@
 </head>
 <body>
 <div id="dpLTE" class="clearfix" v-cloak>
-    <!--
-        0：文件夹  1：word文档  2：excel文档 3：PDF文档 4：PPT文档  5：其他
-    -->
+    <!--0：文件夹  1：word文档  2：excel文档 3：PDF文档 4：PPT文档  5：其他-->
     <div class="clearfix" :style="styleObject">
-        <div class="col-md-12 column">
+        <div class="col-md-12 column" style="height: 150px">
             <div class="clearfix">
                 <div class="col-md-10 column">
                     <span style="font-weight:bold;">项目文件夹</span>
@@ -24,7 +22,8 @@
             <div class="clearfix folderPanel">
                 <div class="north-slimScroll ">
                     <div class="col-md-12 column">
-                        <div class="col-md-1 column folderDiv" v-for="folder in folders">
+                        <div v-for="folder in folders" class="col-md-1 column folderDiv"
+                             :class="{active:(activeFolderId==folder.fileId)}" @click="activeFolder(folder)" >
                             <span><img :src="icon_Folder"><br>
                                 {{folder.fileName}}
                             </span>
@@ -35,42 +34,39 @@
         </div>
         <div class="col-md-12 column horizontal-divider">
         </div>
-        <div class="col-md-12 column">
+        <div v-show="activeFolderId!=''" class="col-md-12 column" style="height: calc(100vh - 170px);">
             <div class="clearfix">
                 <div class="col-md-8 column">
-                    <span style="font-weight:bold;">列入计划</span>
+                    <span style="font-weight:bold;">{{activeFolderName}}</span>
                 </div>
                 <div class="col-md-4 column float-right">
                     <button class="btn btn-link" >上传文件</button>
-                    <button class="btn btn-link" >删除文件夹</button>
+                    <button class="btn btn-link" @click="deleteFolder" >删除文件夹</button>
                 </div>
             </div>
             <div class="clearfix">
                 <div class="col-md-12 column">
-                    本阶段需上传3个word文档，3个pdf。文档上传说明：xxxxxxxx
+                    {{activeFolderDesc}}
                 </div>
             </div>
-            <div class="clearfix filePanel">
+            <div class="clearfix filePanel" >
                 <div class="south-slimScroll">
 
-                    <div class="col-md-12 column fileDiv">
-                        <div class="col-md-8 column"><span><img :src="icon_File">2016EDW系统项目建议书文档</span></div>
-                        <div class="col-md-3 column file-describe-div"><span>张三上传于04-22 16:00:00</span></div>
-                        <div class="col-md-1 column float-right">
-                            <button class="btn btn-sm btn-link column" >下载</button>
-                            <button class="btn btn-sm btn-link column" >删除</button>
+                    <div v-for="file in files" class="col-md-12 column fileDiv">
+                        <div class="col-md-8 column">
+                            <span>
+                                <img v-if="file.fileType=='1'" :src="icon_File">
+                                {{file.fileName}}
+                            </span>
                         </div>
-                    </div>
-
-                    <div class="col-md-12 column fileDiv">
-                        <div class="col-md-8 column"><span><img :src="icon_File">2016EDW系统项目建议书文档</span></div>
-                        <div class="col-md-3 column file-describe-div"><span>张三上传于04-22 16:00:00</span></div>
+                        <div class="col-md-3 column file-describe-div">
+                            <span>{{file.staffName}}上传于{{file.createDate}}</span>
+                        </div>
                         <div class="col-md-1 btn-link-group">
-                            <button class="btn btn-sm btn-link column" >下载</button>
-                            <button class="btn btn-sm btn-link column" >删除</button>
+                            <button class="btn btn-sm btn-link column" @click="download(file.fileId)">下载</button>
+                            <button class="btn btn-sm btn-link column" @click="deletefile(file.fileId)">删除</button>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
