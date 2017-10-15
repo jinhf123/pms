@@ -171,11 +171,29 @@ var vm = new Vue({
                         dialogMsg("添加文件夹失败!"+data.msg, 'error');
                     }
                 },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                error: functi on (XMLHttpRequest, textStatus, errorThrown) {
                     dialogLoading(false);
                     dialogMsg(errorThrown, 'error');
                 }
             });*/
+        },
+        upload:function(){
+            dialogOpen({
+                id: 'staffSelect',
+                title: '文件上传',
+                url: 'base/util/upload.html?_' + $.now(),
+                scroll: true,
+                width: "600px",
+                height: "420px",
+                yes : function(iframeId) {
+                    /*,   top.frames[0].projProgress.vm.taskStaff = top.frames[iframeId].vm.userName;
+                    top.frames[0].projProgress.vm.taskStaffId = top.frames[iframeId].vm.userId;
+                    var index = top.layer.getFrameIndex(iframeId); //先得到当前iframe层的索引
+                    top.layer.close(index); //再执行关闭*/
+                    top.layer.close(1);
+                }
+            })
+
         },
         deleteFolder: function(){//删除目录
             dialogConfirm("请确认是否删除该文件夹?",function(){
@@ -189,6 +207,7 @@ var vm = new Vue({
         },
         deletefile: function(fileId){//删除文件
             dialogConfirm("请确认是否删除该文件?",function(){
+                top.layer.close(1);//关闭弹窗
                 vm.deleteId = fileId;
                 deleteFileMan();
                 getFileGrid();

@@ -23,6 +23,7 @@
 		<if test="folderId != null and '' != folderId">
 		   and T.FOLDER_ID = #{folderId}
 		</if>
+		ORDER by T.FILE_ID
 	</select>
 
 

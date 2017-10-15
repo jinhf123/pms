@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>人员选择</title>
+    #parse("include/header.html")
+    <link rel="stylesheet" href="${rc.contextPath}/statics/plugins/bootstrap-fileinput/fileinput.css">
+    <style>
+        body {
+            font-family: 'Microsoft Yahei', Helvetica, Arial, sans-serif;
+            font-size: 10px;
+            color: #333333;
+        }
+    </style>
+</head>
+<body>
+<div id="dpLTE" class="container-fluid">
+    <div id="upload">
+        <form enctype="multipart/form-data">
+            <div class="file-loading">
+                <input id="file-zh" name="file-zh[]" type="file" multiple>
+            </div>
+        </form>
+    </div>
+</div>
+#parse("include/footer.html")
+<script src="${rc.contextPath}/statics/plugins/bootstrap-fileinput/fileinput.js?_${date.systemTime}"></script>
+
+<script type="text/javascript">
+    $(function(){
+        initFileInput("file-zh", "${rc.contextPath}/upload");//?fileFolder=/userfile
+    });
+    function initFileInput(ctrlName, uploadUrl) {
+        console.log("ctrlName="+ctrlName+"|uploadUrl="+uploadUrl);
+        $('#' + ctrlName).fileinput({
+            theme: 'fa',
+            language: 'zh', //设置语言
+            uploadUrl: uploadUrl, // 'http://localhost:8080/upload', //上传的地址
+            //allowedFileExtensions: ['jpg', 'png', 'gif', 'doc', 'docx', 'wps', 'pdf','*'],
+            overwriteInitial: false,
+            maxFileSize: 1000*1000*20,
+            maxFilesNum: 10,
+            showPreview: true,
+            uploadAsync: true,
+            previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+            //allowedFileTypes: ['jpg', 'png','gif','pdf'],
+            browseClass: "btn btn-info", //按钮样式
+            //slugCallback: function (filename) {//文件名替换
+            //  return filename.replace('(', '_').replace(']', '_');
+            //},
+            validateInitialCount:true,
+            msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！"
+        });
+        $('#' + ctrlName).on('filepreupload', function(event, data, previewId, index) {
+            //dialogLoading(true);
+            //alert("上传前!");
+        });
+        $('#' + ctrlName).on('fileerror', function(event, data, msg) { //异步上传失败处理
+            console.log(data.index);
+            console.log(data.reader);
+            console.log(data.files.length);
+            console.log(data.filenames.length);
+            var obj = data.response;
+            console.log(JSON.stringify(obj));
+        });
+        $('#' + ctrlName).on("fileuploaded", function (event, data, previewId, index) {//异步上传成功处理
+            console.log(data.index);
+            console.log(data.reader);
+            console.log(data.files.length);
+            console.log(data.filenames.length);
+            var obj = data.response;
+            console.log(JSON.stringify(obj));
+        });
+        $('#' + ctrlName).on('filebatchuploaderror', function(event, data, msg) {//同步上传错误处理
+            console.log(data.index);
+            console.log(data.reader);
+            console.log(data.files.length);
+            console.log(data.filenames.length);
+            var obj = data.response;
+            console.log(JSON.stringify(obj));
+        });
+        $('#' + ctrlName).on("filebatchuploadsuccess", function (event, data, previewId, index) {//同步上传返回结果处理
+            console.log(data.index);
+            console.log(data.reader);
+            console.log(data.files.length);
+            console.log(data.filenames.length);
+            var obj = data.response;
+            console.log(JSON.stringify(obj));
+        });
+    }
+
+</script>
+</body>
+</html>
