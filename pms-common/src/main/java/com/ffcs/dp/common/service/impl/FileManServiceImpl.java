@@ -27,8 +27,8 @@ public class FileManServiceImpl implements FileManService {
     }
 
     @Override
-    public int saveFileMan(Map<String, Object> params) {
-        return fileManManager.saveFileMan(params);
+    public int addFolderInfo(Map<String, Object> params) {
+        return fileManManager.addFolderInfo(params);
     }
 
     @Override

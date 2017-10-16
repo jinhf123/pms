@@ -21,6 +21,9 @@
 		<if test="fileType != null and '' != fileType">
 			and T.FILE_TYPE = #{fileType}
 		</if>
+		<if test="fileId != null and '' != fileId">
+			and T.FILE_ID = #{fileId}
+		</if>
 		<if test="folderId != null and '' != folderId">
 		   and T.FOLDER_ID = #{folderId}
 		</if>
@@ -34,8 +37,8 @@
 		<selectKey keyProperty="fileId" resultType="long" order="BEFORE">
 			SELECT PMS_SYS_FILE_MANAGE_SEQ.NEXTVAL FROM DUAL
 		</selectKey>
-		insert into PMS_SYS_FILE_MANAGE (FILE_ID,PROJ_ID,FOLDER_ID,FILE_NAME,FILE_PATH,DESCRIPTION,FILE_TYPE,CREATOR,CREATE_DATE)
-		values (#{fileId},#{proj_id},#{folderId},#{fileName},#{filePath},#{description},#{fileType},#{userId},sysdate)
+		insert into PMS_SYS_FILE_MANAGE (FILE_ID,PROJ_ID,FILE_NAME,DESCRIPTION,FILE_TYPE,CREATOR,CREATE_DATE)
+		values (#{fileId},#{projId},#{folderName},#{description},'0',#{userId},sysdate)
 	</insert>
 
 

@@ -22,7 +22,7 @@ public class FileManManagerImpl implements FileManManager {
     }
 
     @Override
-    public int saveFileMan(Map<String, Object> params) {
+    public int addFolderInfo(Map<String, Object> params) {
         return fileManMapper.insertFolderInfo(params);
     }
 

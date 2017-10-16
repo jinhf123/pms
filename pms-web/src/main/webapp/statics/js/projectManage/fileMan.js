@@ -86,7 +86,34 @@ function deleteFileMan(){
 }
 
 
-
+dialogContent2 = function(opt){
+    var defaults = {
+        title : '系统窗口',
+        width: '',
+        height: '',
+        content : null,
+        data : {},
+        btn: ['确定', '取消'],
+        success: null,
+        yes: null
+    };
+    var option = $.extend({}, defaults, opt);
+    return layer.open({
+        type : 1,
+        title : option.title,
+        closeBtn : 1,
+        anim: -1,
+        isOutAnim: false,
+        shadeClose : false,
+        shade : 0.3,
+        area : [option.width, option.height],
+        shift : 5,
+        content : option.content,
+        btn: option.btn,
+        success: option.success,
+        yes: option.yes
+    });
+};
 
 
 var vm = new Vue({
@@ -97,7 +124,6 @@ var vm = new Vue({
         icon_File :"/statics/img/projectManage/u20_1.png",
         styleObject:{height: ($(window).height()-15)+'px'},
         projId:"1",//todo 开发时先默认为1
-        addFolder:false,
         //添加文件夹参数
         folderName:"",
         description:"",
@@ -108,37 +134,8 @@ var vm = new Vue({
         //要删除的文件id
         deleteId:null,
         //初始化数据
-        folders:[
-                // {"fileId":"111","fileName":"列入计划","describe":"本阶段需上传3个word文档，3个pdf。文档上传说明：xxxxxxxx"},
-                // {"fileId":"112","fileName":"项目前期","describe":"本阶段需上传5个word文档，1个pdf。文档上传说明：xxxx"},
-                // {"fileId":"113","fileName":"科技立项","describe":"本阶段需上传6个word文档，2个pdf。文档上传说明：xxx"},
-                // {"fileId":"1","fileName":"上传目录1","describe":"文档上传说明：xxxxxxxx1"},
-                // {"fileId":"2","fileName":"上传目录2","describe":"文档上传说明：xxxxxxxx2"},
-                // {"fileId":"3","fileName":"上传目录3","describe":"文档上传说明：xxxxxxxx3"},
-                // {"fileId":"4","fileName":"上传目录4","describe":"文档上传说明：xxxxxxxx4"},
-                // {"fileId":"5","fileName":"上传目录5","describe":"文档上传说明：xxxxxxxx5"},
-                // {"fileId":"6","fileName":"上传目录6","describe":"文档上传说明：xxxxxxxx6"},
-                // {"fileId":"7","fileName":"上传目录7","describe":"文档上传说明：xxxxxxxx7"},
-                // {"fileId":"8","fileName":"上传目录8","describe":"文档上传说明：xxxxxxxx8"},
-                // {"fileId":"9","fileName":"上传目录9","describe":"文档上传说明：xxxxxxxx9"},
-                // {"fileId":"10","fileName":"上传目录10","describe":"文档上传说明：xxxxxxxx10"},
-                // {"fileId":"11","fileName":"上传目录11","describe":"文档上传说明：xxxxxxxx11"},
-                // {"fileId":"12","fileName":"上传目录12","describe":"文档上传说明：xxxxxxxx12"}
-            ],
-        files:[
-            // {"fileType":"1","fileName":"2016EDW系统项目建议书文档1","staffName":"张三","createDate":"2017-04-22 16:00:00"},
-            // {"fileType":"1","fileName":"2016EDW系统项目建议书文档2","staffName":"张三","createDate":"2017-04-22 16:00:00"},
-            // {"fileType":"1","fileName":"2016EDW系统项目建议书文档3","staffName":"张三","createDate":"2017-04-22 16:00:00"},
-            // {"fileType":"1","fileName":"2016EDW系统项目建议书文档4","staffName":"张三","createDate":"2017-04-22 16:00:00"},
-            // {"fileType":"1","fileName":"2016EDW系统项目建议书文档5","staffName":"张三","createDate":"2017-04-22 16:00:00"},
-            // {"fileType":"1","fileName":"2016EDW系统项目建议书文档6","staffName":"张三","createDate":"2017-04-22 16:00:00"},
-            // {"fileType":"1","fileName":"2016EDW系统项目建议书文档7","staffName":"张三","createDate":"2017-04-22 16:00:00"},
-            // {"fileType":"1","fileName":"2016EDW系统项目建议书文档8","staffName":"张三","createDate":"2017-04-22 16:00:00"},
-            // {"fileType":"1","fileName":"2016EDW系统项目建议书文档9","staffName":"张三","createDate":"2017-04-22 16:00:00"},
-            // {"fileType":"1","fileName":"2016EDW系统项目建议书文档10","staffName":"张三","createDate":"2017-04-22 16:00:00"},
-            // {"fileType":"1","fileName":"2016EDW系统项目建议书文档11","staffName":"张三","createDate":"2017-04-22 16:00:00"},
-            // {"fileType":"1","fileName":"2016EDW系统项目建议书文档12","staffName":"张三","createDate":"2017-04-22 16:00:00"}
-        ]
+        folders:[],
+        files:[]
     },
     methods : {
         load:function(){
@@ -152,11 +149,11 @@ var vm = new Vue({
             getFileGrid();
         },
         addFolder: function() {
-            dialogContent({
+            dialogContent2({
                 title : "添加文件夹",
                 width : '420px',
-                height : '180px',
-                content : $("#addFolderLayer"),
+                height : '200px',
+                content :  $("#addFolderLayer"),
                 btn : [ '确定', '取消' ],
                 yes : function(index) {
                     if(isNullOrEmpty(vm.folderName)) {
@@ -164,7 +161,7 @@ var vm = new Vue({
                         return false;
                     }
                     $.ajax({
-                        url: '../../projMan/workLog/saveFileMan?_' + $.now(),
+                        url: '../../FileMan/addFolderInfo?_' + $.now(),
                         data: JSON.stringify({
                             "projId" : vm.projId,
                             "folderName" : vm.folderName,
@@ -176,7 +173,7 @@ var vm = new Vue({
                         success: function (data) {
                             if(data.success){
                                 layer.close(index);
-                                dialogMsg("添加文件夹成功!"+data.msg, 'error');
+                                dialogMsg("添加文件夹成功!", 'info');
                                 getFolderGrid();
                             }else{
                                 dialogAlert("添加文件夹失败!"+data.msg, 'error');
@@ -200,15 +197,18 @@ var vm = new Vue({
                 height: "420px",
                 btn: false,
                 end: function() {
-                    //alert("上传窗口关闭！");
                     getFileGrid();
                 }
             });
         },
         deleteFolder: function(){//删除目录
-            dialogConfirm("请确认是否删除该文件夹?",function(){
+            dialogConfirm("请确认是否删除该文件夹?",function(index){
                 vm.deleteId = vm.activeFolderId;
                 deleteFileMan();
+                top.layer.close(index);//关闭弹窗
+                vm.activeFolderId = "";
+                vm.activeFolderName = "";
+                vm.activeFolderDesc = "";
                 getFolderGrid();
             });
         },
@@ -216,7 +216,7 @@ var vm = new Vue({
             dialogMsg("下载文件！！"+fileId,'info')
         },
         deletefile: function(fileId){//删除文件
-            dialogConfirm("请确认是否删除该文件?",function(index, layero){
+            dialogConfirm("请确认是否删除该文件?",function(index){
                 vm.deleteId = fileId;
                 deleteFileMan();
                 top.layer.close(index);//关闭弹窗
