@@ -7,6 +7,7 @@ $(function () {
 });
 
 function initialPage(){
+    if(getQueryString('projId')!=null)vm.projId = getQueryString('projId');
     $(window).resize(function() {
         vm.styleObj.height = ($(window).height()-50)+"px";
     });
@@ -34,7 +35,7 @@ var vm = new Vue({
         icon_Notice :"/statics/img/projectManage/u3.png",
         icon_Log    :"/statics/img/projectManage/u4.png",
         styleObj:{height: ($(window).height()-50)+'px'},
-        projId:"1",
+        projId:"1",//todo 开发时先默认为1
         projectInfo:{projectName:"",allStep:"",unCompStep:"",unCompTask:"",unCompSchedule:""}
     },
     methods : {

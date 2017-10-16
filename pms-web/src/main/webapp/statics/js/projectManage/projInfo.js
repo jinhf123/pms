@@ -8,6 +8,7 @@ $(function () {
 
 function initialPage() {
     // $(window).resize(function() {     });
+    if(getQueryString('projId')!=null)vm.projId = getQueryString('projId');
 }
 
 
@@ -55,7 +56,7 @@ var vm = new Vue({
     el:'#projInfo',
     data: {
         styleObj:{/*width: ($(window).width()-200)+'px'*/},
-        projId:"1",
+        projId:"1",//todo 开发时先默认为1
         projInfo: {},
         steps: {}
     },

@@ -7,7 +7,7 @@ $(function () {
 });
 
 function initialPage() {
-    console.log("高度："+vm.styleObject.height);
+    if(getQueryString('projId')!=null)vm.projId = getQueryString('projId');
     //初始化滚动条
     $(".north-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     $(".south-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
@@ -96,7 +96,11 @@ var vm = new Vue({
         icon_Folder :"/statics/img/projectManage/u20.png",
         icon_File :"/statics/img/projectManage/u20_1.png",
         styleObject:{height: ($(window).height()-15)+'px'},
+        projId:"1",//todo 开发时先默认为1
         addFolder:false,
+        //添加文件夹参数
+        folderName:"",
+        description:"",
         //选中的文件夹
         activeFolderId:"",//"111",
         activeFolderName:"",//"列入计划",
@@ -148,52 +152,58 @@ var vm = new Vue({
             getFileGrid();
         },
         addFolder: function() {
-
-        },
-        saveFolder: function() {
-            dialogMsg("添加文件夹！！！", 'info');
-
-            /*dialogLoading(true);
-            $.ajax({
-                url: '../../projMan/workLog/saveWorkLog?_' + $.now(),
-                data: JSON.stringify({
-                    "workLogId" : vm.workLogId,
-                    "workDetails" : vm.workDetails
-                }),
-                type: "post",
-                dataType: "json",
-                contentType: 'application/json',
-                success: function (data) {
-                    if(data.success){
-                        dialogMsg("添加文件夹成功!"+data.msg, 'error');
-                        getFolderGrid();
-                    }else{
-                        dialogMsg("添加文件夹失败!"+data.msg, 'error');
+            dialogContent({
+                title : "添加文件夹",
+                width : '420px',
+                height : '180px',
+                content : $("#addFolderLayer"),
+                btn : [ '确定', '取消' ],
+                yes : function(index) {
+                    if(isNullOrEmpty(vm.folderName)) {
+                        dialogMsg('文件夹名称为空！');
+                        return false;
                     }
-                },
-                error: functi on (XMLHttpRequest, textStatus, errorThrown) {
-                    dialogLoading(false);
-                    dialogMsg(errorThrown, 'error');
+                    $.ajax({
+                        url: '../../projMan/workLog/saveFileMan?_' + $.now(),
+                        data: JSON.stringify({
+                            "projId" : vm.projId,
+                            "folderName" : vm.folderName,
+                            "description": vm.description
+                        }),
+                        type: "post",
+                        dataType: "json",
+                        contentType: 'application/json',
+                        success: function (data) {
+                            if(data.success){
+                                layer.close(index);
+                                dialogMsg("添加文件夹成功!"+data.msg, 'error');
+                                getFolderGrid();
+                            }else{
+                                dialogAlert("添加文件夹失败!"+data.msg, 'error');
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            dialogLoading(false);
+                            dialogAlert(errorThrown, 'error');
+                        }
+                    });
                 }
-            });*/
+            });
         },
         upload:function(){
             dialogOpen({
                 id: 'staffSelect',
                 title: '文件上传',
-                url: 'base/util/upload.html?_' + $.now(),
-                scroll: true,
+                url: 'base/util/upload.html?_' + $.now()+'&projId=' + vm.projId + '&folderId='+vm.activeFolderId+'&folderName=' + vm.activeFolderName,
+                scroll : true,
                 width: "600px",
                 height: "420px",
-                yes : function(iframeId) {
-                    /*,   top.frames[0].projProgress.vm.taskStaff = top.frames[iframeId].vm.userName;
-                    top.frames[0].projProgress.vm.taskStaffId = top.frames[iframeId].vm.userId;
-                    var index = top.layer.getFrameIndex(iframeId); //先得到当前iframe层的索引
-                    top.layer.close(index); //再执行关闭*/
-                    top.layer.close(1);
+                btn: false,
+                end: function() {
+                    //alert("上传窗口关闭！");
+                    getFileGrid();
                 }
-            })
-
+            });
         },
         deleteFolder: function(){//删除目录
             dialogConfirm("请确认是否删除该文件夹?",function(){
@@ -206,10 +216,10 @@ var vm = new Vue({
             dialogMsg("下载文件！！"+fileId,'info')
         },
         deletefile: function(fileId){//删除文件
-            dialogConfirm("请确认是否删除该文件?",function(){
-                top.layer.close(1);//关闭弹窗
+            dialogConfirm("请确认是否删除该文件?",function(index, layero){
                 vm.deleteId = fileId;
                 deleteFileMan();
+                top.layer.close(index);//关闭弹窗
                 getFileGrid();
             });
         }
