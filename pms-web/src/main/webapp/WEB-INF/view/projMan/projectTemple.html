@@ -8,14 +8,11 @@
 
 </head>
 <body>
-
-
 <div class="container-fluid" id="dpTemple">
     <div class="row-fluid col-sm-2 col-xs-2 col-md-2 col-lg-2">
         <div class="container-fluid">
             <p class="pull-right">新增模板</p>
         </div>
-
         <div class="well well-sm">
             <h4 class="one-line">模板一</h4>
             <p class="two-line">模板描述最多只能展示两行，如果内容太长不够展示的请使用...</p>
@@ -35,73 +32,66 @@
     </div>
 
     <div class="row-fluid col-sm-10 col-xs-10 col-md-10 col-lg-10">
-        <form role="form" lpformnum="1">
+        <div class="panel panel-default no-border">
+            <div class="panel-heading">
+                模板信息
+            </div>
+            <div class="panel-body">
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">模板名称：</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" placeholder="输入模板名称" v-model="temp_name">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">详细描述：</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" placeholder="输入模板描述" v-model="description">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row">
             <div class="panel panel-default no-border">
                 <div class="panel-heading">
-                    模板信息
+                    阶段配置
                 </div>
+                <!-- /.panel-heading -->
                 <div class="panel-body">
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">模板名称：</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" placeholder="输入模板名称">
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">详细描述：</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" placeholder="输入模板描述">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-pills nav-step">
+                        <li v-for="(item, index) in stepList" :class="[index==0 ? 'active' : '']">
+                            <img class="badge-notify" @click="removeStep(index)" src="/statics/img/step_delete.png"/>
+                            <a :href="'#' + index +'-pills'" data-toggle="tab" :title="item.text "
+                               @dblclick="edit(index);">
+                                <p v-if=" item.status == 'show' ">{{ item.text }}</p>
+                                <input v-if=" item.status == 'edit'" style='color: black; width: 56px'
+                                       v-model="stepList[index].text" @blur="show(index)"
+                                       @keydown.enter="show(index)" v-focus="true"/>
+                            </a>
+                        </li>
+                        <li class="add-step-li">
+                            <img class="badge-notify">
+                            <a href="javascript:;" class="add-step" @click="addNewStep(this)">新增模板</a>
+                        </li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content tab-step">
+                        <div v-for="(item, index) in stepList" class="tab-pane fade"
+                             :class="[index==0 ? 'in active' : '']" :id="index + '-pills'">
+                            <template-form :item="item" :options="options"></template-form>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="form-group row">
+            <button @click="submitForm" class="btn btn-primary col-sm-2  ">创建模板</button>
+            <button class="btn  btn-default col-sm-2">取消</button>
+        </div>
 
-            <div class="form-group row">
-                <div class="panel panel-default no-border">
-                    <div class="panel-heading">
-                        阶段配置
-                    </div>
-                    <!-- /.panel-heading -->
-                    <div class="panel-body">
-                        <!-- Nav tabs -->
-                        <ul class="nav nav-pills nav-step">
-                            <li v-for="(item, index) in stepList">
-                                <img class="badge-notify" @click="removeStep(index)"
-                                     src="/statics/img/step_delete.png"/>
-                                <a href="#messages-pills" data-toggle="tab" :title="item.text "
-                                   @dblclick="edit(index);">
-                                    <p v-if=" item.status == 'show' ">{{ item.text }}</p>
-                                    <input v-if=" item.status == 'edit'" style='color: black; width: 56px' v-model="stepList[index].text" @blur="show(index)" v-focus="true" /></a>
-                            </li>
-                            <li class="add-step-li">
-                                <img class="badge-notify">
-                                <a href="javascript:;" class="add-step" @click="addNewStep(this)">新增模板</a>
-                            </li>
-                        </ul>
-
-                        <!-- Tab panes -->
-                        <div class="tab-content tab-step">
-                            <div class="tab-pane fade in active" id="home-pills">
-                                <temple-form></temple-form>
-                            </div>
-                            <div class="tab-pane fade" id="profile-pills">
-                                <temple-form></temple-form>
-                            </div>
-                            <div class="tab-pane fade" id="messages-pills">
-                                <temple-form></temple-form>
-                            </div>
-                            <div class="tab-pane fade" id="settings-pills">
-                                <temple-form></temple-form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group row">
-                <button class="btn btn-primary col-sm-2  ">创建模板</button>
-                <button class="btn  btn-default col-sm-2">取消</button>
-            </div>
-        </form>
     </div>
 </div>
 <template id="myComponent">
@@ -111,9 +101,66 @@
     </div>
 </template>
 
+<template id="templateStepForm">
+    <div>
+        <div class="flex-container">
+            <div class="flex-left">
+                <label for="inlineFormCustomSelect">默认完成时间：上一环节偏移</label>
+                <input class="custom-control input-number" type="text" v-model.number="item.default_move_date"/>
+                <select class="custom-select input-number" id="inlineFormCustomSelect">
+                    <option value="1" selected>月</option>
+                    <option value="2">天</option>
+                </select>
+                <label class="">当离完成时间</label>
+                <input class="custom-control input-number" type="text" v-model="item.finish_notice_date"/>
+                <label class="">天,通知给</label>
+            </div>
+            <div class="flex-right white">
+                <v-select multiple v-model="item.notice_staff" :options="options"></v-select>
+            </div>
+        </div>
+        <div class="form-line">
+            <div class="flex-container">
+                <div class="flex-left">
+                    <label>当任务变更时，默认通知给</label>
+                </div>
+                <div class="flex-right white">
+                    <v-select multiple v-model="item.task_change_staff" :options="options"></v-select>
+                </div>
+            </div>
+        </div>
+        <div class="form-line">
+            <label>当日程结束前</label>
+            <input type="text" class="custom-control input-number" v-model="item.finish_schedule_notice_date"/>
+            <label>天，通知给参与人</label>
+        </div>
+        <div>
+            <div class="flex-container">
+                <div class="flex-left flex-checkbox">
+                    <input type="checkbox" class="" v-model="item.is_attach"/>
+                </div>
+                <div class="flex-right">
+                    <div class="form-line">
+                        <label>本环节需要上传文档 对上传文档要求</label>
+                        <input type="checkbox" class="custom-control"  v-model="item.attach_word" />
+                        <label> word</label>
+                        <input type="text" class="custom-control input-number" placeholder="个数"  v-model="item.attach_word_count"/>
+                        <input type="checkbox" class="custom-control"  v-model="item.attach_excel"/>
+                        <label> xls</label>
+                        <input type="text" class="custom-control input-number" placeholder="个数"  v-mode="item.attach_excel_count"/>
+                        <input type="checkbox" class="custom-control"  v-model="item.attach_pdf"/>
+                        <label> pdf</label>
+                        <input type="text" class="custom-control input-number" placeholder="个数" v-mode="item.attach_pdf_count"/>
+                    </div>
+                    <input type="text" class="form-control" placeholder=" 对上传的文档进行具体说明" v-model="item.attach_content">
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
 #parse("include/footer.html")
-<script src="${rc.contextPath}/statics/plugins/tooltip.js"></script>
-<script src="${rc.contextPath}/statics/plugins/select2.min.js"></script>
+<script src="${rc.contextPath}/statics/js/libs/vue-resource.js"></script>
+<script src="${rc.contextPath}/statics/js/libs/vue-select.js"></script>
 <script src="${rc.contextPath}/statics/js/projectManage/projectTemple.js"></script>
 
 </body>

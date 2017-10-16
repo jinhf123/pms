@@ -120,6 +120,10 @@ html {
     flex: 1;
 }
 
+.white{
+    background-color: white;
+}
+
 .flex-checkbox {
     margin-top: 20px;
     margin-right: 10px;
