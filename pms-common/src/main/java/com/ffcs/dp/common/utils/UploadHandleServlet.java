@@ -94,9 +94,8 @@ public class UploadHandleServlet extends HttpServlet {
 
         String projId = request.getParameter("projId");
         String folderId = request.getParameter("folderId");
-        String folderName2 = request.getParameter("folderName");//new String(value.getBytes("iso8859-1"),"UTF-8");.getString("UTF-8");
-        String folderName = new String(request.getParameter("folderName").getBytes("ISO-8859-1"),"UTF-8");
-
+        String folderName = java.net.URLDecoder.decode(request.getParameter("folderName"),"utf-8");
+        //String folderName = new String(request.getParameter("folderName").getBytes("ISO-8859-1"),"UTF-8");
 
 
         File tmpFile = new File(tempPath);
@@ -232,7 +231,7 @@ public class UploadHandleServlet extends HttpServlet {
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("result", "ok");
-        jsonObject.put("message",message);
-        response.getWriter().write(String.valueOf(jsonObject.toString().getBytes("UTF-8")));
+        jsonObject.put("message",String.valueOf(message).getBytes("UTF-8"));
+        response.getWriter().write(jsonObject.toString());
     }
 }

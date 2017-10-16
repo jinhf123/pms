@@ -278,6 +278,7 @@ dialogOpen = function(opt){
 			option.yes(option.id);
 		},
         end: function () {
+            option.end(option.id);
         }
     });
 };

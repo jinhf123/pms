@@ -30,14 +30,14 @@
         vm.projId = getQueryString("projId");
         vm.folderId = getQueryString("folderId");
         vm.folderName = getQueryString("folderName");
-        initFileInput("file-zh", "${rc.contextPath}/upload?projId=" + vm.projId + "&folderId="+vm.folderId+"&folderName=" + vm.folderName);
+        initFileInput("file-zh", "${rc.contextPath}/upload?projId=" + vm.projId + "&folderId="+vm.folderId+"&folderName=" + vm.folderName );
     });
     function initFileInput(ctrlName, uploadUrl) {
         var fileInputObj = $('#' + ctrlName);
         fileInputObj.fileinput({
             theme: 'fa',
             language: 'zh', //设置语言
-            uploadUrl: encodeURI(uploadUrl), // 'http://localhost:8080/upload', //上传的地址
+            uploadUrl: encodeURI(encodeURI(uploadUrl)), // 'http://localhost:8080/upload', //上传的地址
             overwriteInitial: false,
             maxFileSize: 1000*1000*20,
             maxFilesNum: 10,
@@ -57,6 +57,7 @@
             //dialogLoading(true);
             //alert("上传前!");
         });
+        //异步
         fileInputObj.on('fileerror', function(event, data, msg) { //异步上传失败处理
             console.log(data.index);
             console.log(data.reader);
@@ -75,12 +76,10 @@
             console.log(index);
             var obj = data.response;
             console.log(JSON.stringify(obj));
-
-            debugger;
-            alert(9999);
-            top.layer.close(1);//关闭弹窗
+            dialogClose();//关闭弹窗
         });
-        fileInputObj.on('filebatchuploaderror', function(event, data, msg) {//同步上传错误处理
+        //同步
+       /* fileInputObj.on('filebatchuploaderror', function(event, data, msg) {//同步上传错误处理
             console.log(data.index);
             console.log(data.reader);
             console.log(data.files.length);
@@ -98,9 +97,8 @@
             console.log(index);
             var obj = data.response;
             console.log(JSON.stringify(obj));
-            debugger;
             top.layer.close(1);//关闭弹窗
-        });
+        });*/
     }
 
 
