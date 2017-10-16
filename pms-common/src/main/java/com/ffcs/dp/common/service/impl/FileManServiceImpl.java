@@ -1,8 +1,8 @@
-package com.ffcs.dp.projectManage.service.impl;
+package com.ffcs.dp.common.service.impl;
 
-import com.ffcs.dp.projectManage.entity.FileManEntity;
-import com.ffcs.dp.projectManage.manager.FileManManager;
-import com.ffcs.dp.projectManage.service.FileManService;
+import com.ffcs.dp.common.entity.FileManEntity;
+import com.ffcs.dp.common.manager.FileManManager;
+import com.ffcs.dp.common.service.FileManService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,5 +34,15 @@ public class FileManServiceImpl implements FileManService {
     @Override
     public int deleteFileMan(Map<String, Object> params) {
         return fileManManager.deleteFileMan(params);
+    }
+
+    @Override
+    public Long getFileManKey() {
+        return fileManManager.getFileManKey();
+    }
+
+    @Override
+    public int insertFileInfo(Map<String, Object> params) {
+        return fileManManager.insertFileInfo(params);
     }
 }

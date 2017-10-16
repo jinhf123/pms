@@ -1,4 +1,4 @@
-package com.ffcs.dp.projectManage.entity;
+package com.ffcs.dp.common.entity;
 
 import java.io.Serializable;
 import java.util.List;
@@ -8,6 +8,7 @@ public class FileManEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long fileId;//主键id
+    private Long projId;//项目编号
     private Long folderId;//所属目录id
     private String fileName;//文档名称
     private String filePath;//存放路径
@@ -33,12 +34,22 @@ public class FileManEntity implements Serializable {
         this.fileId = fileId;
     }
 
+
+
     public Long getFolderId() {
         return folderId;
     }
 
     public void setFolderId(Long folderId) {
         this.folderId = folderId;
+    }
+
+    public Long getProjId() {
+        return projId;
+    }
+
+    public void setProjId(Long projId) {
+        this.projId = projId;
     }
 
     public String getFileName() {

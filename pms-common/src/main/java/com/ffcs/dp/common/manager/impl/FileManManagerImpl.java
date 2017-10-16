@@ -1,8 +1,8 @@
-package com.ffcs.dp.projectManage.manager.impl;
+package com.ffcs.dp.common.manager.impl;
 
-import com.ffcs.dp.projectManage.dao.FileManMapper;
-import com.ffcs.dp.projectManage.entity.FileManEntity;
-import com.ffcs.dp.projectManage.manager.FileManManager;
+import com.ffcs.dp.common.dao.FileManMapper;
+import com.ffcs.dp.common.entity.FileManEntity;
+import com.ffcs.dp.common.manager.FileManManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,11 +23,21 @@ public class FileManManagerImpl implements FileManManager {
 
     @Override
     public int saveFileMan(Map<String, Object> params) {
-        return fileManMapper.insertFileMan(params);
+        return fileManMapper.insertFolderInfo(params);
     }
 
     @Override
     public int deleteFileMan(Map<String, Object> params) {
         return fileManMapper.deleteFileMan(params);
+    }
+
+    @Override
+    public Long getFileManKey() {
+        return fileManMapper.getFileManKey();
+    }
+
+    @Override
+    public int insertFileInfo(Map<String, Object> params) {
+        return fileManMapper.insertFileInfo(params);
     }
 }

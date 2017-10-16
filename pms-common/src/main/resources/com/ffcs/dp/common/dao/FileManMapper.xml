@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffcs.dp.common.dao.FileManMapper">
+
+
+
+	<!--查找文档管理列表-->
+	<select id="getFileManList" resultType="FileManEntity" parameterType="Map">
+		select T.FILE_ID,
+			   T.PROJ_ID,
+			   T.FOLDER_ID,
+               T.FILE_TYPE,
+			   T.FILE_NAME,
+			   T.FILE_PATH,
+			   T.DESCRIPTION,
+			   T.CREATOR,
+			   U.USERNAME STAFF_NAME,
+			   T.CREATE_DATE
+		  from PMS_SYS_FILE_MANAGE T, PMS_SYS_USER U
+		 where T.CREATOR = U.USER_ID
+		<if test="fileType != null and '' != fileType">
+			and T.FILE_TYPE = #{fileType}
+		</if>
+		<if test="folderId != null and '' != folderId">
+		   and T.FOLDER_ID = #{folderId}
+		</if>
+		ORDER by T.FILE_ID
+	</select>
+
+
+
+	<!--添加文件夹-->
+	<insert id="insertFolderInfo">
+		<selectKey keyProperty="fileId" resultType="long" order="BEFORE">
+			SELECT PMS_SYS_FILE_MANAGE_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		insert into PMS_SYS_FILE_MANAGE (FILE_ID,PROJ_ID,FOLDER_ID,FILE_NAME,FILE_PATH,DESCRIPTION,FILE_TYPE,CREATOR,CREATE_DATE)
+		values (#{fileId},#{proj_id},#{folderId},#{fileName},#{filePath},#{description},#{fileType},#{userId},sysdate)
+	</insert>
+
+
+	<!--删除文件或目录-->
+	<delete id="deleteFileMan" parameterType="Map">
+		delete PMS_SYS_FILE_MANAGE where FILE_ID = #{fileId} or FOLDER_ID = #{fileId}
+	</delete>
+
+
+
+	<!--获取主键-->
+	<select id="getFileManKey" resultType="long" >
+		SELECT PMS_SYS_FILE_MANAGE_SEQ.NEXTVAL FROM DUAL
+	</select>
+	<insert id="insertFileInfo" >
+		insert into PMS_SYS_FILE_MANAGE (FILE_ID,PROJ_ID,FOLDER_ID,FILE_NAME,FILE_PATH,DESCRIPTION,FILE_TYPE,CREATOR,CREATE_DATE)
+		values (#{fileId},#{projId},#{folderId},#{fileName},#{filePath},#{description},#{fileType},#{userId},sysdate)
+	</insert>
+
+
+</mapper>

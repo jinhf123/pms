@@ -1,12 +1,9 @@
-package com.ffcs.dp.projectManage.controller;
+package com.ffcs.dp.common.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.ffcs.dp.common.controller.AbstractController;
-import com.ffcs.dp.projectManage.entity.FileManEntity;
-import com.ffcs.dp.projectManage.entity.WorkLogEntity;
-import com.ffcs.dp.projectManage.service.FileManService;
-import com.ffcs.dp.projectManage.service.WorkLogService;
+import com.ffcs.dp.common.entity.FileManEntity;
+import com.ffcs.dp.common.service.FileManService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,12 +34,13 @@ public class FileManController extends AbstractController {
     }
 
 
-    //保存文件管理
+    //保存文件管理（添加文件夹）
     @RequestMapping("/saveFileMan")
     public JSON saveFileMan(@RequestBody Map<String, Object> params){
         JSONObject json = new JSONObject();
         String msg = "保存成功！";
         params.put("userId", getUserId());
+        params.put("fileType","0");//文件夹
         try{
             fileManService.saveFileMan(params);
         }catch (Exception e){

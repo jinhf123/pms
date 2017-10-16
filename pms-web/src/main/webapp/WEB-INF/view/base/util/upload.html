@@ -27,67 +27,101 @@
 
 <script type="text/javascript">
     $(function(){
-        initFileInput("file-zh", "${rc.contextPath}/upload");//?fileFolder=/userfile
+        vm.projId = getQueryString("projId");
+        vm.folderId = getQueryString("folderId");
+        vm.folderName = getQueryString("folderName");
+        initFileInput("file-zh", "${rc.contextPath}/upload?projId=" + vm.projId + "&folderId="+vm.folderId+"&folderName=" + vm.folderName);
     });
     function initFileInput(ctrlName, uploadUrl) {
-        console.log("ctrlName="+ctrlName+"|uploadUrl="+uploadUrl);
-        $('#' + ctrlName).fileinput({
+        var fileInputObj = $('#' + ctrlName);
+        fileInputObj.fileinput({
             theme: 'fa',
             language: 'zh', //设置语言
-            uploadUrl: uploadUrl, // 'http://localhost:8080/upload', //上传的地址
-            //allowedFileExtensions: ['jpg', 'png', 'gif', 'doc', 'docx', 'wps', 'pdf','*'],
+            uploadUrl: encodeURI(uploadUrl), // 'http://localhost:8080/upload', //上传的地址
             overwriteInitial: false,
             maxFileSize: 1000*1000*20,
             maxFilesNum: 10,
             showPreview: true,
             uploadAsync: true,
-            previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
-            //allowedFileTypes: ['jpg', 'png','gif','pdf'],
+            previewFileIcon: "<i class='glyphicon glyphicon-file'></i>",
             browseClass: "btn btn-info", //按钮样式
+            //allowedFileExtensions: ['jpg', 'png', 'gif', 'doc', 'docx', 'wps', 'pdf', '*'],
+            //allowedFileTypes: ['jpg', 'png','gif','pdf'],
             //slugCallback: function (filename) {//文件名替换
             //  return filename.replace('(', '_').replace(']', '_');
             //},
             validateInitialCount:true,
             msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！"
         });
-        $('#' + ctrlName).on('filepreupload', function(event, data, previewId, index) {
+        fileInputObj.on('filepreupload', function(event, data, previewId, index) {
             //dialogLoading(true);
             //alert("上传前!");
         });
-        $('#' + ctrlName).on('fileerror', function(event, data, msg) { //异步上传失败处理
+        fileInputObj.on('fileerror', function(event, data, msg) { //异步上传失败处理
             console.log(data.index);
             console.log(data.reader);
             console.log(data.files.length);
             console.log(data.filenames.length);
+            console.log(msg);
             var obj = data.response;
             console.log(JSON.stringify(obj));
         });
-        $('#' + ctrlName).on("fileuploaded", function (event, data, previewId, index) {//异步上传成功处理
+        fileInputObj.on("fileuploaded", function (event, data, previewId, index) {//异步上传成功处理
             console.log(data.index);
             console.log(data.reader);
             console.log(data.files.length);
             console.log(data.filenames.length);
+            console.log(previewId);
+            console.log(index);
+            var obj = data.response;
+            console.log(JSON.stringify(obj));
+
+            debugger;
+            alert(9999);
+            top.layer.close(1);//关闭弹窗
+        });
+        fileInputObj.on('filebatchuploaderror', function(event, data, msg) {//同步上传错误处理
+            console.log(data.index);
+            console.log(data.reader);
+            console.log(data.files.length);
+            console.log(data.filenames.length);
+            console.log(msg);
             var obj = data.response;
             console.log(JSON.stringify(obj));
         });
-        $('#' + ctrlName).on('filebatchuploaderror', function(event, data, msg) {//同步上传错误处理
+        fileInputObj.on("filebatchuploadsuccess", function (event, data, previewId, index) {//同步上传返回结果处理
             console.log(data.index);
             console.log(data.reader);
             console.log(data.files.length);
             console.log(data.filenames.length);
+            console.log(previewId);
+            console.log(index);
             var obj = data.response;
             console.log(JSON.stringify(obj));
-        });
-        $('#' + ctrlName).on("filebatchuploadsuccess", function (event, data, previewId, index) {//同步上传返回结果处理
-            console.log(data.index);
-            console.log(data.reader);
-            console.log(data.files.length);
-            console.log(data.filenames.length);
-            var obj = data.response;
-            console.log(JSON.stringify(obj));
+            debugger;
+            top.layer.close(1);//关闭弹窗
         });
     }
 
+
+
+
+
+
+    var vm = new Vue({
+        el:'#dpLTE',
+        data: {
+            projId:"",//todo 开发时先默认为1
+            folderId:"",
+            folderName:"",
+            description:""
+        },
+        methods : {
+            load:function(){}
+        },
+        computed: {
+        }
+    });
 </script>
 </body>
 </html>

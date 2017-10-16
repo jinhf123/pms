@@ -1,6 +1,7 @@
 package com.ffcs.dp.common.utils;
 
 import com.alibaba.fastjson.JSONObject;
+import com.ffcs.dp.common.service.FileManService;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadBase;
 import org.apache.commons.fileupload.ProgressListener;
@@ -15,8 +16,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+
+import static com.ffcs.dp.common.utils.ShiroUtils.getUserId;
 
 /**
  * @ClassName UploadHandleServlet
@@ -26,6 +31,11 @@ import java.util.UUID;
  *
  */
 public class UploadHandleServlet extends HttpServlet {
+
+    private FileManService getFileManService() {
+        return SpringUtil.getBean(FileManService.class);
+    }
+
 
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -54,18 +64,24 @@ public class UploadHandleServlet extends HttpServlet {
      * @param savePath 文件存储路径
      * @return 新的存储目录
      */
-    private String makePath(String filename,String savePath){
-        //得到文件名的hashCode的值，得到的就是filename这个字符串对象在内存中的地址
-        int hashcode = filename.hashCode();
-        int dir1 = hashcode&0xf;  //0--15
-        int dir2 = (hashcode&0xf0)>>4;  //0-15
-        //构造新的保存目录
-        String dir = savePath + "\\" + dir1 + "\\" + dir2;  //upload\2\3  upload\3\5
+    private String makePath(String filename,String savePath, String projId, String folderName){
+        String dir;
+        if(!"".equals(projId)){
+            dir = savePath + "\\" + projId;
+            if(!"".equals(folderName)){
+                dir = dir + "\\" + folderName;
+            }
+        }else{
+            //得到文件名的hashCode的值，得到的就是filename这个字符串对象在内存中的地址
+            int hashcode = filename.hashCode();
+            int dir1 = hashcode&0xf;  //0--15
+            int dir2 = (hashcode&0xf0)>>4;  //0-15
+            //构造新的保存目录
+            dir = savePath + "\\Other\\" + dir1 + "\\" + dir2;  //upload\2\3  upload\3\5
+        }
         //File既可以代表文件也可以代表目录
         File file = new File(dir);
-        //如果目录不存在
         if(!file.exists()){
-            //创建目录
             file.mkdirs();
         }
         return dir;
@@ -73,10 +89,16 @@ public class UploadHandleServlet extends HttpServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //得到上传文件的保存目录，将上传的文件存放于WEB-INF目录下，不允许外界直接访问，保证上传文件的安全
-        String savePath = this.getServletContext().getRealPath("/WEB-INF/upload");
-        //上传时生成的临时文件保存目录
-        String tempPath = this.getServletContext().getRealPath("/WEB-INF/temp");
+        String savePath = this.getServletContext().getRealPath("/WEB-INF/upload");//得到上传文件的保存目录，将上传的文件存放于WEB-INF目录下，不允许外界直接访问，保证上传文件的安全
+        String tempPath = this.getServletContext().getRealPath("/WEB-INF/temp");//上传时生成的临时文件保存目录
+
+        String projId = request.getParameter("projId");
+        String folderId = request.getParameter("folderId");
+        String folderName2 = request.getParameter("folderName");//new String(value.getBytes("iso8859-1"),"UTF-8");.getString("UTF-8");
+        String folderName = new String(request.getParameter("folderName").getBytes("ISO-8859-1"),"UTF-8");
+
+
+
         File tmpFile = new File(tempPath);
         if (!tmpFile.exists()) {
             //创建临时目录
@@ -141,9 +163,9 @@ public class UploadHandleServlet extends HttpServlet {
                     //获取item中的上传文件的输入流
                     InputStream in = item.getInputStream();
                     //得到文件保存的名称
-                    String saveFilename = makeFileName(filename);
+                    String saveFilename = filename;//makeFileName(filename);//文件名添加随机数前缀
                     //得到文件的保存目录
-                    String realSavePath = makePath(saveFilename, savePath);
+                    String realSavePath = makePath(saveFilename, savePath, projId, folderName);
                     //创建一个文件输出流
                     FileOutputStream out = new FileOutputStream(realSavePath + "\\" + saveFilename);
                     //创建一个缓冲区
@@ -162,6 +184,23 @@ public class UploadHandleServlet extends HttpServlet {
                     //删除处理文件上传时生成的临时文件
                     item.delete();
                     message = "文件上传成功！";
+                    //TODO 在数据库中插入记录
+                    if(!"".equals(projId)){
+                        try{
+                            Map params = new HashMap();
+                            Long fileId = getFileManService().getFileManKey();
+                            params.put("fileId",fileId);
+                            params.put("projId",projId);
+                            params.put("folderId",folderId);
+                            params.put("userId", getUserId());
+                            params.put("fileName",saveFilename);
+                            params.put("filePath",realSavePath+"\\"+saveFilename);
+                            params.put("fileType","1");
+                            getFileManService().insertFileInfo(params);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
         }catch (FileUploadBase.FileSizeLimitExceededException e) {
@@ -194,6 +233,6 @@ public class UploadHandleServlet extends HttpServlet {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("result", "ok");
         jsonObject.put("message",message);
-        response.getWriter().write(jsonObject.toString());
+        response.getWriter().write(String.valueOf(jsonObject.toString().getBytes("UTF-8")));
     }
 }

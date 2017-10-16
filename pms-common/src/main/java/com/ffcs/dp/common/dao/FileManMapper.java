@@ -1,7 +1,6 @@
-package com.ffcs.dp.projectManage.dao;
+package com.ffcs.dp.common.dao;
 
-import com.ffcs.dp.common.dao.BaseMapper;
-import com.ffcs.dp.projectManage.entity.FileManEntity;
+import com.ffcs.dp.common.entity.FileManEntity;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.stereotype.Repository;
 
@@ -17,7 +16,11 @@ public interface FileManMapper extends BaseMapper<FileManEntity> {
 
     List<FileManEntity> getFileManList(Map<String, Object> params);
 
-    int insertFileMan(Map<String, Object> params);
+    int insertFolderInfo(Map<String, Object> params);
 
     int deleteFileMan(Map<String, Object> params);
+
+    Long getFileManKey();
+
+    int insertFileInfo(Map<String, Object> params);
 }
