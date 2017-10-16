@@ -250,7 +250,8 @@ dialogOpen = function(opt){
 		data : {},
 		btn: ['确定', '取消'],
 		success: function(){},
-		yes: function(){}
+		yes: function(){},
+        end: function(){}
 	};
 	var option = $.extend({}, defaults, opt), content = null;
 	if(option.scroll){
@@ -275,7 +276,9 @@ dialogOpen = function(opt){
 		},
 		yes: function(){
 			option.yes(option.id);
-		}
+		},
+        end: function () {
+        }
     });
 };
 
