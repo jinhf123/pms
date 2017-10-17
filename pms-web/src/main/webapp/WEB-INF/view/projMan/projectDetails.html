@@ -18,7 +18,8 @@
                 </div>
                 <div class="col-md-6 column">
                     <ul class="nav nav-tabs top-tabs">
-                        <li class="active">
+                        <!--初始化加载所有页签-->
+                        <!--<li class="active">
                             <a href="#panel-1" data-toggle="tab">项目信息</a>
                         </li>
                         <li>
@@ -32,6 +33,22 @@
                         </li>
                         <li>
                             <a href="#panel-5" data-toggle="tab">文档管理</a>
+                        </li>-->
+                        <!--点击加载单个页签-->
+                        <li class="active">
+                            <a href="#panel-0" data-toggle="tab" @click="selectTab(1)">项目信息</a>
+                        </li>
+                        <li>
+                            <a href="#panel-0" data-toggle="tab" @click="selectTab(2)">进度任务</a>
+                        </li>
+                        <li>
+                            <a href="#panel-0" data-toggle="tab" @click="selectTab(3)">资源使用</a>
+                        </li>
+                        <li>
+                            <a href="#panel-0" data-toggle="tab" @click="selectTab(4)">风险问题</a>
+                        </li>
+                        <li>
+                            <a href="#panel-0" data-toggle="tab" @click="selectTab(5)">文档管理</a>
                         </li>
                     </ul>
                 </div>
@@ -48,39 +65,46 @@
 
 
                 <div class="tab-content col-md-12 column">
-
-                    <div class="tab-pane active" id="panel-1">
-                        <!--项目信息-->
+                  <!--初始化加载所有页签签-->
+                  <!--  <div class="tab-pane active" id="panel-1">
+                        &lt;!&ndash;项目信息&ndash;&gt;
                         <iframe scrolling="yes" frameborder="0"
                                 style="width: 100%;overflow: visible; background: #fff;" :style="styleObj"
                                 src="projInfo.html?projectID=projId" id="projectInfo" name="projectInfo">
                         </iframe>
                     </div>
-
                     <div class="tab-pane" id="panel-2">
-                        <!--进度任务-->
+                        &lt;!&ndash;进度任务&ndash;&gt;
                         <iframe scrolling="yes" frameborder="0"
                                 style="width: 100%;overflow: visible; background: #fff;min-width: 1000px" :style="styleObj"
                                 src="projProgress.html" id="projProgress" name="projProgress">
                         </iframe>
                     </div>
                     <div class="tab-pane" id="panel-3">
-                        <!--资源使用-->
+                        &lt;!&ndash;资源使用&ndash;&gt;
                         <p>
                             资源使用功能正在开发中...
                         </p>
                     </div>
                     <div class="tab-pane" id="panel-4">
-                        <!--风险问题-->
+                        &lt;!&ndash;风险问题&ndash;&gt;
                         <p>
                             风险问题功能正在开发中...
                         </p>
                     </div>
                     <div class="tab-pane" id="panel-5">
-                        <!--文档管理-->
+                        &lt;!&ndash;文档管理&ndash;&gt;
                         <iframe scrolling="yes" frameborder="0"
                                 style="width: 100%;overflow: visible; background: #fff;min-width: 1000px" :style="styleObj"
                                 src="fileMan.html" id="fileMan" name="fileMan">
+                        </iframe>
+                    </div>-->
+
+                    <!--点击加载单个页签-->
+                    <div class="tab-pane active" id="panel-0">
+                        <iframe scrolling="yes" frameborder="0"
+                                style="width: 100%;overflow: visible; background: #fff;min-width: 1000px" :style="styleObj"
+                                :src="iframeSrc" :id="iframeId" :name="iframeName">
                         </iframe>
                     </div>
                 </div>

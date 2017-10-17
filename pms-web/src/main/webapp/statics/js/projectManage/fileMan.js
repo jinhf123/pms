@@ -8,6 +8,9 @@ $(function () {
 
 function initialPage() {
     if(getQueryString('projId')!=null)vm.projId = getQueryString('projId');
+
+    debugger;
+
     //初始化滚动条
     $(".north-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     $(".south-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
@@ -123,7 +126,7 @@ var vm = new Vue({
         icon_Folder :"/statics/img/projectManage/u20.png",
         icon_File :"/statics/img/projectManage/u20_1.png",
         styleObject:{height: ($(window).height()-15)+'px'},
-        projId:"1",//todo 开发时先默认为1
+        projId:"",
         //添加文件夹参数
         folderName:"",
         description:"",
@@ -188,10 +191,11 @@ var vm = new Vue({
             });
         },
         upload:function(){
+            debugger;
             dialogOpen({
                 id: 'staffSelect',
                 title: '文件上传',
-                url: 'base/util/upload.html?_' + $.now()+'&projId=' + vm.projId + '&folderId='+vm.activeFolderId+'&folderName=' + vm.activeFolderName,
+                url: 'base/util/upload.html?projId=' + vm.projId + '&folderId='+vm.activeFolderId+'&folderName=' + vm.activeFolderName,
                 scroll : true,
                 width: "600px",
                 height: "420px",
@@ -214,6 +218,27 @@ var vm = new Vue({
         },
         download: function(fileId) {
             dialogMsg("下载文件！！"+fileId,'info')
+
+            window.open("/download?fileId="+fileId);
+            /*try{
+                var xmlHTTP = new ActiveXObject("Microsoft.XMLHTTP");
+                xmlHTTP.open("Get", "/download?fileId="+fileId, false);
+                xmlHTTP.send();
+                var adodbStream = new ActiveXObject("ADODB.Stream");
+                adodbStream.Type = 1;//1=adTypeBinary
+                adodbStream.Open();
+                adodbStream.write(xmlHTTP.responseBody);
+                adodbStream.SaveToFile(strLocalURL, 2);
+                adodbStream.Close();
+                adodbStream = null;
+                xmlHTTP = null;
+            }
+            catch (e){
+                window.confirm("下载URL出错!");
+            }
+            //window.confirm("下载完成.");*/
+
+
         },
         deletefile: function(fileId){//删除文件
             dialogConfirm("请确认是否删除该文件?",function(index){

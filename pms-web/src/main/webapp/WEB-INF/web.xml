@@ -99,6 +99,17 @@
 		<url-pattern>/upload</url-pattern>
 	</servlet-mapping>
 
+	<!--下载文件-->
+	<servlet>
+		<servlet-name>DownLoad</servlet-name>
+		<servlet-class>com.ffcs.dp.common.utils.DownLoadServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DownLoad</servlet-name>
+		<url-pattern>/download</url-pattern>
+	</servlet-mapping>
+
+
     <error-page>
 		<error-code>404</error-code>
 		<location>/error/404.html</location>

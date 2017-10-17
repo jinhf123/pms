@@ -54,7 +54,6 @@
             msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！"
         });
         fileInputObj.on('filepreupload', function(event, data, previewId, index) {
-            //dialogLoading(true);
             //alert("上传前!");
         });
         //异步
@@ -101,15 +100,10 @@
         });*/
     }
 
-
-
-
-
-
     var vm = new Vue({
         el:'#dpLTE',
         data: {
-            projId:"",//todo 开发时先默认为1
+            projId:"",
             folderId:"",
             folderName:"",
             description:""

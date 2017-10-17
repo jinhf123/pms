@@ -28,7 +28,7 @@ public class DownLoadServlet extends HttpServlet {
 
 
         String fileId = request.getParameter("fileId");
-        String fileName = request.getParameter("fileName");  //23239283-92489-阿凡达.avi
+        String fileName ;//= request.getParameter("fileName");
 
         Map params = new HashMap();
         params.put("fileId",fileId);
@@ -41,11 +41,13 @@ public class DownLoadServlet extends HttpServlet {
                 filePath = temp.getFilePath();
 
             }else{
-                //项目编号为空则上传的文件都是保存在/WEB-INF/upload/Other目录下的子目录当中
+                //：
+                //项目编号为空则上传的文件都是保存在/WEB-INF/upload/Other目录下的子目录当中 fileName格式：23239283-92489-阿凡达.jpg
                 String fileSaveRootPath=this.getServletContext().getRealPath("/WEB-INF/upload/Other");
                 //通过文件名找出文件的所在目录
                 String path = findFileSavePathByFileName(fileName,fileSaveRootPath);
                 filePath = path + "\\" + fileName;
+                fileName = fileName.substring(fileName.indexOf("_")+1); //处理文件名
             }
 
             //得到要下载的文件
@@ -61,10 +63,9 @@ public class DownLoadServlet extends HttpServlet {
                 //request.getRequestDispatcher("/message.jsp").forward(request, response);
                 return;
             }
-            //处理文件名
-            String realname = fileName.substring(fileName.indexOf("_")+1);
+
             //设置响应头，控制浏览器下载该文件
-            response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode(realname, "UTF-8"));
+            response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
             //读取要下载的文件，保存到文件输入流
             FileInputStream in = new FileInputStream(filePath);
             //创建输出流
