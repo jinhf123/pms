@@ -13,22 +13,22 @@
         <div class="container-fluid">
             <p class="pull-right">新增模板</p>
         </div>
-        <div class="well well-sm">
-            <h4 class="one-line">模板一</h4>
-            <p class="two-line">模板描述最多只能展示两行，如果内容太长不够展示的请使用...</p>
+        <div class="well well-sm" v-for="item in template">
+            <h4 class="one-line">{{item.tempName}}</h4>
+            <p class="two-line">{{item.description}}</p>
         </div>
-        <div class="well well-sm">
-            <h4 class="one-line">模板二</h4>
-            <p class="two-line">模板描述最多只能展示两行，如果内容太长不够展示的请使用...</p>
-        </div>
-        <div class="well well-sm">
-            <h4 class="one-line">模板三</h4>
-            <p class="two-line">模板描述最多只能展示两行，如果内容太长不够展示的请使用...</p>
-        </div>
-        <div class="well well-sm">
-            <h4 class="one-line">模板四</h4>
-            <p class="two-line">模板描述最多只能展示两行，如果内容太长不够展示的请使用...</p>
-        </div>
+        <!--<div class="well well-sm">-->
+            <!--<h4 class="one-line">模板二</h4>-->
+            <!--<p class="two-line">模板描述最多只能展示两行，如果内容太长不够展示的请使用...</p>-->
+        <!--</div>-->
+        <!--<div class="well well-sm">-->
+            <!--<h4 class="one-line">模板三</h4>-->
+            <!--<p class="two-line">模板描述最多只能展示两行，如果内容太长不够展示的请使用...</p>-->
+        <!--</div>-->
+        <!--<div class="well well-sm">-->
+            <!--<h4 class="one-line">模板四</h4>-->
+            <!--<p class="two-line">模板描述最多只能展示两行，如果内容太长不够展示的请使用...</p>-->
+        <!--</div>-->
     </div>
 
     <div class="row-fluid col-sm-10 col-xs-10 col-md-10 col-lg-10">
@@ -63,11 +63,11 @@
                     <ul class="nav nav-pills nav-step">
                         <li v-for="(item, index) in stepList" :class="[index==0 ? 'active' : '']">
                             <img class="badge-notify" @click="removeStep(index)" src="/statics/img/step_delete.png"/>
-                            <a :href="'#' + index +'-pills'" data-toggle="tab" :title="item.text "
+                            <a :href="'#' + index +'-pills'" data-toggle="tab" :title="item.stepName "
                                @dblclick="edit(index);">
-                                <p v-if=" item.status == 'show' ">{{ item.text }}</p>
+                                <p v-if=" item.status == 'show' ">{{ item.stepName }}</p>
                                 <input v-if=" item.status == 'edit'" style='color: black; width: 56px'
-                                       v-model="stepList[index].text" @blur="show(index)"
+                                       v-model="stepList[index].stepName" @blur="show(index)"
                                        @keydown.enter="show(index)" v-focus="true"/>
                             </a>
                         </li>
@@ -106,17 +106,17 @@
         <div class="flex-container">
             <div class="flex-left">
                 <label for="inlineFormCustomSelect">默认完成时间：上一环节偏移</label>
-                <input class="custom-control input-number" type="text" v-model.number="item.default_move_date"/>
+                <input class="custom-control input-number" type="text" v-model.number="item.defaultMoveDate"/>
                 <select class="custom-select input-number" id="inlineFormCustomSelect">
                     <option value="1" selected>月</option>
                     <option value="2">天</option>
                 </select>
                 <label class="">当离完成时间</label>
-                <input class="custom-control input-number" type="text" v-model="item.finish_notice_date"/>
+                <input class="custom-control input-number" type="text" v-model="item.finishNoticeDate"/>
                 <label class="">天,通知给</label>
             </div>
             <div class="flex-right white">
-                <v-select multiple v-model="item.notice_staff" :options="options"></v-select>
+                <v-select multiple v-model="item.noticeStaff" :options="options"></v-select>
             </div>
         </div>
         <div class="form-line">
@@ -125,34 +125,34 @@
                     <label>当任务变更时，默认通知给</label>
                 </div>
                 <div class="flex-right white">
-                    <v-select multiple v-model="item.task_change_staff" :options="options"></v-select>
+                    <v-select multiple v-model="item.taskChangeStaff" :options="options"></v-select>
                 </div>
             </div>
         </div>
         <div class="form-line">
             <label>当日程结束前</label>
-            <input type="text" class="custom-control input-number" v-model="item.finish_schedule_notice_date"/>
+            <input type="text" class="custom-control input-number" v-model="item.finishScheduleNoticeDate"/>
             <label>天，通知给参与人</label>
         </div>
         <div>
             <div class="flex-container">
                 <div class="flex-left flex-checkbox">
-                    <input type="checkbox" class="" v-model="item.is_attach"/>
+                    <input type="checkbox" class="" v-model="item.isAttach"/>
                 </div>
                 <div class="flex-right">
                     <div class="form-line">
                         <label>本环节需要上传文档 对上传文档要求</label>
-                        <input type="checkbox" class="custom-control"  v-model="item.attach_word" />
+                        <input type="checkbox" class="custom-control"   />
                         <label> word</label>
-                        <input type="text" class="custom-control input-number" placeholder="个数"  v-model="item.attach_word_count"/>
-                        <input type="checkbox" class="custom-control"  v-model="item.attach_excel"/>
-                        <label> xls</label>
-                        <input type="text" class="custom-control input-number" placeholder="个数"  v-mode="item.attach_excel_count"/>
-                        <input type="checkbox" class="custom-control"  v-model="item.attach_pdf"/>
+                        <input type="text" class="custom-control input-number" placeholder="个数"  v-model="item.attachWord"/>
+                        <input type="checkbox" class="custom-control" />
+                        <label> excel</label>
+                        <input type="text" class="custom-control input-number" placeholder="个数"  v-model="item.attachExcel"/>
+                        <input type="checkbox" class="custom-control"  />
                         <label> pdf</label>
-                        <input type="text" class="custom-control input-number" placeholder="个数" v-mode="item.attach_pdf_count"/>
+                        <input type="text" class="custom-control input-number" placeholder="个数" v-model="item.attachPdf"/>
                     </div>
-                    <input type="text" class="form-control" placeholder=" 对上传的文档进行具体说明" v-model="item.attach_content">
+                    <input type="text" class="form-control" placeholder=" 对上传的文档进行具体说明" v-model="item.attachContent">
                 </div>
             </div>
         </div>

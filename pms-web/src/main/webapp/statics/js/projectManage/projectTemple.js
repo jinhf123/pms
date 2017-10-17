@@ -79,31 +79,28 @@ var templeStepForm = {
 var vm = new Vue({
     el: '#dpTemple',
     data: {
+        template: [],
         temp_name: null,
         description: null,
         is_default: null,
         stepList: [
             {
-                text: '列入计划',
+                stepName: '列入计划',
                 status: "show",
-                step_sort: null,
-                default_move_date: null,
-                finish_notice_date: null,
-                notice_staff: null,
-                notice_staff_id: null,
-                task_change_staff: null,
-                task_change_staff_id: null,
-                finish_schedule_notice_date: null,
-                finish_schedule_staff: null,
-                is_attach: null,
-                attach_type: null,
-                attach_word: false,
-                attach_word_count: null,
-                attach_excel: false,
-                attach_excel_count: null,
-                attach_pdf: false,
-                attach_pdf_count: null,
-                attach_content: null
+                stepSort: null,
+                defaultMoveDate: null,
+                finishNoticeDate: null,
+                noticeStaff: null,
+                noticeStaffId: null,
+                taskChangeStaff: null,
+                taskChangeStaffId: null,
+                finishScheduleNoticeDate: null,
+                finishScheduleStaff: null,
+                isAttach: null,
+                attachWord: 0,
+                attachExcel: 0,
+                attachPdf: 0,
+                attachContent: null
             }
         ],
         options: ['foo', 'bar', 'baz'],
@@ -115,7 +112,24 @@ var vm = new Vue({
 
     methods: {
         addNewStep: function () {
-            this.stepList.push({text: "双击修改", status: "edit"});
+            this.stepList.push({
+                stepName: '双击修改',
+                status: "show",
+                stepSort: null,
+                defaultMoveDate: null,
+                finishNoticeDate: null,
+                noticeStaff: null,
+                noticeStaffId: null,
+                taskChangeStaff: null,
+                taskChangeStaffId: null,
+                finishScheduleNoticeDate: null,
+                finishScheduleStaff: null,
+                isAttach: null,
+                attachWord: 0,
+                attachExcel: 0,
+                attachPdf: 0,
+                attachContent: null
+            });
             console.log(this.stepList)
         },
         removeStep: function (index) {
@@ -128,8 +142,25 @@ var vm = new Vue({
             this.stepList[index].status = "edit";
         },
         submitForm: function () {
-            console.log(this.stepList);
+            this.$http.post(
+                "/projMan/template",
+                {
+                    params: {
+                        tempName: this.temp_name,
+                        description: this.description,
+                        stepList: this.stepList
+                    }
+                });
         }
+    },
+    created: function () {
+        var me = this;
+        this.$http.get("/projMan/template")
+            .then(function (data) {
+                me.template = data.data;
+            }, function (err) {
+                console.log(error);
+            })
     }
 });
 
