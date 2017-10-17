@@ -95,6 +95,7 @@
 		  from PMS_PROJ_STEP S, PMS_PROJ_TEMPLET_STEP T
 		 where S.STEP_MOD = T.TEMP_STEP_ID
 		   and S.PROJ_ID = #{projId}
+	     order by S.STEP_ID
 	</select>
 
 

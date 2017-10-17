@@ -5,12 +5,6 @@ $(function () {
     initialPage();
     getProjectInfo();
     getStepList();
-    var param = JSON.stringify({
-        "projId":vm.projId,
-        "stepId":vm.stepId
-    });
-    getTaskGrid(param);
-    getScheGrid(param);
 });
 
 
@@ -64,6 +58,21 @@ function getStepList() {
         contentType: 'application/json',
         success: function (data) {
             vm.steps = data;
+            vm.stepId = data[0].stepId;
+            vm.stepName = data[0].stepName;
+            for(var i =0;i<data.length;i++){
+                if("1"==data[i].state) {
+                    vm.stepId = data[i].stepId;
+                    vm.stepName= data[i].stepName;
+                    break;
+                }
+            }
+            var param = JSON.stringify({
+                "projId":vm.projId,
+                "stepId":vm.stepId
+            });
+            getTaskGrid(param);
+            getScheGrid(param);
         }
     });
 };
@@ -109,7 +118,7 @@ function saveTask(){
         "taskTitle":vm.taskTitle,
         "taskStaff":vm.taskStaff,
         "taskStaffId":vm.taskStaffId,
-        "finishDate":vm.finishDate,
+        "finishDate":vm.finishDate
     });
     $.ajax({
         url: '../../projMan/projDetail/saveTask?_' + $.now(),
@@ -119,22 +128,64 @@ function saveTask(){
         dataType: "json",
         contentType: 'application/json',
         success: function (data) {
-            vm.isAddTask=false;
-            vm.parentTask="";
-            vm.taskTitle="";
-            vm.taskStaff="";
-            vm.taskStaffId="";
-            vm.finishDate="";
-            var param2 = JSON.stringify({
-                "projId":vm.projId,
-                "stepId":vm.stepId,
-                "taskId":vm.taskId
-            });
-            getTaskGrid(param2);
+            if(data.success){
+                vm.taskId=data.taskId;
+                vm.isAddTask=false;
+                vm.parentTask="";
+                vm.taskTitle="";
+                vm.taskStaff="";
+                vm.taskStaffId="";
+                vm.finishDate="";
+                var param2 = JSON.stringify({
+                    "projId":vm.projId,
+                    "stepId":vm.stepId
+                });
+                getTaskGrid(param2);
+            }else{
+                dialogAlert(data.msg,"error");
+            }
         }
     });
 };
 
+
+//保存日程
+function saveSche(){
+    console.log("保存日程");
+    var param = JSON.stringify({
+        "projId":vm.projId,
+        "stepId":vm.stepId,
+        "content":vm.content,
+        "participant":vm.participant,
+        "participantId":vm.participantId,
+        "scheEndDate":vm.scheEndDate
+    });
+    $.ajax({
+        url: '../../projMan/projDetail/saveTask?_' + $.now(),
+        data: param,
+        type: "post",
+        async: false,
+        dataType: "json",
+        contentType: 'application/json',
+        success: function (data) {
+            if(data.success){
+                vm.taskId=data.taskId;
+                this.isAddSche=false;
+                vm.content="";
+                vm.participant="";
+                vm.participantId="";
+                vm.scheEndDate="";
+                var param2 = JSON.stringify({
+                    "projId":vm.projId,
+                    "stepId":vm.stepId
+                });
+                getScheGrid(param2)
+            }else{
+                dialogAlert(data.msg,"error");
+            }
+        }
+    });
+};
 
 
 var vm = new Vue({
@@ -152,8 +203,9 @@ var vm = new Vue({
         projectInfo:{projectName:"",allStep:"",unCompStep:"",unCompTask:"",unCompSchedule:""},
 
         //查询参数
-        projId:"1",
-        stepId:"9",
+        projId:"",
+        stepId:"",
+        stepName:"",//上传文件目录 projId/stepName
         taskId:"",
 
         //新增任务参数
@@ -166,6 +218,7 @@ var vm = new Vue({
         //新增日程参数
         content:"",
         participant:"",
+        participantId:"",
         scheEndDate:"",
         //列表查询结果
         steps:[],
@@ -186,7 +239,7 @@ var vm = new Vue({
         showDetail:function(taskId){
             toUrl('taskDetails.html?projId='+vm.projId+'&stepId='+vm.stepId+'&taskId='+taskId);
         },
-        selectStaff: function() {
+        selectStaff: function() {//添加任务选择人员
             dialogOpen({
                 id: 'staffSelect',
                 title: '人员选择',
@@ -202,11 +255,28 @@ var vm = new Vue({
                 }
             })
         },
+        selectScheStaff: function() {//添加日程选择人员 //todo 要修改为多选
+            dialogOpen({
+                id: 'staffSelect',
+                title: '人员选择',
+                url: 'base/user/staff.html?_' + $.now(),
+                scroll : true,
+                width: "600px",
+                height: "600px",
+                yes : function(iframeId) {
+                    top.frames[0].projProgress.vm.participant = top.frames[iframeId].vm.userName;
+                    top.frames[0].projProgress.vm.participantId = top.frames[iframeId].vm.userId;
+                    var index = top.layer.getFrameIndex(iframeId); //先得到当前iframe层的索引
+                    top.layer.close(index); //再执行关闭
+                }
+            })
+        },
         finishStage: function(id) {//完成本阶段
             $.ajax({
                 url: '../../projMan/projDetail/finishStage?_' + $.now(),
                 data: JSON.stringify({
-                    stepId:id
+                    "projId": vm.projId,//完成本阶段后自动开始下阶段用
+                    "stepId": id
                 }),
                 type: "post",
                 async: false,
@@ -311,10 +381,9 @@ var vm = new Vue({
             vm.finishDate="";
             this.isAddTask=true;
         },
-        addTask:function(){
-            console.log("添加任务保存！");
-            this.isAddTask=!this.isAddTask;
-            saveTask();
+        addTask:function(){//保存任务后对任务进行描述或者添加检查项
+            saveTask();//保存任务
+            vm.showDetail(vm.taskId);//跳转到保存的任务详细
         },
         closeTaskPanel:function () {
             this.isAddTask=!this.isAddTask;
@@ -333,7 +402,8 @@ var vm = new Vue({
         },
         addSche:function(){
             this.isAddSche=!this.isAddSche;
-            saveTask();
+            //TODO 保存日程
+            saveSche();
         },
         closeSchePanel:function () {
             this.isAddSche=!this.isAddSche;

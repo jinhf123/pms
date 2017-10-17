@@ -1,5 +1,5 @@
 /**
- * 项目管理js
+ * 任务详情js
  */
 
 $(function () {
@@ -17,6 +17,7 @@ function initialPage(){
     vm.projId = getQueryString('projId');
     vm.stepId = getQueryString('stepId');
     vm.taskId = getQueryString('taskId');
+    debugger;
     $(window).resize(function() {
         vm.styleObj.height = ($(window).height())+"px";
         $(".panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
@@ -198,6 +199,7 @@ var vm = new Vue({
 
         projId:"",
         stepId:"",
+        stepName:"",
         taskId:"",
         taskInfo:{taskTitle:"",finishDate:"",taskStaff:"",taskContent:"",state:""},
         checkItems:[],
@@ -244,7 +246,6 @@ var vm = new Vue({
         },
 
         changeTaskState:function(type){//修改任务状态
-            debugger;
             // 完成
             if(type=="finish"&&vm.taskInfo.state!="2"){
                 var params = JSON.stringify({
@@ -336,6 +337,20 @@ var vm = new Vue({
                 saveCheckItem();
             });
             getCheckItemGrid();
+        },
+        upload:function () {
+            dialogOpen({
+                id: 'staffSelect',
+                title: '上传附件',
+                url: 'base/util/upload.html?projId=' + vm.projId + '&folderId='+vm.stepId+'&folderName=' + vm.stepName,
+                scroll : true,
+                width: "600px",
+                height: "420px",
+                btn: false,
+                end: function() {
+                    getFileGrid();
+                }
+            });
         },
         saveTaskLog:function(){//发表评论
             $.ajax({

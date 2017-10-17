@@ -8,7 +8,6 @@ $(function () {
 
 function initialPage(){
     if(getQueryString('projId')!=null)vm.projId = getQueryString('projId');
-    debugger;
     $(window).resize(function() {
         vm.styleObj.height = ($(window).height()-50)+"px";
     });
@@ -25,7 +24,6 @@ function initialPage(){
             vm.projectInfo = data;
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
-            debugger;
         }
     });
 }

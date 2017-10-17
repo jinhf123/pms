@@ -8,9 +8,6 @@ $(function () {
 
 function initialPage() {
     if(getQueryString('projId')!=null)vm.projId = getQueryString('projId');
-
-    debugger;
-
     //初始化滚动条
     $(".north-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     $(".south-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
@@ -191,7 +188,6 @@ var vm = new Vue({
             });
         },
         upload:function(){
-            debugger;
             dialogOpen({
                 id: 'staffSelect',
                 title: '文件上传',

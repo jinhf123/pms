@@ -269,8 +269,14 @@
 .progress-line-stage{
 
 }
-
-
+.step-div{
+    height: 100%;
+    width: 100%;
+    display: inline-flex;
+}
+.stepActive{
+    background-color: #E3F3F9;
+}
 
 
 
