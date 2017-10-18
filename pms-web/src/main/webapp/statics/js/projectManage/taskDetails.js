@@ -10,14 +10,12 @@ $(function () {
 });
 
 function initialPage(){
-
-    $("#finishDate").datetimepicker();
-
-    $(".panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     vm.projId = getQueryString('projId');
     vm.stepId = getQueryString('stepId');
+    vm.stepName = getQueryString('stepName');
     vm.taskId = getQueryString('taskId');
-    debugger;
+    $("#finishDate").datetimepicker();
+    $(".panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     $(window).resize(function() {
         vm.styleObj.height = ($(window).height())+"px";
         $(".panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
@@ -348,7 +346,7 @@ var vm = new Vue({
                 height: "420px",
                 btn: false,
                 end: function() {
-                    getFileGrid();
+
                 }
             });
         },

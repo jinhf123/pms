@@ -14,7 +14,9 @@ import java.util.Map;
 @Repository
 public interface FileManMapper extends BaseMapper<FileManEntity> {
 
-    List<FileManEntity> getFileManList(Map<String, Object> params);
+    List<FileManEntity> getFileList(Map<String, Object> params);
+
+    List<FileManEntity> getFolderListByProjId(Map<String, Object> params);
 
     int insertFolderInfo(Map<String, Object> params);
 
@@ -23,4 +25,5 @@ public interface FileManMapper extends BaseMapper<FileManEntity> {
     Long getFileManKey();
 
     int insertFileInfo(Map<String, Object> params);
+
 }

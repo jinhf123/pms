@@ -237,7 +237,7 @@ var vm = new Vue({
             getScheGrid(param);
         },
         showDetail:function(taskId){
-            toUrl('taskDetails.html?projId='+vm.projId+'&stepId='+vm.stepId+'&taskId='+taskId);
+            toUrl('taskDetails.html?projId='+vm.projId+'&stepId='+vm.stepId+'&taskId='+taskId+"&stepName="+vm.stepName);
         },
         selectStaff: function() {//添加任务选择人员
             dialogOpen({

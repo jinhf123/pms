@@ -90,7 +90,7 @@
 			   (select count(1)
 				  from PMS_PROJ_TASK
 				 where STEP_ID = S.STEP_ID
-				   and STATE in (0, 1)) UN_COMP_TASK,
+				   and STATE = '2' ) COMP_TASK,
 			   (select count(1) from PMS_PROJ_TASK where STEP_ID = S.STEP_ID) ALL_TASK
 		  from PMS_PROJ_STEP S, PMS_PROJ_TEMPLET_STEP T
 		 where S.STEP_MOD = T.TEMP_STEP_ID

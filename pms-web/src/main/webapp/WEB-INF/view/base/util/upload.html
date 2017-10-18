@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: 'Microsoft Yahei', Helvetica, Arial, sans-serif;
-            font-size: 10px;
+            font-size: 14px;
             color: #333333;
         }
     </style>
@@ -51,6 +51,9 @@
             //  return filename.replace('(', '_').replace(']', '_');
             //},
             validateInitialCount:true,
+            msgUploadEnd: '上传成功！',
+            msgUploadError: '上传失败！',
+            msgPlaceholder: "请选择要上传的文件...",
             msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！"
         });
         fileInputObj.on('filepreupload', function(event, data, previewId, index) {
@@ -77,27 +80,6 @@
             console.log(JSON.stringify(obj));
             dialogClose();//关闭弹窗
         });
-        //同步
-       /* fileInputObj.on('filebatchuploaderror', function(event, data, msg) {//同步上传错误处理
-            console.log(data.index);
-            console.log(data.reader);
-            console.log(data.files.length);
-            console.log(data.filenames.length);
-            console.log(msg);
-            var obj = data.response;
-            console.log(JSON.stringify(obj));
-        });
-        fileInputObj.on("filebatchuploadsuccess", function (event, data, previewId, index) {//同步上传返回结果处理
-            console.log(data.index);
-            console.log(data.reader);
-            console.log(data.files.length);
-            console.log(data.filenames.length);
-            console.log(previewId);
-            console.log(index);
-            var obj = data.response;
-            console.log(JSON.stringify(obj));
-            top.layer.close(1);//关闭弹窗
-        });*/
     }
 
     var vm = new Vue({

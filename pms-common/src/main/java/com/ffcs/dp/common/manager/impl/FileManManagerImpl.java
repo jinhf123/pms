@@ -18,7 +18,12 @@ public class FileManManagerImpl implements FileManManager {
 
     @Override
     public List<FileManEntity> getFileManList(Map<String, Object> params) {
-        return fileManMapper.getFileManList(params);
+        return fileManMapper.getFileList(params);
+    }
+
+    @Override
+    public List<FileManEntity> getFolderListByProjId(Map<String, Object> params) {
+        return fileManMapper.getFolderListByProjId(params);
     }
 
     @Override

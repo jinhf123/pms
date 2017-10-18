@@ -24,9 +24,9 @@ function initialPage() {
 //获取文件夹列表
 function getFolderGrid(){
     $.ajax({
-        url: '../../FileMan/getFileManList?_' + $.now(),
+        url: '../../FileMan/getFolderList?_' + $.now(),
         data: JSON.stringify({
-            "fileType" : "0"
+            "projId" : vm.projId
         }),
         type: "post",
         dataType: "json",
@@ -46,6 +46,7 @@ function getFileGrid(){
     $.ajax({
         url: '../../FileMan/getFileManList?_' + $.now(),
         data: JSON.stringify({
+            "projId" : vm.projId,
             "fileType" : "1",
             "folderId" : vm.activeFolderId
         }),
@@ -145,7 +146,7 @@ var vm = new Vue({
         activeFolder:function(folder){
             vm.activeFolderId = folder.fileId;
             vm.activeFolderName = folder.fileName;
-            vm.activeFolderDesc = folder.describe;
+            vm.activeFolderDesc = folder.description;
             getFileGrid();
         },
         addFolder: function() {
@@ -213,28 +214,7 @@ var vm = new Vue({
             });
         },
         download: function(fileId) {
-            dialogMsg("下载文件！！"+fileId,'info')
-
             window.open("/download?fileId="+fileId);
-            /*try{
-                var xmlHTTP = new ActiveXObject("Microsoft.XMLHTTP");
-                xmlHTTP.open("Get", "/download?fileId="+fileId, false);
-                xmlHTTP.send();
-                var adodbStream = new ActiveXObject("ADODB.Stream");
-                adodbStream.Type = 1;//1=adTypeBinary
-                adodbStream.Open();
-                adodbStream.write(xmlHTTP.responseBody);
-                adodbStream.SaveToFile(strLocalURL, 2);
-                adodbStream.Close();
-                adodbStream = null;
-                xmlHTTP = null;
-            }
-            catch (e){
-                window.confirm("下载URL出错!");
-            }
-            //window.confirm("下载完成.");*/
-
-
         },
         deletefile: function(fileId){//删除文件
             dialogConfirm("请确认是否删除该文件?",function(index){

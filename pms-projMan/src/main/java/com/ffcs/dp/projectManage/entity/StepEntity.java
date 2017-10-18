@@ -19,9 +19,9 @@ public class StepEntity implements Serializable {
     private String stepName;//
     private String stepSort;//
     private String stepContent;//
-    private String unCompTask;//
-    private String allTask;//
-    private String date;//
+    private String unCompTask;//未完成任务数
+    private String compTask;//已完成任务数
+    private String allTask;//总任务数
 
 
 
@@ -128,6 +128,14 @@ public class StepEntity implements Serializable {
         this.unCompTask = unCompTask;
     }
 
+    public String getCompTask() {
+        return compTask;
+    }
+
+    public void setCompTask(String compTask) {
+        this.compTask = compTask;
+    }
+
     public String getAllTask() {
         return allTask;
     }
@@ -135,4 +143,6 @@ public class StepEntity implements Serializable {
     public void setAllTask(String allTask) {
         this.allTask = allTask;
     }
+
+
 }

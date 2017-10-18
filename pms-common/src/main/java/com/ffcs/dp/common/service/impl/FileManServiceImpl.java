@@ -27,6 +27,11 @@ public class FileManServiceImpl implements FileManService {
     }
 
     @Override
+    public List<FileManEntity> getFolderListByProjId(Map<String, Object> params) {
+        return fileManManager.getFolderListByProjId(params);
+    }
+
+    @Override
     public int addFolderInfo(Map<String, Object> params) {
         return fileManManager.addFolderInfo(params);
     }

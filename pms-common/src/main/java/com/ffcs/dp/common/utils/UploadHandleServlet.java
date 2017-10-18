@@ -87,6 +87,10 @@ public class UploadHandleServlet extends HttpServlet {
         return dir;
     }
 
+    public static boolean isStrEmpty(String str) {
+        return str == null || str.length() == 0 || "null".equals(str);
+    }
+
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String savePath = this.getServletContext().getRealPath("/WEB-INF/upload");//得到上传文件的保存目录，将上传的文件存放于WEB-INF目录下，不允许外界直接访问，保证上传文件的安全
@@ -97,6 +101,13 @@ public class UploadHandleServlet extends HttpServlet {
         String folderName = java.net.URLDecoder.decode(request.getParameter("folderName"),"utf-8");
         //String folderName = new String(request.getParameter("folderName").getBytes("ISO-8859-1"),"UTF-8");
 
+        if(isStrEmpty(projId)||isStrEmpty(folderName)){
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("result", "ok");
+            jsonObject.put("message","上传失败!工程编号或文件夹名称为空！");
+            response.getWriter().write(jsonObject.toString());
+          return ;
+        }
 
         File tmpFile = new File(tempPath);
         if (!tmpFile.exists()) {
@@ -206,7 +217,6 @@ public class UploadHandleServlet extends HttpServlet {
             e.printStackTrace();
 //            request.setAttribute("message", "单个文件超出最大值！！！");
 //            request.getRequestDispatcher("/message.jsp").forward(request, response);
-
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("result", "ok");
             jsonObject.put("message","单个文件超出最大值！！！");

@@ -4,8 +4,8 @@
 
 
 
-	<!--查找文档管理列表-->
-	<select id="getFileManList" resultType="FileManEntity" parameterType="Map">
+	<!--查找上传文件列表-->
+	<select id="getFileList" resultType="FileManEntity" parameterType="Map">
 		select T.FILE_ID,
 			   T.PROJ_ID,
 			   T.FOLDER_ID,
@@ -27,8 +27,35 @@
 		<if test="folderId != null and '' != folderId">
 		   and T.FOLDER_ID = #{folderId}
 		</if>
+		<if test="projId != null and '' != projId">
+			and T.PROJ_ID = #{projId}
+		</if>
 		ORDER by T.FILE_ID
 	</select>
+
+
+
+	<!--根据项目编号查找文件夹列表 （包含项目步骤文件夹）-->
+	<select id="getFolderListByProjId" resultType="FileManEntity" parameterType="Map">
+		select S.STEP_ID        FILE_ID,
+			   S.PROJ_ID,
+			   T.STEP_NAME      FILE_NAME,
+			   T.attach_content DESCRIPTION
+		  from PMS_PROJ_STEP S, PMS_PROJ_TEMPLET_STEP T
+		 where S.STEP_MOD = T.TEMP_STEP_ID
+		<if test="projId != null and '' != projId">
+		   and S.PROJ_ID = #{projId}
+		</if>
+		union all
+		select F.FILE_ID, F.PROJ_ID, F.FILE_NAME, F.DESCRIPTION
+		  from PMS_SYS_FILE_MANAGE F
+		 where F.FILE_TYPE = '0'
+		<if test="projId != null and '' != projId">
+		   and F.PROJ_ID = #{projId}
+		</if>
+	</select>
+
+
 
 
 

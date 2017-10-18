@@ -11,6 +11,8 @@ public interface FileManService {
 
     List<FileManEntity> getFileManList(Map<String, Object> params);
 
+    List<FileManEntity> getFolderListByProjId(Map<String, Object> params);
+
     int addFolderInfo(Map<String, Object> params);
 
     int deleteFileMan(Map<String, Object> params);
@@ -18,4 +20,5 @@ public interface FileManService {
     Long getFileManKey();
 
     int insertFileInfo(Map<String, Object> params);
+
 }

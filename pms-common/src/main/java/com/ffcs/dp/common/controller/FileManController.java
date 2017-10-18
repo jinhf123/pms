@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 工作日志
+ * 文件管理
  *
  */
 @Controller
@@ -39,6 +39,16 @@ public class FileManController extends AbstractController {
         params.put("userId", getUserId());
         return fileManService.getFileManList(params);
     }
+
+
+
+    //根据项目编号查找文件夹列表 （包含项目步骤文件夹）
+    @RequestMapping("/getFolderList")
+    public List<FileManEntity> getFolderList(@RequestBody Map<String, Object> params) {
+        params.put("userId", getUserId());
+        return fileManService.getFolderListByProjId(params);
+    }
+
 
 
     //添加文件夹

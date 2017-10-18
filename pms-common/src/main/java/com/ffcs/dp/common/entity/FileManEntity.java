@@ -12,7 +12,7 @@ public class FileManEntity implements Serializable {
     private Long folderId;//所属目录id
     private String fileName;//文档名称
     private String filePath;//存放路径
-    private String describe;//文档说明
+    private String description;//文档说明
     private String fileType;//文档类型
     private Long creator;//创建者
     private String staffName;//创建者名称
@@ -68,12 +68,12 @@ public class FileManEntity implements Serializable {
         this.filePath = filePath;
     }
 
-    public String getDescribe() {
-        return describe;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescribe(String describe) {
-        this.describe = describe;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getFileType() {
