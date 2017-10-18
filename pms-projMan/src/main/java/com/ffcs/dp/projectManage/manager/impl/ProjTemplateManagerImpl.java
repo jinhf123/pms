@@ -34,5 +34,15 @@ public class ProjTemplateManagerImpl implements ProjTemplateManager {
         projTemplateMapper.saveTemplateStep(projTemplateStepEntity);
     }
 
+    @Override
+    public void updateDefault() {
+        projTemplateMapper.updateDefault();
+    }
+
+    @Override
+    public void updateSetDefault(Long tempId) {
+        projTemplateMapper.updateSetDefault(tempId);
+    }
+
 
 }

@@ -1,118 +1,28 @@
-// $(document).ready(function () {
-//     $('.js-example-basic-multiple').select2();
-// });
-
-// var templeForm = {
-//     template: "                                <div>\n" +
-//     "                                    <div class=\"flex-container\">\n" +
-//     "                                        <div class=\"flex-left\">\n" +
-//     "                                            <label for=\"inlineFormCustomSelect\">默认完成时间：上一环节偏移</label>\n" +
-//     "                                            <input class=\"custom-control input-number\" type=\"text\"/>\n" +
-// "                                            <select class=\"custom-select input-number\" id=\"inlineFormCustomSelect\">\n" +
-// "                                                <option value=\"1\" selected>月</option>\n" +
-// "                                                <option value=\"2\">天</option>\n" +
-// "                                            </select>\n" +
-// "                                            <label class=\"\">当离完成时间</label>\n" +
-// "                                            <input class=\"custom-control input-number\" type=\"text\"/>\n" +
-// "                                            <label class=\"\">天,通知给</label>\n" +
-// "                                        </div>\n" +
-// "                                        <div class=\"flex-right\">\n" +
-// "                                            <select class=\"js-example-basic-multiple form-control\" name=\"states[]\"\n" +
-// "                                                    multiple=\"multiple\">\n" +
-// "                                                <option value=\"AL\">Alabama</option>\n" +
-// "                                                <option value=\"WY\">Wyoming</option>\n" +
-// "                                            </select>\n" +
-// "                                        </div>\n" +
-// "                                    </div>\n" +
-// "                                    <div class=\"form-line\">\n" +
-// "                                        <div class=\"flex-container\">\n" +
-// "                                            <div class=\"flex-left\">\n" +
-// "                                                <label>当任务变更时，默认通知给</label>\n" +
-// "                                            </div>\n" +
-// "                                            <div class=\"flex-right\">\n" +
-// "                                                <select class=\"js-example-basic-multiple form-control\" name=\"states[]\"\n" +
-// "                                                        multiple=\"multiple\">\n" +
-// "                                                    <option value=\"AL\">Alabama</option>\n" +
-// "                                                    <option value=\"WY\">Wyoming</option>\n" +
-// "                                                </select>\n" +
-// "                                            </div>\n" +
-// "                                        </div>\n" +
-// "                                    </div>\n" +
-// "                                    <div class=\"form-line\">\n" +
-// "                                        <label>当日程结束前</label>\n" +
-// "                                        <input type=\"text\" class=\"custom-control input-number\"/>\n" +
-// "                                        <label>天，通知给参与人</label>\n" +
-// "                                    </div>\n" +
-// "                                    <div>\n" +
-// "                                        <div class=\"flex-container\">\n" +
-// "                                            <div class=\"flex-left flex-checkbox\">\n" +
-// "                                                <input type=\"checkbox\" class=\"\"/>\n" +
-// "                                            </div>\n" +
-// "                                            <div class=\"flex-right\">\n" +
-// "                                                <div class=\"form-line\">\n" +
-// "                                                    <label>本环节需要上传文档 对上传文档要求</label>\n" +
-// "                                                    <input type=\"checkbox\" class=\"custom-control\"/>\n" +
-// "                                                    <label> word</label>\n" +
-// "                                                    <input type=\"text\" class=\"custom-control input-number\"\n" +
-// "                                                           placeholder=\"个数\"/>\n" +
-// "                                                    <input type=\"checkbox\" class=\"custom-control\"/>\n" +
-// "                                                    <label> xls</label>\n" +
-// "                                                    <input type=\"text\" class=\"custom-control input-number\"\n" +
-// "                                                           placeholder=\"个数\"/>\n" +
-// "                                                    <input type=\"checkbox\" class=\"custom-control\"/>\n" +
-// "                                                    <label> pdf</label>\n" +
-// "                                                    <input type=\"text\" class=\"custom-control input-number\"\n" +
-// "                                                           placeholder=\"个数\"/>\n" +
-// "                                                </div>\n" +
-// "                                                <input type=\"text\" class=\"form-control\" placeholder=\" 对上传的文档进行具体说明\">\n" +
-// "                                            </div>\n" +
-// "                                        </div>\n" +
-// "                                    </div>\n" +
-// "                                </div>"
-// };
 Vue.component('v-select', VueSelect.VueSelect);
 var templeStepForm = {
-    props: ['item', 'options'],
-    template: "#templateStepForm",
-}
+    props: [
+        'item',
+        'options'
+    ],
+    template: "#templateStepForm"
+};
+var templateStepList = {
+    props: [
+        'item',
+        'options'
+    ],
+    template: "#templateStepList"
+};
 
-var vm = new Vue({
-    el: '#dpTemple',
-    data: {
-        template: [],
-        temp_name: null,
-        description: null,
-        is_default: null,
-        stepList: [
-            {
-                stepName: '列入计划',
-                status: "show",
-                stepSort: null,
-                defaultMoveDate: null,
-                finishNoticeDate: null,
-                noticeStaff: null,
-                noticeStaffId: null,
-                taskChangeStaff: null,
-                taskChangeStaffId: null,
-                finishScheduleNoticeDate: null,
-                finishScheduleStaff: null,
-                isAttach: null,
-                attachWord: 0,
-                attachExcel: 0,
-                attachPdf: 0,
-                attachContent: null
-            }
-        ],
-        options: ['foo', 'bar', 'baz'],
-        selected: null
-    },
+var templeForm = {
+    props: ['temp', 'options'],
+    template: "#templateForm",
     components: {
-        "template-form": templeStepForm
+        "template-step-form": templeStepForm
     },
-
     methods: {
         addNewStep: function () {
-            this.stepList.push({
+            this.temp.stepList.push({
                 stepName: '双击修改',
                 status: "show",
                 stepSort: null,
@@ -130,80 +40,208 @@ var vm = new Vue({
                 attachPdf: 0,
                 attachContent: null
             });
-            console.log(this.stepList)
+            console.log(this.temp);
         },
         removeStep: function (index) {
-            this.stepList.splice(index, 1);
+            this.temp.stepList.splice(index, 1);
         },
         show: function (index) {
-            this.stepList[index].status = "show";
+            this.temp.stepList[index].status = "show";
         },
         edit: function (index) {
-            this.stepList[index].status = "edit";
+            this.temp.stepList[index].status = "edit";
         },
         submitForm: function () {
+            var me = this;
             this.$http.post(
                 "/projMan/template",
                 {
                     params: {
-                        tempName: this.temp_name,
-                        description: this.description,
-                        stepList: this.stepList
+                        tempName: this.temp.tempName,
+                        description: this.temp.description,
+                        stepList: this.temp.stepList
+                    }
+                }).then(function (data) {
+                top.layer.open({
+                    title: '添加结束',
+                    area: '338px',
+                    anim: -1,
+                    isOutAnim: false,
+                    move: false,
+                    closeBtn: 0,
+                    content: '添加成功',
+                    btn: ['确定'],
+                    yes: function () {
+                        me.$emit("submit-success");
+                        top.layer.close(top.layer.index);
                     }
                 });
+            }, function (err) {
+                top.layer.open({
+                    title: '系统提示',
+                    area: '338px',
+                    icon: 3,
+                    anim: -1,
+                    isOutAnim: false,
+                    move: false,
+                    content: '发生错误,重新加载?',
+                    btn: ['确定', '取消'],
+                    btnAlign: 'c',
+                    yes: function () {
+                        dialogLoading(true);
+                        setTimeout(function () {
+                            toUrl('index.html#projMan/projectTemple.html?');
+                        }, 500);
+                    }
+                });
+            });
+        }
+    }
+};
+var templeList = {
+    props: ['template', 'options', 'temp'],
+    template: "#templateList",
+    components: {
+        "template-step-list": templateStepList
+    },
+    created: function () {
+        console.log(this.template);
+    }
+};
+
+const routes = [
+    {
+        path: '/',
+        redirect: '/bar/0'
+    },
+    {
+        path: '/foo',
+        component: templeForm
+    },
+    {
+        path: '/bar/:index',
+        component: templeList
+    }
+];
+
+const router = new VueRouter({
+    routes: routes
+});
+
+var vm = new Vue({
+    el: '#dpTemple',
+    router: router,
+    data: {
+        isLoading: null,
+        template: [],
+        temp: {
+            tempName: null,
+            description: null,
+            is_default: null,
+            stepList: [
+                {
+                    stepName: '列入计划',
+                    status: "show",
+                    stepSort: null,
+                    defaultMoveDate: null,
+                    finishNoticeDate: null,
+                    noticeStaff: null,
+                    noticeStaffId: null,
+                    taskChangeStaff: null,
+                    taskChangeStaffId: null,
+                    finishScheduleNoticeDate: null,
+                    finishScheduleStaff: null,
+                    isAttach: null,
+                    attachWord: null,
+                    attachExcel: null,
+                    attachPdf: null,
+                    attachContent: null
+                }
+            ]
+        },
+        options: ['foo', 'bar', 'baz'],
+    },
+    components: {
+        "template-form":
+        templeForm
+    },
+
+    methods: {
+        resetData: function () {
+            this.temp.tempName = null;
+            this.temp.description = null;
+            this.temp.stepList = [
+                {
+                    stepName: '列入计划',
+                    status: "show",
+                    stepSort: null,
+                    defaultMoveDate: null,
+                    finishNoticeDate: null,
+                    noticeStaff: null,
+                    noticeStaffId: null,
+                    taskChangeStaff: null,
+                    taskChangeStaffId: null,
+                    finishScheduleNoticeDate: null,
+                    finishScheduleStaff: null,
+                    isAttach: null,
+                    attachWord: 0,
+                    attachExcel: 0,
+                    attachPdf: 0,
+                    attachContent: null
+                }
+            ]
+        },
+        loadTemplate: function () {
+            var me = this;
+            me.isLoading = true;
+            this.$http.get("/projMan/template")
+                .then(function (data) {
+                    me.isLoading = false;
+                    me.template = data.data;
+                }, function (err) {
+                    console.log(err);
+                })
+        },
+        reloadTemplate: function () {
+            this.loadTemplate();
+            this.resetData();
+        },
+        setDefault: function (tempId) {
+            var self = this;
+            this.$http.post("/projMan/template/setDefault", tempId)
+                .then(function (data) {
+                    var title;
+                    if (data.data.success) {
+                        title = "设置成功";
+                    } else {
+                        title = "设置失败";
+                    }
+                    top.layer.open({
+                        title: title,
+                        area: '338px',
+                        anim: -1,
+                        isOutAnim: false,
+                        move: false,
+                        closeBtn: 0,
+                        content: data.data.message,
+                        btn: ['确定'],
+                        yes: function () {
+                            self.loadTemplate();
+                            top.layer.close(top.layer.index);
+                        }
+                    });
+                }, function (err) {
+                    console.log(err)
+                })
         }
     },
     created: function () {
-        var me = this;
-        this.$http.get("/projMan/template")
-            .then(function (data) {
-                me.template = data.data;
-            }, function (err) {
-                console.log(error);
-            })
+        this.loadTemplate();
     }
 });
 
 Vue.directive('focus', {
-    // When the bound element is inserted into the DOM...
     inserted: function (el) {
-        // Focus the element
         el.focus()
     }
 });
-
-function deleteStep(obj) {
-    var li = $(obj).parent();
-    var href = li.find('a').attr('href');
-    var content = $(href);
-    if (li.hasClass("active")) {
-        if (content.next().length !== 0) {
-            li.next().addClass("active");
-            content.next().addClass("active in");
-        } else {
-            li.prev().addClass("active");
-            content.prev().addClass("active in");
-        }
-
-    }
-    li.remove();
-    content.remove();
-}
-
-function changeStepName(obj) {
-    var val = $(obj).text();
-    $(obj).html("<input onblur='changeText(this);' style='color: black; width: 56px' />");
-    var input = $(obj).find("input");
-    input.focus().val("").val(val);
-    input.get(0).scrollLeft = input.get(0).scrollWidth;
-}
-
-function changeText(obj) {
-    var a = $(obj).parent();
-    a.attr("title", $(obj).val());
-    a.html($(obj).val());
-}
-
-function addNewStep(obj) {
-    $(obj).parent().before("<step-li></step-li>");
-}

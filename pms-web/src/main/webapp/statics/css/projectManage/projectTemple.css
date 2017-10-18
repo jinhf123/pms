@@ -50,7 +50,6 @@ html {
 .nav-step {
     margin-left: 20px;
     margin-right: 20px;
-
 }
 
 .nav-step > li {
@@ -137,3 +136,67 @@ html {
     display: block;
 }
 
+.fade-enter-active, .fade-leave-active{
+    transition: opacity .5s ease-out;
+}
+
+.fade-enter, .fade-leave-active{
+    opacity: 0;
+}
+
+.list-group-item{
+    width: 95%;
+    padding-bottom:20px;
+    height: 80px;
+    background-color: #f2f2f2;
+    color: #999999;
+}
+
+a.list-group-item:focus, a.list-group-item:hover{
+    background-color: #e4f5fa;
+}
+.list-group-item-heading{
+    font-size: 16px;
+}
+a.list-group-item:focus>.list-group-item-heading{
+    font-weight: bold;
+}
+
+.template-nav{
+    height:90vh;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+.default-template {
+    background-image:url('/statics/img/template_default.png');
+    position: relative;
+    top: -20px;
+    left: 190px;
+    z-index: 3;
+    cursor: pointer;
+    height:34px;
+    width:34px;
+    text-align: center;
+    line-height: 34px;
+    color:#ffffff;
+}
+
+.set-default-template {
+    background-image:url('/statics/img/template_set_default.png');
+    position: relative;
+    top: -20px;
+    left: 190px;
+    z-index: 3;
+    cursor: pointer;
+    height:34px;
+    width:34px;
+    text-align: center;
+    line-height: 17px;
+    color:#ffffff;
+    font-size: 12px;
+}
+
+.set-default-template:hover {
+    color:#999999;
+}

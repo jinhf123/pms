@@ -45,5 +45,11 @@ public class ProjTemplateServiceImpl implements ProjTemplateService {
         }
     }
 
+    @Transactional
+    @Override
+    public void updateSetDefault(Long tempId) {
+        projTemplateManager.updateDefault();
+        projTemplateManager.updateSetDefault(tempId);
+    }
 
 }

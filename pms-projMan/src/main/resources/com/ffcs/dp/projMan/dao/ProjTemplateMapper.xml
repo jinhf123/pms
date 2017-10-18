@@ -11,7 +11,7 @@
         <collection property="projTemplateStepEntities" ofType="ProjTemplateStepEntity">
             <id property="tempStepId" column="temp_step_id"/>
             <result property="stepName" column="step_name"/>
-            <result property="stepSort" column="step_name"/>
+            <result property="stepSort" column="step_sort"/>
             <result property="defaultMoveDate" column="default_move_date"/>
             <result property="finishNoticeDate" column="finish_notice_date"/>
             <result property="noticeStaff" column="notice_staff"/>
@@ -33,7 +33,7 @@
         FROM
             pms_proj_template,
             PMS_PROJ_TEMPLET_STEP
-        WHERE pms_proj_template.state = 1 AND pms_proj_template.temp_id = PMS_PROJ_TEMPLET_STEP.temp_id (+)
+        WHERE pms_proj_template.state = 1 AND pms_proj_template.temp_id = PMS_PROJ_TEMPLET_STEP.temp_id (+) ORDER BY PMS_PROJ_TEMPLATE.TEMP_ID ,to_number(PMS_PROJ_TEMPLET_STEP.step_sort)
     </select>
 
 
@@ -51,5 +51,13 @@
                                #{finishScheduleNoticeDate}, #{finishScheduleStaff}, #{isAttach}, #{attachWord},
                 #{attachExcel}, #{attachPdf}, #{attachContent}, 1)
     </insert>
+    
+    <update id="updateDefault" >
+        update PMS_PROJ_TEMPLATE set IS_DEFAULT = '0'  where IS_DEFAULT = '1'
+    </update>
+
+    <update id="updateSetDefault" parameterType="Long" >
+        update PMS_PROJ_TEMPLATE set IS_DEFAULT = '1'  where TEMP_ID = #{tempId}
+    </update>
 
 </mapper>

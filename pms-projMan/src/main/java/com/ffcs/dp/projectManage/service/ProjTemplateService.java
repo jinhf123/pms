@@ -16,4 +16,6 @@ public interface ProjTemplateService {
 
     void saveTemplate(ProjTemplateEntity projTemplateEntity);
 
+    void updateSetDefault(Long tempId);
+
 }

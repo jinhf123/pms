@@ -21,4 +21,7 @@ public interface ProjTemplateMapper extends BaseMapper<ProjTemplateEntity> {
 
     void saveTemplateStep(ProjTemplateStepEntity projTemplateStepEntity);
 
+    void updateDefault();
+
+    void updateSetDefault(Long tempId);
 }

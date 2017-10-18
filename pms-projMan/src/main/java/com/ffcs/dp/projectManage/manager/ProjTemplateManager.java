@@ -14,5 +14,9 @@ public interface ProjTemplateManager {
 
     void saveTemplateStep(ProjTemplateStepEntity projTemplateStepEntity);
 
+    void updateDefault();
+
+    void updateSetDefault(Long tempId);
+
 
 }
