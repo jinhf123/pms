@@ -115,7 +115,7 @@ public class ProjDetailManagerImpl implements ProjDetailManager {
         List<ScheduleEntity> list = projDetailMapper.getScheduleList(params);
         for(ScheduleEntity se:list){
             String date = DateUtils.format(se.getEndDate(),"MM-dd");
-            se.setDate(date);
+            se.setScheduleDate(date);
             result.add(se);
         }
         return result;

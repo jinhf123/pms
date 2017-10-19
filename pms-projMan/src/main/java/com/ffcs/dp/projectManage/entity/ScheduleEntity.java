@@ -13,12 +13,13 @@ public class ScheduleEntity implements Serializable {
     private Long taskId;
     private Date startDate;
     private Date endDate;
-    private String date;
+    private String scheduleDate;
     private String content;
     private String participant;
     private String participantName;
     private String state;
     private Long creator;
+    private Long userId;//当前用户编号
 
     public ScheduleEntity() {
         super();
@@ -112,11 +113,19 @@ public class ScheduleEntity implements Serializable {
         this.creator = creator;
     }
 
-    public String getDate() {
-        return date;
+    public String getScheduleDate() {
+        return scheduleDate;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setScheduleDate(String scheduleDate) {
+        this.scheduleDate = scheduleDate;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

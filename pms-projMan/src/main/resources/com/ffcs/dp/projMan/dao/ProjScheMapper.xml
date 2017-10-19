@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffcs.dp.projectManage.dao.ProjScheMapper">
+
+	<!--获取日程列表信息-->
+	<select id="getProjScheList" resultType="ScheduleEntity" parameterType="Map">
+		select S.SCHEDULE_ID,
+               S.START_DATE,
+			   S.END_DATE,
+               to_char(S.START_DATE,'MM-DD') SCHEDULE_DATE,
+			   S.CONTENT,
+               S.CREATOR,
+               #{userId} USER_ID,
+			   (select WM_CONCAT(USERNAME)
+                  from PMS_SYS_USER
+                 where instr(PARTICIPANT, USER_ID) > 0) PARTICIPANT_NAME
+		  from PMS_PROJ_SCHEDULE S
+		 where S.PROJ_ID = #{projId}
+        <if test="state != null and '' != state">
+           and STATE = #{state}
+        </if>
+		<if test="stepId != null and '' != stepId">
+		   and S.STEP_ID = #{stepId}
+		</if>
+        order by START_DATE desc
+	</select>
+
+	<!--更新日程信息-->
+	<update id="updateProjSche">
+		update PMS_PROJ_SCHEDULE
+		<set>
+			<if test="state != null">STATE = #{state}, </if>
+			<if test="endDate != null">END_DATE = #{endDate}, </if>
+			<if test="content != null">CONTENT = #{content}, </if>
+			<if test="participant != null">PARTICIPANT = #{participant}, </if>
+		</set>
+		WHERE SCHEDULE_ID = #{scheduleId}
+	</update>
+
+	<!--新增日程信息-->
+	<insert id="insertProjSche">
+		<selectKey keyProperty="scheduleId" resultType="long" order="BEFORE">
+			SELECT PMS_PROJ_SCHEDULE_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		insert into pms_proj_schedule (SCHEDULE_ID, PROJ_ID, STEP_ID, TASK_ID, START_DATE, END_DATE, CONTENT, PARTICIPANT, STATE, CREATOR)
+		values (#{scheduleId}, #{projId}, #{stepId}, null, sysdate, to_date(#{endDate}, 'yyyy-mm-dd'), #{content}, #{participant}, '0', #{userId})
+	</insert>
+
+    <!--删除任务日程-->
+    <delete id="deleteProjSche">
+        delete PMS_PROJ_SCHEDULE where SCHEDULE_ID = #{scheduleId} and CREATOR = #{userId}
+    </delete>
+
+</mapper>

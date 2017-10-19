@@ -27,6 +27,13 @@ function initialPage() {
     $("#finishDate").datetimepicker().on('change', function () {
         vm.finishDate = $("#finishDate").val();
     });
+
+
+    $("#scheEndDate").datetimepicker().on('change', function () {
+        vm.scheEndDate = $("#scheEndDate").val();
+    });
+
+
 }
 
 //获取项目信息
@@ -67,10 +74,11 @@ function getStepList() {
                     break;
                 }
             }
-            var param = JSON.stringify({
+            var param = {
+                "state":"0",
                 "projId":vm.projId,
                 "stepId":vm.stepId
-            });
+            };
             getTaskGrid(param);
             getScheGrid(param);
         }
@@ -82,7 +90,7 @@ function getTaskGrid(param) {
     vm.styleObj.height = ($(window).height()-5)+"px";
     $.ajax({
         url: '../../projMan/projDetail/getTaskList?_' + $.now(),
-        data: param,
+        data: JSON.stringify(param),
         type: "post",
         async: false,
         dataType: "json",
@@ -96,14 +104,22 @@ function getTaskGrid(param) {
 //获取日程数据列表
 function getScheGrid(param) {
     $.ajax({
-        url: '../../projMan/projDetail/getScheduleList?_' + $.now(),
-        data: param,
+        url: '../../schedule/projSche/getProjScheList?_' + $.now(),
+        data: JSON.stringify(param),
         type: "post",
         async: false,
         dataType: "json",
         contentType: 'application/json',
         success: function (data) {
-            vm.schedules = data;
+            if(param.state=="0"){
+                vm.unCompSchedule=data.length;//未完成日程
+            }
+            if(param.state=="0"&&data.length==0){
+                param.state ="1";
+                getScheGrid(param);
+            }else{
+                vm.schedules = data;
+            }
         }
     });
 };
@@ -111,7 +127,7 @@ function getScheGrid(param) {
 //保存任务
 function saveTask(){
     console.log("保存任务");
-    var param = JSON.stringify({
+    var param = {
         "parentTask":vm.parentTask,
         "projId":vm.projId,
         "stepId":vm.stepId,
@@ -119,10 +135,10 @@ function saveTask(){
         "taskStaff":vm.taskStaff,
         "taskStaffId":vm.taskStaffId,
         "finishDate":vm.finishDate
-    });
+    };
     $.ajax({
         url: '../../projMan/projDetail/saveTask?_' + $.now(),
-        data: param,
+        data: JSON.stringify(param),
         type: "post",
         async: false,
         dataType: "json",
@@ -136,10 +152,10 @@ function saveTask(){
                 vm.taskStaff="";
                 vm.taskStaffId="";
                 vm.finishDate="";
-                var param2 = JSON.stringify({
+                var param2 = {
                     "projId":vm.projId,
                     "stepId":vm.stepId
-                });
+                };
                 getTaskGrid(param2);
             }else{
                 dialogAlert(data.msg,"error");
@@ -152,33 +168,33 @@ function saveTask(){
 //保存日程
 function saveSche(){
     console.log("保存日程");
-    var param = JSON.stringify({
+    var param = {
         "projId":vm.projId,
         "stepId":vm.stepId,
         "content":vm.content,
         "participant":vm.participant,
         "participantId":vm.participantId,
         "scheEndDate":vm.scheEndDate
-    });
+    };
     $.ajax({
-        url: '../../projMan/projDetail/saveTask?_' + $.now(),
-        data: param,
+        url: '/schedule/projSche/saveProjSche?_' + $.now(),
+        data: JSON.stringify(param),
         type: "post",
         async: false,
         dataType: "json",
         contentType: 'application/json',
         success: function (data) {
             if(data.success){
-                vm.taskId=data.taskId;
-                this.isAddSche=false;
+                vm.isAddSche=false;
                 vm.content="";
                 vm.participant="";
                 vm.participantId="";
                 vm.scheEndDate="";
-                var param2 = JSON.stringify({
+                var param2 = {
+                    "state":"0",
                     "projId":vm.projId,
                     "stepId":vm.stepId
-                });
+                };
                 getScheGrid(param2)
             }else{
                 dialogAlert(data.msg,"error");
@@ -200,7 +216,8 @@ var vm = new Vue({
         isAddSche:false,
 
         //项目信息
-        projectInfo:{projectName:"",allStep:"",unCompStep:"",unCompTask:"",unCompSchedule:""},
+        projectInfo:{projectName:"",allStep:"",unCompStep:"",unCompTask:""},
+        unCompSchedule:"0",//未完成日程数
 
         //查询参数
         projId:"",
@@ -214,7 +231,6 @@ var vm = new Vue({
         taskStaff:"",
         taskStaffId:"",
         finishDate:"",
-
         //新增日程参数
         content:"",
         participant:"",
@@ -227,12 +243,12 @@ var vm = new Vue({
     },
     methods : {
         load: function(id) {//加载列表
-            this.stepId = id;
-            var param = JSON.stringify({
+            vm.stepId = id;
+            var param = {
                 "projId":vm.projId,
                 "stepId":vm.stepId,
                 "taskId":vm.taskId
-            });
+            };
             getTaskGrid(param);
             getScheGrid(param);
         },
@@ -243,7 +259,7 @@ var vm = new Vue({
             dialogOpen({
                 id: 'staffSelect',
                 title: '人员选择',
-                url: 'base/user/staff.html?_' + $.now(),
+                url: 'base/user/staff.html?singleSelect=true',
                 scroll : true,
                 width: "600px",
                 height: "600px",
@@ -259,24 +275,37 @@ var vm = new Vue({
             dialogOpen({
                 id: 'staffSelect',
                 title: '人员选择',
-                url: 'base/user/staff.html?_' + $.now(),
+                url: 'base/user/staff.html??singleSelect=false',
                 scroll : true,
                 width: "600px",
                 height: "600px",
                 yes : function(iframeId) {
-                    top.frames[0].projProgress.vm.participant = top.frames[iframeId].vm.userName;
-                    top.frames[0].projProgress.vm.participantId = top.frames[iframeId].vm.userId;
+                    var users = top.frames[iframeId].vm.getSelections;
+                    var ids="";
+                    var names="";
+                    for(var i=0;i<users.length;i++){
+                        ids = ids + users[i].userId+",";
+                        names = names +users[i].username+",";
+                    }
+                    ids=ids.substr(0,ids.length-1);
+                    names=names.substr(0,names.length-1);
+                    top.frames[0].projProgress.vm.participant = names;
+                    top.frames[0].projProgress.vm.participantId = ids;
                     var index = top.layer.getFrameIndex(iframeId); //先得到当前iframe层的索引
                     top.layer.close(index); //再执行关闭
                 }
             })
         },
-        finishStage: function(id) {//完成本阶段
+        finishStage: function(step) {//完成本阶段
+            if(step.compTask!=step.allTask){
+                dialogAlert("还有未完成的任务不能完成本阶段!","warn");
+                return;
+            }
             $.ajax({
                 url: '../../projMan/projDetail/finishStage?_' + $.now(),
                 data: JSON.stringify({
                     "projId": vm.projId,//完成本阶段后自动开始下阶段用
-                    "stepId": id
+                    "stepId": step.stepId
                 }),
                 type: "post",
                 async: false,
@@ -288,19 +317,18 @@ var vm = new Vue({
             });
         },
         queryAllTask: function(){//查看所有任务
-            var param = JSON.stringify({
+            var param = {
                 "projId":vm.projId,
                 "stepId":"",
                 "taskId":vm.taskId
-            });
+            };
             getTaskGrid(param);
         },
         editTask: function(){//任务编辑
-            this.isEdit=!this.isEdit;
-            this.isAddTask=false;
+            vm.isEdit=!vm.isEdit;
+            vm.isAddTask=false;
         },
-        startTask: function(id){
-            console.log("开始任务"+id);
+        startTask: function(id){//开始任务
             $.ajax({
                 url: '../../projMan/projDetail/updateTaskState?_' + $.now(),
                 data: JSON.stringify({
@@ -312,38 +340,41 @@ var vm = new Vue({
                 dataType: "json",
                 contentType: 'application/json',
                 success: function (data) {
-                    var param = JSON.stringify({
+                    var param = {
                         "projId":vm.projId,
                         "stepId":vm.stepId,
                         "taskId":vm.taskId
-                    });
+                    };
                     getTaskGrid(param);
                 }
             });
         },
-        finishTask: function(id,level){
-            if(level==1){
-                //todo 若有子任务未完成则弹窗提醒
+        finishTask: function(task){
+            if(task.subTaskList.length!=0){
+
+                //todo 若有子任务未完成则弹窗提醒 dialogAlert("该一级任务有二级任务未完成，不能完成此任务!","warn")
+
 
             }
-            console.log("完成任务"+id);
             $.ajax({
                 url: '../../projMan/projDetail/updateTaskState?_' + $.now(),
                 data: JSON.stringify({
                     operation:"finish",
-                    taskId:id
+                    taskId:task.taskId
                 }),
                 type: "post",
                 async: false,
                 dataType: "json",
                 contentType: 'application/json',
                 success: function (data) {
-                    var param = JSON.stringify({
+                    /*var param = {
                         "projId":vm.projId,
                         "stepId":vm.stepId,
                         "taskId":vm.taskId
-                    });
-                    getTaskGrid(param);
+                    };
+                    getTaskGrid(param);*/
+                    debugger;
+                    getStepList();//更新步骤信息,主要是更新已完成任务数
                 }
             });
         },
@@ -363,11 +394,11 @@ var vm = new Vue({
                 dataType: "json",
                 contentType: 'application/json',
                 success: function (data){
-                    var param = JSON.stringify({
+                    var param = {
                         "projId":vm.projId,
                         "stepId":vm.stepId,
                         "taskId":vm.taskId
-                    });
+                    };
                     getTaskGrid(param);
                 }
             });
@@ -379,37 +410,54 @@ var vm = new Vue({
             vm.taskStaff="";
             vm.taskStaffId="";
             vm.finishDate="";
-            this.isAddTask=true;
+            vm.isAddTask=true;
         },
         addTask:function(){//保存任务后对任务进行描述或者添加检查项
             saveTask();//保存任务
             vm.showDetail(vm.taskId);//跳转到保存的任务详细
         },
         closeTaskPanel:function () {
-            this.isAddTask=!this.isAddTask;
+            vm.isAddTask=!vm.isAddTask;
         },
         queryAllSche: function(){
             console.log("查看所有日程！");
-            var param = JSON.stringify({
-                "projId":vm.projId,
-                "stepId":"",
-                "taskId":vm.taskId
-            });
+            var param = {
+                "projId": vm.projId,
+                "stepId": "",
+                "taskId": vm.taskId
+            };
             getScheGrid(param);
         },
         addSchePanel:function(){
-            this.isAddSche=true;
+            vm.isAddSche=true;
         },
         addSche:function(){
-            this.isAddSche=!this.isAddSche;
-            //TODO 保存日程
             saveSche();
         },
+        delSchedule:function(scheduleId){
+            $.ajax({
+                url: '/schedule/projSche/deleteProjSche?_' + $.now(),
+                data: JSON.stringify({
+                    "scheduleId":scheduleId
+                }),
+                type: "post",
+                async: false,
+                dataType: "json",
+                contentType: 'application/json',
+                success: function (data){
+                    var param = {
+                        "state": "0",
+                        "projId": vm.projId,
+                        "stepId": vm.stepId
+                    };
+                    getScheGrid(param);
+                }
+            });
+        },
         closeSchePanel:function () {
-            this.isAddSche=!this.isAddSche;
+            vm.isAddSche=false;
         }
     },
     computed: {
-
     }
 });

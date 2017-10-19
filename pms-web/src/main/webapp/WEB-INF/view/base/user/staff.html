@@ -38,8 +38,9 @@ body {
 
 
 		</div>
-			#parse("include/footer.html")
-			<script type="text/javascript">
+	</div>
+#parse("include/footer.html")
+<script type="text/javascript">
 
                 $(function () {
                     initialPage();
@@ -47,8 +48,10 @@ body {
                 });
 
                 function initialPage() {
-                    $(".panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
 
+                    vm.singleSelect = getQueryString('singleSelect')=="true"?true:false;
+
+                    $(".panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
                     $(window).resize(function() {
                         $('#dataGrid').bootstrapTable('resetView', {height: $(window).height()-54});
                         $(".panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
@@ -58,7 +61,8 @@ body {
                 function getGrid() {
                     $('#dataGrid').bootstrapTableEx({
                         url: '../../sys/user/staffSelectList?_' + $.now(),
-                        singleSelect : true,
+                        singleSelect : vm.singleSelect,
+                        maintainSelected : vm.singleSelect,//设置为 true 在点击分页按钮或搜索按钮时，将记住checkbox的选择项
                         height: $(window).height()-54,
                         paginationPreText: '<<',
                         paginationNextText: '>>',
@@ -88,13 +92,23 @@ body {
                 var vm = new Vue({
                     el:'#dpLTE',
                     data: {
+                        singleSelect:true,
                         userId:"",
                         userName:"",
+                        selectData:[],
+                        userIds:[],
+                        userNames:[],
                         keyword: null
                     },
                     methods : {
                         load: function() {
                             $('#dataGrid').bootstrapTable('refresh');
+                        }
+                    },
+                    computed: {
+                        getSelections: function(){
+                            vm.selectData = $('#dataGrid').bootstrapTable('getSelections');
+                            return vm.selectData;
                         }
                     }
                 })

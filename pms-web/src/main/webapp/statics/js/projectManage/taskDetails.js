@@ -215,8 +215,16 @@ var vm = new Vue({
         content:"",
         state:"",
 
+        //添加到工作日志，风险问题参数
+        startDate:"",
+        endDate:"",
+        resolveStaff:"",
+        resolveDate:"",
+        isDialogOpen:"false",
+
         //发表评论
         taskLogContent:""
+
     },
     methods : {
         load: function() {
@@ -230,7 +238,7 @@ var vm = new Vue({
             dialogOpen({
                 id: 'staffSelect',
                 title: '人员选择',
-                url: 'base/user/staff.html?_' + $.now(),
+                url: 'base/user/staff.html?singleSelect=true',
                 scroll : true,
                 width: "600px",
                 height: "600px",
@@ -369,12 +377,119 @@ var vm = new Vue({
                         dialogMsg("评论成功！");
                         vm.taskLogContent = "";
                         getTaskLogGrid();
+
+
+                        if(vm.addToWorkLog&&vm.addToRiskIssues){
+                            vm.addWorkLogs();
+                        }else if(vm.addToRiskIssues)
+                            vm.addriskIssues();
+                        if(vm.addToWorkLog&&!vm.addToRiskIssues){
+                            vm.addWorkLogs();
+                        }
+
+
                     }else{
                         dialogMsg("评论失败！"+data.msg,"error")
                     }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     dialogMsg("操作失败！"+errorThrown,"error")
+                }
+            });
+        },
+        addWorkLogs:function () {
+            vm.isDialogOpen=true;
+            dialogContent2({
+                title : "添加到工作日志",
+                width : '600px',
+                height : '200px',
+                content :  $("#workLogPanel"),
+                btn : [ '确定', '取消' ],
+                yes : function(index) {
+                    if(isNullOrEmpty(vm.startDate)) {
+                        dialogAlert('开始日期为空','info');
+                        return false;
+                    }
+                    if(isNullOrEmpty(vm.endDate)) {
+                        dialogAlert('结束日期为空','info');
+                        return false;
+                    }
+                    layer.close(index);
+                    /*$.ajax({
+                        url: '../../FileMan/addFolderInfo?_' + $.now(),
+                        data: JSON.stringify({
+                            "projId" : vm.projId,
+                            "folderName" : vm.folderName,
+                            "description": vm.description
+                        }),
+                        type: "post",
+                        dataType: "json",
+                        contentType: 'application/json',
+                        success: function (data) {
+                            if(data.success){
+                                layer.close(index);
+                                dialogMsg("添加文件夹成功!", 'info');
+                                getFolderGrid();
+                            }else{
+                                dialogAlert("添加文件夹失败!"+data.msg, 'error');
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            dialogLoading(false);
+                            dialogAlert(errorThrown, 'error');
+                        }
+                    });*/
+                },
+                end:function(){
+                    if(vm.addToRiskIssues)
+                        vm.addriskIssues();
+                }
+            });
+        },
+        addriskIssues:function(){
+            vm.isDialogOpen=true;
+            dialogContent2({
+                title : "添加到风险问题",
+                width : '600px',
+                height : '200px',
+                content :  $("#riskIssuesPanel"),
+                btn : [ '确定', '取消' ],
+                yes : function(index) {
+                    if(isNullOrEmpty(vm.resolveStaff)) {
+                        dialogAlert('请指定解决人！','info');
+                        return false;
+                    }
+                    if(isNullOrEmpty(vm.resolveDate)) {
+                        dialogAlert('请指定解决日期','info');
+                        return false;
+                    }
+                    layer.close(index);
+                    /*$.ajax({
+                        url: '../../FileMan/addFolderInfo?_' + $.now(),
+                        data: JSON.stringify({
+                            "projId" : vm.projId,
+                            "folderName" : vm.folderName,
+                            "description": vm.description
+                        }),
+                        type: "post",
+                        dataType: "json",
+                        contentType: 'application/json',
+                        success: function (data) {
+                            if(data.success){
+                                layer.close(index);
+                                dialogMsg("添加文件夹成功!", 'info');
+                                getFolderGrid();
+                            }else{
+                                dialogAlert("添加文件夹失败!"+data.msg, 'error');
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            dialogLoading(false);
+                            dialogAlert(errorThrown, 'error');
+                        }
+                    });*/
+                },
+                end:function(){
                 }
             });
         }
@@ -384,3 +499,32 @@ var vm = new Vue({
     }
 });
 
+dialogContent2 = function(opt){
+    var defaults = {
+        title : '系统窗口',
+        width: '',
+        height: '',
+        content : null,
+        data : {},
+        btn: ['确定', '取消'],
+        success: null,
+        yes: null
+    };
+    var option = $.extend({}, defaults, opt);
+    return layer.open({
+        type : 1,
+        title : option.title,
+        closeBtn : 1,
+        anim: -1,
+        isOutAnim: false,
+        shadeClose : false,
+        shade : 0.3,
+        area : [option.width, option.height],
+        shift : 5,
+        content : option.content,
+        btn: option.btn,
+        success: option.success,
+        yes: option.yes,
+        end: option.end
+    });
+};

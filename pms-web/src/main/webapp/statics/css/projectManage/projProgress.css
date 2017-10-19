@@ -7,6 +7,10 @@
     color: #1cae99
 }
 
+.font-red{
+    color: #d9534f;
+}
+
 .float-right{
     float: right;
     text-align: right;
