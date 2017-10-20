@@ -1,3 +1,13 @@
+body{
+    font-family: "微软雅黑 Regular", "微软雅黑";
+    font-size: 14px;
+    font-weight: 400;
+    font-style: normal;
+    color: #333333;
+    overflow-y: hidden;
+    overflow-x: visible;
+}
+
 .column{
     padding-left:0px;
     padding-right: 0px;
@@ -149,7 +159,24 @@
 }
 .btn-link-group>a{color: #428ac9;}
 
-
+/*标签样式*/
+label img{padding:5px;}
+.label-gray{
+    color: #666666;
+    background-color: #e3e3e3;
+    border: 1px solid #e3e3e3;
+    border-radius: 10px;
+    padding: 2px 5px;
+    font-size: 12px;
+}
+.label-pink{
+    color: #ea9066;
+    background-color: #f4d1d0;
+    border: 1px solid #f4d1d0;
+    border-radius: 10px;
+    padding: 2px 5px;
+    font-size: 12px;
+}
 
 
 /*图形*/
@@ -214,10 +241,6 @@
     background: -webkit-linear-gradient(top, #6fc7e1, #efac4e);   /*Safari5.1 Chrome 10+*/
     background: -o-linear-gradient(top, #6fc7e1, #efac4e);  /*Opera 11.10+*/
 }
-
-
-
-
 
 
 

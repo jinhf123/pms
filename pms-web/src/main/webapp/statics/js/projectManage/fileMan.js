@@ -7,7 +7,7 @@ $(function () {
 });
 
 function initialPage() {
-    if(getQueryString('projId')!=null)vm.projId = getQueryString('projId');
+    if(getQueryString('projId')!==null)vm.projId = getQueryString('projId');
     //初始化滚动条
     $(".north-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     $(".south-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
@@ -74,7 +74,7 @@ function deleteFileMan(){
         type: "post",
         dataType: "json",
         contentType: 'application/json',
-        success: function (data) {
+        success: function () {
             vm.deleteId="";
             vm.load();
         },
@@ -85,37 +85,6 @@ function deleteFileMan(){
     });
 
 }
-
-
-dialogContent2 = function(opt){
-    var defaults = {
-        title : '系统窗口',
-        width: '',
-        height: '',
-        content : null,
-        data : {},
-        btn: ['确定', '取消'],
-        success: null,
-        yes: null
-    };
-    var option = $.extend({}, defaults, opt);
-    return layer.open({
-        type : 1,
-        title : option.title,
-        closeBtn : 1,
-        anim: -1,
-        isOutAnim: false,
-        shadeClose : false,
-        shade : 0.3,
-        area : [option.width, option.height],
-        shift : 5,
-        content : option.content,
-        btn: option.btn,
-        success: option.success,
-        yes: option.yes
-    });
-};
-
 
 var vm = new Vue({
     el:'#dpLTE',
@@ -141,7 +110,7 @@ var vm = new Vue({
     methods : {
         load:function(){
             getFolderGrid();
-            if(vm.activeFolderId!="")getFileGrid();
+            if(vm.activeFolderId!=="")getFileGrid();
         },
         activeFolder:function(folder){
             vm.activeFolderId = folder.fileId;

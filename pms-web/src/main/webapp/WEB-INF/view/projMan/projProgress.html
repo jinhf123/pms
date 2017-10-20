@@ -70,7 +70,7 @@
                                     <span :class="{'square':(data.state==0),'triangle-orange':(data.state==1),'circular-green':(data.state==2)}" >
                                     </span>
                                     <span>{{data.taskTitle}}</span>
-                                    <span :class="data.isTimeOut?'label-gray':'label-pink'">{{data.startDate}}{{data.taskStaff}}</span>
+                                    <span :class="data.isTimeOut?'label-gray':'label-pink'">{{data.taskDate}}{{data.taskStaff}}</span>
                                 </div>
                                 <div class="col-md-1 column" style="width: 50px">
                                     <button v-show="isEdit" class="btn-add-gray" type="button" title="新增子任务" @click="addTaskPanel(data.taskId)"></button>
@@ -96,7 +96,7 @@
                                                                          &nbsp;&nbsp;&nbsp;&nbsp;
                                                                     </span>
                                             <span>{{item.taskTitle}}</span>
-                                            <span :class="item.isTimeOut?'label-gray':'label-pink'">{{item.startDate}}{{item.taskStaff}}</span>
+                                            <span :class="item.isTimeOut?'label-gray':'label-pink'">{{item.taskDate}}{{item.taskStaff}}</span>
                                         </div>
                                         <div class="col-md-1 column display-flex" style="width: 50px" >
                                             <button v-show="isEdit" class="btn-delete-red" type="button" title="删除任务" @click="delTask(item.taskId)"></button>
@@ -171,23 +171,82 @@
                         </div>
                         <div class="col-md-3 column display-flex">
                             <label><img :src="icon_User"></label>
-                            <input v-model="participant" class="form-control" @click="selectScheStaff" readonly placeholder="请指定参与人">
+                            <input v-model="participantName" class="form-control" @click="selectScheStaff" readonly placeholder="请指定参与人">
                         </div>
                         <div class="col-md-3 column display-flex">
                             <label><img :src="icon_Date"></label>
-                            <input v-model="scheEndDate" id="scheEndDate" class="form-control" readonly placeholder="截止时间">
+                            <input v-model="scheEndDate" id="scheDate" class="form-control" readonly placeholder="截止时间">
                         </div>
                     </div>
                     <div class="col-md-12 column display-flex">
                         <div class="col-md-6">
-                            <button class="btn btn-sm btn-info" @click="addSche">添加日程</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <button class="btn btn-sm btn-info" @click="saveSche">添加日程</button>&nbsp;&nbsp;&nbsp;&nbsp;
                             <span><a url="#" @click="closeSchePanel">取消</a></span>
                         </div>
                         <div class="col-md-6 btn-link-group">
-                            <a href="#">要配置其他日程属性？点击配置</a>
+                            <a href="#" @click="addSchedule">要配置其他日程属性？点击配置</a>
                         </div>
                     </div>
                 </div>
+
+                <!-- 新增日程 -->
+                <div id="addSchedulePanel" class="container-fluid" style="display: none;">
+                    <table class="form">
+                        <tr>
+                            <td class="formTitle">日程内容:</td>
+                            <td class="formValue" colspan="3">
+                                <input class="form-control" v-model="content" placeholder="请输入日程内容！" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="formTitle">开始时间:</td>
+                            <td class="formValue"><input class="form-control" id="scheStartDate" v-model="scheStartDate" placeholder="请选择开始时间！" /></td>
+                            <td class="formTitle">截止时间:</td>
+                            <td class="formValue"><input class="form-control" id="scheEndDate" v-model="scheEndDate" placeholder="请选择截止时间！" /></td>
+                        </tr>
+                        <tr>
+                            <td class="formTitle">所属项目:</td>
+                            <td class="formValue" colspan="3">
+                                <input class="form-control" v-model="projId" placeholder="请选择项目类型！" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="formTitle">参与人员:</td>
+                            <td class="formValue" colspan="3">
+                                <input class="form-control" v-model="participantName" placeholder="请选择参与人员！" @click="selectScheStaff"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="formTitle" colspan="2">&nbsp;</td>
+                            <td class="formTitle" colspan="2">
+                                <div style="display: inline-flex;line-height: 2.25;text-align: right;">
+                                    <span><input type="checkbox" :checked="repeatFlag" @click="function(){repeatFlag=!repeatFlag;}" /></span>
+                                    <span>&nbsp;每月&nbsp;</span>
+                                    <span><input type="number"  min="1" max="31" maxlength="2" onkeyup="repeatDay=value>31?31:value"
+                                                 class="form-control" style="width: 28px;" v-model="repeatDay" :readonly="!repeatFlag" /></span>
+                                    <span>&nbsp;号重复事件，直到截至时间</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="formTitle" colspan="2">&nbsp;</td>
+                            <td class="formTitle" colspan="2">
+                                <div style="display: inline-flex;line-height: 2.25;text-align: right;">
+                                    <span><input type="checkbox" :checked="noticeFlag" @click="function(){noticeFlag=!noticeFlag;}"/></span>
+                                    <span>&nbsp;当日程结束前&nbsp;</span>
+                                    <span><input type="number" min="1" max="31" maxlength="2" onkeyup="noticeDay=value>31?31:value"
+                                                 class="form-control" style="width:28px;" v-model="noticeDay" :readonly="!noticeFlag"/></span>
+                                    <span>&nbsp;天，通知给参与人</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <div>
+                        <button class="btn btn-info" @click="saveSchedule">新增日程</button>&nbsp;
+                        <button class="btn btn-info-link" @click="closeSchedule" >取消</button>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

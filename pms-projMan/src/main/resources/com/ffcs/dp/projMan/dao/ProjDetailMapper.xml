@@ -105,6 +105,7 @@
 			   K.TASK_TITLE,
 			   K.TASK_CONTENT,
 			   K.TASK_STAFF,
+			   to_char(K.TASK_DATE,'MM-DD') TASK_DATE,
 			   K.FINISH_DATE,
 			   K.STATE,
 			   K.STEP_ID,
@@ -168,6 +169,7 @@
 		update PMS_PROJ_STEP
 		<set>
 			<if test="state != null and state != ''">STATE = #{state} </if>
+			<if test="userId != null and userId != ''">FINISH_STAFF = #{userId} </if>
 		</set>
 		 WHERE STEP_ID = #{stepId}
 	</update>

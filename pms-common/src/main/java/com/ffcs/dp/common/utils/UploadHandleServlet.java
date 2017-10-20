@@ -194,8 +194,8 @@ public class UploadHandleServlet extends HttpServlet {
                     //删除处理文件上传时生成的临时文件
                     item.delete();
                     message = "文件上传成功！";
-                    //TODO 在数据库中插入记录
-                    if(!"".equals(projId)){
+
+                    if(!"".equals(projId)){//在数据库中插入记录
                         try{
                             Map params = new HashMap();
                             Long fileId = getFileManService().getFileManKey();

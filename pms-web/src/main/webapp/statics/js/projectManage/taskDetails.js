@@ -253,7 +253,7 @@ var vm = new Vue({
 
         changeTaskState:function(type){//修改任务状态
             // 完成
-            if(type=="finish"&&vm.taskInfo.state!="2"){
+            if(type=="finish"&&vm.taskInfo.state!=="2"){
                 var params = JSON.stringify({
                     "taskId" : vm.taskId,
                     "state" : "2"
@@ -499,32 +499,3 @@ var vm = new Vue({
     }
 });
 
-dialogContent2 = function(opt){
-    var defaults = {
-        title : '系统窗口',
-        width: '',
-        height: '',
-        content : null,
-        data : {},
-        btn: ['确定', '取消'],
-        success: null,
-        yes: null
-    };
-    var option = $.extend({}, defaults, opt);
-    return layer.open({
-        type : 1,
-        title : option.title,
-        closeBtn : 1,
-        anim: -1,
-        isOutAnim: false,
-        shadeClose : false,
-        shade : 0.3,
-        area : [option.width, option.height],
-        shift : 5,
-        content : option.content,
-        btn: option.btn,
-        success: option.success,
-        yes: option.yes,
-        end: option.end
-    });
-};
