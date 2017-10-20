@@ -11,6 +11,7 @@ import com.ffcs.dp.projectManage.service.ProjManService;
 import com.ffcs.dp.projectManage.service.ProjTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class ProjTemplateServiceImpl implements ProjTemplateService {
         return projTemplateManager.listTemplate();
     }
 
-    @Transactional
+    @Transactional (propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
     @Override
     public void saveTemplate(ProjTemplateEntity projTemplateEntity) {
         projTemplateManager.saveTemplate(projTemplateEntity);
@@ -45,7 +46,7 @@ public class ProjTemplateServiceImpl implements ProjTemplateService {
         }
     }
 
-    @Transactional
+    @Transactional (propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
     @Override
     public void updateSetDefault(Long tempId) {
         projTemplateManager.updateDefault();

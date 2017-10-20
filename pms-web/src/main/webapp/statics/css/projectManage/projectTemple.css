@@ -40,34 +40,45 @@ html {
 }
 
 .badge-notify {
-    position: relative;
-    top: -9px;
-    left: 53%;
+    position: absolute;
+    top: -4px;
+    right: 16px;
     z-index: 3;
     cursor: pointer;
 }
 
 .nav-step {
-    margin-left: 20px;
-    margin-right: 20px;
+    min-width: 770px;
+}
+
+.test {
+    /*width: 100%;*/
+    /*overflow-x: auto;*/
+    /*overflow-y: auto;*/
 }
 
 .nav-step > li {
-    height: 46px;
+    height: 40px;
+    position: relative;
+    top:21px;
 }
 
 .nav-step > li > a {
     position: relative;
-    top: -24px;
     border: 2px solid rgba(91, 192, 222, 1);
     border-radius: 25px;
-    margin-right: 50px;
+    margin-left: 20px;
+    margin-right: 20px;
     background-color: white;
     padding: 5px 10px 5px 10px;
     z-index: 2;
     width: 80px;
     height: 34px;
     text-align: center;
+}
+
+.nav-step > li > a.last {
+    margin-right: 0px;
 }
 
 .nav-step > li > a > p {
@@ -91,7 +102,6 @@ html {
 
 .tab-step {
     position: relative;
-    top: -31px;
     padding-top: 50px;
     padding-bottom: 15px;
     border-top: 2px solid rgba(91, 192, 222, 1);
@@ -104,7 +114,7 @@ html {
 }
 
 .panel-body {
-    margin-top: 15px;
+
 }
 
 .flex-container {
@@ -119,7 +129,7 @@ html {
     flex: 1;
 }
 
-.white{
+.white {
     background-color: white;
 }
 
@@ -136,67 +146,120 @@ html {
     display: block;
 }
 
-.fade-enter-active, .fade-leave-active{
+.fade-enter-active, .fade-leave-active {
     transition: opacity .5s ease-out;
 }
 
-.fade-enter, .fade-leave-active{
+.fade-enter, .fade-leave-active {
     opacity: 0;
 }
 
-.list-group-item{
+.list-group-item {
     width: 95%;
-    padding-bottom:20px;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
     height: 80px;
     background-color: #f2f2f2;
     color: #999999;
 }
 
-a.list-group-item:focus, a.list-group-item:hover{
+a.list-group-item:focus, a.list-group-item:hover {
     background-color: #e4f5fa;
 }
-.list-group-item-heading{
+
+a.router-link-active {
+    background-color: #e4f5fa;
+}
+
+.list-group-item-heading {
     font-size: 16px;
 }
-a.list-group-item:focus>.list-group-item-heading{
+
+a.router-link-active > .list-group-item-heading {
     font-weight: bold;
 }
 
-.template-nav{
-    height:90vh;
+.template-nav {
+    height: 90vh;
     overflow-x: auto;
     overflow-y: auto;
 }
 
 .default-template {
-    background-image:url('/statics/img/template_default.png');
+    background-image: url('/statics/img/template_default.png');
     position: relative;
-    top: -20px;
-    left: 190px;
+    top: -50px;
+    float: right;
     z-index: 3;
     cursor: pointer;
-    height:34px;
-    width:34px;
+    height: 34px;
+    width: 34px;
     text-align: center;
     line-height: 34px;
-    color:#ffffff;
+    color: #ffffff;
 }
 
 .set-default-template {
-    background-image:url('/statics/img/template_set_default.png');
+    background-image: url('/statics/img/template_set_default.png');
     position: relative;
-    top: -20px;
-    left: 190px;
+    float: right;
+    top: -50px;
     z-index: 3;
     cursor: pointer;
-    height:34px;
-    width:34px;
+    height: 34px;
+    width: 34px;
     text-align: center;
     line-height: 17px;
-    color:#ffffff;
+    color: #ffffff;
     font-size: 12px;
 }
 
 .set-default-template:hover {
-    color:#999999;
+    color: #999999;
 }
+
+.step-scroll-left{
+    width: 40px;
+    height: 40px;
+    background-image: url("/statics/img/step_scroll.png");
+    position: absolute;
+    z-index: 4;
+    left: 0;
+    margin-top:21px ;
+}
+
+.step-scroll-left>img {
+    margin-left: 10px;
+    margin-top: 6px;
+    cursor: pointer;
+}
+
+.step-scroll-left>img:active {
+    margin-left: 8px;
+    margin-top: 6px;
+    cursor: pointer;
+}
+
+
+.step-scroll-right{
+    width: 40px;
+    height: 40px;
+    background-image: url("/statics/img/step_scroll.png");
+    position: absolute;
+    z-index: 4;
+    right: 0;
+    margin-top:21px ;
+}
+
+.step-scroll-right>img {
+    margin-left: 11px;
+    margin-top: 6px;
+    cursor: pointer;
+}
+
+.step-scroll-right>img:active {
+    margin-left: 13px;
+    margin-top: 6px;
+    cursor: pointer;
+}
+

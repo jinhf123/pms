@@ -20,11 +20,29 @@ var templeForm = {
     components: {
         "template-step-form": templeStepForm
     },
+    data: function () {
+        return {
+            stepActive: 0,
+            stepStart: 0,
+            stepWidth: 600,
+            stepCount: 0
+        }
+    },
     methods: {
+        toPrev: function () {
+            this.stepStart--;
+        },
+        toNext: function () {
+            this.stepStart++;
+        },
+        setActive: function (index) {
+            this.stepActive = index;
+            $('.nav-step li:eq(' + (index - this.stepStart) + ') a').tab('show');
+        },
         addNewStep: function () {
             this.temp.stepList.push({
                 stepName: '双击修改',
-                status: "show",
+                status: "edit",
                 stepSort: null,
                 defaultMoveDate: null,
                 finishNoticeDate: null,
@@ -40,7 +58,8 @@ var templeForm = {
                 attachPdf: 0,
                 attachContent: null
             });
-            console.log(this.temp);
+            if (this.temp.stepList.length - this.stepStart > this.stepCount )
+                this.stepStart++;
         },
         removeStep: function (index) {
             this.temp.stepList.splice(index, 1);
@@ -62,14 +81,20 @@ var templeForm = {
                         stepList: this.temp.stepList
                     }
                 }).then(function (data) {
+                var title;
+                if (data.data.success) {
+                    title = "添加成功";
+                } else {
+                    title = "添加失败";
+                }
                 top.layer.open({
-                    title: '添加结束',
+                    title: title,
                     area: '338px',
                     anim: -1,
                     isOutAnim: false,
                     move: false,
                     closeBtn: 0,
-                    content: '添加成功',
+                    content: data.data.message,
                     btn: ['确定'],
                     yes: function () {
                         me.$emit("submit-success");
@@ -96,30 +121,79 @@ var templeForm = {
                 });
             });
         }
+    }, watch: {
+        stepWidth: function (val) {
+            var a = Math.floor((val - 100 - 2 - 40 - 102) / 122) + 1;
+            this.stepCount = a;
+        }
+    },
+    mounted: function () {
+        this.stepWidth = this.$refs.step.clientWidth;
+        const that = this;
+        window.onresize = function () {
+            that.stepWidth = that.$refs.step.clientWidth;
+        };
     }
 };
 var templeList = {
     props: ['template', 'options', 'temp'],
     template: "#templateList",
+    data: function () {
+        return {
+            stepActive: 0,
+            stepStart: 0,
+            stepWidth: 600,
+            stepCount: 0
+        }
+    },
+    watch: {
+        stepWidth: function (val) {
+            var a = Math.floor((val - 100 - 2 - 20) / 122) + 1;
+            console.log(a);
+            this.stepCount = a;
+        }
+    },
     components: {
         "template-step-list": templateStepList
     },
-    created: function () {
-        console.log(this.template);
+    mounted: function () {
+        this.stepWidth = document.getElementById('nav-step').clientWidth;
+        const that = this;
+        window.onresize = function () {
+            that.stepWidth = document.getElementById('nav-step').clientWidth;
+        };
+    },
+    methods: {
+        getCss: function () {
+            console.log(this.stepCount);
+            console.log(this);
+        },
+        toPrev: function () {
+            this.stepStart--;
+        },
+        toNext: function () {
+            this.stepStart++;
+        },
+        setActive: function (index) {
+            this.stepActive = index;
+            $('#nav-step li:eq(' + (index - this.stepStart) + ') a').tab('show');
+        }
     }
+
 };
 
 const routes = [
     {
         path: '/',
-        redirect: '/bar/0'
+        // redirect: '/template/0',
+        redirect: 'addTemplate'
     },
     {
-        path: '/foo',
+        path: '/addTemplate',
         component: templeForm
     },
     {
-        path: '/bar/:index',
+        path: '/template/:index',
         component: templeList
     }
 ];
@@ -237,11 +311,40 @@ var vm = new Vue({
     },
     created: function () {
         this.loadTemplate();
+    },
+    watch: {
+        template: function (val, oldVal) {
+            console.log(oldVal);
+            if (oldVal.length < val.length && oldVal.length !== 0) {
+                this.$nextTick(function () {
+                    var container = this.$el.querySelector(".template-nav");
+                    container.scrollTop = container.scrollHeight;
+                    this.$router.push({path: '/template/' + (val.length - 1)})
+                })
+            }
+        }
     }
 });
 
 Vue.directive('focus', {
     inserted: function (el) {
-        el.focus()
+        el.focus();
+        el.select();
     }
 });
+
+// Vue.directive('click-outside', {
+//     bind: function (el, binding, vnode) {
+//         el.event = function (event) {
+//             // here I check that click was outside the el and his childrens
+//             if (!(el == event.target || el.contains(event.target))) {
+//                 // and if it did, call method provided in attribute value
+//                 vnode.context[binding.expression](event);
+//             }
+//         };
+//         document.body.addEventListener('click', el.event)
+//     },
+//     unbind: function (el) {
+//         document.body.removeEventListener('click', el.event)
+//     }
+// });
