@@ -33,6 +33,14 @@ public class SysUserServiceImpl implements SysUserService {
 	}
 
 	@Override
+	public Page<SysUserEntity> staffSelectList(Map<String, Object> params) {
+		Query form = new Query(params);
+		Page<SysUserEntity> page = new Page<>(form);
+		sysUserManager.staffSelectList(page, form);
+		return page;
+	}
+
+	@Override
 	public R saveUser(SysUserEntity user) {
 		user.setPassword(MD5Utils.encrypt(user.getUsername(), user.getPassword()));
 		int count = sysUserManager.saveUser(user);

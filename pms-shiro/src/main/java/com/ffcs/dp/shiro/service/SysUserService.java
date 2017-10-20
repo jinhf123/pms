@@ -12,6 +12,8 @@ import com.ffcs.dp.common.entity.SysUserEntity;
 public interface SysUserService {
 
 	Page<SysUserEntity> listUser(Map<String, Object> params);
+
+	Page<SysUserEntity> staffSelectList(Map<String, Object> params);
 	
 	R saveUser(SysUserEntity user);
 	

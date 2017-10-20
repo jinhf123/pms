@@ -141,4 +141,25 @@
 			user_id = #{userId}
 	</update>
 
+
+
+
+	<select id="staffSelectList" resultType="SysUserEntity">
+		SELECT
+		user_id,
+		username,
+		status
+		FROM
+		pms_sys_user
+		<where>
+			AND status = '1'
+			<if test="username != null and username.trim() != ''">
+				AND username LIKE '%'||#{username}||'%'
+				OR user_id LIKE '%'||#{username}||'%'
+			</if>
+		</where>
+		ORDER BY
+		user_id DESC
+	</select>
+
 </mapper>

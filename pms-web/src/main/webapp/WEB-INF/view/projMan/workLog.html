@@ -50,11 +50,11 @@
             <div class="col-md-8 column">
                 <div class="clearfix">
                     <div class="col-md-6 column">
-                        <input id="workLogDate" v-model="workLogDate" class="form-control datePicker" />
+                        <input id="workLogDate" v-model="workLogDate" class="form-control datePicker" />{{workLogId}}
                     </div>
                     <div class="col-md-6 column center-btn-group-top">
                         <button type="button" class="btn btn-sm btn-link" @click="edit">{{isEdit?'退出编辑':'编辑'}}</button>
-                        <button type="button" class="btn btn-link btn-sm">导出xls</button>
+                        <button type="button" class="btn btn-sm btn-link ">导出xls</button>
                         <button type="button" class="btn btn-sm btn-link">导入xls</button>
                     </div>
                 </div>
@@ -73,20 +73,75 @@
                                 <li v-for="(data,index) in workLogs" class="row clearfix for-li" >
                                     <div class="for-li-div">
                                         <div class="center-li-index">{{index+1}}</div>
-                                        <div> {{data.startTime}} - {{data.endTime}}</div>
-                                        <div class="li-projectWork-label"
-                                             :class="{'label-color-blue':(data.isProjectWork == 1) ,
-                                          'label-color-orange':(data.isProjectWork == 0)}">
-                                            {{data.isProjectWork === 1 ? '项目工作' : '非项目工作'}}
+                                        <div v-show="workLogId!=data.id" class="for-li-div" @click="startEdit(data)">
+                                            <div> {{data.startTime}} - {{data.endTime}}</div>
+                                            <div class="li-projectWork-label"
+                                                 :class="{'label-color-blue':(data.isProjectWork == 1) ,
+                                              'label-color-orange':(data.isProjectWork == 0)}">
+                                                {{data.isProjectWork === 1 ? '项目工作' : '非项目工作'}}
+                                            </div>
+                                            <div>
+                                                {{data.projId}}{{data.taskId}}{{data.workDetails}}
+                                            </div>
                                         </div>
-                                        <div>
-                                            {{data.projId}}{{data.taskId}}{{data.workDetails}}
+                                        <div v-show="isEdit && workLogId==data.id">
+                                            <div class="col-md-9 column for-li-div">
+                                                <input id="startTime2" v-model="startTime" class="form-control datePicker" />
+                                                <span style="padding:7px;"> - </span>
+                                                <input id="endTime2" v-model="endTime" class="form-control datePicker" />
+                                                <span style="padding:5px;" v-show="minutes>0&&minutes<60" >共{{minutes}}分钟</span>
+                                                <span style="padding:5px;" v-show="minutes>=60" >共{{Math.floor(minutes/60)}}小时{{minutes%60}}分钟</span>
+                                            </div>
+                                            <div class="col-md-1 column isProjectWork">
+                                                <input id="isProjectWork2" type="checkbox" v-model="isProjectWork" @click="changeWorkLogType"/>
+                                            </div>
+                                            <div class="col-md-2 column">
+                                                <apan>是否项目工作</apan>
+                                            </div>
+                                            <div v-show="isProjectWork==1">
+                                                <div class="col-md-10 column">
+                                                    <select v-model="project" class="select-project">
+                                                        <option v-for="option in projects" :value="option.value">
+                                                            {{ option.text }}
+                                                        </option>
+                                                    </select>
+                                                    <select v-model="task" class="select-projTask">
+                                                        <option v-for="option in projTasks" :value="option.value">
+                                                            {{ option.text }}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-2 column ">
+                                                </div>
+                                            </div>
+                                            <div v-show="isProjectWork!=1">
+                                                <div class="col-md-10 column ">
+                                                    <select v-model="task" class="select-task">
+                                                        <option v-for="option in tasks" :value="option.value">
+                                                            {{ option.text }}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-2 column ">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-10 column">
+                                                <input id="workDetails2" v-model="workDetails" class="input-workDetails" placeholder="请输入工作详情"/>
+                                            </div>
+                                            <div class="col-md-2 column ">
+                                                <button type="button" class="btn btn-sm btn-blue" @click="save">保存</button>
+                                                <button type="button" class="btn btn-sm" @click="workLogId=''">取消</button>
+                                            </div>
+
                                         </div>
                                     </div>
+
+
                                     <div class="col-md-12 column center-panel-divider"></div>
                                 </li>
 
                                 <li v-show="isAdd" style="height: 120px;">
+
                                     <div class="col-md-9 column for-li-div">
                                         <input id="startTime" v-model="startTime" class="form-control datePicker" />
                                         <span style="padding:7px;"> - </span>
@@ -132,8 +187,9 @@
                                     </div>
                                     <div class="col-md-2 column ">
                                         <button type="button" class="btn btn-sm btn-blue" @click="save">保存</button>
-                                        <button type="button" class="btn btn-sm btn-blue">取消</button>
+                                        <button type="button" class="btn btn-sm btn-blue" @click="isAdd=false">取消</button>
                                     </div>
+
                                 </li>
                             </div>
                         </div>

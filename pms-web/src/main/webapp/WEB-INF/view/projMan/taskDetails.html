@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>任务详情</title>
+    #parse("include/header.html")
+    <link rel="stylesheet" href="${rc.contextPath}/statics/css/projectManage/taskDetails.css">
+</head>
+<body>
+<div id="taskDetails" class="clearfix" v-cloak>
+
+    <div :style="styleObj">
+        <div class="row clearfix panel-slimScroll" >
+            <div class="col-md-10 column ">
+                <div class="row clearfix">
+                    <div v-show="!isEdit" class="col-md-12 column display-flex">
+                        <span v-if="taskInfo.state=='0'"><img :src="icon_oper_1">&nbsp;</span>
+                        <span v-if="taskInfo.state=='1'"><img :src="icon_oper_2">&nbsp;</span>
+                        <span v-if="taskInfo.state=='2'"><img :src="icon_oper_4">&nbsp;</span>
+                        <span>{{taskInfo.taskTitle}}</span><span class="date-staff-label">{{taskInfo.finishDate.substring(5,10)}}&nbsp;{{taskInfo.taskStaff}}</span>
+                        <span v-show="(taskInfo.taskContent==''||taskInfo.taskContent==null)?false:true">{{taskInfo.taskContent}}</span>
+                    </div>
+                    <div v-show="isEdit" class="col-md-12 column add-panel" >
+                        <div class="col-md-12 column">
+                            <div class="col-md-12 column task-edit-div">
+                                <div class="col-md-6 column ">
+                                    <label><img :src="icon_Title"></label>
+                                    <input v-model="taskTitle" id="taskTitle" class="form-control" placeholder="请输入任务名称" required>
+                                </div>
+                                <div class="col-md-3 column ">
+                                    <label><img :src="icon_User"></label>
+                                    <input v-model="taskStaff" id="taskStaff" class="form-control" @click="selectStaff" readonly placeholder="请指定负责人" required>
+                                </div>
+                                <div class="col-md-3 column ">
+                                    <label><img :src="icon_Date"></label>
+                                    <input v-model="finishDate" id="finishDate" class="form-control datePicker" readonly placeholder="截止时间" required>
+                                </div>
+                            </div>
+                            <div v-show="(taskInfo.taskContent==''||taskInfo.taskContent==null)?false:true"
+                                 class="col-md-12 column task-content-edit-div">
+                                <input v-model="taskContent" id="taskContent" class="form-control" placeholder="请输入项目详情!">
+                            </div>
+                        </div>
+                        <div class="col-md-12 column display-flex">
+                            <div class="col-md-12">
+                                <button class="btn btn-sm btn-info" @click="saveTaskInfo">保存</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span><a url="#" @click="cancelEdit">取消</a></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 column btn-link-group">
+                        <span>添加</span>
+                        <span v-show="(taskInfo.taskContent!=''&&taskInfo.taskContent!=null)?false:true">
+                            <button type="button" class="btn btn-link column" @click="openAddTaskContent">任务详细</button>
+                            或者
+                        </span>
+                        <span>
+                            <button type="button" class="btn btn-link column" @click="openAddCheckItem">检查项</button>
+                        </span>
+                    </div>
+                    <!--新增项目详情-->
+                    <div v-if="isAddTaskContent" class="col-md-12 column display-flex add-panel">
+                        <label><img :src="icon_Title"></label>
+                        <input v-model="taskContent" class="form-control" placeholder="请输入项目详情!" required>
+                        <button type="button" class="btn btn-sm btn-link " @click="addTaskContent">添加任务详细</button>
+                        <button type="button" class="btn btn-sm btn-link column" @click="openAddTaskContent">取消</button>
+                    </div>
+                    <div class="col-md-12 column horizontal-divider"></div>
+                    <!--检查项列表-->
+                    <div class="col-md-12 column">
+                        <div v-for="data in checkItems" class="col-md-12 column check-item">
+                            <input type="radio" :checked="data.state=='1'?true:false"  @click="checkRadio(data)">&nbsp; <span>{{data.content}}</span>
+                        </div>
+                    </div>
+                    <!--新增检查项-->
+                    <div v-show="isAddCheckItem" class="col-md-12 column display-flex add-panel">
+                        <label><img :src="icon_Title"></label>
+                        <input v-model="content" id="content" class="form-control" placeholder="请指输入检查项内容" required>
+                        <button type="button" class="btn btn-link " @click="addCheckItem">添加检查项</button>
+                        <button type="button" class="btn btn-link column" @click="cancelAddCheckItem">取消</button>
+                    </div>
+
+                    <!--日志列表-->
+                    <div class="col-md-12 column">
+                        <div v-for="data in taskLogs" class="col-md-12 column display-flex task-log">
+                            <label>
+                                <img v-if="data.operateType=='0'" :src="icon_oper_0">
+                                <img v-if="data.operateType=='1'" :src="icon_oper_1">
+                                <img v-if="data.operateType=='2'" :src="icon_oper_2">
+                                <img v-if="data.operateType=='3'" :src="icon_oper_3">
+                            </label>
+                            <span style="color:#999999;">{{data.operateDate}}</span>
+                            <span style="color:#428bca;">{{data.staffName}}</span>
+                            <span>{{data.content}}</span>
+                        </div>
+                    </div>
+
+                    <!--评论-->
+                    <div class="col-md-12 column">
+                        <div class="col-md-12 column display-flex">
+                            <div class="col-md-10 column comment-btn-group">
+                                <input type="checkBox" :checked="addToWorkLog" @click="function(){addToWorkLog=!addToWorkLog;}"><span>&nbsp;添加工作日志</span>
+                                <input type="checkBox" :checked="addToRiskIssues" @click="function(){addToRiskIssues=!addToRiskIssues;}"><span>&nbsp;添加到风险问题</span>
+                                <input type="checkBox" :checked="addToWeeklyReport" @click="function(){addToWeeklyReport=!addToWeeklyReport;}"><span>&nbsp;添加到本周周报</span>
+                            </div>
+                            <div class="col-md-2 column float-right">
+                                <button class="btn btn-sm btn-link" @click=""><span>上传附件</span></button>
+                            </div>
+                        </div>
+                        <div class="col-md-12 column comment-textarea-div">
+                            <textarea class="comment-textarea" v-model="taskLogContent" placeholder="请输入评论内容！"></textarea>
+                        </div>
+
+                        <div class="col-md-12 column display-flex center-bottom-bar">
+                            <div class="col-md-6 column display-flex">
+                                <button class="btn btn-sm btn-info" @click="saveTaskLog"><span>发表评论</span></button>&nbsp;
+                                <button class="btn btn-sm btn-link" @click="backTaskInfo"><span>取消</span></button>
+                            </div>
+                            <div class="col-md-6 column send-meg-div">
+                                <span>发送通知给:</span><select class="select"></select>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-2 column">
+
+                <div class="row clearfix">
+                    <div class="col-md-12 column right-btn-group">
+                        <div class="col-md-12 column">
+                            <button class="btn btn-sm btn-link" :disabled="taskInfo.state!='1'" @click="changeTaskState('finish')">
+                                <img :src="icon_btn_finish">&nbsp;&nbsp;完成
+                            </button>
+                        </div>
+                        <div class="col-md-12 column horizontal-divider"></div>
+                        <div class="col-md-12 column">
+                            <button class="btn btn-sm btn-link" :disabled="taskInfo.state!='0'" @click="changeTaskState('start')">
+                                <img :src="icon_btn_start">&nbsp;&nbsp;标记开始
+                            </button>
+                        </div>
+                        <div class="col-md-12 column horizontal-divider"></div>
+                        <div class="col-md-12 column">
+                            <button class="btn btn-sm btn-link" @click="delTaskState">
+                                <img :src="icon_btn_delete">&nbsp;&nbsp;删除
+                            </button>
+                        </div>
+                        <div class="col-md-12 column horizontal-divider"></div>
+                        <div class="col-md-12 column">
+                            <button class="btn btn-sm btn-link" @click="startEdit">
+                                <img :src="icon_btn_edit">&nbsp;&nbsp;编辑
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+#parse("include/footer.html")
+<script src="${rc.contextPath}/statics/js/projectManage/taskDetails.js?_${date.systemTime}"></script>
+</body>
+</html>

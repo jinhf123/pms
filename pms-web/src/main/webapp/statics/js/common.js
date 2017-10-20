@@ -63,6 +63,18 @@ toUrl = function(href) {
 	window.location.href = href;
 };
 
+/** 根据参数名称获取url传递的参数
+ *
+ *  使用示例：
+ *  getQueryString('stepId');
+ **/
+function getQueryString(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]);
+    return null;
+}
+
 
 /** 带分页栏的DataGrid
 *
