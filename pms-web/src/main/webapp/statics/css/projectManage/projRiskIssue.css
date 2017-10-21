@@ -1,0 +1,102 @@
+body{
+    font-family: "微软雅黑 Regular", "微软雅黑";
+    font-size: 14px;
+    font-weight: 400;
+    font-style: normal;
+    color: #333333;
+    overflow-y: hidden;
+    overflow-x: visible;
+}
+
+.column{
+    padding-left:0px;
+    padding-right: 0px;
+}
+.no-margin{
+    margin: 0px;
+}
+
+.fa-color{
+    color: #1cae99
+}
+
+.display-flex{
+    display: inline-flex;
+    display: inline-flex;
+}
+
+.transparent-btn {
+    display: inline-block;
+    margin: 4px 0px;
+    padding: 0px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.4285;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+
+
+
+/*搜索输入框样式*/
+.search-div{
+    width: 230px;
+}
+.search-div > input{
+    padding: 0px;
+    border: 0;
+    width: 0px;
+    transition:width 2s;
+    -moz-transition:width 2s; /* Firefox 4 */
+    -webkit-transition:width 2s; /* Safari and Chrome */
+    -o-transition:width 2s; /* Opera */
+}
+.search-div:active > input{
+    width: 200px;
+    border: 1px solid #ccc;
+}
+.search-div:hover > input{
+    width: 200px;
+    border: 1px solid #ccc;
+}
+.search-div>button{
+    position:absolute;
+    left: 200px;
+}
+.search-input > input{
+    width: 200px;
+    border: 1px solid #ccc;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

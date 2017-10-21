@@ -75,13 +75,15 @@ function getGrid() {
 var vm = new Vue({
     el:'#dpLTE',
     data: {
+        icon_Search :"/statics/img/projectManage/u1.png",
         icon_Add: "/statics/img/projectManage/u2.png",
         param:{
             proposeStaff:"",//提出人
             onChargeStaff:"",//负责人
             state:"0",//状态，默认未选中
             startDate:"",
-            endDate:""
+            endDate:"",
+            keyWord:""
         }
 
     },

@@ -27,8 +27,7 @@ body{
  }
 
 .display-flex{
-    display: -ms-inline-flexbox;
-    display: -webkit-box;
+    display: inline-flex;
 }
 
 .transparent-btn {
@@ -64,8 +63,11 @@ body{
 }
 
 
-/*搜索按钮样式*/
-.serach-div > input{
+/*搜索输入框样式*/
+.search-div{
+    width: 230px;
+}
+.search-div > input{
     padding: 0px;
     border: 0;
     width: 0px;
@@ -75,16 +77,25 @@ body{
     -o-transition:width 2s; /* Opera */
     /*display: none;*/
 }
-.serach-div:active > input{
+.search-div:active > input{
     /*display: block;*/
     width: 200px;
     border: 1px solid #ccc;
 }
-.serach-div:hover > input{
+.search-div:hover > input{
     /*display: block;*/
     width: 200px;
     border: 1px solid #ccc;
 }
+.search-div>button{
+    position:absolute;
+    left: 200px;
+}
+.search-input > input{
+    width: 200px;
+    border: 1px solid #ccc;
+}
+
 
 
 

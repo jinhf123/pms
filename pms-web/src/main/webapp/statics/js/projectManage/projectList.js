@@ -52,7 +52,7 @@ function getGrid() {
 var vm = new Vue({
 	el:'#dpLTE',
 	data: {
-        icon_Serach :"/statics/img/projectManage/u1.png",
+        icon_Search :"/statics/img/projectManage/u1.png",
         icon_Add    :"/statics/img/projectManage/u2.png",
         icon_Notice :"/statics/img/projectManage/u3.png",
         icon_Log    :"/statics/img/projectManage/u4.png",
@@ -135,6 +135,8 @@ var vm = new Vue({
             alert("#projMan/projectDetails.html");
             window.location="#projMan/projectDetails.html";
         }
-	}
-})
+	},
+    computed: {
+    }
+});
 

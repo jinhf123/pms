@@ -9,35 +9,35 @@
 <div id="dpLTE" class="clearfix" v-cloak>
 
     <div class="row">
-        <div class="col-md-9 form-inline pull-left">
+        <div class="col-md-9 column form-inline pull-left">
 
             <div class="form-group">
-                <select id="state" v-model="param.state" class="form-control" style="width: 150px;" >
+                <select id="state" v-model="param.state" class="form-control" >
                     <option value="0" selected>未解决</option>
                     <option value="1">已解决</option>
                 </select>
             </div>
             <div class="form-group">
-                <input v-model="param.proposeStaff" class="form-control" placeholder="所有提出人" style="width: 150px;" />
+                <input v-model="param.proposeStaff" class="form-control" placeholder="所有提出人" style="width: 100px;" />
             </div>
             <div class="form-group">
-                <input v-model="param.onChargeStaff" class="form-control" placeholder="所有负责人" style="width: 150px;" />
+                <input v-model="param.onChargeStaff" class="form-control" placeholder="所有负责人" style="width: 100px;" />
             </div>
             <div class="form-group">
-                <input v-model="param.startDate" class="form-control" placeholder="解决开始时间" style="width: 150px;" />
+                <input v-model="param.startDate" class="form-control" placeholder="解决开始时间" style="width: 100px;" />
             </div>
             <div class="form-group">
-                <input v-model="param.endDate" class="form-control" placeholder="解决结束时间" style="width: 150px;" />
+                <input v-model="param.endDate" class="form-control" placeholder="解决结束时间" style="width: 100px;" />
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="btn-group">
-                <input v-model="keyWord" @keyup.enter="load" class="form-control" placeholder="请输入查询关键字" />
-                <button class="transparent-btn" type="button" title="查询" @click="load" >
-                    <img :src="icon_Serach">
-                </button>
-            </div>
-            <div class="btn-toolbar pull-right">
+        <div class="col-md-3 column">
+            <div class="btn-toolbar pull-right display-flex" >
+                <div class="btn-group search-div display-flex" :class="{'search-input':param.keyWord!==''?true:false}">
+                    <input v-model="param.keyWord" @keyup.enter="load" class="form-control" placeholder="请输入查询关键字" />
+                    <button class="transparent-btn" type="button" title="查询" @click="load" >
+                        <img :src="icon_Search">
+                    </button>
+                </div>
                 <button class="transparent-btn" type="button" title="新建"  @click="">
                     <img :src="icon_Add">
                 </button>

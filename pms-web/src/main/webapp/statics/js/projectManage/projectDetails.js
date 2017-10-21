@@ -72,9 +72,9 @@ var vm = new Vue({
                     vm.iframeName="developing";
                     break;
                 case 4:
-                    vm.iframeSrc="developing.html?projId="+vm.projId;;
-                    vm.iframeId="developing";
-                    vm.iframeName="developing";
+                    vm.iframeSrc="projRiskIssue.html?projId="+vm.projId;;
+                    vm.iframeId="projRiskIssue";
+                    vm.iframeName="projRiskIssue";
                     break;
                 case 5:
                     vm.iframeSrc="fileMan.html?projId="+vm.projId;
