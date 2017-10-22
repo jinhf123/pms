@@ -14,7 +14,7 @@ import java.util.Map;
  */
 @MapperScan
 @Repository
-public interface RiskIssueMapper extends BaseMapper<ScheduleEntity> {
+public interface RiskIssueMapper extends BaseMapper<RiskIssueEntity> {
 
 
     List<RiskIssueEntity> getRiskIssueList(Map<String, Object> params);

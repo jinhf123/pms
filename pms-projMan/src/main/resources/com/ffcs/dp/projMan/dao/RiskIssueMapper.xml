@@ -3,6 +3,50 @@
 <mapper namespace="com.ffcs.dp.projectManage.dao.RiskIssueMapper">
 
 
+    <!--获取风险问题列表带分页-->
+    <select id="listForPage" resultType="RiskIssueEntity" parameterType="Map">
+        select R.RISK_ID,
+               R.TASK_ID,
+               R.PROJ_ID,
+               R.CONTENT,
+               R.REMARK,
+               R.RESOLVENT,
+               R.STATE,
+               R.PROPOSE_DATE,
+               R.RESOLVENT_DATE,
+               R.REAL_RESO_DATE,
+               R.PROPOSE_STAFF,
+              (SELECT USERNAME FROM PMS_SYS_USER WHERE USER_ID=R.PROPOSE_STAFF) PROPOSE_NAME,
+              R.ON_CHARGE_STAFF,
+              (SELECT USERNAME FROM PMS_SYS_USER WHERE USER_ID=R.ON_CHARGE_STAFF) ON_CHARGE_NAME
+
+            from PMS_PROJ_RISK_ISSUE R
+            where R.PROJ_ID = #{projId}
+            and R.PROPOSE_DATE
+            between to_date(#{startDate}, 'YYYY-MM-DD ')
+            and (to_date(#{endDate}, 'YYYY-MM-DD')+1-1/24/60/60)
+            <if test=" riskId != null and riskId != '' ">
+                and R.RISK_ID = #{riskId}
+            </if>
+            <if test=" state != null and state != '' ">
+                and R.STATE = #{state}
+            </if>
+            <if test=" proposeStaff != null and proposeStaff != '' ">
+                and R.PROPOSE_STAFF = #{proposeStaff}
+            </if>
+            <if test=" onChargeStaff != null and onChargeStaff != '' ">
+                and R.ON_CHARGE_STAFF = #{onChargeStaff}
+            </if>
+            <if test=" keyWord != null and keyWord != '' ">
+                and (R.CONTENT LIKE '%'||#{keyWord}||'%'
+                or R.REMARK LIKE '%'||#{keyWord}||'%'
+                or R.RESOLVENT LIKE '%'||#{keyWord}||'%')
+            </if>
+    </select>
+
+
+
+
     <!--获取风险问题列表-->
     <select id="getRiskIssueList" resultType="RiskIssueEntity" parameterType="Map">
         select R.RISK_ID,
@@ -14,27 +58,39 @@
                R.STATE,
                R.PROPOSE_DATE,
                R.RESOLVENT_DATE,
+               R.REAL_RESO_DATE,
                R.PROPOSE_STAFF,
-              (SELECT USERNAME FORM PMS_SYS_USER WHERE USER_ID=R.PROPOSE_STAFF) PROPOSE_STAFF_NAME,
+              (SELECT USERNAME FROM PMS_SYS_USER WHERE USER_ID=R.PROPOSE_STAFF) PROPOSE_NAME,
                R.ON_CHARGE_STAFF,
-              (SELECT USERNAME FORM PMS_SYS_USER WHERE USER_ID=R.ON_CHARGE_STAFF) ON_CHARGE_STAFF_NAME
+              (SELECT USERNAME FROM PMS_SYS_USER WHERE USER_ID=R.ON_CHARGE_STAFF) ON_CHARGE_NAME,
+              (case when(R.PROPOSE_STAFF = #{userId})then 'true'
+                    when(R.ON_CHARGE_STAFF = #{userId})then 'true'
+                    else 'false' end) OPERATE
           from PMS_PROJ_RISK_ISSUE R
-         where R.PROPOSE_DATE
-       between to_date(#{startDate}, 'YYYY-MM-DD')
-           and to_date(#{endDate}, 'YYYY-MM-DD')
+         where R.PROJ_ID = #{projId}
+           and R.PROPOSE_DATE
+       between to_date(#{startDate}, 'YYYY-MM-DD ')
+           and (to_date(#{endDate}, 'YYYY-MM-DD')+1-1/24/60/60)
         <if test=" state != null and state != '' ">
-           and R.RISK_ID = #{riskId}
+            and R.RISK_ID = #{riskId}
         </if>
         <if test=" state != null and state != '' ">
-           and R.STATE = #{state}
+            and R.STATE = #{state}
         </if>
         <if test=" proposeStaff != null and proposeStaff != '' ">
-           and R.PROPOSE_STAFF = #{proposeStaff}
+            and R.PROPOSE_STAFF = #{proposeStaff}
         </if>
         <if test=" onChargeStaff != null and onChargeStaff != '' ">
-           and R.ON_CHARGE_STAFF = #{onChargeStaff}
+            and R.ON_CHARGE_STAFF = #{onChargeStaff}
         </if>
+        <if test=" keyWord != null and keyWord != '' ">
+            and (R.CONTENT LIKE '%'||#{keyWord}||'%'
+            or R.REMARK LIKE '%'||#{keyWord}||'%'
+            or R.RESOLVENT LIKE '%'||#{keyWord}||'%')
+        </if>
+
     </select>
+
 
 
     <!--修改风险问题信息-->

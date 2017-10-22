@@ -17,17 +17,25 @@
                     <option value="1">已解决</option>
                 </select>
             </div>
-            <div class="form-group">
-                <input v-model="param.proposeStaff" class="form-control" placeholder="所有提出人" style="width: 100px;" />
+            <div class="input-group delSpan">
+                <span class="glyphicon glyphicon-remove unDisplay"
+                    @click="delPropose"></span>
+                <input v-model="param.proposeName" @click="selectStaff('proposeName')" readonly
+                       class="form-control" placeholder="所有提出人" style="width: 100px;" />
             </div>
-            <div class="form-group">
-                <input v-model="param.onChargeStaff" class="form-control" placeholder="所有负责人" style="width: 100px;" />
+            <div class="input-group delSpan">
+                <span class="glyphicon glyphicon-remove unDisplay"
+                      @click="delOnCharge"></span>
+                <input v-model="param.onChargeName" @click="selectStaff('onChargeName')" readonly
+                       class="form-control" placeholder="所有负责人" style="width: 100px;" />
             </div>
-            <div class="form-group">
-                <input v-model="param.startDate" class="form-control" placeholder="解决开始时间" style="width: 100px;" />
+            <div class="input-group">
+                <input v-model="param.startDate" id = "startDate"
+                       class="form-control" placeholder="解决开始时间" style="width: 100px;" readonly/>
             </div>
-            <div class="form-group">
-                <input v-model="param.endDate" class="form-control" placeholder="解决结束时间" style="width: 100px;" />
+            <div class="input-group">
+                <input v-model="param.endDate" id="endDate"
+                       class="form-control" placeholder="解决结束时间" style="width: 100px;" readonly/>
             </div>
         </div>
         <div class="col-md-3 column">

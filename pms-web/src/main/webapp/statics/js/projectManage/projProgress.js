@@ -263,8 +263,8 @@ var vm = new Vue({
                 width: "600px",
                 height: "600px",
                 yes: function (iframeId) {
-                    top.frames[0].projProgress.vm.taskStaff = top.frames[iframeId].vm.userName;
-                    top.frames[0].projProgress.vm.taskStaffId = top.frames[iframeId].vm.userId;
+                    window.vm.taskStaff = top.frames[iframeId].vm.userName;
+                    window.vm.taskStaffId = top.frames[iframeId].vm.userId;
                     var index = top.layer.getFrameIndex(iframeId); //先得到当前iframe层的索引
                     top.layer.close(index); //再执行关闭
                 }
@@ -274,7 +274,7 @@ var vm = new Vue({
             dialogOpen({
                 id: 'staffSelect',
                 title: '人员选择',
-                url: 'base/user/staff.html??singleSelect=false',
+                url: 'base/user/staff.html?singleSelect=false',
                 scroll: true,
                 width: "600px",
                 height: "600px",
@@ -288,8 +288,8 @@ var vm = new Vue({
                     }
                     ids = ids.substr(0, ids.length - 1);
                     names = names.substr(0, names.length - 1);
-                    top.frames[0].projProgress.vm.participant = ids;
-                    top.frames[0].projProgress.vm.participantName = names;
+                    window.vm.participant = ids;
+                    window.vm.participantName = names;
                     var index = top.layer.getFrameIndex(iframeId); //先得到当前iframe层的索引
                     top.layer.close(index); //再执行关闭
                 }
@@ -424,9 +424,6 @@ var vm = new Vue({
         addSchePanel: function () {
             vm.isAddSche = true;
         },
-        // addSche: function () {
-        //     saveSche();
-        // },
         delSchedule: function (scheduleId) {
             $.ajax({
                 url: '/schedule/projSche/deleteProjSche?_' + $.now(),

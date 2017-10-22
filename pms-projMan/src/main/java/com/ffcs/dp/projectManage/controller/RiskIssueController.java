@@ -3,6 +3,8 @@ package com.ffcs.dp.projectManage.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ffcs.dp.common.controller.AbstractController;
+import com.ffcs.dp.common.entity.Page;
+import com.ffcs.dp.common.entity.SysUserEntity;
 import com.ffcs.dp.projectManage.entity.RiskIssueEntity;
 import com.ffcs.dp.projectManage.entity.ScheduleEntity;
 import com.ffcs.dp.projectManage.service.ProjScheService;
@@ -28,6 +30,15 @@ public class RiskIssueController extends AbstractController {
 
     @Resource
     private RiskIssueService riskIssueService;
+
+
+    //获取风险问题列表带分页
+    @RequestMapping("/list")
+    public Page<RiskIssueEntity> list(@RequestBody Map<String, Object> params) {
+        params.put("userId", getUserId());
+        return riskIssueService.list(params);
+    }
+
 
     //获取风险问题列表
     @RequestMapping("/getRiskIssueList")

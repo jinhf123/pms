@@ -243,8 +243,8 @@ var vm = new Vue({
                 width: "600px",
                 height: "600px",
                 yes : function(iframeId) {
-                    top.frames[0].projProgress.vm.taskStaff = top.frames[iframeId].vm.userName;
-                    top.frames[0].projProgress.vm.taskStaffId = top.frames[iframeId].vm.userId;
+                    window.vm.taskStaff = top.frames[iframeId].vm.userName;
+                    window.vm.taskStaffId = top.frames[iframeId].vm.userId;
                     var index = top.layer.getFrameIndex(iframeId); //先得到当前iframe层的索引
                     top.layer.close(index); //再执行关闭
                 }

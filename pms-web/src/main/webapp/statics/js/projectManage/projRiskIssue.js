@@ -8,88 +8,195 @@ $(function () {
 });
 
 function initialPage() {
+    vm.projId = getQueryString('projId');
     $(window).resize(function() {
         $('#dataGrid').bootstrapTable('resetView', {height: $(window).height()-54});
+    });
+    $("#startDate").datetimepicker().on('change', function () {
+        vm.param.startDate = $("#startDate").val();
+    });
+    $("#endDate").datetimepicker().on('change', function () {
+        vm.param.endDate = $("#endDate").val();
     });
 }
 
 function getGrid() {
-
-
-    // $('#dataGrid').bootstrapTable({
-    //     height:$(window).height()-54,
-    //     url: '../../projMan/project/list?_' + $.now(),
-    //     dataField: "rows",
-    //     method: 'post',
-    //     dataType: 'json',
-    //     selectItemName: 'id',
-    //     clickToSelect: true,
-    //     pagination: false,//不分页
-    //     smartDisplay: false,
-    //     // queryParamsType : null,
-    //     queryParams: function(params){
-    //         params.projName = vm.keyword;
-    //         console.log("查询参数："+params.projName);
-    //         return params;
-    //     },
-    //     columns: [{
-    //         checkbox: true
-    //     }, {
-    //         field : "projId",
-    //         title : "项目编号",
-    //         align : "center",
-    //         width : "100px"
-    //     }, {
-    //         field : "projName",
-    //         title : "项目名称",
-    //         align : "center",
-    //         width : "300px"
-    //     }, {
-    //         field : "projType",
-    //         title : "项目类型",
-    //         align : "center",
-    //         width : "100px"
-    //     }, {
-    //         field : "startDate",
-    //         title : "开始日期",
-    //         align : "center",
-    //         width : "200px",
-    //         formatter: function(item, index){
-    //             return formatDate(item,"yyyy年MM月dd日");
-    //         }
-    //     }, {
-    //         field : "endDate",
-    //         title : "结束日期",
-    //         align : "center",
-    //         width : "200px",
-    //         formatter: function(item, index){
-    //             return formatDate(item,"yyyy/MM/dd");
-    //         }
-    //     }]
-    // });
-
-
-
+    $('#dataGrid').bootstrapTableEx({
+        url: '../../riskIssue/projRisk/list?_' + $.now(),
+        height: $(window).height()-54,
+        queryParams: function(params){
+            params.projId = vm.projId;
+            params.proposeStaff = vm.param.proposeStaff;//提出人
+            params.onChargeStaff = vm.param.onChargeStaff;//负责人
+            params.state = vm.param.state;//状态，默认未选中
+            params.startDate = vm.param.startDate;//开始时间
+            params.endDate = vm.param.endDate;//结束时间
+            params.keyWord = vm.param.keyWord;//关键字
+            return params;
+        },
+        columns: [{
+            field : "riskId",
+            title : "风险问题编号",
+            visible : false
+        },{
+            field : "projId",
+            title : "项目编号",
+            visible : false
+        }, {
+            field : "proposeDate",
+            title : "提出时间",
+            align : "center",
+            width : "100px",
+            formatter: function(value){
+                return formatDate(value,'yyyy-MM-dd')
+            }
+        },{
+            field : "proposeStaff",
+            title : "提出人",
+            visible : false
+        },{
+            field : "proposeName",
+            title : "提出人",
+            align : "center",
+            width : "80px"
+        },{
+            field : "content",
+            title : "风险内容",
+            align : "center",
+            width : "250px"
+        },{
+            field : "state",
+            title : "是否解决",
+            align : "center",
+            width : "50px",
+            formatter: function(value){
+                if(value==='0'){
+                    return "否";
+                }else{
+                    return "是";
+                }
+            }
+        },{
+            field : "onChargeStaff",
+            title : "负责人",
+            visible : false
+        },{
+            field : "onChargeName",
+            title : "负责人",
+            align : "center",
+            width : "80px"
+        },{
+            field : "resolventDate",
+            title : "计划解决时间",
+            align : "center",
+            width : "100px",
+            formatter: function(value){
+                return formatDate(value,'yyyy-MM-dd')
+            }
+        },{
+            field : "realResoDate",
+            title : "实际解决时间",
+            align : "center",
+            width : "100px",
+            formatter: function(value){
+                return formatDate(value,'yyyy-MM-dd')
+            }
+        },{
+            field : "resolvent",
+            title : "解决方式",
+            align : "center",
+            width : "250px",
+            formatter: function(value){
+                debugger;
+                return value===null?"":value;
+            }
+        },{
+            field : "userId",
+            title : "操作",
+            align : "center",
+            width : "50px",
+            formatter: function(value,row){//value,row,index
+                if(row.proposeStaff===value||row.onChargeStaff===value){
+                    vm.selectRow = row;
+                    return "<button class='btn btn-sm btn-link' onClick='operate()'><span>操作</span></button>"
+                }else{
+                    return "";
+                }
+            }
+        }]
+    });
 }
+
+
+function operate(){
+    alert(vm.selectRow.riskId);
+}
+
+
 
 var vm = new Vue({
     el:'#dpLTE',
+    catch:false,
     data: {
         icon_Search :"/statics/img/projectManage/u1.png",
         icon_Add: "/statics/img/projectManage/u2.png",
+        projId:"",
+        selectRow:{},
         param:{
             proposeStaff:"",//提出人
+            proposeName:"",//提出人名称
             onChargeStaff:"",//负责人
+            onChargeName:"",//负责人名称
             state:"0",//状态，默认未选中
-            startDate:"",
-            endDate:"",
+            startDate:formatDate(new Date(),"yyyy-MM-dd"),
+            endDate:formatDate(new Date(),"yyyy-MM-dd"),
             keyWord:""
         }
-
     },
     methods : {
         load: function(){
-            // $('#dataGrid').bootstrapTable('refresh');
+            debugger;
+            var opt = {
+                url: '../../riskIssue/projRisk/list?_' + $.now(),
+                silent: true, //刷新事件必须设置
+                height: $(window).height()-54,
+                queryParams: function(params){
+                    params.projId = vm.projId;
+                    params.proposeStaff = vm.param.proposeStaff;//提出人
+                    params.onChargeStaff = vm.param.onChargeStaff;//负责人
+                    params.state = vm.param.state;//状态，默认未选中
+                    params.startDate = vm.param.startDate;//开始时间
+                    params.endDate = vm.param.endDate;//结束时间
+                    params.keyWord = vm.param.keyWord;//关键字
+                    return params;
+                }
+            };
+            $('#dataGrid').bootstrapTableEx('refresh');
+            $('#dataGrid').bootstrapTable('refresh');
+            // $('#dataGrid').bootstrapTableEx('reload');
+        },
+        selectStaff:function(id){
+            dialogOpen({
+                id: 'staffSelect',
+                title: '人员选择',
+                url: 'base/user/staff.html?singleSelect=true',
+                scroll : true,
+                width: "600px",
+                height: "600px",
+                yes : function(iframeId) {
+                    var vmObj = window.vm;
+                    var userId=top.frames[iframeId].vm.userId;
+                    var userName =  top.frames[iframeId].vm.userName;
+                    if(id==='proposeName'){
+                        vmObj.param.proposeStaff = userId;
+                        vmObj.param.proposeName=userName;
+                    }else if(id==='onChargeName'){
+                        vmObj.param.onChargeStaff = userId;
+                        vmObj.param.onChargeName=userName;
+                    }
+                    top.layer.close(top.layer.getFrameIndex(iframeId));//先得到当前iframe层的索引再执行关闭
+                }
+            })
         },
         save: function(){
             dialogOpen({
@@ -121,6 +228,14 @@ var vm = new Vue({
             // }
         },
         remove: function() {
+        },
+        delPropose: function(){
+            vm.param.proposeName='';
+            vm.param.proposeStaff='';
+        },
+        delOnCharge: function (){
+            vm.param.onChargeName='';
+            vm.param.onChargeStaff=''
         }
     }
-})
+});

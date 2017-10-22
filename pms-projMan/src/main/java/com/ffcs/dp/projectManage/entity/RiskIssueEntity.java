@@ -16,8 +16,14 @@ public class RiskIssueEntity implements Serializable {
     private String state;//状态
     private Date proposeDate;//提出时间
     private Date resolventDate;//解决时间
+    private Date realResoDate;//实际解决时间
     private Long proposeStaff;//提出人
+    private String proposeName;//提出人名称
     private Long onChargeStaff;//负责人
+    private String onChargeName;//负责人名称
+
+    private Long userId;//用户编号
+    private String operate;//操作
 
     public RiskIssueEntity() {
         super();
@@ -87,12 +93,28 @@ public class RiskIssueEntity implements Serializable {
         this.proposeDate = proposeDate;
     }
 
+    public String getProposeName() {
+        return proposeName;
+    }
+
+    public void setProposeName(String proposeName) {
+        this.proposeName = proposeName;
+    }
+
     public Date getResolventDate() {
         return resolventDate;
     }
 
     public void setResolventDate(Date resolventDate) {
         this.resolventDate = resolventDate;
+    }
+
+    public Date getRealResoDate() {
+        return realResoDate;
+    }
+
+    public void setRealResoDate(Date realResoDate) {
+        this.realResoDate = realResoDate;
     }
 
     public Long getProposeStaff() {
@@ -109,5 +131,29 @@ public class RiskIssueEntity implements Serializable {
 
     public void setOnChargeStaff(Long onChargeStaff) {
         this.onChargeStaff = onChargeStaff;
+    }
+
+    public String getOnChargeName() {
+        return onChargeName;
+    }
+
+    public void setOnChargeName(String onChargeName) {
+        this.onChargeName = onChargeName;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getOperate() {
+        return operate;
+    }
+
+    public void setOperate(String operate) {
+        this.operate = operate;
     }
 }
