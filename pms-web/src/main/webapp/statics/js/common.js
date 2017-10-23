@@ -196,6 +196,17 @@ formatDate = function (v, format) {
     }
     return format;
 };
+/** 字符串转日期
+ *  使用示例：
+ *  convertStringToDate(dateString)
+ *  dateString格式："yyyy-MM-dd"
+ **/
+convertStringToDate  = function(dateString) {
+    if (dateString) {
+        var date = new Date(dateString.replace(/-/,"/"))
+        return date;
+    }
+};
 
 isNullOrEmpty = function (obj) {
     if ((typeof (obj) == "string" && obj == "") || obj == null || obj == undefined) {

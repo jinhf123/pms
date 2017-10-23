@@ -97,7 +97,11 @@
     <update id="updateRiskIssue">
         update PMS_PROJ_RISK_ISSUE
         <set>
-            <if test="resolvent != null">RESOLVENT = #{resolvent}, </if>
+            <if test="resolvent != null">
+                RESOLVENT = #{resolvent},
+                REAL_RESO_DATE = sysdate,
+                STATE = '1'
+            </if>
         </set>
          where RISK_ID = #{riskId}
     </update>

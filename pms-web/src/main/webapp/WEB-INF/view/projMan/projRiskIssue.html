@@ -12,22 +12,23 @@
         <div class="col-md-9 column form-inline pull-left">
 
             <div class="form-group">
-                <select id="state" v-model="param.state" class="form-control" >
+                <select id="state" v-model="param.state" class="form-control"  title="状态">
+                    <option value="">全部</option>
                     <option value="0" selected>未解决</option>
                     <option value="1">已解决</option>
                 </select>
             </div>
             <div class="input-group delSpan">
                 <span class="glyphicon glyphicon-remove unDisplay"
-                    @click="delPropose"></span>
-                <input v-model="param.proposeName" @click="selectStaff('proposeName')" readonly
-                       class="form-control" placeholder="所有提出人" style="width: 100px;" />
+                    onclick="delPropose"></span>
+                <input v-model="param.proposeName" class="form-control" placeholder="所有提出人" style="width: 100px;"
+                      @click="selectStaff('proposeName')" readonly />
             </div>
             <div class="input-group delSpan">
                 <span class="glyphicon glyphicon-remove unDisplay"
-                      @click="delOnCharge"></span>
-                <input v-model="param.onChargeName" @click="selectStaff('onChargeName')" readonly
-                       class="form-control" placeholder="所有负责人" style="width: 100px;" />
+                      onclick="delOnCharge"></span>
+                <input v-model="param.onChargeName" class="form-control" placeholder="所有负责人" style="width: 100px;"
+                       @click="selectStaff('onChargeName')" readonly/>
             </div>
             <div class="input-group">
                 <input v-model="param.startDate" id = "startDate"
@@ -41,12 +42,12 @@
         <div class="col-md-3 column">
             <div class="btn-toolbar pull-right display-flex" >
                 <div class="btn-group search-div display-flex" :class="{'search-input':param.keyWord!==''?true:false}">
-                    <input v-model="param.keyWord" @keyup.enter="load" class="form-control" placeholder="请输入查询关键字" />
-                    <button class="transparent-btn" type="button" title="查询" @click="load" >
+                    <input v-model="param.keyWord" @keyup.enter="load" class="form-control" placeholder="请输入查询关键字!" />
+                    <button class="transparent-btn" type="button" title="查询" @click="query" >
                         <img :src="icon_Search">
                     </button>
                 </div>
-                <button class="transparent-btn" type="button" title="新建"  @click="">
+                <button class="transparent-btn" type="button" title="新建" onClick="addRiskIssue()">
                     <img :src="icon_Add">
                 </button>
             </div>
@@ -54,6 +55,53 @@
     </div>
     <div class="row">
         <table id="dataGrid"></table>
+    </div>
+
+
+    <!--新增面板-->
+    <div id="addPanel" class="clearfix" style="display: none;">
+        <table class="form">
+            <tr v-show="isOperate">
+                <td class="formTitle">提出时间:</td>
+                <td class="formValue">
+                    <input class="form-control" v-model="proposeDate" placeholder="请选择提出时间!" readonly />
+                </td>
+                <td class="formTitle"> 提出人: </td>
+                <td class="formValue">
+                    <input class="form-control" v-model="proposeName" placeholder="请选择提出人!" readonly/></td>
+            </tr>
+            <tr>
+                <td class="formTitle">风险内容:</td>
+                <td class="formValue" colspan="3">
+                    <input class="form-control" v-model="content" placeholder="请输入风险内容！" :readonly="isOperate"/>
+                </td>
+            </tr>
+            <tr>
+                <td class="formTitle">解决时间:</td>
+                <td class="formValue"><input class="form-control" v-model="resolventDate" id="resolventDate" placeholder="请选择解决时间!" readonly/></td>
+                <td class="formTitle"> 负责人: </td>
+                <td class="formValue"><input class="form-control" v-model="onChargeName" @click="selectStaff('onCharge')" placeholder="请选择负责人!" readonly/></td>
+            </tr>
+            <tr>
+               <td class="formTitle">备注:</td>
+               <td class="formValue" colspan="3">
+                   <textarea class="form-control" style="width: 700px;height: 80px;" v-model="remark" :readonly="isOperate"></textarea>
+               </td>
+           </tr>
+            <tr v-show="isOperate">
+                <td class="formTitle">解决方法:</td>
+                <td class="formValue" colspan="3">
+                    <textarea class="form-control" style="width: 700px;height: 80px;" v-model="resolvent" placeholder="请输入解决风险问题的方法!" ></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" style="text-align: center;">
+                    <button class="btn btn-sm btn-info" v-show="isOperate"  @click="save"><span>处理</span></button>&nbsp;
+                    <button class="btn btn-sm btn-info" v-show="!isOperate" @click="save"><span>添加</span></button>&nbsp;
+                    <button class="btn btn-sm btn-link" @click="close"><span>取消</span></button>
+                </td>
+            </tr>
+        </table>
     </div>
 
 </div>
