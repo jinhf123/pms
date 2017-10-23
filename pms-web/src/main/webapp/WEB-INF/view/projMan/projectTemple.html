@@ -9,6 +9,15 @@
 </head>
 <body>
 <div class="container-fluid" id="dpTemple">
+    <div class="column is-12">
+        <label class="label">Email</label>
+        <p :class="{ 'control': true }">
+            <input v-validate="'required|email'" :class="{'input': true, 'is-danger': errors.has('email') }"
+                   name="email" type="text" placeholder="Email">
+            <span v-show="errors.has('email')" class="help is-danger">{{ errors.first('email') }}</span>
+            <!--{{console.log(this.errors)}}-->
+        </p>
+    </div>
     <div class="row-fluid col-sm-2 col-xs-2 col-md-2 col-lg-2">
         <div class="container-fluid">
             <p class="pull-right">
@@ -121,14 +130,14 @@
             <div class="panel-body">
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label">模板名称：</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" placeholder="输入模板名称" v-model="temp.tempName">
+                    <div class="col-sm-10" :class="{ 'has-error': errors.has('name')}">
+                        <input type="text" v-validate="'required'" class="form-control " placeholder="输入模板名称" v-model="temp.tempName" name="name">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label">详细描述：</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" placeholder="输入模板描述" v-model="temp.description">
+                    <div class="col-sm-10" :class="{ 'has-error': errors.has('description')}">
+                        <input type="text" v-validate="'required'" class="form-control" placeholder="输入模板描述" v-model="temp.description" name="description">
                     </div>
                 </div>
             </div>
@@ -146,10 +155,12 @@
                             <div class="step-scroll-left" v-if="stepStart>0" @click="toPrev()">
                                 <img src="/statics/img/step_left.png" alt="" class="left">
                             </div>
-                            <li v-for="(item, index) in temp.stepList" :class="[index==stepActive ? 'active' : '']" v-if="index >= stepStart && index < (stepCount  + stepStart)">
+                            <li v-for="(item, index) in temp.stepList" :class="[index==stepActive ? 'active' : '']"
+                                v-if="index >= stepStart && index < (stepCount  + stepStart)">
                                 <img class="badge-notify" @click="removeStep(index)"
                                      src="/statics/img/step_delete.png"/>
-                                <a :href="'#' + index +'-pills'" data-toggle="tab" :title="item.stepName " @click="setActive(index)"
+                                <a :href="'#' + index +'-pills'" data-toggle="tab" :title="item.stepName "
+                                   @click="setActive(index)"
                                    @dblclick="edit(index);">
                                     <p v-if=" item.status == 'show' ">{{ item.stepName }}</p>
                                     <input v-if=" item.status == 'edit'" style='color: black; width: 56px'
@@ -257,6 +268,8 @@
 <script src="${rc.contextPath}/statics/libs/vue-router.min.js"></script>
 <script src="${rc.contextPath}/statics/libs/vue-resource.js"></script>
 <script src="${rc.contextPath}/statics/libs/vue-select.js"></script>
+<script src="/statics/libs/vee-validate.min.js"></script>
+<script src="/statics/libs/zh_CN.js"></script>
 <script src="${rc.contextPath}/statics/js/projectManage/projectTemple.js"></script>
 
 

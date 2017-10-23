@@ -1,4 +1,13 @@
 Vue.component('v-select', VueSelect.VueSelect);
+const config = {
+    errorBagName: 'errors', // change if property conflicts.
+    delay: 0,
+    locale: 'zh_CN',
+    messages: null,
+    strict: true
+};
+// Vue.use(VeeValidate);
+Vue.use(VeeValidate, config);
 var templeStepForm = {
     props: [
         'item',
@@ -58,7 +67,7 @@ var templeForm = {
                 attachPdf: 0,
                 attachContent: null
             });
-            if (this.temp.stepList.length - this.stepStart > this.stepCount )
+            if (this.temp.stepList.length - this.stepStart > this.stepCount)
                 this.stepStart++;
         },
         removeStep: function (index) {
@@ -72,6 +81,16 @@ var templeForm = {
         },
         submitForm: function () {
             var me = this;
+            // this.$validator.validateAll().then(function (result) {
+            //     console.log(result);
+            //     if (result) {
+            //         alert('From Submitted!');
+            //         return;
+            //     }
+            //
+            //     alert('Correct them errors!');
+            // });
+
             this.$http.post(
                 "/projMan/template",
                 {
