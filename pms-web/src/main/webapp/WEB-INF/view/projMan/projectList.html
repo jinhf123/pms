@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html>
 <head>
-    <title>项目列表</title>
+    <title>项目管理</title>
     #parse("include/header.html")
     <link rel="stylesheet" href="${rc.contextPath}/statics/css/projectManage/projectList.css">
 </head>
@@ -10,31 +9,31 @@
 
 <div id="dpLTE" class="container-fluid" v-cloak>
 
-    <div class="row">
+    <div>
         <div class="col-md-12 column">
             <div class="tabbable" id="tabs-551353">
 
                 <div class="col-md-4 column">
-                    <div class="btn-group">
-                        <button class="btn btn-default">XXXX[2017]</button>
-                        <button data-toggle="dropdown" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>
+                    <div class="btn-group dropdown-group">
+                        <!--<button class="btn btn-default">{{projectGroup.text}}</button>-->
+                        <span style="margin: 7px 0px;">{{projectGroup.text}}</span>
+                        <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">
+                            <span class="caret"></span>
+                        </button>
                         <ul class="dropdown-menu">
-                            <li>
-                                <a href="#">XXXX[2016]</a>
-                            </li>
-                            <li class="disabled">
-                                <a href="#">XXXX[2015]</a>
+                            <li v-for="group in groups">
+                                <a @click="selectGroup(group)" href="#">{{group.text}}</a>
                             </li>
                             <li class="divider">
                             </li>
                             <li>
-                                <a href="#">其它</a>
+                                <a @click="addGroup" href="#">新增项目组</a>
                             </li>
                         </ul>
                     </div>
                 </div>
 
-                <ul class="nav nav-tabs col-md-4 column top-tab">
+                <ul class="nav nav-tabs col-md-4 column top-tabs">
                     <li class="active">
                         <a href="#panel-766718" data-toggle="tab">项目</a>
                     </li>
@@ -49,57 +48,95 @@
                     </li>
                 </ul>
 
-                <div class="col-md-4 column">
-                    <div class="btn-group btn-group-sm">
-                        <button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-left"></em> 左</button> <button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-center"></em> 中</button> <button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-right"></em> 右</button> <button class="btn btn-default" type="button"><em class="glyphicon glyphicon-align-justify"></em> 全</button>
+                <div class="col-md-4 column display-flex">
+                    <div class="serach-div display-flex">
+                        <input v-model="keyWord" @keyup.enter="load" type="text" class="form-control" placeholder="请输入查询关键字" />
+                        <button class="transparent-btn" type="button" title="查询" @click="query" >
+                            <img :src="icon_Serach">
+                        </button>
+                    </div>
+                    <div class="btn-group btn-group-sm float-right">
+                        <button class="transparent-btn" type="button" title="新建项目"  @click="location('add')">
+                            <img :src="icon_Add">
+                        </button>
+                        <button class="transparent-btn" type="button" title="通知">
+                            <img :src="icon_Notice">
+                        </button>
+                        <button class="transparent-btn" type="button" title="工作日志" @click="location('log')">
+                            <img :src="icon_Log">
+                        </button>
                     </div>
                 </div>
 
                 <div class="tab-content col-md-12 column">
                     <div class="tab-pane active" id="panel-766718">
-                        <div class="row clearfix">
-                            <div class="col-md-2 column leftBar">
-                                <div class="row clearfix">
-                                    <div class="col-md-12 column">
+                        <div class="clearfix">
+                            <div class="col-md-1 column leftBar" :style="styleObject">
+                                <div class="project-type-group">
+                                    <div class="type-slimScroll">
+                                            <li v-for="type in types" class="row clearfix project-type" :class="type.isSelected?'active':''">
+                                                <a @click="selectType(type)" href="#">
+                                                    <img :src="type.icon">
+                                                    <br>
+                                                    {{type.text}}
+                                                </a>
+                                            </li>
                                     </div>
                                 </div>
-                                <div class="row clearfix">
-                                    <div class="col-md-12 column">
+                                <div class="row clearfix operations">
+                                    <div class="operation-icon-left"　title="归档查询">
+                                        <button class="transparent-btn">
+                                            <img :src="icon_FileQuery" >
+                                        </button>
                                     </div>
-                                </div>
-                                <div class="row clearfix">
-                                    <div class="col-md-12 column">
-                                    </div>
-                                </div>
-                                <div class="row clearfix">
-                                    <div class="col-md-12 column">
-                                    </div>
-                                </div>
-                                <div class="row clearfix">
-                                    <div class="col-md-6 column">
-                                    </div>
-                                    <div class="col-md-6 column">
+                                    <div class="operation-icon-right"　title="编辑项目模版">
+                                        <button class="transparent-btn">
+                                            <img :src="icon_EditTemp" >
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-10 column">
+                            <div class="col-md-11 projGridPanel " :style="styleObject">
+                                <div class="subTitle">{{projectType.text}}在线项目共有<span style="color:#dc6d67">{{length}}</span>个</div>
+                                <div class="projGrid">
+                                    <div class="project-slimScroll">
+
+                                        <div v-for="project in projects" class="row clearfix projList" :class="project.isSelected?'active':''"
+                                             @click="shwoDetails( project.projId )" >
+                                        <div class="col-md-12 column projList-task">
+                                           <a>风险项:2</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a>待处理任务:6</a> <p></p>
+                                        </div>
+                                        <div class=" col-md-12 column">
+                                            <div class="col-md-10 column">
+                                                <div class="fa fa-archive fa-color"></div>
+                                                {{project.projName}}
+                                                <span class="subTitle">&nbsp;&nbsp;&nbsp;&nbsp;大项目经理：{{project.beloProjGroup}}</span>
+                                            </div>
+                                            <div class="col-md-2 column projList-completion-rate">
+                                                    总体完成[12]%
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 column divider"></div>
+                                    </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                     </div>
                     <div class="tab-pane" id="panel-59308">
                         <p>
-                            Howdy, I'm in Section 2 日程.
+                            日程功能正在开发中...
                         </p>
                     </div>
                     <div class="tab-pane" id="panel-48716">
                         <p>
-                            Howdy, I'm in Section 3 周报.
+                            周报功能正在开发中...
                         </p>
                     </div>
                     <div class="tab-pane" id="panel-37425">
                         <p>
-                            Howdy, I'm in Section 4 统计.
+                            统计功能正在开发中...
                         </p>
                     </div>
                 </div>

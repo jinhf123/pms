@@ -99,7 +99,7 @@
 		FROM
 			pms_sys_macro m
 		WHERE
-			m.id = #{macroId}
+			m.id = #{id}
 	</select>
 	
 	<update id="update">
@@ -115,7 +115,7 @@
 			modified_date = sysdate
 		</set>
 		WHERE
-			id = #{macroId}
+			id = #{id}
 	</update>
 	
 	<delete id="batchRemove">

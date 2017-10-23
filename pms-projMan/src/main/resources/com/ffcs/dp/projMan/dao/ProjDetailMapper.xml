@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffcs.dp.projectManage.dao.ProjDetailMapper">
+
+
+	<!--获取项目基本信息-->
+	<select id="getProjInfo" resultType="java.util.HashMap" parameterType="Map">
+		select
+		/*项目信息*/
+		 t.temp_name,
+		 p.proj_name,
+		 p.proj_type,
+		 p.belo_proj_group,
+		 p.proj_level,
+		 p.cons_mode,
+		 p.undertake_mode,
+		 p.is_complet_in_a_year,
+		 to_char(p.start_date, 'yyyy-MM-dd') start_date,
+		 to_char(p.end_date, 'yyyy-MM-dd') end_date,
+		 p.state,
+		 /*项目干系人*/
+		 (SELECT WM_CONCAT(USERNAME)
+			FROM PMS_SYS_USER
+		   WHERE INSTR(s.proj_group_manager, USER_ID) > 0) proj_group_manager,
+		 (SELECT WM_CONCAT(USERNAME)
+			FROM PMS_SYS_USER
+		   WHERE INSTR(s.big_proj_manager, USER_ID) > 0) big_proj_manager,
+		 (SELECT WM_CONCAT(USERNAME)
+			FROM PMS_SYS_USER
+		   WHERE INSTR(s.Proj_Manager, USER_ID) > 0) proj_manager,
+		 (SELECT WM_CONCAT(USERNAME)
+			FROM PMS_SYS_USER
+		   WHERE INSTR(s.dema_manager, USER_ID) > 0) dema_manager,
+		 (SELECT WM_CONCAT(USERNAME)
+			FROM PMS_SYS_USER
+		   WHERE INSTR(s.tech_manager, USER_ID) > 0) tech_manager,
+		 (SELECT WM_CONCAT(USERNAME)
+			FROM PMS_SYS_USER
+		   WHERE INSTR(s.proj_members, USER_ID) > 0) proj_members,
+		 /*项目规模*/
+		 c.pers_mont_total,
+		 c.resource_cost,
+		 c.pers_mont_outsource,
+		 c.outsource_cost
+		  from pms_project_info     p,
+			   pms_proj_template    t,
+			   PMS_PROJ_COST        c,
+			   PMS_PROJ_STAKEHOLDER s
+		 where p.temp_id = t.temp_id
+		   and p.proj_scale_id = c.proj_scale_id
+		   and p.proj_stakeholder_id = s.proj_stakeholder_id
+		   and P.PROJ_ID = #{projId}
+	</select>
+
+
+
+
+	<!--获取项目信息-->
+	<select id="getProjectInfo" resultType="java.util.HashMap" parameterType="Map">
+		select P.PROJ_ID,
+			   P.PROJ_NAME,
+			   (select count(1)
+		          from PMS_PROJ_STEP S
+		         where S.PROJ_ID = P.PROJ_ID) ALL_STEP,
+			   (select count(1)
+				  from PMS_PROJ_STEP S
+				 where S.PROJ_ID = P.PROJ_ID
+				   and S.STATE in (0, 1)) UN_COMP_STEP,
+			   (select count(1)
+				  from PMS_PROJ_TASK K
+				 where K.PROJ_ID = P.PROJ_ID
+				   and K.STATE in (0, 1)) UN_COMP_TASK,
+		       (select count(1)
+				  from PMS_PROJ_SCHEDULE
+				 where PROJ_ID = P.PROJ_ID
+				   and STATE in (0, 1)) UN_COMP_SCHEDULE
+		  From PMS_PROJECT_INFO P
+		 where P.PROJ_ID = #{projId}
+	</select>
+
+
+	<!--获取步骤列表信息-->
+	<select id="getStepList" resultType="StepEntity" parameterType="Map">
+		select S.STEP_ID,
+		       S.DEFAULT_DATE,
+			   T.STEP_NAME,
+			   T.STEP_SORT,
+			   T.STEP_CONTENT,
+			   S.STATE,
+			   (select count(1)
+				  from PMS_PROJ_TASK
+				 where STEP_ID = S.STEP_ID
+				   and STATE in (0, 1)) UN_COMP_TASK,
+			   (select count(1) from PMS_PROJ_TASK where STEP_ID = S.STEP_ID) ALL_TASK
+		  from PMS_PROJ_STEP S, PMS_PROJ_TEMPLET_STEP T
+		 where S.STEP_MOD = T.TEMP_STEP_ID
+		   and S.PROJ_ID = #{projId}
+	</select>
+
+
+	<!--获取任务列表信息-->
+	<select id="getTaskList" resultType="TaskEntity" parameterType="Map">
+		select K.TASK_ID,
+			   K.TASK_TITLE,
+			   K.TASK_CONTENT,
+			   K.TASK_STAFF,
+			   K.FINISH_DATE,
+			   K.STATE,
+			   K.STEP_ID,
+			   K.PARENT_TASK
+		  From PMS_PROJ_TASK K
+		 where K.PROJ_ID = #{projId}
+		<if test="stepId != null and '' != stepId">
+		   and K.STEP_ID = #{stepId}
+		</if>
+		 order by K.TASK_ID asc
+	</select>
+
+	<!--获取日程列表信息-->
+	<select id="getScheduleList" resultType="ScheduleEntity" parameterType="Map">
+		SELECT S.SCHEDULE_ID,
+		       S.END_DATE,
+			   S.CONTENT,
+			   (SELECT WM_CONCAT(USERNAME)
+				  FROM PMS_SYS_USER
+				 WHERE INSTR(PARTICIPANT, USER_ID) > 0) PARTICIPANT_NAME
+		  FROM PMS_PROJ_SCHEDULE S
+		 WHERE S.PROJ_ID = #{projId}
+		<if test="stepId != null and '' != stepId">
+			and S.STEP_ID = #{stepId}
+		</if>
+	</select>
+
+	<!--插入任务信息-->
+	<insert id="insertTask" parameterType="Map">
+		<selectKey keyProperty="taskId" resultType="long" order="BEFORE">
+			SELECT PMS_PROJ_TASK_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		insert into PMS_PROJ_TASK (TASK_ID, PROJ_ID, TASK_TITLE, TASK_STAFF, TASK_STAFF_ID, TASK_DATE, STATE, CTEATE_STAFF, STEP_ID, RATE, FINISH_DATE
+		<if test="parentTask != null and parentTask != ''">, PARENT_TASK</if>
+		)
+		values (#{taskId}, #{projId}, #{taskTitle}, #{taskStaff}, #{taskStaffId}, sysdate, '0', #{userId},  #{stepId}, '0%', to_date(#{finishDate}, 'yyyy-mm-dd')
+		<if test="parentTask != null and parentTask != ''">, #{parentTask}</if>
+		)
+	</insert>
+
+	<!--插入日程信息-->
+	<insert id="insertSchedule" parameterType="Map">
+		<selectKey keyProperty="scheduleId" resultType="long" order="BEFORE">
+			SELECT  PMS_PROJ_SCHEDULE_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+
+	</insert>
+
+	<!--删除任务信息-->
+	<delete id="deleteTask" parameterType="Map">
+		delete PMS_PROJ_TASK where TASK_ID = #{taskId}
+	</delete>
+
+	<!--删除日程信息-->
+	<delete id="deleteSchedule" parameterType="Map">
+		delete PMS_PROJ_SCHEDULE where SCHEDULE_ID = #{scheduleId}
+	</delete>
+
+	<!--更新步骤状态信息-->
+	<update id="updateStepState" parameterType="Map">
+		update PMS_PROJ_STEP
+		<set>
+			<if test="state != null and state != ''">STATE = #{state} </if>
+		</set>
+		 WHERE STEP_ID = #{stepId}
+	</update>
+
+	<!--更新任务状态信息-->
+	<update id="updateTaskState" parameterType="Map">
+		UPDATE PMS_PROJ_TASK
+		<set>
+			<if test="state != null and state != ''">STATE = #{state} </if>
+		</set>
+		 WHERE TASK_ID = #{taskId}
+	</update>
+
+
+	<!--获取子任务条数-->
+	<select id="getSubTaskCount" resultType="java.lang.Integer" parameterType="Map">
+		select count(1)
+		from PMS_PROJ_TASK T
+		where T.PARENT_TASK = #{taskId}
+	</select>
+
+
+    <!--获取任务信息-->
+	<select id="getTaskInfo" resultType="java.util.HashMap" parameterType="Map">
+		select T.TASK_ID,
+		       T.TASK_TITLE,
+			   T.TASK_STAFF,
+		       T.FINISH_DATE,
+			   T.TASK_CONTENT,
+			   STATE
+		  from PMS_PROJ_TASK T
+		 where T.TASK_ID = #{taskId}
+	</select>
+
+    <!--更新任务信息-->
+    <update id="updateTaskInfo" parameterType="Map">
+		UPDATE PMS_PROJ_TASK
+		<set>
+			<if test="taskTitle != null and taskTitle != ''">TASK_TITLE = #{taskTitle} ,</if>
+			<if test="taskStaff != null and taskStaff != ''">TASK_STAFF = #{taskStaff} ,</if>
+			<if test="taskStaffId != null and taskStaffId != ''">TASK_STAFF_ID = #{taskStaffId} ,</if>
+			<if test="taskContent != null and taskContent != ''">TASK_CONTENT = #{taskContent} ,</if>
+            <if test="state != null and state != ''">STATE = #{state} ,</if>
+			<if test="finishDate != null and finishDate != ''">FINISH_DATE =to_date(#{finishDate},'YYYY-MM-DD') </if>
+		</set>
+		WHERE
+		TASK_ID = #{taskId}
+    </update>
+
+    <!--获取检查项列表-->
+    <select id="getCheckItemList" resultType="CheckItemEntity" parameterType="Map">
+		select t.check_item_id,
+		       t.CONTENT,
+		       t.state
+		  from PMS_PROJ_TASK_CHECK_ITEM t
+		 where task_id = #{taskId}
+		 order by check_item_id asc
+    </select>
+
+    <!--获取任务操作日志列表-->
+    <select id="getTaskLogList" resultType="TaskLogEntity" parameterType="Map">
+		select T.TASK_LOG_ID,
+		       to_char(T.OPERATE_DATE, 'MM-DD') OPERATE_DATE,
+			   U.USERNAME STAFF_NAME,
+			   T.OPERATOR,
+			   T.CONTENT,
+		       T.OPERATE_TYPE
+		  from PMS_PROJ_TASK_LOG T, PMS_SYS_USER U
+		 where T.OPERATOR = U.USER_ID
+		   and TASK_ID = #{taskId}
+		 order by TASK_LOG_ID asc
+    </select>
+
+    <!--更新检查项信息-->
+    <update id="updateCheckItem" parameterType="Map">
+		UPDATE PMS_PROJ_TASK_CHECK_ITEM
+		<set>
+			<if test="state != null and state != ''">STATE = #{state} ,</if>
+		</set>
+		 WHERE CHECK_ITEM_ID = #{checkItemId}
+    </update>
+
+    <!--新增检查项信息-->
+    <insert id="insertCheckItem" parameterType="Map">
+		<selectKey keyProperty="checkItemId" resultType="long" order="BEFORE">
+			SELECT PMS_PROJ_TASK_CHECK_ITEM_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		insert into PMS_PROJ_TASK_CHECK_ITEM(CHECK_ITEM_ID, TASK_ID, CONTENT, STATE, CREATOR, CREATE_DATE)
+		values (#{checkItemId}, #{taskId}, #{content}, '0' , #{userId}, sysdate)
+    </insert>
+
+    <!--新增任务操作日志信息-->
+    <insert id="insertTaskLog" parameterType="Map">
+        <selectKey keyProperty="taskLogId" resultType="long" order="BEFORE">
+            SELECT PMS_PROJ_TASK_LOG_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        insert into PMS_PROJ_TASK_LOG(TASK_LOG_ID,TASK_ID,CONTENT,OPERATOR,OPERATE_DATE,OPERATE_TYPE)
+        values(#{taskLogId},#{taskId},#{content},#{userId},sysdate,#{operateType})
+    </insert>
+
+    <!--删除任务操作日志信息-->
+    <delete id="deleteTaskLog" parameterType="Map">
+        delete PMS_PROJ_TASK_LOG where TASK_ID = #{taskId}
+    </delete>
+
+</mapper>

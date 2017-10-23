@@ -1,15 +1,224 @@
+body{
+    font-family: "微软雅黑 Regular", "微软雅黑";
+    font-size: 14px;
+    font-weight: 400;
+    font-style: normal;
+    color: #333333;
+    overflow-y: hidden;
+    overflow-x: visible;
+}
+.subTitle{
+    font-size: 13px;
+    font-style: normal;
+    color: #999999;
+}
+
+.column{
+    padding-left:0px;
+    padding-right: 0px;
+}
+
+.fa-color{
+    color: #1cae99
+}
+
+.float-right{
+     float: right !important;
+ }
+
+.display-flex{
+    display: -ms-inline-flexbox;
+    display: -webkit-box;
+}
+
+.transparent-btn {
+    display: inline-block;
+    margin: 4px 0px;
+    padding: 0px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.4285;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+
+
+
+/*下拉按钮组样式*/
+.dropdown-group{
+    display: inline-flex;
+    border: 1px solid rgb(221, 221, 221);
+    border-radius: 4px;
+}
+
+
+/*搜索按钮样式*/
+.serach-div > input{
+    padding: 0px;
+    border: 0;
+    width: 0px;
+    transition:width 2s;
+    -moz-transition:width 2s; /* Firefox 4 */
+    -webkit-transition:width 2s; /* Safari and Chrome */
+    -o-transition:width 2s; /* Opera */
+    /*display: none;*/
+}
+.serach-div:active > input{
+    /*display: block;*/
+    width: 200px;
+    border: 1px solid #ccc;
+}
+.serach-div:hover > input{
+    /*display: block;*/
+    width: 200px;
+    border: 1px solid #ccc;
+}
+
+
+
+/*项目管理首页页签*/
+.top-tabs{
+    border-bottom:0;
+}
+.top-tabs>li>a:hover{
+    border-color:#eee
+}
+.top-tabs > li > a:focus, .top-tabs > li > a:hover {
+    text-decoration: none;
+    background-color: #fff;
+}
+.top-tabs > li.active > a, .top-tabs > li.active > a:focus, .top-tabs > li.active > a:hover {
+    font-size: 16px;
+    color: #333333;
+    cursor: default;
+    background-color: #fff;
+    border: 0;
+    border-bottom-color: transparent;
+}
+
+
+/*左侧按钮拦*/
 .leftBar{
     background-color: rgba(91, 191, 221, 1);
 }
-
-
-
-.top-tab{
-    border-bottom:0;
+.leftBar > div {
+    text-align: center;
 }
 
 
-.top-tab > li.active > a:hover{
-    color: #333333;
-    border: 0;
+/*项目类型按钮组*/
+.project-type-group{
+    /*height: 425px;*/
+    /*max-height:calc(100vh - 90px);*/
+    height:calc(100vh - 90px);
+    overflow-y:auto;
 }
+
+.project-type{
+    text-align: center;
+    list-style-type:none;
+}
+
+.project-type > a{
+    color: #97e6ff;
+}
+.project-type > a:hover{
+    color: #ffffff;
+}
+/*li.active>a{*/
+    /*color: #ffffff;*/
+ /*}*/
+
+
+
+
+/*快捷操作按钮*/
+.operations{
+    height: 30px;
+}
+.operation-icon-left{
+    width: 50%;
+    float: left;
+}
+.operation-icon-right{
+     width: 50%;
+     float: right;
+ }
+
+
+
+
+/*项目管理列表*/
+.projGridPanel{
+    max-height: calc(100vh - 50px);
+}
+
+.projGrid{
+    height: calc(100vh - 70px);
+}
+.projList{
+
+}
+
+.projList-task{
+    text-align: right;
+    font-size: 13px;
+    color: #b8b8b8;
+}
+.projList-task > a{
+    color: #d9534f;
+}
+
+.projList-completion-rate{
+    text-align: right;
+    font-size: 13px;
+}
+.projList-task,.projList-completion-rate{
+    padding-right: 15px;
+}
+
+
+
+.projList .divider {
+    height: 1px;
+    margin-top: 9px;
+    overflow: hidden;
+    background-color: #e5e5e5;
+}
+
+.projList:active, .projList:hover{
+    background-color: #f1f1f1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

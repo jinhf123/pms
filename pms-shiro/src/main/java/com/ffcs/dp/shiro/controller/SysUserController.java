@@ -37,7 +37,15 @@ public class SysUserController extends AbstractController {
 		}
 		return sysUserService.listUser(params);
 	}
-	
+
+	@RequestMapping("/staffSelectList")
+	public Page<SysUserEntity> staffSelectList(@RequestBody Map<String, Object> params) {
+		if(getUserId() != SystemConstant.SUPER_ADMIN) {
+			params.put("userIdCreate", getUserId());
+		}
+		return sysUserService.staffSelectList(params);
+	}
+
 	/**
 	 * 获取登录的用户信息
 	 */

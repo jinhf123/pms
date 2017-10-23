@@ -17,8 +17,8 @@ function getGrid() {
 	var colunms = TreeGrid.initColumn();
     var table = new TreeTable(TreeGrid.id, '../../sys/macro/list?_' + $.now(), colunms);
     table.setExpandColumn(2);
-    table.setIdField("macroId");
-    table.setCodeField("macroId");
+    table.setIdField("id");
+    table.setCodeField("id");
     table.setParentCodeField("parentId");
     table.setExpandAll(false);
     table.setHeight($(window).height()-100);
@@ -54,7 +54,7 @@ var vm = new Vue({
 					height: '420px',
 					scroll : true,
 					success: function(iframeId){
-						top.frames[iframeId].vm.macro.macroId = ck[0].id;
+						top.frames[iframeId].vm.macro.id = ck[0].id;
 						top.frames[iframeId].vm.setForm();
 					},
 					yes : function(iframeId) {
@@ -93,7 +93,7 @@ var TreeGrid = {
 TreeGrid.initColumn = function () {
     var columns = [
         {field: 'selectItem', radio: true},
-        {title: '编号', field: 'macroId', visible: false, align: 'center', valign: 'middle', width: '50px'},
+        {title: '编号', field: 'id', visible: false, align: 'center', valign: 'middle', width: '50px'},
         {title: '参数名', field: 'name', align: 'center', valign: 'middle', width: '180px'},
         {title: '参数值', field: 'value', align: 'center', valign: 'middle', width: '180px'},
         {title: '所属类别', field: 'typeName', align: 'center', valign: 'middle', width: '100px'},

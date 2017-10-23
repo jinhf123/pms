@@ -5,10 +5,15 @@
 
 
 	<select id="listProject" resultType="ProjManEntity" parameterType="Map">
-		SELECT * FROM
-			PMS_PROJECT_INFO
-		WHERE
-			PROJ_NAME LIKE '%'||#{projName}||'%'
+		with t as
+		 (select i.*
+			from pms_project_info i
+		   where i.belo_proj_group = #{group}
+			 and i.proj_type = #{type}
+			 and i.proj_name like '%' || #{keyWord} || '%')
+		select t.proj_id, t.proj_name, t.belo_proj_group, t.proj_type
+		  from t
+		 group by t.proj_id, proj_name, belo_proj_group, proj_type
 	</select>
 
 

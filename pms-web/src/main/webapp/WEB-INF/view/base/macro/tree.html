@@ -14,7 +14,7 @@
 		data : {
 			simpleData : {
 				enable : true,
-				idKey : "macroId",
+				idKey : "id",
 				pIdKey : "parentId",
 				rootPId : -1
 			},
@@ -32,14 +32,14 @@
 				$.get('../../sys/macro/select', function(r) {
 					ztree = $.fn.zTree
 							.init($("#macroTree"), setting, r);
-					var node = ztree.getNodeByParam("macroId", top.layerForm.vm.macro.parentId);
+					var node = ztree.getNodeByParam("id", top.layerForm.vm.macro.parentId);
 					ztree.selectNode(node);
 					top.layerForm.vm.macro.typeName = node.name;
 				})
 			},
 			acceptClick: function() {
 				var node = ztree.getSelectedNodes();
-				top.layerForm.vm.macro.parentId = node[0].macroId;
+				top.layerForm.vm.macro.parentId = node[0].id;
 				top.layerForm.vm.macro.typeName = node[0].name;
 				dialogClose();
 			}

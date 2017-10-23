@@ -1,5 +1,6 @@
 package com.ffcs.dp.projectManage.entity;
 
+
 import java.util.List;
 
 public class ProjTemplateEntity {
@@ -67,4 +68,5 @@ public class ProjTemplateEntity {
     public void setIsDefault(String isDefault) {
         this.isDefault = isDefault;
     }
+
 }
