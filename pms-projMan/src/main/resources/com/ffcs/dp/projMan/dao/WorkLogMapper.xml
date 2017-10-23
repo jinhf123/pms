@@ -10,12 +10,23 @@
 			   T.END_TIME,
 			   T.IS_PROJECT_WORK,
 			   T.PROJ_ID,
+			   P.PROJ_NAME,
 			   T.TASK_ID,
+			   K.TASK_TITLE TASK_NAME,
 			   T.WORK_DETAILS,
-		       T.CREATOR
-		  FROM PMS_PROJ_WORK_LOG T
-		WHERE T.WORK_DATE = #{workLogDate}
-		AND t.CREATOR = #{userId}
+			   T.CREATOR
+		  FROM PMS_PROJ_WORK_LOG T, PMS_PROJECT_INFO P, PMS_PROJ_TASK K
+		 WHERE T.PROJ_ID = P.PROJ_ID
+		   AND T.TASK_ID = K.TASK_ID
+		   AND T.CREATOR = #{userId}
+		<if test=" workLogDate != '' ">
+		   AND T.WORK_DATE = #{workLogDate}
+		</if>
+		<if test=" startDat != '' and endDate != '' ">
+           AND TO_DATE( T.WORK_DATE, 'YYYY-MM-DD') BETWEEN
+               TO_DATE( #{startDate}, 'YYYY-MM-DD') AND
+               TO_DATE( #{endDate}  , 'YYYY-MM-DD')+1-1/24/60/60
+		</if>
 	</select>
 
 

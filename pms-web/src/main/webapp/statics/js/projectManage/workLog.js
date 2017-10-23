@@ -74,7 +74,7 @@ function getGrid() {
     $.ajax({
         url: '../../projMan/workLog/getWorkLogList?_' + $.now(),
         data: JSON.stringify({
-            "workLogDate" : vm.workLogDate,
+            "workLogDate" : vm.workLogDate
         }),
         type: "post",
         dataType: "json",
@@ -90,7 +90,7 @@ function getGrid() {
 }
 
 function getWorkHoursGrid() {
-    if(vm.startDate!=""&&vm.endDate!=""){
+    if(vm.startDate!==""&&vm.endDate!==""){
         $.ajax({
             url: '../../projMan/workLog/getWorkHoursList?_' + $.now(),
             data: JSON.stringify({
@@ -130,6 +130,11 @@ var vm = new Vue({
         workHours:[],
         isAdd:false,
         isEdit:false,
+
+        //导出参数
+        xlsStartDate:"2017-10-05",
+        xlsEndDate:"2017-10-25",
+
         //新增保存参数
         workLogId:"",
         startTime:"",
@@ -176,7 +181,7 @@ var vm = new Vue({
                 type: "post",
                 dataType: "json",
                 contentType: 'application/json',
-                success: function (data) {
+                success: function () {
                     vm.isAdd = false;
                     vm.workLogId="";
                     vm.startTime="";
@@ -205,12 +210,11 @@ var vm = new Vue({
                 vm.startTime = data.startTime;
                 vm.endTime = data.endTime;
                 vm.minutes = data.minutes;
-                vm.isProjectWork = data.isProjectWork==1?true:false;
+                vm.isProjectWork = (data.isProjectWork === 1);
                 vm.project  = data.projId;
                 vm.task = data.taskId;
                 vm.workDetails = data.workDetails;
             }
-
             $("#startTime2").datetimepicker({
                 format:'hh:ii',
                 minView:0,
@@ -239,11 +243,6 @@ var vm = new Vue({
                 vm.endTime = $("#endTime2").val();
                 vm.minutes = getTimeDiff(vm.startTime,vm.endTime);
             });
-
-
-
-
-
         },
         changeWorkLogType: function() {//是否项目任务 动作
             vm.task="";
@@ -259,6 +258,9 @@ var vm = new Vue({
             date.setDate(date.getDate()-1);
             vm.workLogDate = formatDate(date,"yyyy-MM-dd");
             getGrid();
+        },
+        exportExcel:function(){
+            window.open("/projMan/workLog/exportExcel?startDate="+vm.xlsStartDate+"&endDate="+vm.xlsEndDate);
         }
     }
     ,computed: {
@@ -293,7 +295,7 @@ var vm = new Vue({
 
 //获取日期界限，开始时间，结束时间
 getDateLimit = function(dataStr,time){
-    if(dataStr==""||time=="")return "";
+    if(dataStr===""||time==="")return "";
     var data = new Date(dataStr);
     var year =data.getFullYear();
     var month = data.getMonth();
@@ -304,7 +306,7 @@ getDateLimit = function(dataStr,time){
 };
 //获取时间差
 getTimeDiff = function(startTimeStr,endTimeStr){
-    if(startTimeStr==""||endTimeStr=="")return "";
+    if(startTimeStr===""||endTimeStr==="")return "";
     var h1 = parseInt(endTimeStr.split(':')[0],10);
     var h2 = parseInt(startTimeStr.split(':')[0],10);
     var mm = parseInt(endTimeStr.split(':')[1],10) - parseInt(startTimeStr.split(':')[1],10);

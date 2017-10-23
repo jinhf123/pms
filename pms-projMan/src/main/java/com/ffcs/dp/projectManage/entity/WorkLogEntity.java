@@ -13,7 +13,9 @@ public class WorkLogEntity implements Serializable {
     private String endTime;//结束时间
     private String isProjectWork;//是否项目工作
     private Long projId;//项目编号
+    private String projName;//项目名称
     private Long taskId;//任务编号
+    private String taskName;//任务名称
     private String workDetails;//工作详情
     private Long creator;//创建者
 
@@ -70,8 +72,24 @@ public class WorkLogEntity implements Serializable {
         this.projId = projId;
     }
 
+    public String getProjName() {
+        return projName;
+    }
+
+    public void setProjName(String projName) {
+        this.projName = projName;
+    }
+
     public Long getTaskId() {
         return taskId;
+    }
+
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
     }
 
     public void setTaskId(Long taskId) {
