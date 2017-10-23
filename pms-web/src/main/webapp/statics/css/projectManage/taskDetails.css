@@ -48,16 +48,6 @@
     background-color: #e5e5e5;
 }
 
-/*.datePicker{
-    width: 120px;
-    height: 30px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    vertical-align: middle;
-    margin-bottom: 10px;
-    border-radius: 4px;
-    padding: 4px 6px;
-}*/
 .task-edit-div{width: 100%;display: inline-flex;}
 .task-edit-div>div{display: inline-flex;padding:5px;}
 .task-content-edit-div{padding:0px 5px 5px 25px;}

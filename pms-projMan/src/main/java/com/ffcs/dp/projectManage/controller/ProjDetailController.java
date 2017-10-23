@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -81,7 +82,8 @@ public class ProjDetailController extends AbstractController {
             msg=e.getMessage();
         }
         result.put("success",true);
-        result.put("message",msg);
+        result.put("taskId",params.get("taskId"));
+        result.put("msg",msg);
         return result;
     }
 
@@ -98,7 +100,7 @@ public class ProjDetailController extends AbstractController {
             msg=e.getMessage();
         }
         result.put("success",true);
-        result.put("message",msg);
+        result.put("msg",msg);
         return result;
     }
 
@@ -124,7 +126,7 @@ public class ProjDetailController extends AbstractController {
             msg=e.getMessage();
         }
         result.put("success",success);
-        result.put("message",msg);
+        result.put("msg",msg);
         return result;
     }
 
@@ -141,7 +143,7 @@ public class ProjDetailController extends AbstractController {
             msg=e.getMessage();
         }
         result.put("success",true);
-        result.put("message",msg);
+        result.put("msg",msg);
         return result;
     }
 
@@ -152,15 +154,31 @@ public class ProjDetailController extends AbstractController {
         String msg="";
         params.put("userId", getUserId());
         params.put("state", "2");//已完成
-        System.out.print(params.get("stepId"));
+        System.out.print("完成步骤ID："+params.get("stepId"));
         try{
             projDetailService.updateStepState(params);
+
+            //获取下一步骤ID更新状态为开始
+            List<StepEntity> list = projDetailService.getStepList(params);
+            Iterator<StepEntity> it = list.iterator();
+            while(it.hasNext()){
+                StepEntity s = it.next();
+                if(s.getStepId().toString().equals(params.get("stepId").toString())&&it.hasNext()){
+                    StepEntity ss = it.next();
+                    params.put("stepId",ss.getStepId());
+                    params.put("state","1");
+                    System.out.print("开始步骤ID："+params.get("stepId"));
+                    projDetailService.updateStepState(params);
+                    break;
+                }
+            }
+
         }catch (Exception e){
             e.printStackTrace();
             msg=e.getMessage();
         }
         result.put("success",true);
-        result.put("message",msg);
+        result.put("msg",msg);
         return result;
     }
 
@@ -185,7 +203,7 @@ public class ProjDetailController extends AbstractController {
             msg=e.getMessage();
         }
         result.put("success",true);
-        result.put("message",msg);
+        result.put("msg",msg);
         return result;
     }
 
@@ -248,7 +266,7 @@ public class ProjDetailController extends AbstractController {
             msg=e.getMessage();
         }
         result.put("success",true);
-        result.put("message",msg);
+        result.put("msg",msg);
         return result;
     }
 
@@ -265,7 +283,7 @@ public class ProjDetailController extends AbstractController {
             msg=e.getMessage();
         }
         result.put("success",true);
-        result.put("message",msg);
+        result.put("msg",msg);
         return result;
     }
 

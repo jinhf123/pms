@@ -1,5 +1,5 @@
 /**
- * 项目管理js
+ * 任务详情js
  */
 
 $(function () {
@@ -10,21 +10,19 @@ $(function () {
 });
 
 function initialPage(){
-
-    $("#finishDate").datetimepicker();
-
-    $(".panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     vm.projId = getQueryString('projId');
     vm.stepId = getQueryString('stepId');
+    vm.stepName = getQueryString('stepName');
     vm.taskId = getQueryString('taskId');
+    $("#finishDate").datetimepicker();
+    $(".panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     $(window).resize(function() {
         vm.styleObj.height = ($(window).height())+"px";
         $(".panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     });
 }
-
+//获取任务信息
 function getTaskInfo(){
-    //获取任务信息
     $.ajax({
         url: '../../projMan/projDetail/getTaskInfo?_' + $.now(),
         data: JSON.stringify({
@@ -46,7 +44,7 @@ function getTaskInfo(){
     });
 }
 
-
+//获取检查项列表
 function getCheckItemGrid(){
     $.ajax({
         url: '../../projMan/projDetail/getCheckItemList?_' + $.now(),
@@ -63,7 +61,7 @@ function getCheckItemGrid(){
         }
     });
 }
-
+//获取任务日志列表
 function getTaskLogGrid(){
     $.ajax({
         url: '../../projMan/projDetail/getTaskLogList?_' + $.now(),
@@ -80,7 +78,7 @@ function getTaskLogGrid(){
         }
     });
 }
-
+//保存任务详细
 function saveTaskDetail(params){
     $.ajax({
         url: '../../projMan/projDetail/saveTaskInfo?_' + $.now(),
@@ -98,14 +96,13 @@ function saveTaskDetail(params){
             }else{
                 dialogMsg("操作失败！"+data.msg,"error")
             }
-
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             dialogMsg("操作失败！"+errorThrown,"error")
         }
     });
 }
-
+//保存检查项
 function saveCheckItem(){
     $.ajax({
         url: '../../projMan/projDetail/saveCheckItem?_' + $.now(),
@@ -119,18 +116,57 @@ function saveCheckItem(){
         dataType: "json",
         contentType: 'application/json',
         success: function (data) {
-            dialogMsg("保存成功！")
-            vm.isAddCheckItem=false;
-            vm.checkItemId="";
-            vm.content="";
-            vm.state="";
-            vm.load();
+            if(data.success){
+                dialogMsg("保存成功！")
+                vm.isAddCheckItem=false;
+                vm.checkItemId="";
+                vm.content="";
+                vm.state="";
+                vm.load();
+            }else{
+                dialogMsg("保存失败！"+data.msg,"error")
+            }
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             dialogMsg("保存失败！"+errorThrown,"error")
         }
     });
 }
+//添加到工作日志
+function addToWorkLog(){
+    if(vm.addToWorkLog)
+    $.ajax({
+        url: '../../projMan/workLog/saveWorkLog?_' + $.now(),
+        data: JSON.stringify({
+            "workLogDate" : formatDate(new Date(),"yyyy-MM-dd"),
+            "startTime" : "08:00",
+            "endTime" : "08:00",
+            "minutes" : 0,
+            "isProjectWork" : "1",
+            "project" : vm.projId,
+            "task" : vm.taskId,
+            "workDetails" : vm.taskLogContent
+        }),
+        type: "post",
+        dataType: "json",
+        contentType: 'application/json',
+        success: function (data) {
+        }
+    });
+}
+//添加到风险问题
+function addToRiskIssues(){
+    if(addToRiskIssues){
+        //TODO 添加到风险问题
+    }
+}
+//添加到本周周报
+function addToWeeklyReport(){
+    if(addToWeeklyReport){
+        //TODO 添加到本周周报
+    }
+}
+
 
 
 var vm = new Vue({
@@ -161,6 +197,7 @@ var vm = new Vue({
 
         projId:"",
         stepId:"",
+        stepName:"",
         taskId:"",
         taskInfo:{taskTitle:"",finishDate:"",taskStaff:"",taskContent:"",state:""},
         checkItems:[],
@@ -178,8 +215,16 @@ var vm = new Vue({
         content:"",
         state:"",
 
+        //添加到工作日志，风险问题参数
+        startDate:"",
+        endDate:"",
+        resolveStaff:"",
+        resolveDate:"",
+        isDialogOpen:"false",
+
         //发表评论
         taskLogContent:""
+
     },
     methods : {
         load: function() {
@@ -193,7 +238,7 @@ var vm = new Vue({
             dialogOpen({
                 id: 'staffSelect',
                 title: '人员选择',
-                url: 'base/user/staff.html?_' + $.now(),
+                url: 'base/user/staff.html?singleSelect=true',
                 scroll : true,
                 width: "600px",
                 height: "600px",
@@ -207,9 +252,8 @@ var vm = new Vue({
         },
 
         changeTaskState:function(type){//修改任务状态
-            debugger;
             // 完成
-            if(type=="finish"&&vm.taskInfo.state!="2"){
+            if(type=="finish"&&vm.taskInfo.state!=="2"){
                 var params = JSON.stringify({
                     "taskId" : vm.taskId,
                     "state" : "2"
@@ -300,6 +344,20 @@ var vm = new Vue({
             });
             getCheckItemGrid();
         },
+        upload:function () {
+            dialogOpen({
+                id: 'staffSelect',
+                title: '上传附件',
+                url: 'base/util/upload.html?projId=' + vm.projId + '&folderId='+vm.stepId+'&folderName=' + vm.stepName,
+                scroll : true,
+                width: "600px",
+                height: "420px",
+                btn: false,
+                end: function() {
+
+                }
+            });
+        },
         saveTaskLog:function(){//发表评论
             $.ajax({
                 url: '../../projMan/projDetail/saveTaskLog?_' + $.now(),
@@ -313,15 +371,125 @@ var vm = new Vue({
                 contentType: 'application/json',
                 success: function (data) {
                     if(data.success){
+                        addToWorkLog();
+                        addToRiskIssues();
+                        addToWeeklyReport();
                         dialogMsg("评论成功！");
                         vm.taskLogContent = "";
                         getTaskLogGrid();
+
+
+                        if(vm.addToWorkLog&&vm.addToRiskIssues){
+                            vm.addWorkLogs();
+                        }else if(vm.addToRiskIssues)
+                            vm.addriskIssues();
+                        if(vm.addToWorkLog&&!vm.addToRiskIssues){
+                            vm.addWorkLogs();
+                        }
+
+
                     }else{
                         dialogMsg("评论失败！"+data.msg,"error")
                     }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     dialogMsg("操作失败！"+errorThrown,"error")
+                }
+            });
+        },
+        addWorkLogs:function () {
+            vm.isDialogOpen=true;
+            dialogContent2({
+                title : "添加到工作日志",
+                width : '600px',
+                height : '200px',
+                content :  $("#workLogPanel"),
+                btn : [ '确定', '取消' ],
+                yes : function(index) {
+                    if(isNullOrEmpty(vm.startDate)) {
+                        dialogAlert('开始日期为空','info');
+                        return false;
+                    }
+                    if(isNullOrEmpty(vm.endDate)) {
+                        dialogAlert('结束日期为空','info');
+                        return false;
+                    }
+                    layer.close(index);
+                    /*$.ajax({
+                        url: '../../FileMan/addFolderInfo?_' + $.now(),
+                        data: JSON.stringify({
+                            "projId" : vm.projId,
+                            "folderName" : vm.folderName,
+                            "description": vm.description
+                        }),
+                        type: "post",
+                        dataType: "json",
+                        contentType: 'application/json',
+                        success: function (data) {
+                            if(data.success){
+                                layer.close(index);
+                                dialogMsg("添加文件夹成功!", 'info');
+                                getFolderGrid();
+                            }else{
+                                dialogAlert("添加文件夹失败!"+data.msg, 'error');
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            dialogLoading(false);
+                            dialogAlert(errorThrown, 'error');
+                        }
+                    });*/
+                },
+                end:function(){
+                    if(vm.addToRiskIssues)
+                        vm.addriskIssues();
+                }
+            });
+        },
+        addriskIssues:function(){
+            vm.isDialogOpen=true;
+            dialogContent2({
+                title : "添加到风险问题",
+                width : '600px',
+                height : '200px',
+                content :  $("#riskIssuesPanel"),
+                btn : [ '确定', '取消' ],
+                yes : function(index) {
+                    if(isNullOrEmpty(vm.resolveStaff)) {
+                        dialogAlert('请指定解决人！','info');
+                        return false;
+                    }
+                    if(isNullOrEmpty(vm.resolveDate)) {
+                        dialogAlert('请指定解决日期','info');
+                        return false;
+                    }
+                    layer.close(index);
+                    /*$.ajax({
+                        url: '../../FileMan/addFolderInfo?_' + $.now(),
+                        data: JSON.stringify({
+                            "projId" : vm.projId,
+                            "folderName" : vm.folderName,
+                            "description": vm.description
+                        }),
+                        type: "post",
+                        dataType: "json",
+                        contentType: 'application/json',
+                        success: function (data) {
+                            if(data.success){
+                                layer.close(index);
+                                dialogMsg("添加文件夹成功!", 'info');
+                                getFolderGrid();
+                            }else{
+                                dialogAlert("添加文件夹失败!"+data.msg, 'error');
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            dialogLoading(false);
+                            dialogAlert(errorThrown, 'error');
+                        }
+                    });*/
+                },
+                end:function(){
                 }
             });
         }

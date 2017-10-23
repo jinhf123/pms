@@ -1,3 +1,13 @@
+body{
+    font-family: "微软雅黑 Regular", "微软雅黑";
+    font-size: 14px;
+    font-weight: 400;
+    font-style: normal;
+    color: #333333;
+    overflow-y: hidden;
+    overflow-x: visible;
+}
+
 .column{
     padding-left:0px;
     padding-right: 0px;
@@ -5,6 +15,10 @@
 
 .fa-color{
     color: #1cae99
+}
+
+.font-red{
+    color: #d9534f;
 }
 
 .float-right{
@@ -145,7 +159,24 @@
 }
 .btn-link-group>a{color: #428ac9;}
 
-
+/*标签样式*/
+label img{padding:5px;}
+.label-gray{
+    color: #666666;
+    background-color: #e3e3e3;
+    border: 1px solid #e3e3e3;
+    border-radius: 10px;
+    padding: 2px 5px;
+    font-size: 12px;
+}
+.label-pink{
+    color: #ea9066;
+    background-color: #f4d1d0;
+    border: 1px solid #f4d1d0;
+    border-radius: 10px;
+    padding: 2px 5px;
+    font-size: 12px;
+}
 
 
 /*图形*/
@@ -213,10 +244,6 @@
 
 
 
-
-
-
-
 /*左侧面板样式*/
 .left-panel-title{
     display: inline-flex;
@@ -269,8 +296,14 @@
 .progress-line-stage{
 
 }
-
-
+.step-div{
+    height: 100%;
+    width: 100%;
+    display: inline-flex;
+}
+.stepActive{
+    background-color: #E3F3F9;
+}
 
 
 

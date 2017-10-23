@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>人员选择</title>
+    #parse("include/header.html")
+    <link rel="stylesheet" href="${rc.contextPath}/statics/plugins/bootstrap-fileinput/fileinput.css">
+    <style>
+        body {
+            font-family: 'Microsoft Yahei', Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            color: #333333;
+        }
+    </style>
+</head>
+<body>
+<div id="dpLTE" class="container-fluid">
+    <div id="upload">
+        <form enctype="multipart/form-data">
+            <div class="file-loading">
+                <input id="file-zh" name="file-zh[]" type="file" multiple>
+            </div>
+        </form>
+    </div>
+</div>
+#parse("include/footer.html")
+<script src="${rc.contextPath}/statics/plugins/bootstrap-fileinput/fileinput.js?_${date.systemTime}"></script>
+
+<script type="text/javascript">
+    $(function(){
+        vm.projId = getQueryString("projId");
+        vm.folderId = getQueryString("folderId");
+        vm.folderName = getQueryString("folderName");
+        initFileInput("file-zh", "${rc.contextPath}/upload?projId=" + vm.projId + "&folderId="+vm.folderId+"&folderName=" + vm.folderName );
+    });
+    function initFileInput(ctrlName, uploadUrl) {
+        var fileInputObj = $('#' + ctrlName);
+        fileInputObj.fileinput({
+            theme: 'fa',
+            language: 'zh', //设置语言
+            uploadUrl: encodeURI(encodeURI(uploadUrl)), // 'http://localhost:8080/upload', //上传的地址
+            overwriteInitial: false,
+            maxFileSize: 1000*1000*20,
+            maxFilesNum: 10,
+            showPreview: true,
+            uploadAsync: true,
+            previewFileIcon: "<i class='glyphicon glyphicon-file'></i>",
+            browseClass: "btn btn-info", //按钮样式
+            //allowedFileExtensions: ['jpg', 'png', 'gif', 'doc', 'docx', 'wps', 'pdf', '*'],
+            //allowedFileTypes: ['jpg', 'png','gif','pdf'],
+            //slugCallback: function (filename) {//文件名替换
+            //  return filename.replace('(', '_').replace(']', '_');
+            //},
+            validateInitialCount:true,
+            msgUploadEnd: '上传成功！',
+            msgUploadError: '上传失败！',
+            msgPlaceholder: "请选择要上传的文件...",
+            msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！"
+        });
+        fileInputObj.on('filepreupload', function(event, data, previewId, index) {
+            //alert("上传前!");
+        });
+        //异步
+        fileInputObj.on('fileerror', function(event, data, msg) { //异步上传失败处理
+            console.log(data.index);
+            console.log(data.reader);
+            console.log(data.files.length);
+            console.log(data.filenames.length);
+            console.log(msg);
+            var obj = data.response;
+            console.log(JSON.stringify(obj));
+        });
+        fileInputObj.on("fileuploaded", function (event, data, previewId, index) {//异步上传成功处理
+            console.log(data.index);
+            console.log(data.reader);
+            console.log(data.files.length);
+            console.log(data.filenames.length);
+            console.log(previewId);
+            console.log(index);
+            var obj = data.response;
+            console.log(JSON.stringify(obj));
+            dialogClose();//关闭弹窗
+        });
+    }
+
+    var vm = new Vue({
+        el:'#dpLTE',
+        data: {
+            projId:"",
+            folderId:"",
+            folderName:"",
+            description:""
+        },
+        methods : {
+            load:function(){}
+        },
+        computed: {
+        }
+    });
+</script>
+</body>
+</html>

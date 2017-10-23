@@ -250,7 +250,8 @@ dialogOpen = function(opt){
 		data : {},
 		btn: ['确定', '取消'],
 		success: function(){},
-		yes: function(){}
+		yes: function(){},
+        end: function(){}
 	};
 	var option = $.extend({}, defaults, opt), content = null;
 	if(option.scroll){
@@ -275,7 +276,10 @@ dialogOpen = function(opt){
 		},
 		yes: function(){
 			option.yes(option.id);
-		}
+		},
+        end: function () {
+            option.end(option.id);
+        }
     });
 };
 
@@ -305,6 +309,36 @@ dialogContent = function(opt){
 		btn: option.btn,
 		success: option.success,
 		yes: option.yes
+    });
+};
+
+dialogContent2 = function(opt){//当前层弹出窗口
+    var defaults = {
+        title : '系统窗口',
+        width: '',
+        height: '',
+        content : null,
+        data : {},
+        btn: ['确定', '取消'],
+        success: null,
+        yes: null
+    };
+    var option = $.extend({}, defaults, opt);
+    return layer.open({
+        type : 1,
+        title : option.title,
+        closeBtn : 1,
+        anim: -1,
+        isOutAnim: false,
+        shadeClose : false,
+        shade : 0.3,
+        area : [option.width, option.height],
+        shift : 5,
+        content : option.content,
+        btn: option.btn,
+        success: option.success,
+        yes: option.yes,
+        end: option.end
     });
 };
 

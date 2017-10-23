@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffcs.dp.projectManage.dao.RiskIssueMapper">
+
+
+    <!--获取风险问题列表-->
+    <select id="getRiskIssueList" resultType="RiskIssueEntity" parameterType="Map">
+        select R.RISK_ID,
+               R.TASK_ID,
+               R.PROJ_ID,
+               R.CONTENT,
+               R.REMARK,
+               R.RESOLVENT,
+               R.STATE,
+               R.PROPOSE_DATE,
+               R.RESOLVENT_DATE,
+               R.PROPOSE_STAFF,
+              (SELECT USERNAME FORM PMS_SYS_USER WHERE USER_ID=R.PROPOSE_STAFF) PROPOSE_STAFF_NAME,
+               R.ON_CHARGE_STAFF,
+              (SELECT USERNAME FORM PMS_SYS_USER WHERE USER_ID=R.ON_CHARGE_STAFF) ON_CHARGE_STAFF_NAME
+          from PMS_PROJ_RISK_ISSUE R
+         where R.PROPOSE_DATE
+       between to_date(#{startDate}, 'YYYY-MM-DD')
+           and to_date(#{endDate}, 'YYYY-MM-DD')
+        <if test=" state != null and state != '' ">
+           and R.RISK_ID = #{riskId}
+        </if>
+        <if test=" state != null and state != '' ">
+           and R.STATE = #{state}
+        </if>
+        <if test=" proposeStaff != null and proposeStaff != '' ">
+           and R.PROPOSE_STAFF = #{proposeStaff}
+        </if>
+        <if test=" onChargeStaff != null and onChargeStaff != '' ">
+           and R.ON_CHARGE_STAFF = #{onChargeStaff}
+        </if>
+    </select>
+
+
+    <!--修改风险问题信息-->
+    <update id="updateRiskIssue">
+        update PMS_PROJ_RISK_ISSUE
+        <set>
+            <if test="resolvent != null">RESOLVENT = #{resolvent}, </if>
+        </set>
+         where RISK_ID = #{riskId}
+    </update>
+
+    <!--新增风险问题信息-->
+    <insert id="insertRiskIssue">
+        <selectKey keyProperty="riskId" resultType="long" order="BEFORE">
+            SELECT PMS_PROJ_RISK_ISSUE_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+            insert into PMS_PROJ_RISK_ISSUE (RISK_ID, TASK_ID, PROJ_ID, CONTENT, REMARK, RESOLVENT, STATE, PROPOSE_DATE, RESOLVENT_DATE, PROPOSE_STAFF, ON_CHARGE_STAFF)
+            values (#{riskId}, #{taskId}, #{projId}, #{content}, #{remark}, null, '0', sysdate, to_date(#{resolventDate}, 'yyyy-mm-dd'), #{userId}, #{onChargeStaff})
+    </insert>
+
+    <!--删除风险问题信息-->
+    <delete id="deleteRiskIssue">
+        delete PMS_PROJ_RISK_ISSUE where RISK_ID = #{riskId}
+    </delete>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<select id="getWorkLogList" resultType="WorkLogEntity" parameterType="Map">
+		SELECT T.ID,
+			   T.WORK_DATE,
+			   T.START_TIME,
+			   T.END_TIME,
+			   T.IS_PROJECT_WORK,
+			   T.PROJ_ID,
+			   T.TASK_ID,
+			   T.WORK_DETAILS,
+		       T.CREATOR
+		  FROM PMS_PROJ_WORK_LOG T
+		WHERE T.WORK_DATE = #{workLogDate}
+		AND t.CREATOR = #{userId}
+	</select>
+
+
+
+
+	<insert id="insertWorkLog">
+		<selectKey keyProperty="workLogId" resultType="long" order="BEFORE">
+			SELECT PMS_PROJ_WORK_LOG_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		insert into PMS_PROJ_WORK_LOG (ID, WORK_DATE, START_TIME, END_TIME, IS_PROJECT_WORK, PROJ_ID, TASK_ID, WORK_DETAILS, CREATOR, MINUTES)
+		values (#{workLogId}, #{workLogDate}, #{startTime}, #{endTime}, #{isProjectWork}, #{project}, #{task}, #{workDetails}, #{userId}, #{minutes})
+	</insert>
+
+
+	<update id="updateWorkLog">
+		UPDATE PMS_PROJ_WORK_LOG
+		<set>
+			<if test="startTime != null">START_TIME = #{startTime}, </if>
+			<if test="endTime != null">END_TIME = #{endTime}, </if>
+			<if test="isProjectWork != null">IS_PROJECT_WORK = #{isProjectWork}, </if>
+			<if test="project != null">PROJ_ID = #{project}, </if>
+			<if test="task != null">TASK_ID = #{task}, </if>
+			<if test="workDetails != null">WORK_DETAILS = #{workDetails}, </if>
+			<if test="minutes != null">MINUTES = #{minutes} </if>
+		</set>
+		WHERE
+		id = #{workLogId}
+	</update>
+
+
+
+
+</mapper>

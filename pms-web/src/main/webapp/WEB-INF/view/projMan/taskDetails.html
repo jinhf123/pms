@@ -103,7 +103,7 @@
                                 <input type="checkBox" :checked="addToWeeklyReport" @click="function(){addToWeeklyReport=!addToWeeklyReport;}"><span>&nbsp;添加到本周周报</span>
                             </div>
                             <div class="col-md-2 column float-right">
-                                <button class="btn btn-sm btn-link" @click=""><span>上传附件</span></button>
+                                <button class="btn btn-sm btn-link" @click="upload"><span>上传附件</span></button>
                             </div>
                         </div>
                         <div class="col-md-12 column comment-textarea-div">
@@ -156,6 +156,39 @@
             </div>
         </div>
     </div>
+
+    <!--添加到工作日志-->
+    <div id="workLogPanel" class="container-fluid" style="display: none;">
+        请确认本项目任务具体的工作时长
+        <table class="form">
+            <tr>
+                <td class="formTitle">工作时间:</td>
+                <td class="formValue"><input class="form-control" v-model="startDate" placeholder="请选择开始时间！" /></td>
+                <td style="text-align: center;width: 50px;"> -- </td>
+                <td class="formValue"><input class="form-control" v-model="endDate" placeholder="请选择结束时间！" /></td>
+            </tr>
+            <tr>
+                <td colspan="3">&nbsp;</td>
+                <td class="float-right">
+                    <button class="btn btn-sm btn-link" onclick="alert('添加时段')">添加时段</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!--添加到风险问题-->
+    <div id="riskIssuesPanel" class="container-fluid" style="display: none;">
+        请确认本项风险计划解决人及解决时间
+        <table class="form">
+            <tr>
+                <td class="formTitle">解决人:</td>
+                <td class="formValue"><input class="form-control" v-model="resolveStaff" placeholder="请选择解决人！" /></td>
+                <td class="formTitle">解决时间:</td>
+                <td class="formValue"><input class="form-control" v-model="resolveDate" placeholder="选择解决时间！" /></td>
+            </tr>
+        </table>
+    </div>
+
 </div>
 #parse("include/footer.html")
 <script src="${rc.contextPath}/statics/js/projectManage/taskDetails.js?_${date.systemTime}"></script>
