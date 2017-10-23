@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffcs.dp.projectManage.dao.ProjTemplateMapper">
+    <resultMap type="ProjTemplateEntity" id="ProjTemplateResultMap">
+        <id property="tempId" column="temp_id"/>
+        <result property="projId" column="proj_id"/>
+        <result property="tempName" column="temp_name"/>
+        <result property="description" column="description"/>
+        <result property="content" column="content"/>
+        <result property="isDefault" column="is_default"/>
+        <collection property="projTemplateStepEntities" ofType="ProjTemplateStepEntity">
+            <id property="tempStepId" column="temp_step_id"/>
+            <result property="stepName" column="step_name"/>
+            <result property="stepSort" column="step_sort"/>
+            <result property="defaultMoveDate" column="default_move_date"/>
+            <result property="finishNoticeDate" column="finish_notice_date"/>
+            <result property="noticeStaff" column="notice_staff"/>
+            <result property="noticeStaffId" column="notice_staff_id"/>
+            <result property="taskChangeStaff" column="task_change_staff"/>
+            <result property="taskChangeStaffId" column="task_change_staffId"/>
+            <result property="finishScheduleNoticeDate" column="finish_schedule_notice_date"/>
+            <result property="finishScheduleStaff" column="finish_schedule_staff"/>
+            <result property="isAttach" column="is_attach"/>
+            <result property="attachWord" column="attach_word"/>
+            <result property="attachExcel" column="attach_excel"/>
+            <result property="attachPdf" column="attach_pdf"/>
+            <result property="attachContent" column="attach_content"/>
+        </collection>
+    </resultMap>
+
+    <select id="listTemplate" resultMap="ProjTemplateResultMap">
+        SELECT *
+        FROM
+            pms_proj_template,
+            PMS_PROJ_TEMPLET_STEP
+        WHERE pms_proj_template.state = 1 AND pms_proj_template.temp_id = PMS_PROJ_TEMPLET_STEP.temp_id (+) ORDER BY PMS_PROJ_TEMPLATE.TEMP_ID ,to_number(PMS_PROJ_TEMPLET_STEP.step_sort)
+    </select>
+
+
+    <insert id="saveTemplate" parameterType="ProjTemplateEntity" >
+        <selectKey resultType="Long" keyProperty="tempId" order="BEFORE">
+            SELECT PMS_PROJ_TEMPLATE_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO PMS_PROJ_TEMPLATE (TEMP_ID, TEMP_NAME, DESCRIPTION, CONTENT, IS_DEFAULT, STATE) VALUES (#{tempId}, #{tempName}, #{description}, #{content}, #{isDefault}, 1)
+    </insert>
+
+    <insert id="saveTemplateStep" parameterType="ProjTemplateStepEntity">
+        INSERT INTO PMS_PROJ_TEMPLET_STEP (TEMP_STEP_ID, TEMP_ID, STEP_NAME, STEP_SORT, DEFAULT_MOVE_DATE, FINISH_NOTICE_DATE, NOTICE_STAFF, NOTICE_STAFF_ID, TASK_CHANGE_STAFF, TASK_CHANGE_STAFF_ID, FINISH_SCHEDULE_NOTICE_DATE, FINISH_SCHEDULE_STAFF, IS_ATTACH, ATTACH_WORD, ATTACH_EXCEL, ATTACH_PDF, ATTACH_CONTENT, STATE)
+        VALUES (PMS_PROJ_TEMPLET_STEP_SEQ.NEXTVAL, #{tempId}, #{stepName}, #{stepSort}, #{defaultMoveDate}, #{finishNoticeDate},
+                               #{noticeStaff}, #{noticeStaffId}, #{taskChangeStaff}, #{taskChangeStaffId},
+                               #{finishScheduleNoticeDate}, #{finishScheduleStaff}, #{isAttach}, #{attachWord},
+                #{attachExcel}, #{attachPdf}, #{attachContent}, 1)
+    </insert>
+    
+    <update id="updateDefault" >
+        update PMS_PROJ_TEMPLATE set IS_DEFAULT = '0'  where IS_DEFAULT = '1'
+    </update>
+
+    <update id="updateSetDefault" parameterType="Long" >
+        update PMS_PROJ_TEMPLATE set IS_DEFAULT = '1'  where TEMP_ID = #{tempId}
+    </update>
+
+</mapper>
