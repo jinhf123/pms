@@ -6,7 +6,6 @@ import com.ffcs.dp.common.controller.AbstractController;
 import com.ffcs.dp.projectManage.entity.WorkLogEntity;
 import com.ffcs.dp.projectManage.service.WorkLogService;
 import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,6 +34,8 @@ public class WorkLogController extends AbstractController {
     @Resource
     private WorkLogService workLogManService;
 
+    @Resource
+    private HttpServletRequest request;
 
     //获取工作日志列表
     @RequestMapping("/getWorkLogList")
@@ -74,9 +75,10 @@ public class WorkLogController extends AbstractController {
 
     //导出excel
     @RequestMapping("/exportExcel")
+    @ResponseBody
     public void exportExcel(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String startDate = request.getParameter("startDate").toString();
-        String endDate = request.getParameter("endDate").toString();
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
 
         //建立Excel常用对象
         HSSFWorkbook wb = new HSSFWorkbook();//创建Excel工作簿对象
@@ -138,13 +140,13 @@ public class WorkLogController extends AbstractController {
         for(WorkLogEntity we : workLogs){
             HSSFRow weRow = sheet.createRow((short)rowNum); //创建Excel工作表的行
             //设置Excel工作表的值
-            weRow.createCell((short)0).setCellValue(we.getWorkDate().toString()); //日期
-            weRow.createCell((short)1).setCellValue(we.getStartTime().toString()); //开始时间
-            weRow.createCell((short)2).setCellValue(we.getEndTime().toString()); //结束时间
+            weRow.createCell((short)0).setCellValue(we.getWorkDate()); //日期
+            weRow.createCell((short)1).setCellValue(we.getStartTime()); //开始时间
+            weRow.createCell((short)2).setCellValue(we.getEndTime()); //结束时间
             weRow.createCell((short)3).setCellValue("1".equals(we.getIsProjectWork())?"是":"否"); //是否项目工作
-            weRow.createCell((short)4).setCellValue(we.getProjName()!=null?we.getProjName().toString():""); //项目
-            weRow.createCell((short)5).setCellValue(we.getTaskName()!=null?we.getTaskName().toString():""); //任务
-            weRow.createCell((short)6).setCellValue(we.getWorkDetails()!=null?we.getWorkDetails().toString():""); //工作详情
+            weRow.createCell((short)4).setCellValue(we.getProjName()!=null? we.getProjName() :""); //项目
+            weRow.createCell((short)5).setCellValue(we.getTaskName()!=null?we.getTaskName():""); //任务
+            weRow.createCell((short)6).setCellValue(we.getWorkDetails()!=null?we.getWorkDetails():""); //工作详情
             //设置Excel工作表的样式
             weRow.getCell(0).setCellStyle(cellStyle);
             weRow.getCell(1).setCellStyle(cellStyle);

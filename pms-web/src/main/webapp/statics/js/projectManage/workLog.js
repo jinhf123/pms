@@ -260,7 +260,7 @@ var vm = new Vue({
             getGrid();
         },
         exportExcel:function(){
-            window.open("/projMan/workLog/exportExcel?startDate="+vm.xlsStartDate+"&endDate="+vm.xlsEndDate);
+            window.open("../../projMan/workLog/exportExcel?startDate="+vm.xlsStartDate+"&endDate="+vm.xlsEndDate);
         }
     }
     ,computed: {
