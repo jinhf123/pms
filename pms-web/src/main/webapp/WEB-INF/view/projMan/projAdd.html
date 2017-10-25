@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>项目信息</title>
+    #parse("include/header.html")
+    <link rel="stylesheet" href="${rc.contextPath}/statics/css/projectManage/projAdd.css">
+</head>
+<body>
+
+
+<div id="projAdd" class="container-fluid" v-cloak>
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th class="tableTitle">
+                        项目项目信息
+                    </th>
+                    <th colspan="5">
+                    </th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="col-md-12 column">
+            <table class="table table-bordered ">
+                <tbody>
+                <tr>
+                    <td class="fieldLabel request">
+                        <span>*</span>项目名称：
+                    </td>
+                    <td colspan="5">
+                        <input class="form-control">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fieldLabel request">
+                        <span>*</span>项目类型：
+                    </td>
+                    <td>
+                        <select class="form-control">
+                            <option :value="index" v-for="(item ,index) in projType">{{item}}</option>
+                        </select>
+                    </td>
+                    <td class="fieldLabel">
+                        建设方式：
+                    </td>
+                    <td>
+                        <select class="form-control">
+                            <option :value="index" v-for="(item ,index) in consMode">{{item}}</option>
+                        </select>
+                    </td>
+                    <td class="fieldLabel">
+                        项目等级：
+                    </td>
+                    <td>
+                        <select class="form-control">
+                            <option :value="index" v-for="(item ,index) in projLevel">{{item}}</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fieldLabel request">
+                        <span>*</span>归属项目群：
+                    </td>
+                    <td>
+                        <select class="form-control">
+                            <option :value="index" v-for="(item ,index) in beloProjGroup">{{item}}</option>
+                        </select>
+                    </td>
+                    <td class="fieldLabel request">
+                        <span>*</span>是否年内完成：
+                    </td>
+                    <td>
+                        <label class="radio-inline">
+                            <input type="radio" name="optradio" value="1" checked>是
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="optradio" value="0">否
+                        </label>
+                    </td>
+                    <td class="fieldLabel">
+                        承接方式：
+                    </td>
+                    <td>
+                        <select class="form-control">
+                            <option :value="index" v-for="(item ,index) in undertakeMode">{{item}}</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fieldLabel request">
+                        <span>*</span>项目开始时间：
+                    </td>
+                    <td>
+                        <div class="col-md-12 column display-flex">
+                            <input id="startDate" placeholder="项目开始时间" class="form-control" readonly v-model="startDate">
+                            <i class="fa fa-calendar right"></i>
+                        </div>
+                    </td>
+                    <td class="fieldLabel request">
+                        <span>*</span>项目结束时间：
+                    </td>
+                    <td>
+                        <div class="col-md-12 column display-flex">
+                            <input id="endDate" placeholder="项目结束时间" class="form-control" readonly v-model="endDate">
+                            <i class="fa fa-calendar right"></i>
+                        </div>
+                    </td>
+                    <td class="fieldLabel">
+                        项目模版：
+                    </td>
+                    <td>
+                        <select class="form-control" @change="changeTemplate" v-model="tempIndex">
+                            <template v-for="(item ,index) in template">
+                                <option :value="index">{{item.tempName}}
+                                </option>
+                            </template>
+                        </select>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row clearfix" v-if="!isLoading">
+        <div class="col-md-12 column">
+            <div class="horizontal-divider"></div>
+            <div class="step display-flex">
+                <div v-for="(item,index) in template[tempIndex].projTemplateStepEntities" class="display-flex" >
+                    <div class="step-div">
+                        <div class="step-title-div">
+                            {{item.stepName}}
+                        </div>
+                        <div class="step-date-div col-md-12 column display-flex">
+                            <input type="text" placeholder="日期" class="form-control" v-datetimepicker="index" v-model="stepDate[index].defaultDate">
+                            <i class="fa fa-calendar right"></i>
+                        </div>
+                    </div>
+                    <div class="step-horizontal-divider">&nbsp;</div>
+                    <div class="step-vertical-divider">&nbsp;</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th class="tableTitle">
+                        项目干系人
+                    </th>
+                    <th colspan="5">
+                    </th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="col-md-12 column">
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <td class="fieldLabel request">
+                        <span>*</span>项目群经理：
+                    </td>
+                    <td>
+
+                        <i class="fa fa-user right"></i>
+                    </td>
+                    <td class="fieldLabel">
+                        大项目经理：
+                    </td>
+                    <td>
+
+                        <i class="fa fa-user right"></i>
+                    </td>
+                    <td class="fieldLabel">
+                        项目经理：
+                    </td>
+                    <td>
+
+                        <i class="fa fa-user right"></i>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fieldLabel request">
+                        <span>*</span>需求经理：
+                    </td>
+                    <td>
+
+                        <i class="fa fa-user right"></i>
+                    </td>
+                    <td class="fieldLabel">
+                        技术经理：
+                    </td>
+                    <td colspan="3">
+
+                        <i class="fa fa-user right"></i>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fieldLabel request">
+                        <span>*</span>项目成员：
+                    </td>
+                    <td colspan="5">
+
+                        <i class="fa fa-user right"></i>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th colspan="1" class="tableTitle">
+                        项目规模
+                    </th>
+                    <th colspan="5"></th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="col-md-12 column">
+            <table class="table table-bordered">
+                <tbody>
+                <tr>
+                    <td class="fieldLabel request">
+                        <span>*</span>人力资源总需求：
+                    </td>
+                    <td>
+                        人月
+                    </td>
+                    <td class="fieldLabel request">
+                        <span>*</span>资源成本估算：
+                    </td>
+                    <td>
+                        万元
+                    </td>
+                    <td class="fieldLabel">
+                        外包工作量估算：
+                    </td>
+                    <td>
+                        人年
+                    </td>
+                </tr>
+                <tr>
+                    <td class="fieldLabel">
+                        外包资源成本评估：
+                    </td>
+                    <td colspan="5">
+                        万元
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="${rc.contextPath}/statics/libs/jquery.min.js"></script>
+<script src="${rc.contextPath}/statics/plugins/layer/layer.js"></script>
+<script src="${rc.contextPath}/statics/libs/vue.min.js"></script>
+<script src="${rc.contextPath}/statics/js/common.js"></script>
+<script src="/statics/libs/vue-resource.js"></script>
+<script src="/statics/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<!--#parse("include/footer.html")-->
+<script src="${rc.contextPath}/statics/js/projectManage/projAdd.js"></script>
+</body>
+</html>

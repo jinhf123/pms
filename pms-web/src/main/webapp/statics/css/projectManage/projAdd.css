@@ -1,0 +1,161 @@
+body{
+    font-family: "微软雅黑 Regular", "微软雅黑";
+    font-size: 14px;
+    font-weight: 400;
+    font-style: normal;
+    color: #333333;
+    overflow-y: hidden;
+    overflow-x: visible;
+}
+
+.subTitle{
+    font-size: 13px;
+    font-style: normal;
+    color: #999999;
+}
+
+.column{
+    padding-left:0px;
+    padding-right: 0px;
+}
+
+.fa-color{
+    color: #1cae99
+}
+
+.float-right{
+    float: right;
+    text-align: right;
+}
+
+.display-flex{
+    display: inline-flex;
+}
+
+.color-blue{
+    background-color: #5BC0DE;
+}
+
+
+.table > thead > tr > th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #5BC0DE;
+}
+.tableTitle{
+    width: 140px;
+    text-align: center;
+    color: #ffffff;
+    background-color: #5BC0DE;
+}
+.fieldLabel{
+    background-color: #F2F2F2;
+    font-size: 13px;
+    text-align: right;
+    width: 140px;
+}
+.request>span{color: #ff0000}
+
+
+.horizontal-divider {
+    position: relative;
+    top: 18px;
+    height: 2px;
+    width: calc(100% - 30px);
+    margin: 0px 15px;
+    overflow: hidden;
+    background-color: #5BC0DE;
+    z-index: -1;
+}
+
+.step{
+    padding-right: 30px;
+}
+
+.step-div {
+    margin: 0px 20px 10px 20px;
+    height: 80px;
+}
+.step-title-div {
+    margin-left: 30px;
+    margin-bottom: 20px;
+    width: 85px;
+    height: 32px;
+    background: inherit;
+    background-color: rgba(255, 255, 255, 1);
+    box-sizing: border-box;
+    border-width: 2px;
+    border-style: solid;
+    border-color: rgba(91, 192, 222, 1);
+    border-radius: 15px;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    font-family: "微软雅黑 Regular", "微软雅黑";
+    font-weight: 400;
+    font-style: normal;
+    font-size: 12px;
+    text-align: center;
+    padding: 6px 0px;
+}
+.step-date-div{
+    width: 120px;
+    height: 22px;
+    background: inherit;
+    background-color: rgba(255, 255, 255, 1);
+    box-sizing: border-box;
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgba(204, 204, 204, 1);
+    border-radius: 0px;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    font-family: "微软雅黑 Regular", "微软雅黑";
+    font-weight: 400;
+    font-style: normal;
+    text-align: center;
+}
+
+
+.step-horizontal-divider{
+    position: relative;
+    top: 64px;
+    height: 1px;
+    /*width: 10px;*/
+    width: 20px;
+    margin-left: -20px;
+    overflow: hidden;
+    background-color: #e5e5e5;
+}
+.step-vertical-divider{
+    width: 1px;
+    margin: 17px 0px 25px 1px;
+    overflow: hidden;
+    background-color: #e5e5e5;
+}
+
+
+
+.form-control{
+    border: none;
+    height: 19px;
+}
+.radio-inline{
+    line-height:18px;
+}
+.table>tbody>tr>td{
+    height: 37px;
+}
+
+.table>tbody>tr>td:nth-child(2n-1){
+    width: 11%;
+}
+
+.table>tbody>tr>td:nth-child(2n){
+    width: 22%;
+}
+
+.right{
+    float: right;
+}
+
