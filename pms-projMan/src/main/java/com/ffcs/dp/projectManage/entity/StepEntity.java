@@ -6,6 +6,8 @@ public class StepEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private int rownum;//行号
+
     private Long stepId;//步骤编号
     private Long projId;//项目编号
     private Long stepMod;//步骤模版
@@ -30,6 +32,14 @@ public class StepEntity implements Serializable {
         super();
     }
 
+
+    public int getRownum() {
+        return rownum;
+    }
+
+    public void setRownum(int rownum) {
+        this.rownum = rownum;
+    }
 
     public Long getStepId() {
         return stepId;

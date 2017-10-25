@@ -56,6 +56,23 @@ body{
 .request>span{color: #ff0000}
 
 
+
+.stepPageBtn{
+    position: absolute;
+    top: -15px;
+    width: 30px;
+    height: 65px;
+    padding-top: 20px;
+    font-size: 20px;
+    color: #999999;
+    text-align: center;
+    /*line-height: 3.4;*/
+    background-color: #ffffff;
+}
+.page-left{left: 5px;}
+.page-right{right: 5px;}
+.stepPageBtn:hover{border: 1px solid #dddddd;background-color: #f1f1f1;}
+
 .horizontal-divider {
     position: relative;
     top: 18px;

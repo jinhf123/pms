@@ -101,23 +101,11 @@
     </div>
     <div class="row clearfix">
         <div class="col-md-12 column">
-
+            <div v-show="(steps.length >6 && start>1)" class="stepPageBtn page-left" @click="stepToLeft"><span class="fa fa-chevron-left" ></span></div>
             <div class="horizontal-divider"></div>
-            <!--
-            <div class="display-flex">
-                <div class="step-div">
-                    <div class="step-title-div">
-                        列入计划
-                    </div>
-                    <div class="step-date-div">
-                        2017-08-16
-                    </div>
-                </div>
-                <div class = "step-horizontal-divider">&nbsp;</div>
-                <div class = "step-vertical-divider">&nbsp;</div>
-            </div>-->
+            <div v-show="(steps.length>6 && end < steps.length)" class="stepPageBtn page-right" @click="stepToRight"><span class="fa fa-chevron-right"></span></div>
             <div class="step display-flex">
-                <div v-for="(item,index) in steps" class="display-flex" >
+                <div v-for="(item,index) in steps" class="display-flex" v-show="isShowStep(item.rownum)" >
                     <div class="step-div">
                         <div class="step-title-div">
                             {{item.stepName}}
