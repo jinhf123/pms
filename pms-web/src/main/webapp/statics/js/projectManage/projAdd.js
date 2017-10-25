@@ -8,9 +8,14 @@ Date.prototype.yyyymmdd = function () {
     ].join('-');
 };
 
+Vue.component('modal', {
+    template: '#modal-template'
+})
+
 var vm = new Vue({
     el: '#projAdd',
     data: {
+        showModal: true,
         isLoading: true,
         startDate: null,
         endDate: null,
@@ -23,7 +28,19 @@ var vm = new Vue({
         undertakeMode: ['联合建设', '独立建设'],
         template: [],
         tempIndex: null,
-        stepDate: []
+        stepDate: [],
+        projGroupManager: null,
+        projGroupManagerId: null,
+        bigProjManager: null,
+        bigProjManagerId: null,
+        projManager: null,
+        projManagerId: null,
+        demaManager: null,
+        demaManagerId: null,
+        techManager: null,
+        techManagerId: null,
+        projMembers: null,
+        projMembersId: null
     },
     methods: {
         dateDefind: function () {
@@ -87,7 +104,7 @@ var vm = new Vue({
         setStepDate: function () {
             var startDate;
             var endDate;
-            if (this.startDate === null) {
+            if (this.startDate === null || isNaN(this.startDate) || this.startDate === "") {
                 startDate = null;
             } else {
                 startDate = new Date(Date.parse(this.startDate.replace(/-/g, "/")));
@@ -149,6 +166,36 @@ var vm = new Vue({
                 }
 
             }
+        },
+        selectStaff: function (obj) {//添加任务选择人员
+            var self = this;
+            dialogOpen({
+                id: 'staffSelect',
+                title: '人员选择',
+                url: 'base/user/staff.html?singleSelect=false',
+                scroll: true,
+                width: "600px",
+                height: "600px",
+                yes: function (iframeId) {
+                    var users = top.frames[iframeId].vm.getSelections;
+                    var ids = "";
+                    var names = "";
+                    for (var i = 0; i < users.length; i++) {
+                        ids = ids + users[i].userId + ",";
+                        names = names + users[i].username + ",";
+                    }
+                    if (ids !== "") {
+                        ids = ids.substring(0, ids.length - 1);
+                    }
+                    if (names !== "") {
+                        names = names.substring(0, names.length - 1);
+                    }
+                    self[obj] = names;
+                    self[obj + "Id"] = ids;
+                    var index = top.layer.getFrameIndex(iframeId); //先得到当前iframe层的索引
+                    top.layer.close(index); //再执行关闭
+                }
+            })
         }
     },
     mounted: function () {
@@ -205,8 +252,6 @@ Vue.directive('datetimepicker', {
             autoclose: 1
         });
         $(el).datetimepicker().on('hide', function (ev) {
-            //ev.date.yyyymmdd()
-            //self.vm.$set(ev.date.yyyymmdd());
             vm.stepDate[binding.value].defaultDate = ev.date.yyyymmdd();
         });
 
