@@ -3,6 +3,7 @@ package com.ffcs.dp.projectManage.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ffcs.dp.common.controller.AbstractController;
+import com.ffcs.dp.common.utils.ExcelUtil;
 import com.ffcs.dp.projectManage.entity.WorkLogEntity;
 import com.ffcs.dp.projectManage.service.WorkLogService;
 import org.apache.poi.hssf.usermodel.*;
@@ -11,15 +12,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartRequest;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * 工作日志
@@ -120,13 +124,13 @@ public class WorkLogController extends AbstractController {
         }
 
         //获取工作日志数据
-        Map<String, Object> pp =new HashMap<>();
-        pp.put("userId", getUserId());
-        pp.put("workLogDate", "");
-        pp.put("startDate", startDate);
-        pp.put("endDate", endDate);
-        System.out.print("查询参数：startDate="+pp.get("startDate").toString()+"\nendDate="+endDate);
-        List<WorkLogEntity> workLogs = workLogManService.getWorkLogList(pp);
+        Map<String, Object> params =new HashMap<>();
+        params.put("userId", getUserId());
+        params.put("workLogDate", "");
+        params.put("startDate", startDate);
+        params.put("endDate", endDate);
+        System.out.print("查询参数：startDate="+params.get("startDate").toString()+"\nendDate="+params.get("endDate").toString());
+        List<WorkLogEntity> workLogs = workLogManService.getExportList(params);
 
         //创建表格
         HSSFCellStyle cellStyle = wb.createCellStyle();//创建单元格样式
@@ -172,6 +176,117 @@ public class WorkLogController extends AbstractController {
     }
 
 
+
+
+
+
+    //导入excel
+    @RequestMapping("/importExcel")
+    @ResponseBody
+    private void importExcel(HttpServletRequest request, HttpServletResponse response) throws IOException {
+//        @RequestParam(value = "excelFile", required = false) MultipartFile file,
+        JSONObject jsonObject = new JSONObject();
+        Boolean result = true;
+        String message = "";
+
+        try {
+            MultipartRequest multipartRequest=(MultipartRequest) request;
+            MultipartFile excelFile=multipartRequest.getFile("excelFile");
+            if(excelFile!=null){
+                List<List<String>> datas = ExcelUtil.readXls(excelFile.getInputStream());
+                //TODO: 读到的数据都在datas里面，根据实际业务逻辑做相应处理<br> // .............
+                if(datas!=null && datas.size()>0){
+                    List<Map<String, Object>> list = new ArrayList<>();
+
+                    for(int i=0; i<datas.size();i++){
+                        List<String> data = datas.get(i);
+                        //日期 开始时间	结束时间	是否项目工作	项目	任务	工作详情
+                        Map<String, Object> workLog = new HashMap<>();
+                        workLog.put("workLogDate",data.get(0));
+                        workLog.put("startTime",data.get(1));
+                        workLog.put("endTime",data.get(2));
+                        workLog.put("minutes",getMinutes(data.get(1),data.get(2)));//计算时长
+                        String isProjectWork = "是".equals(data.get(3))?"1":"0";//是：1  否：0
+                        workLog.put("isProjectWork",isProjectWork);
+                        if(isProjectWork == "1"){
+                            String projName = data.get(4);
+                            String taskName = data.get(5);
+                            Map<String, Object> params = new HashMap();
+                            params.put("projName",projName!=null?projName.trim():"");
+                            params.put("taskName",taskName!=null?taskName.trim():"");
+                            //查询项目Id和任务Id
+                            WorkLogEntity tmp = workLogManService.getProjTaskInfo(params);
+
+                            if(tmp.getProjId()==null){
+                                if(taskName!=null){
+                                    throw new Exception("第"+(i+1)+"行中,项目:"+projName+"不存在！");
+                                }else {
+                                    throw new Exception("第"+(i+1)+"行中,日志为项目工作时项目为必填项！");
+                                }
+                            }
+                            if(tmp.getTaskId()==null){
+                                if(taskName!=null){
+                                    throw new Exception("第"+(i+1)+"行中,任务:"+taskName+"不存在！");
+                                }else{
+                                    throw new Exception("第"+(i+1)+"行中,日志为项目工作时任务为必填项！");
+                                }
+                            }
+                            workLog.put("project",tmp.getProjId());
+                            workLog.put("task",tmp.getTaskId());
+                        }
+                        workLog.put("projectName",data.get(4));
+                        workLog.put("taskName",data.get(5));
+                        workLog.put("workDetails",data.get(6));//工作详情
+                        workLog.put("userId",getUserId());//创建者
+                        list.add(workLog);
+                    }
+
+                    for(Map<String, Object> map:list){
+                        workLogManService.saveWorkLog(map);
+                    }
+
+                }else{
+                    result = false;
+                    message = "导入数据为空！";
+                }
+            }else{
+                result = false;
+                message = "Excel不存在！";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = false;
+            message = e.getMessage();
+        }
+        jsonObject.put("success", result);
+        jsonObject.put("message", message);
+
+        response.setHeader("Content-type", "text/html;charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+
+        response.getWriter().write(jsonObject.toString());
+
+    }
+
+
+    //计算时间差（分钟）
+    public static int getMinutes(String startTime, String endTime){
+        int minutes = 0;
+        String pattern = "(?:(?:[0-2][0-3])|(?:[0-1][0-9])):[0-5][0-9]";
+        if(Pattern.matches(pattern, startTime)&&Pattern.matches(pattern, endTime)){
+            Date now = new Date();
+            Calendar cal1 = Calendar.getInstance();
+            cal1.setTime(now);
+            cal1.set(Calendar.HOUR_OF_DAY, Integer.parseInt(startTime.split(":")[0]));
+            cal1.set(Calendar.MINUTE, Integer.parseInt(startTime.split(":")[1]));
+            Calendar cal2 = Calendar.getInstance();
+            cal2.setTime(now);
+            cal2.set(Calendar.HOUR_OF_DAY, Integer.parseInt(endTime.split(":")[0]));
+            cal2.set(Calendar.MINUTE, Integer.parseInt(endTime.split(":")[1]));
+            minutes = (int)((cal2.getTimeInMillis() -  cal1.getTimeInMillis())/60/1000);
+        }
+        return minutes;
+    }
 
 
 

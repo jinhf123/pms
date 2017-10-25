@@ -22,7 +22,13 @@
 		<if test=" workLogDate != '' ">
 		   AND T.WORK_DATE = #{workLogDate}
 		</if>
-		<if test=" startDat != '' and endDate != '' ">
+		<if test=" startDate != ''">
+			OR TO_DATE( T.WORK_DATE, 'YYYY-MM-DD') = TO_DATE( #{startDate}, 'YYYY-MM-DD')
+		</if>
+		<if test=" endDate != ''">
+			OR TO_DATE( T.WORK_DATE, 'YYYY-MM-DD') = TO_DATE( #{endDate}, 'YYYY-MM-DD')
+		</if>
+		<if test=" startDate != '' and endDate != '' ">
            AND TO_DATE( T.WORK_DATE, 'YYYY-MM-DD') BETWEEN
                TO_DATE( #{startDate}, 'YYYY-MM-DD') AND
                TO_DATE( #{endDate}  , 'YYYY-MM-DD')+1-1/24/60/60
@@ -85,6 +91,49 @@
 	</update>
 
 
+
+
+
+
+	<select id="getExportList" resultType="WorkLogEntity" parameterType="Map">
+		SELECT T.ID,
+			   T.WORK_DATE,
+			   T.START_TIME,
+			   T.END_TIME,
+			   T.IS_PROJECT_WORK,
+			   T.PROJ_ID,
+			   P.PROJ_NAME,
+			   T.TASK_ID,
+			   K.TASK_TITLE TASK_NAME,
+			   T.WORK_DETAILS,
+			   T.CREATOR
+		  FROM PMS_PROJ_WORK_LOG T, PMS_PROJECT_INFO P, PMS_PROJ_TASK K
+		 WHERE T.PROJ_ID = P.PROJ_ID
+		   AND T.TASK_ID = K.TASK_ID
+		   AND T.CREATOR = #{userId}
+		<if test=" startDate != '' and endDate != '' ">
+		   AND TO_DATE( T.WORK_DATE, 'YYYY-MM-DD') BETWEEN
+			   TO_DATE( #{startDate}, 'YYYY-MM-DD') AND
+			   TO_DATE( #{endDate}  , 'YYYY-MM-DD')+1-1/24/60/60
+		</if>
+	</select>
+
+
+
+
+
+	<!--根据项目名称、任务名称查找对应的项目Id,任务Id-->
+	<select id="getProjTaskInfo" resultType="WorkLogEntity" parameterType="Map">
+		with PP as
+		 (select P.PROJ_ID, P.PROJ_NAME
+			from PMS_PROJECT_INFO P
+		   where P.PROJ_NAME = #{projName})
+		select PP.PROJ_ID, PP.PROJ_NAME, K.TASK_ID, K.TASK_TITLE TASK_NAME
+		  from PP
+		  left join PMS_PROJ_TASK K
+			on PP.PROJ_ID = K.PROJ_ID
+		   and K.TASK_TITLE = #{taskName}
+	</select>
 
 
 </mapper>

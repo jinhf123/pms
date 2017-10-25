@@ -41,5 +41,15 @@ public class WorkLogServiceImpl implements WorkLogService {
         workLogManager.saveWorkLog(params);
     }
 
+    @Override
+    public List<WorkLogEntity> getExportList(Map<String, Object> params) {
+        return workLogManager.getExportList(params);
+    }
+
+    @Override
+    public WorkLogEntity getProjTaskInfo(Map<String, Object> params) {
+        return workLogManager.getProjTaskInfo(params);
+    }
+
 
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>人员选择</title>
+    <title>文件上传页面</title>
     #parse("include/header.html")
     <link rel="stylesheet" href="${rc.contextPath}/statics/plugins/bootstrap-fileinput/fileinput.css">
     <style>
@@ -45,6 +45,15 @@
             uploadAsync: true,
             previewFileIcon: "<i class='glyphicon glyphicon-file'></i>",
             browseClass: "btn btn-info", //按钮样式
+            previewFileIconSettings: {
+                'docx': '<i ass="fa fa-file-word-o text-primary"></i>',
+                'xlsx': '<i class="fa fa-file-excel-o text-success"></i>',
+                'xls': '<i class="fa fa-file-excel-o text-success"></i>',
+                'pptx': '<i class="fa fa-file-powerpoint-o text-danger"></i>',
+                'jpg': '<i class="fa fa-file-photo-o text-warning"></i>',
+                'pdf': '<i class="fa fa-file-archive-o text-muted"></i>',
+                'zip': '<i class="fa fa-file-archive-o text-muted"></i>'
+            },
             //allowedFileExtensions: ['jpg', 'png', 'gif', 'doc', 'docx', 'wps', 'pdf', '*'],
             //allowedFileTypes: ['jpg', 'png','gif','pdf'],
             //slugCallback: function (filename) {//文件名替换

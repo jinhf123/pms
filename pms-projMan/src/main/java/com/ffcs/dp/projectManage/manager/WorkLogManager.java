@@ -13,6 +13,7 @@ public interface WorkLogManager {
 
     void saveWorkLog(Map<String, Object> params);
 
+    List<WorkLogEntity> getExportList(Map<String, Object> params);
 
-
+    WorkLogEntity getProjTaskInfo(Map<String, Object> params);
 }

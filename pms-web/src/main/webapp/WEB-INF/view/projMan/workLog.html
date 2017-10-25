@@ -3,7 +3,8 @@
 <head>
 <title>工作日志</title>
 #parse("include/header.html")
-<link rel="stylesheet" href="${rc.contextPath}/statics/css/projectManage/workLog.css">
+    <link rel="stylesheet" href="${rc.contextPath}/statics/plugins/bootstrap-fileinput/fileinput.css">
+    <link rel="stylesheet" href="${rc.contextPath}/statics/css/projectManage/workLog.css">
 
 </head>
 <body>
@@ -55,7 +56,7 @@
                     <div class="col-md-6 column center-btn-group-top">
                         <button type="button" class="btn btn-sm btn-link" @click="edit">{{isEdit?'退出编辑':'编辑'}}</button>
                         <button type="button" class="btn btn-sm btn-link" @click="exportExcel" >导出xls</button>
-                        <button type="button" class="btn btn-sm btn-link">导入xls</button>
+                        <button type="button" class="btn btn-sm btn-link" @click="importExcel" >导入xls</button>
                     </div>
                 </div>
 
@@ -64,10 +65,7 @@
                         <!--日志内容列表显示-->
                         <div class="center-slimScroll">
 
-
-
                             <div id="workLogGrid">
-
                                 <li v-for="(data,index) in workLogs" class="row clearfix for-li" >
                                     <div class="for-li-div">
                                         <div class="center-li-index">{{index+1}}</div>
@@ -235,21 +233,48 @@
                 </div>
             </div>
         </div>
-
-
     </div>
 
 
 
 
+    <!--导出工作日志-->
+    <div id="exportParamPanel" class="container-fluid" style="display: none;">
+        请选择导出工作日志时间范围
+        <table class="form">
+            <tr>
+                <td class="formTitle">导出时间范围:</td>
+                <td class="formValue"><input class="form-control" id="xlsStartDate" v-model="xlsStartDate" placeholder="请选择开始时间！" readonly/></td>
+                <td style="text-align: center;width: 50px;"> -- </td>
+                <td class="formValue"><input class="form-control" id="xlsEndDate" v-model="xlsEndDate" placeholder="请选择结束时间！" readonly/></td>
+            </tr>
+        </table>
+    </div>
 
+    <!--导入工作日志-->
+    <div id="importPanel" class="container-fluid" style="display: none;">
 
-
-
-
+        <form id="importFile" name="importFile" class="form-horizontal" method="post" enctype="multipart/form-data">
+            <div class="file-loading">
+                <input id="excelFile" name="excelFile" type="file" multiple accept=".xls,.xlsx" >
+            </div>
+        </form>
+        <!--<form id="importFile" name="importFile" class="form-horizontal" method="post"
+              enctype="multipart/form-data">
+            <div class="box-body">
+                <div>
+                    <label class="control-label">请选择要导入的Excel文件：</label>
+                    <input id="excelFile" name="excelFile" class="file-loading" type="file" multiple
+                    accept=".xls,.xlsx" >
+                </div>
+            </div>
+        </form>-->
+    </div>
 
 </div>
 #parse("include/footer.html")
+<script src="${rc.contextPath}/statics/plugins/bootstrap-fileinput/fileinput.js"></script>
+<script src="${rc.contextPath}/statics/plugins/bootstrap-fileinput/locale/zh.js"></script>
 <script src="${rc.contextPath}/statics/js/projectManage/workLog.js?_${date.systemTime}"></script>
 
 </body>

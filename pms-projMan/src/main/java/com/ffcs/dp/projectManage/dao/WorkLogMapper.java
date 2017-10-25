@@ -22,4 +22,8 @@ public interface WorkLogMapper extends BaseMapper<WorkLogEntity> {
     void insertWorkLog(Map<String, Object> params);
 
     void updateWorkLog(Map<String, Object> params);
+
+    List<WorkLogEntity> getExportList(Map<String, Object> params);
+
+    WorkLogEntity getProjTaskInfo(Map<String, Object> params);
 }

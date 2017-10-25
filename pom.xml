@@ -42,7 +42,8 @@
 		<commons-lang-version>2.6</commons-lang-version>
 		<commons-fileupload-version>1.3.1</commons-fileupload-version>
 		<poi-version>3.16</poi-version>
-		<commons-io-version>2.5</commons-io-version>
+        <poi-ooxml-version>3.16</poi-ooxml-version>
+        <commons-io-version>2.5</commons-io-version>
 		<commons-codec-version>1.10</commons-codec-version>
 		<commons-configuration-version>1.10</commons-configuration-version>
 		<slf4j-version>1.7.19</slf4j-version>
@@ -182,6 +183,11 @@
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
 			<version>${poi-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>${poi-ooxml-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>

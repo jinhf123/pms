@@ -90,12 +90,12 @@ function getGrid() {
 }
 
 function getWorkHoursGrid() {
-    if(vm.startDate!==""&&vm.endDate!==""){
+    if (vm.startDate !== "" && vm.endDate !== "") {
         $.ajax({
             url: '../../projMan/workLog/getWorkHoursList?_' + $.now(),
             data: JSON.stringify({
-                "startDate" : vm.startDate,
-                "endDate" : vm.endDate
+                "startDate": vm.startDate,
+                "endDate": vm.endDate
             }),
             type: "post",
             dataType: "json",
@@ -111,6 +111,63 @@ function getWorkHoursGrid() {
     }
 }
 
+function initUpload(ctrlName, uploadUrl) {//上传控件初始化
+    var control = $('#' + ctrlName);
+    control.fileinput({
+        theme: 'fa',
+        language: 'zh', //设置语言
+        uploadUrl: encodeURI(encodeURI(uploadUrl)), // 'http://localhost:8080/upload', //上传的地址
+        overwriteInitial: false,
+        maxFileSize: 1000*1000*20,
+        maxFilesNum: 1,
+        browseClass: 'btn btn-info', //按钮样式
+        showPreview: false,
+        uploadAsync: true,
+        previewFileIcon: "<i class='glyphicon glyphicon-file'></i>",
+        allowedFileExtensions: ["xls", "xlsx"], //接收的文件后缀
+        maxFileCount: 1,//最大上传文件数限制
+        previewFileIconSettings: {
+            'docx': '<i ass="fa fa-file-word-o text-primary"></i>',
+            'xlsx': '<i class="fa fa-file-excel-o text-success"></i>',
+            'xls': '<i class="fa fa-file-excel-o text-success"></i>',
+            'pptx': '<i class="fa fa-file-powerpoint-o text-danger"></i>',
+            'jpg': '<i class="fa fa-file-photo-o text-warning"></i>',
+            'pdf': '<i class="fa fa-file-archive-o text-muted"></i>',
+            'zip': '<i class="fa fa-file-archive-o text-muted"></i>'
+        },
+        validateInitialCount:true,
+        msgPlaceholder: "请选择要导入的Excel文件...",
+        msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！"
+    });
+
+    // $("#excelFile").on("fileuploaded", function (event, data, previewId, index) { });
+    //异步
+    control.on('fileerror', function(event, data, msg) { //异步上传失败处理
+        console.log(data.index);
+        console.log(data.reader);
+        console.log(data.files.length);
+        console.log(data.filenames.length);
+        console.log(msg);
+        var obj = data.response;
+        console.log(JSON.stringify(obj));
+    });
+    control.on("fileuploaded", function (event, data, previewId, index) {//异步上传成功处理
+        if(data.response.success == true){
+            dialogAlert(data.files[index].name + "导入成功!","info");
+            //关闭
+            layer.close(layer.index);//关闭弹窗
+            getGrid();
+            getWorkHoursGrid();
+        }else{
+            dialogAlert(data.files[index].name + "上传失败!" + data.response.message,"error");
+            //重置
+            $("#excelFile").fileinput("clear");
+            $("#excelFile").fileinput("reset");
+            $('#excelFile').fileinput('refresh');
+            $('#excelFile').fileinput('enable');
+        }
+    });
+}
 
 
 
@@ -132,8 +189,10 @@ var vm = new Vue({
         isEdit:false,
 
         //导出参数
-        xlsStartDate:"2017-10-05",
-        xlsEndDate:"2017-10-25",
+        xlsStartDate: formatDate(new Date(),"yyyy-MM-dd"),
+        xlsEndDate: formatDate(new Date(),"yyyy-MM-dd"),
+        //导入参数
+        xlsPath:"",
 
         //新增保存参数
         workLogId:"",
@@ -260,7 +319,58 @@ var vm = new Vue({
             getGrid();
         },
         exportExcel:function(){
-            window.open("../../projMan/workLog/exportExcel?startDate="+vm.xlsStartDate+"&endDate="+vm.xlsEndDate);
+            dialogContent2({
+                title : "导出Excel",
+                width : '600px',
+                height : '200px',
+                content :  $("#exportParamPanel"),
+                btn : [ '确定', '取消' ],
+                yes : function(index) {
+                    //导出参数
+                    if(isNullOrEmpty(vm.xlsStartDate)) {
+                        dialogAlert('请选择开始日期！','info');
+                        return false;
+                    }
+                    if(isNullOrEmpty(vm.xlsEndDate)) {
+                        dialogAlert('请选择结束日期','info');
+                        return false;
+                    }
+                    if(convertStringToDate(vm.xlsStartDate)>convertStringToDate(vm.xlsEndDate)) {
+                        dialogAlert('开始日期不能大于结束日期！','info');
+                        return false;
+                    }
+                    window.open("../../projMan/workLog/exportExcel?startDate="+vm.xlsStartDate+"&endDate="+vm.xlsEndDate);
+                    layer.close(index);
+                },
+                success:function(){
+                    $("#xlsStartDate").datetimepicker().on('hide', function () {
+                        vm.xlsStartDate = $("#xlsStartDate").val();
+                    });
+                    $("#xlsEndDate").datetimepicker().on('hide', function () {
+                        vm.xlsEndDate = $("#xlsEndDate").val();
+                    });
+
+                },
+                end:function(){}
+            });
+        },
+        importExcel:function(){
+            dialogContent2({
+                title : "导入Excel",
+                width : '600px',
+                height : '120px',
+                content :  $("#importPanel"),
+                btn : false,//[ '确定', '取消' ],
+                success:function(){
+                    initUpload("excelFile", "../../projMan/workLog/importExcel?startDate");
+                },
+                end:function(){
+                    vm.xlsPath = "";
+                }
+            });
+
+
+
         }
     }
     ,computed: {
@@ -281,16 +391,7 @@ var vm = new Vue({
         }
 
     }
-
-
-
-
 });
-
-
-
-
-
 
 
 //获取日期界限，开始时间，结束时间

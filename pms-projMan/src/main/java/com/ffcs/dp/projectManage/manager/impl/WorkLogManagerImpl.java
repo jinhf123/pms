@@ -72,5 +72,15 @@ public class WorkLogManagerImpl implements WorkLogManager {
         }
     }
 
+    @Override
+    public List<WorkLogEntity> getExportList(Map<String, Object> params) {
+        return workLogMapper.getExportList(params);
+    }
+
+    @Override
+    public WorkLogEntity getProjTaskInfo(Map<String, Object> params) {
+        return workLogMapper.getProjTaskInfo(params);
+    }
+
 
 }

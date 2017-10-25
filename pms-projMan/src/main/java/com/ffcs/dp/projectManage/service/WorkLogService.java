@@ -13,4 +13,8 @@ public interface WorkLogService {
     List<Map> getWorkHoursList(Map<String, Object> params);
 
     void saveWorkLog(Map<String, Object> params);
+
+    List<WorkLogEntity> getExportList(Map<String, Object> params);
+
+    WorkLogEntity getProjTaskInfo(Map<String, Object> params);
 }
