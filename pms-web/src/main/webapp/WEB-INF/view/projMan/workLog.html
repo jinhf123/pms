@@ -140,17 +140,17 @@
                                 <li v-show="isAdd" style="height: 120px;">
 
                                     <div class="col-md-9 column for-li-div">
-                                        <input id="startTime" v-model="startTime" class="form-control datePicker" />
+                                        <input id="startTime" v-model="startTime" class="form-control datePicker" title="" />
                                         <span style="padding:7px;"> - </span>
-                                        <input id="endTime" v-model="endTime" class="form-control datePicker" />
+                                        <input id="endTime" v-model="endTime" class="form-control datePicker" title=""/>
                                         <span style="padding:5px;" v-show="minutes>0&&minutes<60" >共{{minutes}}分钟</span>
                                         <span style="padding:5px;" v-show="minutes>=60" >共{{Math.floor(minutes/60)}}小时{{minutes%60}}分钟</span>
                                     </div>
                                     <div class="col-md-1 column isProjectWork">
-                                        <input id="isProjectWork" type="checkbox" v-model="isProjectWork" @click="changeWorkLogType"/>
+                                        <input id="isProjectWork" type="checkbox" v-model="isProjectWork" @click="changeWorkLogType" title=""/>
                                     </div>
                                     <div class="col-md-2 column">
-                                        <apan>是否项目工作</apan>
+                                        <span>是否项目工作</span>
                                     </div>
                                     <div v-show="isProjectWork==1">
                                         <div class="col-md-10 column">
@@ -253,22 +253,11 @@
 
     <!--导入工作日志-->
     <div id="importPanel" class="container-fluid" style="display: none;">
-
         <form id="importFile" name="importFile" class="form-horizontal" method="post" enctype="multipart/form-data">
             <div class="file-loading">
                 <input id="excelFile" name="excelFile" type="file" multiple accept=".xls,.xlsx" >
             </div>
         </form>
-        <!--<form id="importFile" name="importFile" class="form-horizontal" method="post"
-              enctype="multipart/form-data">
-            <div class="box-body">
-                <div>
-                    <label class="control-label">请选择要导入的Excel文件：</label>
-                    <input id="excelFile" name="excelFile" class="file-loading" type="file" multiple
-                    accept=".xls,.xlsx" >
-                </div>
-            </div>
-        </form>-->
     </div>
 
 </div>

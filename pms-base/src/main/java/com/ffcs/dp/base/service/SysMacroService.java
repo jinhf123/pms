@@ -1,6 +1,7 @@
 package com.ffcs.dp.base.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.ffcs.dp.base.entity.SysMacroEntity;
 import com.ffcs.dp.common.entity.R;
@@ -22,5 +23,6 @@ public interface SysMacroService {
 	R updateMacro(SysMacroEntity macro);
 	
 	R batchRemove(Long[] id);
-	
+
+	List<SysMacroEntity> listMacroByCatalog(Map<String, Object> params);
 }

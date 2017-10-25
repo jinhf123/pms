@@ -14,8 +14,8 @@ body{
 }
 
 .column{
-    padding-left:0px;
-    padding-right: 0px;
+    padding-left:0;
+    padding-right: 0;
 }
 
 .fa-color{
@@ -32,8 +32,8 @@ body{
 
 .transparent-btn {
     display: inline-block;
-    margin: 4px 0px;
-    padding: 0px;
+    margin: 4px 0;
+    padding: 0;
     font-size: 14px;
     font-weight: 400;
     line-height: 1.4285;
@@ -68,9 +68,9 @@ body{
     width: 230px;
 }
 .search-div > input{
-    padding: 0px;
+    padding: 0;
     border: 0;
-    width: 0px;
+    width: 0;
     transition:width 2s;
     -moz-transition:width 2s; /* Firefox 4 */
     -webkit-transition:width 2s; /* Safari and Chrome */
@@ -141,16 +141,9 @@ body{
     text-align: center;
     list-style-type:none;
 }
-
-.project-type > a{
-    color: #97e6ff;
-}
-.project-type > a:hover{
-    color: #ffffff;
-}
-/*li.active>a{*/
-    /*color: #ffffff;*/
- /*}*/
+.type-href{color: #97e6ff;}
+.active-step > a{color: #ffffff;}
+.project-type > a:hover{color: #ffffff;}
 
 
 
@@ -182,6 +175,7 @@ body{
 .projList{
 
 }
+.active-project{}/*项目选中样式*/
 
 .projList-task{
     text-align: right;

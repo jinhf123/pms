@@ -1,6 +1,7 @@
 package com.ffcs.dp.base.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.ffcs.dp.base.entity.SysMacroEntity;
 import org.mybatis.spring.annotation.MapperScan;
@@ -19,5 +20,6 @@ public interface SysMacroMapper extends BaseMapper<SysMacroEntity> {
 	List<SysMacroEntity> listNotMacro();
 	
 	int countMacroChildren(Long parentId);
-	
+
+    List<SysMacroEntity> listMacroByCatalog(Map<String, Object> params);
 }

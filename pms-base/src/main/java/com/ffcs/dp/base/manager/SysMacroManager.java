@@ -1,6 +1,7 @@
 package com.ffcs.dp.base.manager;
 
 import java.util.List;
+import java.util.Map;
 
 import com.ffcs.dp.base.entity.SysMacroEntity;
 
@@ -23,5 +24,6 @@ public interface SysMacroManager {
 	int batchRemove(Long[] id);
 	
 	boolean hasChildren(Long[] id);
-	
+
+    List<SysMacroEntity> listMacroByCatalog(Map<String, Object> params);
 }

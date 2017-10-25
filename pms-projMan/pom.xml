@@ -44,6 +44,11 @@
             <artifactId>junit</artifactId>
             <version>4.12</version>
         </dependency>
+        <dependency>
+            <groupId>com.ffcs.dp</groupId>
+            <artifactId>pms-base</artifactId>
+            <version>1.2.0</version>
+        </dependency>
 
     </dependencies>
 

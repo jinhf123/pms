@@ -129,4 +129,28 @@
 		</foreach>
 	</delete>
 
+	<select id="listMacroByCatalog" resultType="SysMacroEntity">
+		SELECT m.id,
+			 m.parent_id,
+			 p.name typeName,
+			 m.name,
+			 m.value,
+			 m.status,
+			 m.type,
+			 m.remark,
+			 m.order_num
+		FROM pms_sys_macro m
+		left join pms_sys_macro p
+		  on m.parent_id = p.id
+		WHERE m.type = 1
+		 and m.status = 1
+		 and p.type = 0
+         and p.value in
+        <foreach item="item" index="index" collection="typeCodes" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        ORDER BY m.parent_id, m.order_num ASC
+	</select>
+
+
 </mapper>

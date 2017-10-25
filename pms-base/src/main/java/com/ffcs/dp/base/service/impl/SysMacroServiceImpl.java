@@ -1,6 +1,7 @@
 package com.ffcs.dp.base.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import com.ffcs.dp.base.entity.SysMacroEntity;
 import com.ffcs.dp.base.manager.SysMacroManager;
@@ -68,11 +69,14 @@ public class SysMacroServiceImpl implements SysMacroService {
 		int count = sysMacroManager.batchRemove(id);
 		return CommonUtils.msg(id, count);
 	}
-	
+
+	@Override
+	public List<SysMacroEntity> listMacroByCatalog(Map<String, Object> params) {
+		return sysMacroManager.listMacroByCatalog(params);
+	}
+
 	/**
 	 * 当为参数类型时，状态为显示
-	 * @param macro
-	 * @return
 	 */
 	public SysMacroEntity validateMacro(SysMacroEntity macro) {
 		if(macro.getType() == MacroType.TYPE.getValue()) {

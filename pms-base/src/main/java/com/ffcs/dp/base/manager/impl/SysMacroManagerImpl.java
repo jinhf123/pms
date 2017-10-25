@@ -1,6 +1,7 @@
 package com.ffcs.dp.base.manager.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import com.ffcs.dp.base.entity.SysMacroEntity;
 import com.ffcs.dp.base.manager.SysMacroManager;
@@ -59,6 +60,11 @@ public class SysMacroManagerImpl implements SysMacroManager {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public List<SysMacroEntity> listMacroByCatalog(Map<String, Object> params) {
+		return sysMacroMapper.listMacroByCatalog(params);
 	}
 
 }

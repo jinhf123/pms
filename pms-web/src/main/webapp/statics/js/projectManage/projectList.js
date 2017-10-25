@@ -20,15 +20,38 @@ function initialPage() {
         $(".type-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
         $(".project-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     });
+    getDropdownData();
 }
 
+//获取下拉框数据
+function getDropdownData() {
+    $.ajax({
+        url: '../../projMan/project/projGroup?_' + $.now(),
+        data: JSON.stringify({
+            "typeCodes": ['projType', 'projGroup']
+        }),
+        type: "post",
+        dataType: "json",
+        contentType: 'application/json',
+        success: function (data) {
+            vm.dropdownData = data;
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            dialogLoading(false);
+            dialogMsg(errorThrown, 'error');
+        }
+    });
+}
+
+
+
 function getGrid() {
-    console.log("获取列表 \tgroup:"+ vm.projectGroup.value +"\ttype:"+ vm.projectType.value+"\tkeyWord:"+ vm.keyWord);
+    console.log("获取列表 \tgroup:"+ vm.activeGroup.value +"\ttype:"+ vm.activeType.value+"\tkeyWord:"+ vm.keyWord);
     $.ajax({
         url: '../../projMan/project/dataGrid?_' + $.now(),
         data: JSON.stringify({
-            "group" : vm.projectGroup.value,
-            "type" : vm.projectType.value,
+            "group" : vm.activeGroup.value,
+            "type" : vm.activeType.value,
             "keyWord": vm.keyWord
         }),
         type: "post",
@@ -65,23 +88,27 @@ var vm = new Vue({
 		// 默认值
         keyWord : "",
         length : 0,
-        projectGroup:{ text: '中国电信XXX项目组[2017]', value: '1' },
+
+        activeGroup: {name: '中国电信XXX项目组[2017]', value: '1' },//选中的所属项目组类型
         groups: [
-            { text: '中国电信XXX项目组[2017]', value: '1' },
-            { text: '中国电信XXX项目组[2016]', value: '2' },
-            { text: '中国电信XXX项目组[2015]', value: '3' }
+            { name: '中国电信XXX项目组[2017]', value: '1' },
+            { name: '中国电信XXX项目组[2016]', value: '2' },
+            { name: '中国电信XXX项目组[2015]', value: '3' }
         ],
-        projectType: { text: '改进类', value: '1' },
+
+        activeType : { name: '改进类', value: '1',icon: '/statics/img/projectManage/u5.png' },//选中的项目类型
         types: [
-            { text: '改进类', value: '1', icon: '/statics/img/projectManage/u5.png', isSelected: true },
-            { text: '新建类', value: '2', icon: '/statics/img/projectManage/u6.png'},
-            { text: '延续类', value: '3', icon: '/statics/img/projectManage/u7.png'},
-            { text: '研究类', value: '4', icon: '/statics/img/projectManage/u8.png'}
+            { name: '改进类', value: '1', icon: '/statics/img/projectManage/u5.png'},
+            { name: '新建类', value: '2', icon: '/statics/img/projectManage/u6.png'},
+            { name: '延续类', value: '3', icon: '/statics/img/projectManage/u7.png'},
+            { name: '研究类', value: '4', icon: '/statics/img/projectManage/u8.png'}
         ],
+
+        activeProject:"",//选中的项目类型
         projects:[],
 
-
-
+        //下拉框数据
+        dropdownData:[]
 
 	},
 	methods : {
@@ -97,22 +124,26 @@ var vm = new Vue({
 		remove: function() {
             alert("删除项目");
         },
+        getOptions: function(code){//根据code获取下拉框的数据
+
+
+
+        },
         projListOn : function (e) {
-            alert("选中列表中的记录projListOn");
+            alert("选中列表中的记录projListOn"+e);
         },
         addGroup:function(){
             alert("新增所属项目组");
         },
         selectGroup:function(group){
-            vm.projectGroup = group;
-            console.log("选中项目分组" + vm.projectGroup.value);
-            // alert("选中项目分组" + vm.projectGroup.value);
+            vm.activeGroup = group;
+            console.log("选中项目分组" + vm.activeGroup.value);
             getGrid()
         },
         selectType:function(type){
-            vm.projectType = type;
-            console.log("选中项目类型" + vm.projectType.text);
-            // alert("选中项目类型" + vm.projectType.text);
+            vm.activeType = type;
+            console.log("选中项目类型" + vm.activeType.text);
+            // alert("选中项目类型" + vm.activeType.text);
             getGrid()
         },
         query:function () {
@@ -130,10 +161,12 @@ var vm = new Vue({
             }
             window.location=url;
         },
-        shwoDetails:function(id){
-            //todo 跳转到项目详情页面
-            alert("#projMan/projectDetails.html");
-            window.location="#projMan/projectDetails.html";
+        showDetails:function(project){//跳转到项目详情页面
+            vm.activeProject = project;
+            toUrl('/projMan/projectDetails.html?projId='+project.projId);
+        },
+        editProjTemp: function(){//编辑项目模板
+            toUrl('/projMan/projectTemple.html');
         }
 	},
     computed: {

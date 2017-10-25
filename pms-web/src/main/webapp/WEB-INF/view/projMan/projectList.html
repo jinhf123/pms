@@ -17,14 +17,13 @@
 
                     <div class="col-md-4 column">
                         <div class="btn-group dropdown-group">
-                            <!--<button class="btn btn-default">{{projectGroup.text}}</button>-->
-                            <span style="margin: 7px 0px;">{{projectGroup.text}}</span>
+                            <span style="margin: 7px 0px;">{{activeGroup.name}}</span>
                             <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
                                 <li v-for="group in groups">
-                                    <a @click="selectGroup(group)" href="#">{{group.text}}</a>
+                                    <a @click="selectGroup(group)" href="#">{{group.name}}</a>
                                 </li>
                                 <li class="divider">
                                 </li>
@@ -80,11 +79,11 @@
                             <div class="col-md-1 column leftBar" :style="styleObject">
                                 <div class="project-type-group">
                                     <div class="type-slimScroll">
-                                            <li v-for="type in types" class="row clearfix project-type" :class="type.isSelected?'active':''">
-                                                <a @click="selectType(type)" href="#">
+                                            <li v-for="type in types" class="row clearfix project-type" :class="{'active-step':(type===activeType)}">
+                                                <a @click="selectType(type)" class="type-href" href="#">
                                                     <img :src="type.icon">
                                                     <br>
-                                                    {{type.text}}
+                                                    {{type.name}}
                                                 </a>
                                             </li>
                                     </div>
@@ -97,18 +96,18 @@
                                     </div>
                                     <div class="operation-icon-right"　title="编辑项目模版">
                                         <button class="transparent-btn">
-                                            <img :src="icon_EditTemp" >
+                                            <img :src="icon_EditTemp" @click="editProjTemp" >
                                         </button>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-11 projGridPanel " :style="styleObject">
-                                <div class="subTitle">{{projectType.text}}在线项目共有<span style="color:#dc6d67">{{length}}</span>个</div>
+                                <div class="subTitle">{{activeType.name}}在线项目共有<span style="color:#dc6d67">{{length}}</span>个</div>
                                 <div class="projGrid">
                                     <div class="project-slimScroll">
 
-                                        <div v-for="project in projects" class="row clearfix projList" :class="project.isSelected?'active':''"
-                                             @click="shwoDetails( project.projId )" >
+                                        <div v-for="project in projects" class="row clearfix projList" :class="{'active-project':(project===activeProject)}"
+                                             @click="showDetails( project )" >
                                         <div class="col-md-12 column projList-task">
                                            <a>风险项:2</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a>待处理任务:6</a> <p></p>
                                         </div>
@@ -150,9 +149,19 @@
         </div>
     </div>
 
+
+    <!--新增所属项目组面板-->
+    <div id="addGroupPanel" class="container-fluid" style="display: none;">
+        <table class="form">
+            <tr>
+                <!--<td class="formTitle">所属项目组名称:</td>
+                <td class="formValue"><input class="form-control" v-model="" placeholder="所属项目组名称！" /></td>-->
+            </tr>
+        </table>
+    </div>
+
+
 </div>
-
-
 #parse("include/footer.html")
 <script src="${rc.contextPath}/statics/js/projectManage/projectList.js?_${date.systemTime}"></script>
 
