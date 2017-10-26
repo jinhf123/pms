@@ -79,7 +79,7 @@
                             <div class="col-md-1 column leftBar" :style="styleObject">
                                 <div class="project-type-group">
                                     <div class="type-slimScroll">
-                                            <li v-for="type in types" class="row clearfix project-type" :class="{'active-step':(type===activeType)}">
+                                            <li v-for="type in types" class="row clearfix project-type" :class="{'active-step':(type.value===activeType.value)}">
                                                 <a @click="selectType(type)" class="type-href" href="#">
                                                     <img :src="type.icon">
                                                     <br>
@@ -105,25 +105,30 @@
                                 <div class="subTitle">{{activeType.name}}在线项目共有<span style="color:#dc6d67">{{length}}</span>个</div>
                                 <div class="projGrid">
                                     <div class="project-slimScroll">
-
-                                        <div v-for="project in projects" class="row clearfix projList" :class="{'active-project':(project===activeProject)}"
-                                             @click="showDetails( project )" >
-                                        <div class="col-md-12 column projList-task">
-                                           <a>风险项:2</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a>待处理任务:6</a> <p></p>
-                                        </div>
-                                        <div class=" col-md-12 column">
-                                            <div class="col-md-10 column">
-                                                <div class="fa fa-archive fa-color"></div>
-                                                {{project.projName}}
-                                                <span class="subTitle">&nbsp;&nbsp;&nbsp;&nbsp;大项目经理：{{project.beloProjGroup}}</span>
+                                        <div v-for="project in projects" class="row clearfix projList"
+                                             :class="{'active-project':(project.projId===activeProject.projId)}">
+                                            <div class=" col-md-12 column">
+                                                <div class="col-md-10 column projList-left" @click="showDetails( project )">
+                                                    <div class="fa fa-archive fa-color"></div>
+                                                    {{project.projName}}
+                                                    <span class="subTitle">&nbsp;&nbsp;&nbsp;&nbsp;大项目经理：{{project.beloProjGroup}}</span>
+                                                </div>
+                                                <div class="col-md-2 column projList-right">
+                                                    <div class="col-md-12 column task-info">
+                                                        <span >
+                                                            <a style="color: #d9534f;">风险项:44</a>
+                                                            &nbsp;|&nbsp;
+                                                            <a style="color: #d9534f;">待处理任务:56</a>
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-md-12 column complet-info">
+                                                        <span>总体完成[89]%</span>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-md-2 column projList-completion-rate">
-                                                    总体完成[12]%
-                                            </div>
-                                        </div>
                                         <div class="col-md-12 column divider"></div>
                                     </div>
-                                    </div>
+                                </div>
                                 </div>
                             </div>
                         </div>

@@ -15,8 +15,8 @@ body{
 }
 
 .column{
-    padding-left:0px;
-    padding-right: 0px;
+    padding-left:0;
+    padding-right: 0;
 }
 
 .fa-color{
@@ -78,7 +78,7 @@ body{
     top: 18px;
     height: 2px;
     width: calc(100% - 30px);
-    margin: 0px 15px;
+    margin: 0 15px;
     overflow: hidden;
     background-color: #5BC0DE;
     z-index: -1;
@@ -89,7 +89,7 @@ body{
 }
 
 .step-div {
-    margin: 0px 20px 10px 20px;
+    margin: 0 20px 10px 20px;
     height: 80px;
 }
 .step-title-div {
@@ -100,9 +100,7 @@ body{
     background: inherit;
     background-color: rgba(255, 255, 255, 1);
     box-sizing: border-box;
-    border-width: 2px;
-    border-style: solid;
-    border-color: rgba(91, 192, 222, 1);
+    border: 2px solid rgba(91, 192, 222, 1);
     border-radius: 15px;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
@@ -112,7 +110,7 @@ body{
     font-style: normal;
     font-size: 12px;
     text-align: center;
-    padding: 6px 0px;
+    padding: 6px 0;
 }
 .step-date-div{
     width: 120px;
@@ -120,10 +118,8 @@ body{
     background: inherit;
     background-color: rgba(255, 255, 255, 1);
     box-sizing: border-box;
-    border-width: 1px;
-    border-style: solid;
-    border-color: rgba(204, 204, 204, 1);
-    border-radius: 0px;
+    border: 1px solid rgba(204, 204, 204, 1);
+    border-radius: 0;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -146,7 +142,7 @@ body{
 }
 .step-vertical-divider{
     width: 1px;
-    margin: 17px 0px 25px 1px;
+    margin: 17px 0 25px 1px;
     overflow: hidden;
     background-color: #e5e5e5;
 }

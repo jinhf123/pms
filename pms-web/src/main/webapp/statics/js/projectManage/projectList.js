@@ -96,7 +96,7 @@ var vm = new Vue({
             { name: '中国电信XXX项目组[2015]', value: '3' }
         ],
 
-        activeType : { name: '改进类', value: '1',icon: '/statics/img/projectManage/u5.png' },//选中的项目类型
+        activeType : { name: '改进类', value: '1', icon: '/statics/img/projectManage/u5.png'},//选中的项目类型
         types: [
             { name: '改进类', value: '1', icon: '/statics/img/projectManage/u5.png'},
             { name: '新建类', value: '2', icon: '/statics/img/projectManage/u6.png'},

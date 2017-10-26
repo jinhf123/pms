@@ -82,6 +82,9 @@ var vm = new Vue({
                     vm.iframeName="fileMan";
                     break;
             }
+        },
+        backToList: function(){
+            toUrl('/projMan/projectList.html');
         }
     },
     computed: {}

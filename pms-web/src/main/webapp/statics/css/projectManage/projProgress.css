@@ -1,5 +1,5 @@
 body{
-    font-family: "微软雅黑 Regular", "微软雅黑";
+    font-family: "微软雅黑 Regular", "微软雅黑", sans-serif;
     font-size: 14px;
     font-weight: 400;
     font-style: normal;
@@ -9,8 +9,8 @@ body{
 }
 
 .column{
-    padding-left:0px;
-    padding-right: 0px;
+    padding-left:0;
+    padding-right: 0;
 }
 
 .fa-color{
@@ -43,8 +43,8 @@ body{
 /*按钮样式*/
 .transparent-btn {
     display: inline-block;
-    margin: 4px 0px;
-    padding: 0px;
+    margin: 4px 0;
+    padding: 0;
     font-size: 14px;
     font-weight: 400;
     line-height: 1.4285;
@@ -71,7 +71,7 @@ body{
     line-height:0;
     border-style:solid dashed dashed;
     display: inline-block;
-    padding: 0px;
+    padding: 0;
     text-align: center;
     white-space: nowrap;
     -ms-touch-action: manipulation;
@@ -86,7 +86,7 @@ body{
 .btn-circular-gray{
     height: 22px;
     width: 22px;
-    padding: 0px;
+    padding: 0;
     font-size: 14px;
     font-weight: 400;
     line-height: 1.4285;
@@ -107,7 +107,7 @@ body{
 .btn-add-gray{
     height: 20px;
     width: 20px;
-    padding: 0px;
+    padding: 0;
     font-size: 14px;
     font-weight: 400;
     line-height: 1.4285;
@@ -128,7 +128,7 @@ body{
 .btn-delete-red{
     height: 20px;
     width: 20px;
-    padding: 0px;
+    padding: 0;
     font-size: 14px;
     font-weight: 400;
     line-height: 1.4285;
@@ -148,7 +148,7 @@ body{
 }
 /*靠右对齐按钮*/
 .btn-group-right{
-    margin: 0px 15px;
+    margin: 0 15px;
     float: right;
     text-align: right;
 }
@@ -190,7 +190,7 @@ label img{padding:5px;}
 .circular-green{
     height: 20px;
     width: 20px;
-    padding: 2px 0px;
+    padding: 2px 0;
     text-align: center;
     white-space: nowrap;
     background: url("/statics/img/projectManage/u11.png") no-repeat;
@@ -251,8 +251,8 @@ label img{padding:5px;}
     height: 40px;
     vertical-align: middle;
     text-align: center;
-    padding: 12px 0px;
-    font-family: "微软雅黑 Regular", "微软雅黑";
+    padding: 12px 0;
+    font-family: "微软雅黑 Regular", "微软雅黑", sans-serif;
     font-weight: 400;
     font-style: normal;
     font-size: 12px;
@@ -281,7 +281,7 @@ label img{padding:5px;}
     height: 14px;
     width: 14px;
     border-radius: 6px;
-    margin:0px;
+    margin:0;
     z-index:8;
 }
 .progress-line{
@@ -291,7 +291,7 @@ label img{padding:5px;}
     /*border-right:1px solid transparent;*/
     position:relative;
     margin-left: 6px;
-    margin-top: 0px;
+    margin-top: 0;
 }
 .progress-line-stage{
 
@@ -327,7 +327,7 @@ label img{padding:5px;}
 
 .vertical-divider{
     width: 1px;
-    margin: 3px 0px;
+    margin: 3px 0;
     overflow: hidden;
     background-color: #e5e5e5;
 }
@@ -352,7 +352,7 @@ label img{padding:5px;}
     padding-top: 15px;
 }
 .panel-body-task-icon{
-    margin: 5px 0px;
+    margin: 5px 0;
 }
 
 
@@ -364,7 +364,7 @@ label img{padding:5px;}
     background-color: #E3F3F9;
     line-height: 2.45;
     vertical-align: middle;
-    padding: 10px 0px;
+    padding: 10px 0;
     font-size: 13px;
 }
 
