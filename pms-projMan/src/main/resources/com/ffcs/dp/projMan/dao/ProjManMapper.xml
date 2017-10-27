@@ -1,19 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ffcs.dp.projectManage.dao.ProjManMapper">
+<!--
+		select i.proj_id,
+			   i.proj_name,
+			   i.belo_proj_group,
+			   i.proj_type,
+			   (select count(1)
+				  from pms_proj_risk_issue r
+				 where r.state = 0
+				   and r.proj_id = i.proj_id) risk_Item,
+			   (select count(1)
+				  from pms_proj_task t
+				 where t.state != '2'
+				   and t.parent_task is null
+				   and t.proj_id = i.proj_id) un_Finish_Task,
+			   '20' complet_Rate
+		  from pms_project_info i
 
-
-
+		 where i.belo_proj_group = #{group}
+		   and i.proj_type = #{type}
+	   <if test=" keyWord != '' ">
+		   and i.proj_name like '%' || #{keyWord} || '%'
+	   </if>
+-->
 	<select id="listProject" resultType="ProjManEntity" parameterType="Map">
-		with t as
-		 (select i.*
-			from pms_project_info i
-		   where i.belo_proj_group = #{group}
-			 and i.proj_type = #{type}
-			 and i.proj_name like '%' || #{keyWord} || '%')
-		select t.proj_id, t.proj_name, t.belo_proj_group, t.proj_type
-		  from t
-		 group by t.proj_id, proj_name, belo_proj_group, proj_type
+		with ss as
+		 (select t.proj_id,
+				 (select count(1)
+					from pms_proj_task_check_item
+				   where state = 1
+					 and task_id = t.task_id) compCheck,
+				 (select count(1)
+					from pms_proj_task_check_item
+				   where task_id = t.task_id) allCheck
+			from pms_proj_task t)
+		select i.proj_id,
+			   i.proj_name,
+			   i.belo_proj_group,
+			   i.proj_type,
+			   (select count(1)
+				  from pms_proj_risk_issue r
+				 where r.state = 0
+				   and r.proj_id = i.proj_id) risk_Item,
+			   (select count(1)
+				  from pms_proj_task t
+				 where t.state != '2'
+				   and t.parent_task is null
+				   and t.proj_id = i.proj_id) un_Finish_Task,
+			   (select trunc((sum(ss.compCheck)/sum(ss.allCheck)*100), 2)
+				  from ss
+				 where ss.proj_id = i.proj_id) complet_Rate
+		  from pms_project_info i
+		 where i.belo_proj_group = #{group}
+		   and i.proj_type = #{type}
+		<if test=" keyWord != '' ">
+		   and i.proj_name like '%' || #{keyWord} || '%'
+		</if>
 	</select>
 
 

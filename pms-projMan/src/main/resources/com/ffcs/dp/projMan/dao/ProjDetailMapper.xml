@@ -195,7 +195,14 @@
 
     <!--获取任务信息-->
 	<select id="getTaskInfo" resultType="java.util.HashMap" parameterType="Map">
-		select T.TASK_ID,
+		select T.PROJ_ID,
+       		   T.Step_Id,
+			   (select TS.STEP_NAME
+				  from PMS_PROJ_STEP S
+				  left join PMS_PROJ_TEMPLET_STEP TS
+					on S.STEP_MOD = TS.TEMP_STEP_ID
+				 where S.STEP_ID = T.STEP_ID) STEP_NAME,
+			   T.TASK_ID,
 		       T.TASK_TITLE,
 			   T.TASK_STAFF,
 		       T.FINISH_DATE,

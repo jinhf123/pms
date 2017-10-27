@@ -4,12 +4,14 @@
 
 $(function () {
     initialPage();
+    getNotice();
     getGrid();
 });
 
 
 function initialPage() {
     //初始化滚动条
+    $(".dropdown-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     $(".type-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     $(".project-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
 
@@ -68,6 +70,23 @@ function getGrid() {
     });
 }
 
+function getNotice() {//获取未读通知列表
+    $.ajax({
+        url: '/projMan/notice/unReadList?_' + $.now(),
+        data: JSON.stringify({}),
+        type: "post",
+        dataType: "json",
+        contentType: 'application/json',
+        success: function (data) {
+            vm.noticeDate = data;
+            vm.unReadNotice = data.length;
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            dialogLoading(false);
+            dialogMsg(errorThrown, 'error');
+        }
+    });
+}
 
 
 
@@ -107,6 +126,10 @@ var vm = new Vue({
         activeProject:"",//选中的项目类型
         projects:[],
 
+        //通知信息
+        unReadNotice:0,
+        noticeDate:[],
+
         //下拉框数据
         dropdownData:[]
 
@@ -130,7 +153,7 @@ var vm = new Vue({
 
         },
         projListOn : function (e) {
-            alert("选中列表中的记录projListOn"+e);
+            // alert("选中列表中的记录projListOn"+e);
         },
         addGroup:function(){
             alert("新增所属项目组");
@@ -151,12 +174,52 @@ var vm = new Vue({
             // alert(vm.keyWord);
             getGrid();
         },
+        showNotice:function (notice){
+            dialogAlert("跳转到任务详细页面！taskId="+notice.taskId);
+            $.ajax({
+                url: '../../projMan/notice/readNotice?_' + $.now(),
+                data: JSON.stringify({
+                    "noticeId" : notice.noticeId,
+                    "isRead" : 1 ,
+                }),
+                type: "post",
+                dataType: "json",
+                contentType: 'application/json',
+                success: function (data) {
+                    if(data.success){
+                        vm.getTaskInfo(notice.taskId);
+                    }else{
+                        dialogAlert("读取消息失败！错误信息："+msg,"error")
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    dialogLoading(false);
+                    dialogAlert(errorThrown, 'error');
+                }
+            });
+        },
+        getTaskInfo: function(taskId){
+            $.ajax({
+                url: '../../projMan/projDetail/getTaskInfo?_' + $.now(),
+                data: JSON.stringify({
+                    "taskId" : taskId,
+                }),
+                type: "post",
+                dataType: "json",
+                contentType: 'application/json',
+                success: function (data) {
+                    toUrl("taskDetails.html?projId="+data.projId+"&stepId="+data.stepId+""+"&stepName="+data.stepName+"&taskId="+taskId);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                }
+            });
+        },
         location:function(act){
             var url;
-            if(act=="add"){
+            if(act==="add"){
                 //todo 跳转到新增页面
             }
-            if(act=="log"){
+            if(act==="log"){
                 url = "workLog.html";
             }
             window.location=url;

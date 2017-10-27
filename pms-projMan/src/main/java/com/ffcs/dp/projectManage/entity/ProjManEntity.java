@@ -29,7 +29,9 @@ public class ProjManEntity implements Serializable {
     private Long creator;
     private String year;
 
-
+    private String riskItem;
+    private String unFinishTask;
+    private String completRate;
 
 
     public ProjManEntity() {
@@ -173,4 +175,27 @@ public class ProjManEntity implements Serializable {
         this.year = year;
     }
 
+    public String getRiskItem() {
+        return riskItem;
+    }
+
+    public void setRiskItem(String riskItem) {
+        this.riskItem = riskItem;
+    }
+
+    public String getUnFinishTask() {
+        return unFinishTask;
+    }
+
+    public void setUnFinishTask(String unFinishTask) {
+        this.unFinishTask = unFinishTask;
+    }
+
+    public String getCompletRate() {
+        return completRate;
+    }
+
+    public void setCompletRate(String completRate) {
+        this.completRate = completRate;
+    }
 }
