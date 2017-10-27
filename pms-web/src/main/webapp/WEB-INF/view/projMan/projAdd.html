@@ -113,7 +113,7 @@
                         项目模版：
                     </td>
                     <td>
-                        <select class="form-control" @change="changeTemplate" v-model="tempIndex">
+                        <select class="form-control" v-model="tempIndex">
                             <template v-for="(item ,index) in template">
                                 <option :value="index">{{item.tempName}}
                                 </option>
@@ -135,7 +135,8 @@
                             {{item.stepName}}
                         </div>
                         <div class="step-date-div col-md-12 column display-flex">
-                            <input type="text" placeholder="日期" class="form-control" readonly v-datetimepicker="index"
+                            <input type="text" placeholder="日期" class="form-control" readonly
+                                   v-datetimepicker="['stepDate',index]"
                                    v-model="stepDate[index].defaultDate">
                             <i class="fa fa-calendar right"></i>
                         </div>
@@ -171,7 +172,7 @@
                     <td>
                         <div class="col-md-12 column display-flex">
                             <input class="form-control" readonly @click="selectStaff('projGroupManager')"
-                                   v-model="projGroupManager">
+                                   v-model="projGroupManagerName">
                             <i class="fa fa-user right"></i>
                         </div>
                     </td>
@@ -181,7 +182,7 @@
                     <td>
                         <div class="col-md-12 column display-flex">
                             <input class="form-control" readonly @click="selectStaff('bigProjManager')"
-                                   v-model="bigProjManager">
+                                   v-model="bigProjManagerName">
                             <i class="fa fa-user right"></i>
                         </div>
                     </td>
@@ -191,7 +192,7 @@
                     <td>
                         <div class="col-md-12 column display-flex">
                             <input class="form-control" readonly @click="selectStaff('projManager')"
-                                   v-model="projManager">
+                                   v-model="projManagerName">
                             <i class="fa fa-user right"></i>
                         </div>
                     </td>
@@ -203,7 +204,7 @@
                     <td>
                         <div class="col-md-12 column display-flex">
                             <input class="form-control" readonly @click="selectStaff('demaManager')"
-                                   v-model="demaManager">
+                                   v-model="demaManagerName">
                             <i class="fa fa-user right"></i>
                         </div>
                     </td>
@@ -213,7 +214,7 @@
                     <td colspan="3">
                         <div class="col-md-12 column display-flex">
                             <input class="form-control" readonly @click="selectStaff('techManager')"
-                                   v-model="techManager">
+                                   v-model="techManagerName">
                             <i class="fa fa-user right"></i>
                         </div>
                     </td>
@@ -225,7 +226,7 @@
                     <td colspan="5">
                         <div class="col-md-12 column display-flex">
                             <input class="form-control" readonly @click="selectStaff('projMembers')"
-                                   v-model="projMembers">
+                                   v-model="projMembersName">
                             <i class="fa fa-user right"></i>
                         </div>
                     </td>
@@ -243,7 +244,7 @@
                         项目规模
                     </th>
                     <th colspan="5">
-                        <div class="config" @click="showModal = true">配置人力资源预估</div>
+                        <div class="config" @click="show(true)">配置人力资源预估</div>
                     </th>
                 </tr>
                 </thead>
@@ -287,6 +288,9 @@
 
     <modal v-if="showModal" @close="showModal = false">
         <div slot="body" class="container-fluid human-config">
+            <div class="config-detail-cancel" @click="showModal=false">
+                <img src="/statics/img/project_add_cancel.png" alt="">
+            </div>
             <div class="container-fluid col-md-8 human-config-left">
                 <div class="row">
                     <div class="col-md-6 human-total-left">
@@ -317,7 +321,7 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row human-config-table">
                     <table class="table-bordered ">
                         <thead>
                         <tr>
@@ -332,75 +336,16 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>李军</td>
-                            <td>大项目经理</td>
-                            <td>数据库研发DBA</td>
-                            <td>是</td>
-                            <td>30000</td>
-                            <td>1.5</td>
-                            <td>45000</td>
-                            <td>配置</td>
-                        </tr>
-                        <tr>
-                            <td>李军</td>
-                            <td>大项目经理</td>
-                            <td>数据库研发DBA</td>
-                            <td>是</td>
-                            <td>30000</td>
-                            <td>1.5</td>
-                            <td>45000</td>
-                            <td>配置</td>
-                        </tr>
-                        <tr>
-                            <td>李军</td>
-                            <td>大项目经理</td>
-                            <td>数据库研发DBA</td>
-                            <td>是</td>
-                            <td>30000</td>
-                            <td>1.5</td>
-                            <td>45000</td>
-                            <td>配置</td>
-                        </tr>
-                        <tr>
-                            <td>李军</td>
-                            <td>大项目经理</td>
-                            <td>数据库研发DBA</td>
-                            <td>是</td>
-                            <td>30000</td>
-                            <td>1.5</td>
-                            <td>45000</td>
-                            <td>配置</td>
-                        </tr>
-                        <tr>
-                            <td>李军</td>
-                            <td>大项目经理</td>
-                            <td>数据库研发DBA</td>
-                            <td>是</td>
-                            <td>30000</td>
-                            <td>1.5</td>
-                            <td>45000</td>
-                            <td>配置</td>
-                        </tr>
-                        <tr>
-                            <td>李军</td>
-                            <td>大项目经理</td>
-                            <td>数据库研发DBA</td>
-                            <td>是</td>
-                            <td>30000</td>
-                            <td>1.5</td>
-                            <td>45000</td>
-                            <td>配置</td>
-                        </tr>
-                        <tr>
-                            <td>李军</td>
-                            <td>大项目经理</td>
-                            <td>数据库研发DBA</td>
-                            <td>是</td>
-                            <td>30000</td>
-                            <td>1.5</td>
-                            <td>45000</td>
-                            <td>配置</td>
+                        <tr v-for="item in allMembersId">
+                            <td>{{item.username}}</td>
+                            <td>{{item.position}}</td>
+                            <td>{{item.description}}</td>
+                            <td v-if="item.isOutsource === '1'">是</td>
+                            <td v-else>否</td>
+                            <td>{{item.cost}}</td>
+                            <td>{{item.time}}</td>
+                            <td>{{item.cost * item.time}}</td>
+                            <td><a href="javascript:;">配置</a></td>
                         </tr>
                         </tbody>
                     </table>
@@ -409,35 +354,39 @@
             <div class="container-fluid col-md-4" style="padding: 0">
                 <div class="panel panel-default no-border config-detail">
                     <div class="config-detail-title">
-                        人员信息
+                        <label>人员信息</label>
                     </div>
-                    <div>
-                        <div><label>岗位：</label>数据库研发DBA</div>
-                        <div><label>职位：</label>项目群经理/项目经理/技术经理</div>
-                        <div><label>是否外包：</label>否 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>成本：</label>28000元/月</div>
-                    </div>
-                    <div class="config-detail-time">
-                        <label>预计使用</label>
-                        <a>新增投入时段</a>
-                    </div>
-                    <div class="config-detail-time-info">
-                        <div>
-                            <div class="col-md-4"><input class="form-control "></div>
-                            <div class="col-md-4"><input class="form-control"></div>
-                            <div class="col-md-3"><input class="form-control"></div>
-                            <img src="/statics/img/step_delete.png" alt="">
+                    <template v-if="typeof(memberIndex) !== 'undefined' && memberIndex!==null ">
+                        <div class="config-detail-info">
+                            <div><label>岗位：</label>{{allMembersId[memberIndex].description}}</div>
+                            <div><label>职位：</label>{{allMembersId[memberIndex].position}}</div>
+                            <div><label>是否外包：</label>{{allMembersId[memberIndex].isOutsource}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>成本：</label>{{allMembersId[memberIndex].cost}}元/月
+                            </div>
                         </div>
-                        <div>
-                            <div class="col-md-4"><input class="form-control "></div>
-                            <div class="col-md-4"><input class="form-control"></div>
-                            <div class="col-md-3"><input class="form-control"></div>
-                            <img src="/statics/img/step_delete.png" alt="">
+                        <div class="config-detail-time">
+                            <label>预计使用</label>
+                            <a href="javascript:;" @click="addWorkTime">新增投入时段</a>
                         </div>
-                    </div>
-                    <div class="config-detail-time-button">
-                        <button>完成配置</button>
-                        <button>取消</button>
-                    </div>
+                        <div class="config-detail-time-info">
+
+                            <div v-for="(item,index) in allMembersId[memberIndex].workTime">
+                                <div class="col-md-4">
+                                    <input class="form-control" v-datetimepicker="[memberIndex, 'startDate', index]"
+                                           v-model="item.startDate">
+                                </div>
+                                <div class="col-md-4">
+                                    <input class="form-control" v-datetimepicker="[memberIndex, 'endDate', index]"
+                                           v-model="item.endDate">
+                                </div>
+                                <div class="col-md-3"><input class="form-control"></div>
+                                <img src="/statics/img/step_delete.png" alt="">
+                            </div>
+                        </div>
+                        <div class="config-detail-time-button">
+                            <button>完成配置</button>
+                            <button class="cancel">取消</button>
+                        </div>
+                    </template>
                 </div>
             </div>
         </div>

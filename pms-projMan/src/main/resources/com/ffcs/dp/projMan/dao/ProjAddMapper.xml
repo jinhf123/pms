@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffcs.dp.projectManage.dao.ProjAddMapper">
+
+    <select id="listUserCost" resultType="UserCostEntity" parameterType="java.util.List">
+        SELECT
+        t.user_id as user_id,
+        t.username as username,
+        t.cost_id as cost_id,
+        c.description as description,
+        nvl(c.cost, 0) as cost,
+        t.IS_OUTSOURCE as is_outsource
+        FROM pms_sys_user t, pms_stak_cost c
+        WHERE t.status = 1 AND t.USER_ID IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND t.cost_id = c.cost_id (+)
+    </select>
+
+    <select id="listUserCostById" resultType="UserCostEntity" parameterType="Long">
+        SELECT
+            t.user_id      AS user_id,
+            t.username     AS username,
+            t.cost_id      AS cost_id,
+            c.description  AS description,
+            nvl(c.cost, 0) AS cost
+        FROM pms_sys_user t, pms_stak_cost c
+        WHERE t.status = 1 AND t.USER_ID = #{id}
+              AND t.COST_ID = c.cost_id (+)
+    </select>
+
+
+</mapper>

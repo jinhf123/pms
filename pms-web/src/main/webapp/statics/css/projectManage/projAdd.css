@@ -140,7 +140,7 @@ body {
     background-color: #e5e5e5;
 }
 
-.table .form-control {
+.table .form-control, .step-date-div .form-control {
     border: none;
     height: 19px;
 }
@@ -190,7 +190,7 @@ body {
 
 .modal-mask {
     position: fixed;
-    z-index: 9998;
+    z-index: 998;
     top: 0;
     left: 0;
     width: 100%;
@@ -248,15 +248,21 @@ body {
 }
 
 .human-config-left {
-    height: 270px;
+    height: 370px;
     margin: 0;
     padding: 0;
-    overflow-x: auto;
-    overflow-y: auto;
+    /*overflow-x: auto;*/
+    /*overflow-y: auto;*/
 }
 
 .human-config-left table {
     font-size: 9px;
+}
+
+.human-config-table {
+    overflow-x: auto;
+    overflow-y: auto;
+    height: 290px;
 }
 
 .human-config-left > .row > table > thead > tr > th, .human-config-left > .row > table > tbody > tr > td {
@@ -355,7 +361,7 @@ body {
 }
 
 .config-detail {
-    height: 270px;
+    height: 370px;
     background: #f9f9f9;
     overflow-x: auto;
     overflow-y: auto;
@@ -388,6 +394,12 @@ body {
     margin-top: 5px;
 }
 
+.config-detail-time-info {
+    height: 165px;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
 .config-detail-time-info .form-control {
     height: 20px;
 }
@@ -404,14 +416,59 @@ body {
 }
 
 .config-detail-time-button {
+    margin: 0 auto;
     margin-top: 20px;
+    text-align: center;
 }
 
 .config-detail-time-button button {
     width: 108px;
     background-color: #5bc0de;
-    border:none;
+    border: none;
     color: white;
     font-weight: 400;
     padding: 5px;
+    height: 35px;
+}
+
+.config-detail-time-button > .cancel {
+    background-color: #f9f9f9;
+    color: #999999;
+}
+
+.config-detail-time-button button:active {
+    /*background-color:#49B3DE;*/
+    /*box-shadow: 0 5px #666;*/
+    transform: translateY(2px);
+}
+
+.config-detail > div {
+    margin-left: 10px;
+}
+
+.config-detail-cancel {
+    background-image: url('/statics/img/project_add_cancel_background.png');
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    z-index: 3;
+    cursor: pointer;
+    height: 46px;
+    width: 46px;
+    text-align: center;
+    line-height: 17px;
+    color: #ffffff;
+    font-size: 12px;
+}
+
+.config-detail-cancel > img {
+    margin-top: 15px;
+}
+
+.config-detail-info{
+    height: 75px;
+}
+
+.datetimepicker{
+    z-index: 999;
 }
