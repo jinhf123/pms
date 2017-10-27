@@ -43,9 +43,9 @@ var vm = new Vue({
             techManagerId: [],
             projMembers: [],
             projMembersId: [],
-            allMembersId: {1050: {position: ["aa"]}},
+            allMembersId: {},
             type: ['projGroupManager', 'bigProjManager', 'projManager', 'demaManager', 'techManager', 'projMembers'],
-            updateMebmersId: [1050],
+            updateMebmersId: [],
             oldUpdateMembersId: [],
             memberIndex: null
         },
@@ -164,7 +164,6 @@ var vm = new Vue({
                             this.stepDate[stepList].defaultDate = null;
                         }
                     }
-
                 }
             },
             selectStaff: function (obj) {//添加任务选择人员
@@ -281,17 +280,17 @@ var vm = new Vue({
                 }
             },
             addWorkTime: function () {
-                var member =  JSON.parse(JSON.stringify(this.allMembersId[this.memberIndex]));
-                member.workTime.push({startDate: "", endDate: ""});
-                Vue.set(this.allMembersId, this.memberIndex, member);
+                var member =  JSON.parse(JSON.stringify(this.allMembersId));
+                member[this.memberIndex].workTime.push({startDate: "", endDate: ""});
+                this.allMembersId = member;
             },
             changeWorkTime: function (index) {
                 this.memberIndex = index;
             },
             test: function () {
-                var member =  JSON.parse(JSON.stringify(this.allMembersId[this.memberIndex]));
-                member.time = 3;
-                Vue.set(this.allMembersId, this.memberIndex, member);
+                var member =  JSON.parse(JSON.stringify(this.allMembersId));
+                member[this.memberIndex].time = 3;
+                this.allMembersId = member;
             }
         },
         mounted: function () {
@@ -453,7 +452,6 @@ Vue.directive('datetimepicker', {
                 var index = binding.value[2];
                 vm.allMembersId[id].workTime[index][type] =  ev.date.yyyymmdd();
             }
-
         });
 
     },

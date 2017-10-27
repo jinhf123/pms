@@ -336,7 +336,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="item in allMembersId">
+                        <tr v-for="(item, key, index) in allMembersId" :class="[key === memberIndex ? 'selected':'' ]">
                             <td>{{item.username}}</td>
                             <td>{{item.position}}</td>
                             <td>{{item.description}}</td>
@@ -345,7 +345,7 @@
                             <td>{{item.cost}}</td>
                             <td>{{item.time}}</td>
                             <td>{{item.cost * item.time}}</td>
-                            <td><a href="javascript:;" @click="changeWorkTime(item.userId)">配置</a></td>
+                            <td><a href="javascript:;" @click="changeWorkTime(key)">配置</a></td>
                         </tr>
                         </tbody>
                     </table>
@@ -355,6 +355,7 @@
                 <div class="panel panel-default no-border config-detail">
                     <div class="config-detail-title">
                         <label>人员信息</label>
+                        <a v-if="typeof(memberIndex) !== 'undefined' && memberIndex!==null ">{{allMembersId[memberIndex].username}}</a>
                     </div>
                     <template v-if="typeof(memberIndex) !== 'undefined' && memberIndex!==null ">
                         <div class="config-detail-info">

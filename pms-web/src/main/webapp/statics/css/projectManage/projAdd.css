@@ -270,6 +270,10 @@ body {
     text-align: center;
 }
 
+ .selected {
+    background: #ececec;
+}
+
 .human-total-right, .human-total-left {
     padding: 0;
 }
@@ -387,11 +391,12 @@ body {
     margin-top: 10px;
 }
 
-.config-detail-time a {
+.config-detail-time a, .config-detail-title a {
     float: right;
     font-size: 12px;
     font-weight: normal;
     margin-top: 5px;
+    margin-right: 5px;
 }
 
 .config-detail-time-info {
@@ -465,10 +470,10 @@ body {
     margin-top: 15px;
 }
 
-.config-detail-info{
+.config-detail-info {
     height: 75px;
 }
 
-.datetimepicker{
+.datetimepicker {
     z-index: 999;
 }
