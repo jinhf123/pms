@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffcs.dp.projectManage.dao.NoticeMapper">
+	<select id="listProject" resultType="ProjManEntity" parameterType="Map">
+	</select>
+
+
+
+	<select id="unReadList" resultType="NoticeEntity" parameterType="Map">
+		select N.NOTICE_ID,
+			   N.NOTICE_CREATOR,
+			   N.NOTICE_RECEIVER,
+			   (select USERNAME from PMS_SYS_USER where USER_ID = N.NOTICE_CREATOR) CREATOR_NAME,
+			   (select USERNAME from PMS_SYS_USER where USER_ID = N.NOTICE_RECEIVER) RECEIVER_NAME,
+			   N.NOTICE_CONTENT,
+			   N.CREATE_DATE,
+			   TO_CHAR(N.CREATE_DATE, 'MM-DD') NOTICE_DATE,
+			   N.TASK_ID
+		  from PMS_PROJ_NOTICE N
+		 where N.IS_READ = 0
+		   and N.NOTICE_RECEIVER = #{userId}
+	</select>
+
+	<update id="updateNotice">
+		update PMS_PROJ_NOTICE
+			<set>
+				<if test="isRead != null and isRead != ''"> IS_READ = #{isRead}</if>
+			</set>
+			where NOTICE_ID = #{noticeId}
+	</update>
+	
+
+</mapper>
