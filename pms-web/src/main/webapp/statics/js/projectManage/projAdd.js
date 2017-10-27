@@ -10,7 +10,7 @@ Date.prototype.yyyymmdd = function () {
 
 
 Vue.component('modal', {
-    props:['member'],
+    props: ['member'],
     template: '#modal-template'
 });
 
@@ -43,11 +43,11 @@ var vm = new Vue({
             techManagerId: [],
             projMembers: [],
             projMembersId: [],
-            allMembersId: {},
+            allMembersId: {1050: {position: ["aa"]}},
             type: ['projGroupManager', 'bigProjManager', 'projManager', 'demaManager', 'techManager', 'projMembers'],
-            updateMebmersId: [],
-            oldUpdateMembersId:[],
-            memberIndex:null
+            updateMebmersId: [1050],
+            oldUpdateMembersId: [],
+            memberIndex: null
         },
         methods: {
             dateDefind: function () {
@@ -194,16 +194,18 @@ var vm = new Vue({
                 var seen = {};
                 var ids = [];
                 var j = 0;
-                for(var i = 0; i < this.updateMebmersId.length; i++) {
+                for (var i = 0; i < this.updateMebmersId.length; i++) {
                     var item = this.updateMebmersId[i];
-                    if(seen[item] !== 1) {
+                    if (seen[item] !== 1) {
                         seen[item] = 1;
                         ids[j++] = item;
                     }
                 }
                 var self = this;
                 this.updateMebmersId = [];
-                this.oldUpdateMembersId = ids.filter(function(x) { return self.oldUpdateMembersId.indexOf(x) < 0 });
+                this.oldUpdateMembersId = ids.filter(function (x) {
+                    return self.oldUpdateMembersId.indexOf(x) < 0
+                });
 
                 var allMember = {};
                 if (ids.length !== 0) {
@@ -218,9 +220,12 @@ var vm = new Vue({
                                     this.allMembersId[cost['userId']].username = cost.username;
                                     this.allMembersId[cost['userId']].description = cost.description;
                                     this.allMembersId[cost['userId']].cost = cost.cost;
-                                    this.allMembersId[cost['userId']].isOutsource  = cost.isOutsource;
+                                    this.allMembersId[cost['userId']].isOutsource = cost.isOutsource;
                                     this.allMembersId[cost['userId']].time = 0;
-                                    this.allMembersId[cost['userId']].workTime = [{startDate:"2010-11-11",endDate:"2011-11-11"}];
+                                    this.allMembersId[cost['userId']].workTime = [{
+                                        startDate: "",
+                                        endDate: ""
+                                    }];
                                 }
                             }
                             this.memberIndex = Object.keys(this.allMembersId)[0];
@@ -228,10 +233,13 @@ var vm = new Vue({
                         }, function (err) {
                             console.log(err);
                         });
-                }else {
+                } else {
                     this.showModal = true;
                     this.memberIndex = Object.keys(this.allMembersId)[0];
                 }
+            },
+            close: function () {
+
             },
             changeMembers: function (val, oldVal, type) {
                 var addItem = [];
@@ -245,7 +253,6 @@ var vm = new Vue({
                 for (var i in addItem) {
                     if (!(addItem[i] in this.allMembersId)) {
                         this.allMembersId[addItem[i]] = {position: []}
-
                     }
                     this.allMembersId[addItem[i]].position.push(type);
                 }
@@ -273,9 +280,18 @@ var vm = new Vue({
                     }
                 }
             },
-            addWorkTime:function () {
-                this.allMembersId[this.memberIndex].workTime.push({startDate:"", endDate:""});
-                console.log(this.allMembersId);
+            addWorkTime: function () {
+                var member =  JSON.parse(JSON.stringify(this.allMembersId[this.memberIndex]));
+                member.workTime.push({startDate: "", endDate: ""});
+                Vue.set(this.allMembersId, this.memberIndex, member);
+            },
+            changeWorkTime: function (index) {
+                this.memberIndex = index;
+            },
+            test: function () {
+                var member =  JSON.parse(JSON.stringify(this.allMembersId[this.memberIndex]));
+                member.time = 3;
+                Vue.set(this.allMembersId, this.memberIndex, member);
             }
         },
         mounted: function () {
@@ -381,7 +397,6 @@ var vm = new Vue({
                 if (names !== "") {
                     names = names.substring(0, names.length - 1);
                 }
-
                 return names;
             },
             // allMembersId: function () {
@@ -430,9 +445,9 @@ Vue.directive('datetimepicker', {
             autoclose: 1
         });
         $(el).datetimepicker().on('hide', function (ev) {
-            if(binding.value.length === 2){
+            if (binding.value.length === 2) {
                 vm[binding.value[0]][binding.value[1]].defaultDate = ev.date.yyyymmdd();
-            }else if(binding.value.length === 3){
+            } else if (binding.value.length === 3) {
                 var id = binding.value[0];
                 var type = binding.value[1];
                 var index = binding.value[2];

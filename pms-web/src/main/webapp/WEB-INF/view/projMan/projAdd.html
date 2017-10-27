@@ -345,7 +345,7 @@
                             <td>{{item.cost}}</td>
                             <td>{{item.time}}</td>
                             <td>{{item.cost * item.time}}</td>
-                            <td><a href="javascript:;">配置</a></td>
+                            <td><a href="javascript:;" @click="changeWorkTime(item.userId)">配置</a></td>
                         </tr>
                         </tbody>
                     </table>
@@ -383,7 +383,7 @@
                             </div>
                         </div>
                         <div class="config-detail-time-button">
-                            <button>完成配置</button>
+                            <button @click="test">完成配置</button>
                             <button class="cancel">取消</button>
                         </div>
                     </template>
