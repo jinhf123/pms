@@ -25,34 +25,14 @@ public class ProjManServiceImpl implements ProjManService {
 
 
     @Override
-    public R listProject(Long userId) {
-        return null;
-    }
-
-    @Override
     public List<ProjManEntity> listProject(Map<String, Object> params) {
         return projManManager.listProject(params);
     }
 
     @Override
-    public R getProjectById(Long id) {
-        return null;
+    public List<ProjManEntity> listArchiveProject(Map<String, Object> params) {
+        return projManManager.listArchiveProject(params);
     }
 
 
-    @Override
-    public R saveProject(ProjManEntity project) {
-        return null;
-    }
-
-
-    @Override
-    public R updateProject(ProjManEntity project) {
-        return null;
-    }
-
-    @Override
-    public R batchRemove(Long[] id) {
-        return null;
-    }
 }

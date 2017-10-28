@@ -8,17 +8,7 @@ import java.util.Map;
 
 public interface ProjManService {
 
-    R listProject(Long userId);
-
     List<ProjManEntity> listProject(Map<String, Object> params);
 
-    R saveProject(ProjManEntity project);
-
-    R getProjectById(Long id);
-
-    R updateProject(ProjManEntity project);
-
-    R batchRemove(Long[] id);
-
-
+    List<ProjManEntity> listArchiveProject(Map<String, Object> params);
 }

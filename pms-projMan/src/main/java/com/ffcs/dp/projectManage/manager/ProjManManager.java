@@ -7,17 +7,7 @@ import java.util.Map;
 
 public interface ProjManManager {
 
-    List listProject(Long userId) ;
-
     List<ProjManEntity> listProject(Map<String, Object> params);
 
-    ProjManEntity getProjectById(Long id);
-
-    int saveProject(ProjManEntity project);
-
-
-    int updateProject(ProjManEntity project);
-
-    int batchRemove(Long[] id);
-
+    List<ProjManEntity> listArchiveProject(Map<String, Object> params);
 }

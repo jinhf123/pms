@@ -12,24 +12,19 @@ body{
     font-style: normal;
     color: #999999;
 }
-
 .column{
     padding-left:0;
     padding-right: 0;
 }
-
 .fa-color{
     color: #1cae99
 }
-
 .float-right{
-     float: right !important;
- }
-
+    float: right !important;
+}
 .display-flex{
     display: inline-flex;
 }
-
 .transparent-btn {
     display: inline-block;
     margin: 4px 0;
@@ -51,18 +46,12 @@ body{
     border: 1px solid transparent;
     border-radius: 4px;
 }
-
-
-
-
 /*下拉按钮组样式*/
 .dropdown-group{
     display: inline-flex;
     border: 1px solid rgb(221, 221, 221);
     border-radius: 4px;
 }
-
-
 /*搜索输入框样式*/
 .search-div{
     width: 230px;
@@ -75,15 +64,12 @@ body{
     -moz-transition:width 2s; /* Firefox 4 */
     -webkit-transition:width 2s; /* Safari and Chrome */
     -o-transition:width 2s; /* Opera */
-    /*display: none;*/
 }
 .search-div:active > input{
-    /*display: block;*/
     width: 200px;
     border: 1px solid #ccc;
 }
 .search-div:hover > input{
-    /*display: block;*/
     width: 200px;
     border: 1px solid #ccc;
 }
@@ -95,10 +81,6 @@ body{
     width: 200px;
     border: 1px solid #ccc;
 }
-
-
-
-
 /*项目管理首页页签*/
 .top-tabs{
     border-bottom:0;
@@ -118,25 +100,21 @@ body{
     border: 0;
     border-bottom-color: transparent;
 }
-
-
 /*左侧按钮拦*/
 .leftBar{
+    width: 85px;
     background-color: rgba(91, 191, 221, 1);
 }
 .leftBar > div {
     text-align: center;
 }
-
-
 /*项目类型按钮组*/
 .project-type-group{
     /*height: 425px;*/
     /*max-height:calc(100vh - 90px);*/
-    height:calc(100vh - 90px);
+    height:calc(100vh - 40px);
     overflow-y:auto;
 }
-
 .project-type{
     text-align: center;
     list-style-type:none;
@@ -144,10 +122,6 @@ body{
 .type-href{color: #97e6ff;}
 .active-step > a{color: #ffffff;}
 .project-type > a:hover{color: #ffffff;}
-
-
-
-
 /*快捷操作按钮*/
 .operations{
     height: 30px;
@@ -157,110 +131,34 @@ body{
     float: left;
 }
 .operation-icon-right{
-     width: 50%;
-     float: right;
- }
-
-
-
-
+    width: 50%;
+    float: right;
+}
 /*项目管理列表*/
 .projGridPanel{
+    width: calc(100% - 85px);
     max-height: calc(100vh - 50px);
 }
-
 .projGrid{
     height: calc(100vh - 70px);
 }
-.projList{
-
-}
+.projList{}
 .active-project{
     background-color: #f1f1f1;
 }/*项目选中样式*/
-
 .projList:hover div.task-info{display: block;}
 .projList-left{width: calc(100% - 170px);padding-top: 18px;}
 .projList-right{width: 170px;text-align: right;font-size: 13px;}
 .task-info{display: none;color: #b8b8b8;text-align: left;}
 .complet-info{position: absolute;top: 20px;}
-
-
-
-
+/*项目列表下划线*/
 .projList .divider {
     height: 1px;
     margin-top: 9px;
     overflow: hidden;
     background-color: #e5e5e5;
 }
-
 .projList:active, .projList:hover{
     background-color: #f1f1f1;
 }
-
-
-
-
-
-.unread-num{
-    position: absolute;
-    left: 10px;
-    top: -3px;
-    width: 15px;
-    height: 15px;
-    color: #ffffff;
-    font-size: 11px;
-    border-radius: 10px;
-    background-color: #D85550;
-
-}
-.dropdown-notice {
-    right: -35px;
-    left: auto;
-    width: 300px;
-    height: 290px
-}
-dropdown-slimScroll
-.notice{
-    height: 35px; padding: 10px 0 0 7px;
-}
-.notice-li{list-style:none;height: 35px; padding: 10px 0 0 7px;}
-.notice-content {
-    text-align: left;
-    width: 240px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-.notice-date {
-    text-align: right;
-    width: 50px;
-    font-size: 13px;
-    font-style: normal;
-    color: #999999;
-}
-.notice .divider {
-    height: 1px;
-    overflow: hidden;
-    padding-left: 5px;
-    padding-right: 8px;
-    margin: 3px 5px 2px 0;
-    background-color: #e5e5e5;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

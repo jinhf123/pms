@@ -1,7 +1,6 @@
 package com.ffcs.dp.base.manager.impl;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.ffcs.dp.base.entity.SysMacroEntity;
 import com.ffcs.dp.base.manager.SysMacroManager;
@@ -63,8 +62,24 @@ public class SysMacroManagerImpl implements SysMacroManager {
 	}
 
 	@Override
-	public List<SysMacroEntity> listMacroByCatalog(Map<String, Object> params) {
-		return sysMacroMapper.listMacroByCatalog(params);
+	public Map<String, List<SysMacroEntity>> listMacroByCatalog(Map<String, Object> params) {
+		Map<String,List<SysMacroEntity>> map = new HashMap<>();
+		List<SysMacroEntity> list = sysMacroMapper.listMacroByCatalog(params);
+		Iterator<SysMacroEntity> it = list.iterator();
+		while(it.hasNext()){
+			SysMacroEntity x = it.next();
+			if(x.getTypeCode()!=null&&!"".equals(x.getTypeCode())){
+				List<SysMacroEntity> tmp;
+				if(map.containsKey(x.getTypeCode())){
+					tmp = map.get(x.getTypeCode());
+				}else{
+					tmp = new ArrayList<>();
+				}
+				tmp.add(x);
+				map.put(x.getTypeCode(),tmp);
+			}
+		}
+		return map;
 	}
 
 }

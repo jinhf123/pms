@@ -23,10 +23,16 @@ public class SysMacroEntity implements Serializable {
 	private Long parentId;
 	
 	/**
-	 * 类型名称
+	 * 类型名称（parent name）
 	 */
 	private String typeName;
-	
+
+	/**
+	 * 类型代码（parent value）
+	 */
+	private String typeCode;
+
+
 	/**
 	 * 字典码
 	 */
@@ -100,6 +106,14 @@ public class SysMacroEntity implements Serializable {
 
 	public void setTypeName(String typeName) {
 		this.typeName = typeName;
+	}
+
+	public String getTypeCode() {
+		return typeCode;
+	}
+
+	public void setTypeCode(String typeCode) {
+		this.typeCode = typeCode;
 	}
 
 	public String getName() {

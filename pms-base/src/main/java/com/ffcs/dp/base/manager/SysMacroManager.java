@@ -25,5 +25,5 @@ public interface SysMacroManager {
 	
 	boolean hasChildren(Long[] id);
 
-    List<SysMacroEntity> listMacroByCatalog(Map<String, Object> params);
+	Map<String, List<SysMacroEntity>> listMacroByCatalog(Map<String, Object> params);
 }

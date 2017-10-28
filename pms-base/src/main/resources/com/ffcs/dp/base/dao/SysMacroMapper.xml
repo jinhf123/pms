@@ -132,7 +132,8 @@
 	<select id="listMacroByCatalog" resultType="SysMacroEntity">
 		SELECT m.id,
 			 m.parent_id,
-			 p.name typeName,
+			 p.name type_Name,
+		     p.value type_Code,
 			 m.name,
 			 m.value,
 			 m.status,

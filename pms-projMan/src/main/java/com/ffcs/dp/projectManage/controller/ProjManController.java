@@ -33,17 +33,13 @@ public class ProjManController extends AbstractController {
     private SysMacroService sysMacroService;
 
 
-
-
-    @RequestMapping("/list")
+/*    @RequestMapping("/list")
     public List<ProjManEntity> list(@RequestBody Map<String, Object> params) {
         if(getUserId() != SystemConstant.SUPER_ADMIN) {
             params.put("userIdCreate", getUserId());
         }
         return projManService.listProject(params);
-    }
-
-
+    }*/
 
 
     @RequestMapping("/dataGrid")
@@ -55,15 +51,11 @@ public class ProjManController extends AbstractController {
     }
 
 
-
-    //查找所属项目组下拉框选项
-    @RequestMapping("/projGroup")
-    public List<SysMacroEntity> projGroup(@RequestBody Map<String, Object> params) {
-        if(getUserId() != SystemConstant.SUPER_ADMIN) {
-            params.put("userIdCreate", getUserId());
-        }
-        return sysMacroService.listMacroByCatalog(params);
+    //查找已归档项目列表
+    @RequestMapping("/archiveDataGrid")
+    public List<ProjManEntity> archiveDataGrid(@RequestBody Map<String, Object> params) {
+        params.put("userIdCreate", getUserId());
+        return projManService.listArchiveProject(params);
     }
-
 
 }

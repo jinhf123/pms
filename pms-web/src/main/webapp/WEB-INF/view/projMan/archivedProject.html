@@ -25,15 +25,15 @@
                      :class="{'active-project':(project.projId===activeProject.projId)}">
 
                     <div class=" col-md-12 column">
-                        <div class="col-md-2 column projList-right">
+                        <div class="col-md-2 column projInfo-left">
                             <span class="subTitle">
-                                {{project.startDate}}~{{project.endDate}}
+                                {{project.startDate.substr(0,10)}}~{{project.endDate.substr(0,10)}}
                             </span>
                         </div>
-                        <div class="col-md-8 column projList-left" @click="showDetails( project )">
+                        <div class="col-md-8 column projInfo-center" @click="showDetails( project )">
                             {{project.projName}}
                         </div>
-                        <div class="col-md-2 column projList-right">
+                        <div class="col-md-2 column projInfo-right">
                             <span class="subTitle">
                                 大项目经理：{{project.bigProjManager}}
                             </span>

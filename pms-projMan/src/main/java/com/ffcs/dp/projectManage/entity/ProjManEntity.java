@@ -33,6 +33,7 @@ public class ProjManEntity implements Serializable {
     private String unFinishTask;
     private String completRate;
 
+    private String bigProjManager;
 
     public ProjManEntity() {
         super();
@@ -197,5 +198,13 @@ public class ProjManEntity implements Serializable {
 
     public void setCompletRate(String completRate) {
         this.completRate = completRate;
+    }
+
+    public String getBigProjManager() {
+        return bigProjManager;
+    }
+
+    public void setBigProjManager(String bigProjManager) {
+        this.bigProjManager = bigProjManager;
     }
 }

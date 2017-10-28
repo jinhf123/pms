@@ -14,10 +14,6 @@ public class ProjManManagerImpl implements ProjManManager {
     @Autowired
     private ProjManMapper projManMapper;
 
-    @Override
-    public List listProject(Long userId) {
-        return null;
-    }
 
     @Override
     public List<ProjManEntity> listProject(Map<String, Object> params) {
@@ -25,22 +21,8 @@ public class ProjManManagerImpl implements ProjManManager {
     }
 
     @Override
-    public ProjManEntity getProjectById(Long id) {
-        return null;
+    public List<ProjManEntity> listArchiveProject(Map<String, Object> params)  {
+        return projManMapper.listArchiveProject(params);
     }
 
-    @Override
-    public int saveProject(ProjManEntity project) {
-        return 0;
-    }
-
-    @Override
-    public int updateProject(ProjManEntity project) {
-        return 0;
-    }
-
-    @Override
-    public int batchRemove(Long[] id) {
-        return 0;
-    }
 }

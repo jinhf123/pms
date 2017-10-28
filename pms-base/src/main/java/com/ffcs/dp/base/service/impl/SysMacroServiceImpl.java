@@ -71,7 +71,7 @@ public class SysMacroServiceImpl implements SysMacroService {
 	}
 
 	@Override
-	public List<SysMacroEntity> listMacroByCatalog(Map<String, Object> params) {
+	public Map<String, List<SysMacroEntity>> listMacroByCatalog(Map<String, Object> params) {
 		return sysMacroManager.listMacroByCatalog(params);
 	}
 

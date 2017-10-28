@@ -1,7 +1,9 @@
 package com.ffcs.dp.base.controller;
 
 import java.util.List;
+import java.util.Map;
 
+import com.ffcs.dp.common.constant.SystemConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -86,5 +88,16 @@ public class SysMacroController extends AbstractController {
 	public R batchRemove(@RequestBody Long[] id) {
 		return sysMacroService.batchRemove(id);
 	}
-	
+
+
+
+	//查找下拉框选项数据
+	@RequestMapping("/getMacroByCatalog")
+	public Map<String, List<SysMacroEntity>> getMacroByCatalog(@RequestBody Map<String, Object> params) {
+		if(getUserId() != SystemConstant.SUPER_ADMIN) {
+			params.put("userIdCreate", getUserId());
+		}
+		return sysMacroService.listMacroByCatalog(params);
+	}
+
 }

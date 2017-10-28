@@ -17,4 +17,5 @@ public interface ProjManMapper extends BaseMapper<ProjManEntity> {
 
     List<ProjManEntity> listProject(Map<String, Object> params);
 
+    List<ProjManEntity> listArchiveProject(Map<String, Object> params);
 }

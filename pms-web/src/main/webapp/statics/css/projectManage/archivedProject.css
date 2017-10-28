@@ -82,11 +82,6 @@ body{
 
 
 
-
-
-
-
-
 .projList{ padding-top: 20px;}
 .projList .divider {
     height: 1px;
@@ -95,3 +90,17 @@ body{
     background-color: #e5e5e5;
 }
 .projList:hover,.projList:active{background-color: #d7d7d7;}
+
+
+.projInfo-left{width: 165px;}
+.projInfo-center{width: calc(100% - 300px);}
+.projInfo-right{width: 135px;}
+
+
+
+
+
+
+
+
+

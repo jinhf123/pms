@@ -21,11 +21,11 @@ function initialPage() {
 
 
 function getGrid() {
-   /* console.log("获取列表 \tgroup:"+ vm.activeGroup.value +"\ttype:"+ vm.activeType.value+"\tkeyword:"+ vm.keyword);
+    // console.log("获取列表 \tgroup:"+ vm.activeGroup.value +"\ttype:"+ vm.activeType.value+"\tkeyword:"+ vm.keyword);
     $.ajax({
-        url: '../../projMan/project/dataGrid?_' + $.now(),
+        url: '../../projMan/project/archiveDataGrid?_' + $.now(),
         data: JSON.stringify({
-            "group" : vm.activeGroup.value,
+            "group" : vm.groupId,
             "type" : vm.activeType.value,
             "keyword": vm.keyword
         }),
@@ -40,7 +40,7 @@ function getGrid() {
             dialogLoading(false);
             dialogMsg(errorThrown, 'error');
         }
-    });*/
+    });
 }
 
 
@@ -61,12 +61,6 @@ var vm = new Vue({
         keyword: parent.vm.keyword,
         groupId: parent.vm.groupId,
         length : 0,
-        activeGroup: {name: '中国电信XXX项目组[2017]', value: '1' },//选中的所属项目组类型
-        groups: [
-            { name: '中国电信XXX项目组[2017]', value: '1' },
-            { name: '中国电信XXX项目组[2016]', value: '2' },
-            { name: '中国电信XXX项目组[2015]', value: '3' }
-        ],
 
         activeType :  { name: '改进类', value: '1', icon: '/statics/img/projectManage/u5.png'},//选中的项目类型
         types: [
@@ -76,19 +70,26 @@ var vm = new Vue({
             { name: '研究类', value: '4', icon: '/statics/img/projectManage/u8.png'}
         ],
 
-        activeProject: {startDate: '2016-07-05', endDate: '2016-07-05',projName: '客户系统集团化升级', bigProjManager: '张三'},//选中的项目类型
+        activeProject: {
+            /*startDate: '2016-07-05', endDate: '2016-07-05',projName: '客户系统集团化升级', bigProjManager: '张三'*/
+            },//选中的项目类型
         projects:[
-            {startDate: '2016-07-05', endDate: '2016-07-05',projName: '客户系统集团化升级', bigProjManager: '张三'},
+           /* {startDate: '2016-07-05', endDate: '2016-07-05',projName: '客户系统集团化升级', bigProjManager: '张三'},
             {startDate: '2016-07-05', endDate: '2016-07-05',projName: '全面风险综合业务系统改造之项目管理系统优化实施', bigProjManager: '张三'},
             {startDate: '2016-07-05', endDate: '2016-07-05',projName: '表外资产管理', bigProjManager: '张三'},
             {startDate: '2016-07-05', endDate: '2016-07-05',projName: '关联与内部交易系统二期', bigProjManager: '张三'},
             {startDate: '2016-07-05', endDate: '2016-07-05',projName: '押品管理和动态估值系统完善', bigProjManager: '张三'},
             {startDate: '2016-07-05', endDate: '2016-07-05',projName: 'IFRS9减值与估值', bigProjManager: '张三'},
             {startDate: '2016-07-05', endDate: '2016-07-05',projName: '非现场审计系统建设', bigProjManager: '张三'},
-            {startDate: '2016-07-05', endDate: '2016-07-05',projName: '核算三期', bigProjManager: '张三'}
+            {startDate: '2016-07-05', endDate: '2016-07-05',projName: '核算三期', bigProjManager: '张三'}*/
         ]
     },
     methods : {
+        query:function(){
+            console.log("点击查询按钮查询已归档项目列表 \tkeyword=" + vm.keyword + "  groupId="+ vm.groupId);
+            //alert("点击查询按钮查询已归档项目列表 \tkeyword=" + vm.keyword + "  groupId="+ vm.groupId);
+            getGrid();
+        },
         selectType: function(type){
             vm.activeType = type;
         },

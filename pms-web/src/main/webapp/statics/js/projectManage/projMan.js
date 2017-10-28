@@ -14,6 +14,7 @@ function initialPage(){
         vm.styleObj.height = ($(window).height()-65)+"px";
         $(".dropdown-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     });
+    getProjGroups();
 }
 
 function getNotice(){//获取未读通知列表
@@ -34,6 +35,27 @@ function getNotice(){//获取未读通知列表
     });
 }
 
+//获取项目类型数据
+function getProjGroups() {
+    $.ajax({
+        url: '/sys/macro/getMacroByCatalog?_' + $.now(),  //'../../projMan/project/projGroup?_' + $.now(),
+        data: JSON.stringify({
+            "typeCodes": ['projType','projGroup']
+        }),
+        type: "post",
+        dataType: "json",
+        contentType: 'application/json',
+        success: function (data) {
+            debugger;
+            //vm.types = data.projType
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            dialogLoading(false);
+            dialogMsg(errorThrown, 'error');
+        }
+    });
+}
+
 var vm = new Vue({
     el:'#project',
     data: {
@@ -46,7 +68,7 @@ var vm = new Vue({
         unReadNotice:0,
         noticeDate:[],
         //初始化默认展示页面
-        iframeSrc:"projectList2.html",
+        iframeSrc:"projectList.html",
         iframeId:"projectList",
         iframeName:"projectList",
         //子页面iframe的vm
@@ -128,7 +150,7 @@ var vm = new Vue({
         selectTab: function (type) {
             switch (type){
                 case 1:
-                    vm.iframeSrc="projectList2.html";
+                    vm.iframeSrc="projectList.html";
                     vm.iframeId="projectList";
                     vm.iframeName="projectList";
                     break;

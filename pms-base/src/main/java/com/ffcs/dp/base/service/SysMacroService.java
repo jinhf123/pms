@@ -24,5 +24,5 @@ public interface SysMacroService {
 	
 	R batchRemove(Long[] id);
 
-	List<SysMacroEntity> listMacroByCatalog(Map<String, Object> params);
+	Map<String, List<SysMacroEntity>> listMacroByCatalog(Map<String, Object> params);
 }
