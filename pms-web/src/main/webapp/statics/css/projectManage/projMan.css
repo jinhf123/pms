@@ -1,0 +1,139 @@
+body{
+    font-family: "微软雅黑 Regular", "微软雅黑", sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    font-style: normal;
+    color: #333333;
+    overflow-y: hidden;
+    overflow-x: visible;
+}
+.subTitle{
+    font-size: 13px;
+    font-style: normal;
+    color: #999999;
+}
+
+.column{
+    padding-left:0;
+    padding-right: 0;
+}
+
+.fa-color{
+    color: #1cae99
+}
+
+.float-right{
+    float: right;
+    text-align: right;
+}
+
+.display-flex{
+    display: inline-flex;
+}
+
+.transparent-btn {
+    display: inline-block;
+    margin: 4px 0;
+    padding: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.4285;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+
+/*下拉按钮组样式*/
+.dropdown-group{
+    display: inline-flex;
+    border: 1px solid rgb(221, 221, 221);
+    border-radius: 4px;
+}
+
+
+/*搜索输入框样式*/
+.search-div{
+    width: 230px;
+}
+.search-div > input{
+    padding: 0;
+    border: 0;
+    width: 0;
+    transition:width 2s;
+    -moz-transition:width 2s; /* Firefox 4 */
+    -webkit-transition:width 2s; /* Safari and Chrome */
+    -o-transition:width 2s; /* Opera */
+    /*display: none;*/
+}
+.search-div:active > input{
+    /*display: block;*/
+    width: 200px;
+    border: 1px solid #ccc;
+}
+.search-div:hover > input{
+    /*display: block;*/
+    width: 200px;
+    border: 1px solid #ccc;
+}
+.search-div>button{
+    position:absolute;
+    left: 200px;
+}
+.search-input > input{
+    width: 200px;
+    border: 1px solid #ccc;
+}
+
+
+/*页签样式*/
+.top-tabs{
+    border-bottom:0;
+}
+.top-tabs>li>a:hover{
+    border-color:#eee
+}
+.top-tabs > li > a:focus, .top-tabs > li > a:hover {
+    text-decoration: none;
+    background-color: #fff;
+}
+.top-tabs > li.active > a, .top-tabs > li.active > a:focus, .top-tabs > li.active > a:hover {
+    font-size: 16px;
+    color: #333333;
+    cursor: default;
+    background-color: #fff;
+    border: 0;
+    border-bottom-color: transparent;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

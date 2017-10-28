@@ -175,7 +175,6 @@ var vm = new Vue({
             getGrid();
         },
         showNotice:function (notice){
-            dialogAlert("跳转到任务详细页面！taskId="+notice.taskId);
             $.ajax({
                 url: '../../projMan/notice/readNotice?_' + $.now(),
                 data: JSON.stringify({
@@ -188,8 +187,9 @@ var vm = new Vue({
                 success: function (data) {
                     if(data.success){
                         vm.getTaskInfo(notice.taskId);
+                        getNotice();
                     }else{
-                        dialogAlert("读取消息失败！错误信息："+msg,"error")
+                        dialogAlert("读取消息失败！错误信息："+data.msg,"error")
                     }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -202,27 +202,29 @@ var vm = new Vue({
             $.ajax({
                 url: '../../projMan/projDetail/getTaskInfo?_' + $.now(),
                 data: JSON.stringify({
-                    "taskId" : taskId,
+                    "taskId" : taskId
                 }),
                 type: "post",
                 dataType: "json",
                 contentType: 'application/json',
                 success: function (data) {
-                    toUrl("taskDetails.html?projId="+data.projId+"&stepId="+data.stepId+""+"&stepName="+data.stepName+"&taskId="+taskId);
+                    window.open("taskDetails.html?projId="+data.projId+"&stepId="+data.stepId+""+"&stepName="+data.stepName+"&taskId="+taskId,
+                        '项目详情', 'height=500, width=1000, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=0, status=no');
+                    // toUrl("taskDetails.html?projId="+data.projId+"&stepId="+data.stepId+""+"&stepName="+data.stepName+"&taskId="+taskId);
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                 }
             });
         },
         location:function(act){
-            var url;
             if(act==="add"){
                 //todo 跳转到新增页面
+                // window.location=url;
             }
             if(act==="log"){
-                url = "workLog.html";
+                //window.location("workLog.html");
+                window.open('workLog.html', '工作日志', 'height=500, width=1000, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=0, status=no');
             }
-            window.location=url;
         },
         showDetails:function(project){//跳转到项目详情页面
             vm.activeProject = project;

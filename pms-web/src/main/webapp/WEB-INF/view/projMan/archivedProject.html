@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>归档项目</title>
+    #parse("include/header.html")
+    <link rel="stylesheet" href="/statics/css/projectManage/archivedProject.css">
+</head>
+<body>
+<div id="archivedProject" class="container-fluid" v-cloak>
+
+        <div class="col-md-12 column" style="height: 35px;">
+            <div class="col-md-4 column subTitle" style="padding-top: 10px;">
+                归档项目共有<span style="color:#dc6d67">{{length}}</span>个
+            </div>
+            <div class="col-md-8 column type-group">
+                <div v-for="type in types" class="type-div" :class="{'active':type.value===activeType.value}"
+                     @click="selectType(type)">
+                    {{type.name}}&nbsp;<span style="color:#dc6d67">1</span>个
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 column projGrid" :style="styleObject">
+            <div class="project-slimScroll">
+                <div v-for="project in projects" class="row clearfix projList"
+                     :class="{'active-project':(project.projId===activeProject.projId)}">
+
+                    <div class=" col-md-12 column">
+                        <div class="col-md-2 column projList-right">
+                            <span class="subTitle">
+                                {{project.startDate}}~{{project.endDate}}
+                            </span>
+                        </div>
+                        <div class="col-md-8 column projList-left" @click="showDetails( project )">
+                            {{project.projName}}
+                        </div>
+                        <div class="col-md-2 column projList-right">
+                            <span class="subTitle">
+                                大项目经理：{{project.bigProjManager}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-12 column divider"></div>
+                </div>
+            </div>
+        </div>
+
+</div>
+#parse("include/footer.html")
+<script src="/statics/js/projectManage/archivedProject.js?_${date.systemTime}"></script>
+</body>
+</html>
