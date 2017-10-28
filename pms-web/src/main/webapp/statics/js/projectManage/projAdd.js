@@ -47,7 +47,17 @@ var vm = new Vue({
             type: ['projGroupManager', 'bigProjManager', 'projManager', 'demaManager', 'techManager', 'projMembers'],
             updateMebmersId: [],
             oldUpdateMembersId: [],
-            memberIndex: null
+            memberIndex: null,
+            memberInfo: {
+                userId: null,
+                username: null,
+                position: null,
+                description: null,
+                isOutsource: null,
+                cost: null,
+                time: 0,
+                workTime: [{start: "", end: "", rate: 0}]
+            }
         },
         methods: {
             dateDefind: function () {
@@ -66,6 +76,7 @@ var vm = new Vue({
 
                 $('#startDate').datetimepicker()
                     .on('hide', function (ev) {
+                        console.log(ev);
                         var value = $("#startDate").val();
                         $('#endDate').datetimepicker("setStartDate", value);
                         self.startDate = value;
@@ -215,20 +226,35 @@ var vm = new Vue({
                                 var cost = data.data[index];
                                 //TODo:判断数据为空情况
                                 if ('userId' in cost) {
-                                    this.allMembersId[cost['userId']].userId = cost.userId;
-                                    this.allMembersId[cost['userId']].username = cost.username;
-                                    this.allMembersId[cost['userId']].description = cost.description;
-                                    this.allMembersId[cost['userId']].cost = cost.cost;
-                                    this.allMembersId[cost['userId']].isOutsource = cost.isOutsource;
-                                    this.allMembersId[cost['userId']].time = 0;
-                                    this.allMembersId[cost['userId']].workTime = [{
-                                        startDate: "",
-                                        endDate: ""
+                                    // self.allMembersId[cost['userId']].userId = cost.userId;
+                                    // self.allMembersId[cost['userId']].username = cost.username;
+                                    // self.allMembersId[cost['userId']].description = cost.description;
+                                    // self.allMembersId[cost['userId']].cost = cost.cost;
+                                    // self.allMembersId[cost['userId']].isOutsource = cost.isOutsource;
+                                    // self.allMembersId[cost['userId']].time = 0;
+                                    // self.allMembersId[cost['userId']].workTime = [{
+                                    //     startDate: "",
+                                    //     endDate: "",
+                                    //     rate: 0
+                                    // }];
+                                    var member = {};
+                                    member.position = self.allMembersId[cost['userId']].position
+                                    member.userId = cost.userId;
+                                    member.username = cost.username;
+                                    member.description = cost.description;
+                                    member.cost = cost.cost;
+                                    member.isOutsource = cost.isOutsource;
+                                    member.time = (0).toFixed(3);
+                                    member.workTime = [{
+                                        start: "",
+                                        end: "",
+                                        rate: 0
                                     }];
+                                    Vue.set(self.allMembersId, cost['userId'], member);
                                 }
                             }
-                            this.memberIndex = Object.keys(this.allMembersId)[0];
-                            this.showModal = true;
+                            self.memberIndex = Object.keys(self.allMembersId)[0];
+                            self.showModal = true;
                         }, function (err) {
                             console.log(err);
                         });
@@ -238,7 +264,8 @@ var vm = new Vue({
                 }
             },
             close: function () {
-
+                // this.allMembersId[this.memberIndex] = this.memberInfo;
+                this.showModal = false;
             },
             changeMembers: function (val, oldVal, type) {
                 var addItem = [];
@@ -280,17 +307,22 @@ var vm = new Vue({
                 }
             },
             addWorkTime: function () {
-                var member =  JSON.parse(JSON.stringify(this.allMembersId));
-                member[this.memberIndex].workTime.push({startDate: "", endDate: ""});
-                this.allMembersId = member;
+                // var member = JSON.parse(JSON.stringify(this.allMembersId));
+                // member[this.memberIndex].workTime.push({startDate: "", endDate: "", rate: 0});
+                // this.allMembersId = member;
+                // var member =  JSON.parse(JSON.stringify(this.allMembersId[this.memberIndex]));
+                // member.workTime.push({startDate: "", endDate: "", rate: 0})
+                // Vue.set(this.allMembersId, this.memberIndex, member);
+                this.memberInfo.workTime.push({start: "", end: "", rate: 0});
             },
             changeWorkTime: function (index) {
                 this.memberIndex = index;
             },
+            changeUserTime: function () {
+                console.log(11);
+            },
             test: function () {
-                var member =  JSON.parse(JSON.stringify(this.allMembersId));
-                member[this.memberIndex].time = 3;
-                this.allMembersId = member;
+                console.log(this.allMembersId);
             }
         },
         mounted: function () {
@@ -331,9 +363,33 @@ var vm = new Vue({
             },
             projMembersId: function (val, oldVal) {
                 this.changeMembers(val, oldVal, "projMembers");
+            },
+            memberIndex: function (val, oldVal) {
+                // if (oldVal !== null) {
+                //     this.allMembersId[oldVal] = this.memberInfo;
+                // }
+                this.memberInfo = this.allMembersId[val];
+            },
+            'memberInfo.workTime': {
+                handler: function (val) {
+                    var time = 0;
+                    for (var index in val) {
+                        var start = val[index].start;
+                        var end = val[index].end;
+                        var rate = val[index].rate / 100;
+                        var aDay = 24 * 60 * 60 * 1000;
+                        var startDate = new Date(Date.parse(start.replace(/-/g, "/")));
+                        var endDate = new Date(Date.parse(end.replace(/-/g, "/")));
+                        var workDate = (endDate - startDate) / aDay;
+                        if (!isNaN(rate) && !isNaN(workDate)) {
+                            time = time + workDate * rate;
+                        }
+                    }
+                    this.memberInfo.time = (time / 30).toFixed(3);
+                },
+                deep: true
             }
-        }
-        ,
+        },
         computed: {
             projGroupManagerName: function () {
                 var names = "";
@@ -397,20 +453,7 @@ var vm = new Vue({
                     names = names.substring(0, names.length - 1);
                 }
                 return names;
-            },
-            // allMembersId: function () {
-            //     var allMembers = {};
-            //     for (var i = 0; i < this.type.length; i++) {
-            //         for (var j = 0; j < this[this.type[i] + 'Id'].length; j++) {
-            //             var id = this[this.type[i] + 'Id'][j];
-            //             if (!(id in allMembers )) {
-            //                 allMembers[id] = {position: []};
-            //             }
-            //             allMembers[id].position.push(this.type[i]);
-            //         }
-            //     }
-            //     return allMembers;
-            // }
+            }
         }
     })
 ;
@@ -443,19 +486,52 @@ Vue.directive('datetimepicker', {
             todayBtn: 1,
             autoclose: 1
         });
+
         $(el).datetimepicker().on('hide', function (ev) {
             if (binding.value.length === 2) {
-                vm[binding.value[0]][binding.value[1]].defaultDate = ev.date.yyyymmdd();
+                vm[binding.value[0]][binding.value[1]].defaultDate = $(el).val();
             } else if (binding.value.length === 3) {
-                var id = binding.value[0];
+                var id = vm.memberIndex;
                 var type = binding.value[1];
                 var index = binding.value[2];
-                vm.allMembersId[id].workTime[index][type] =  ev.date.yyyymmdd();
+                var startDate = vm.memberInfo.workTime[index]["start"];
+                var endDate = vm.memberInfo.workTime[index]["end"];
+                if (type === "start") {
+                    if (endDate === "" || endDate === null) {
+                        vm.memberInfo.workTime[index][type] = $(el).val();
+
+                    } else {
+                        var end = new Date(Date.parse(endDate.replace(/-/g, "/")));
+                        var newDate = new Date(Date.parse($(el).val().replace(/-/g, "/")));
+                        if (newDate > end) {
+                            alert("开始时间大于结束时间");
+                            vm.memberInfo.workTime[index][type] = "";
+                            el.value = '';
+                        } else {
+                            vm.memberInfo.workTime[index][type] = $(el).val();
+                        }
+                    }
+
+                } else if (type === "end") {
+                    if (startDate === "" || startDate === null) {
+                        vm.memberInfo.workTime[index][type] = $(el).val();
+                    } else {
+                        var start = new Date(Date.parse(startDate.replace(/-/g, "/")));
+                        var newDate = new Date(Date.parse($(el).val().replace(/-/g, "/")));
+                        if (newDate < start) {
+                            alert("结束时间小于结束时间");
+                            el.value = '';
+                        } else {
+                            vm.memberInfo.workTime[index][type] = $(el).val();
+                        }
+                    }
+                }
+
             }
         });
 
     },
-    update: function (el) {
+    update: function (el, binding) {
         if (vm.startDate !== null) {
             $(el).datetimepicker("setStartDate", vm.startDate);
         }

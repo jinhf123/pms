@@ -285,10 +285,44 @@
             </table>
         </div>
     </div>
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <label>人力资源列表</label>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th style="width: 10%">姓名</th>
+                    <th style="width: 20%">职位</th>
+                    <th style="width: 20%">岗位</th>
+                    <th style="width: 10%">是否外包</th>
+                    <th style="width: 10%">成本【元/月】</th>
+                    <th style="width: 10%">预计时长【人月】</th>
+                    <th style="width: 20%">预计成本【元】</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="item in allMembersId" v-if="typeof(item.username) !== 'undefined'">
+                    <td style="width: 10%">{{item.username}}</td>
+                    <td style="width: 20%">{{item.position}}</td>
+                    <td style="width: 20%">{{item.description}}</td>
+                    <td v-if="item.isOutsource === '1'" style="width: 10%">是</td>
+                    <td v-else style="width: 10%">否</td>
+                    <td style="width: 15%">{{item.cost}}</td>
+                    <td style="width: 10%">{{item.time}}</td>
+                    <td style="width: 15%">{{item.cost * item.time}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-    <modal v-if="showModal" @close="showModal = false">
+    <modal v-if="showModal" >
         <div slot="body" class="container-fluid human-config">
-            <div class="config-detail-cancel" @click="showModal=false">
+            <div class="config-detail-cancel" @click="close">
                 <img src="/statics/img/project_add_cancel.png" alt="">
             </div>
             <div class="container-fluid col-md-8 human-config-left">
@@ -359,9 +393,18 @@
                     </div>
                     <template v-if="typeof(memberIndex) !== 'undefined' && memberIndex!==null ">
                         <div class="config-detail-info">
-                            <div><label>岗位：</label>{{allMembersId[memberIndex].description}}</div>
-                            <div><label>职位：</label>{{allMembersId[memberIndex].position}}</div>
-                            <div><label>是否外包：</label>{{allMembersId[memberIndex].isOutsource}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>成本：</label>{{allMembersId[memberIndex].cost}}元/月
+                            <div><label>岗位：</label>{{memberInfo.description}}</div>
+                            <div><label>职位：</label>{{memberInfo.position}}</div>
+                            <div>
+                                <label>是否外包：</label>
+                                <template v-if="memberInfo.isOutsource === '1'">
+                                    是
+                                </template>
+                                <template v-else>
+                                    否
+                                </template>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <label>成本：</label>{{memberInfo.cost}}元/月
                             </div>
                         </div>
                         <div class="config-detail-time">
@@ -369,23 +412,22 @@
                             <a href="javascript:;" @click="addWorkTime">新增投入时段</a>
                         </div>
                         <div class="config-detail-time-info">
-
-                            <div v-for="(item,index) in allMembersId[memberIndex].workTime">
+                            <div v-for="(item,index) in memberInfo.workTime">
                                 <div class="col-md-4">
-                                    <input class="form-control" v-datetimepicker="[memberIndex, 'startDate', index]"
-                                           v-model="item.startDate">
+                                    <input class="form-control" v-datetimepicker="[memberIndex, 'start', index]"
+                                           v-model="item.start"  placeholder="请选开始时间" readonly>
                                 </div>
                                 <div class="col-md-4">
-                                    <input class="form-control" v-datetimepicker="[memberIndex, 'endDate', index]"
-                                           v-model="item.endDate">
+                                    <input class="form-control" v-datetimepicker="[memberIndex, 'end', index]"
+                                           v-model="item.end"  placeholder="请选结束时间" readonly>
                                 </div>
-                                <div class="col-md-3"><input class="form-control"></div>
-                                <img src="/statics/img/step_delete.png" alt="">
+                                <div class="col-md-3"><input class="form-control" placeholder="投入比" v-model.lazy="item.rate" ></div>
+                                <img src="/statics/img/step_delete.png" alt="" >
                             </div>
                         </div>
                         <div class="config-detail-time-button">
-                            <button @click="test">完成配置</button>
-                            <button class="cancel">取消</button>
+                            <button @click="close">完成配置</button>
+                            <button class="cancel" @click="close">取消</button>
                         </div>
                     </template>
                 </div>
@@ -398,20 +440,11 @@
         <div class="modal-mask">
             <div class="modal-wrapper">
                 <div class="modal-container">
-
                     <div class="modal-body">
                         <slot name="body">
                             default body
                         </slot>
                     </div>
-                    <!--<div class="modal-footer">-->
-                    <!--<slot name="footer">-->
-                    <!--default footer-->
-                    <!--<button class="modal-default-button" @click="$emit('close')">-->
-                    <!--OK-->
-                    <!--</button>-->
-                    <!--</slot>-->
-                    <!--</div>-->
                 </div>
             </div>
         </div>
