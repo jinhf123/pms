@@ -54,14 +54,14 @@
 
                     <div class="col-md-4 column">
                         <div class="btn-toolbar pull-right display-flex">
-                            <div class="btn-group search-div display-flex" :class="{'search-input':keyWord!==''?true:false}">
-                                <input v-model="keyWord" @keyup.enter="load" class="form-control"
+                            <div class="btn-group search-div display-flex" :class="{'search-input':keyword!==''?true:false}">
+                                <input v-model="keyword" @keyup.enter="load" class="form-control"
                                        placeholder="请输入查询关键字" />
                                 <button class="transparent-btn" type="button" title="查询" @click="query" >
                                     <img :src="icon_Search">
                                 </button>
                             </div>
-                            <button class="transparent-btn" type="button" title="新建项目"  @click="location('add')">
+                            <button class="transparent-btn" type="button" title="新建项目"  @click="addProject">
                                 <img :src="icon_Add">
                             </button>
                             <div class="btn-group">
@@ -87,7 +87,7 @@
                                     </ul>
                                 </div>
                             </div>
-                            <button class="transparent-btn" type="button" title="工作日志" @click="location('log')">
+                            <button class="transparent-btn" type="button" title="工作日志" @click="openWorkLog">
                                 <img :src="icon_Log">
                             </button>
                         </div>

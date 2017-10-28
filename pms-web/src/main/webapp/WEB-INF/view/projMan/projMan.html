@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html>
 <head>
     <title>项目管理</title>
     #parse("include/header.html")
@@ -7,7 +8,7 @@
 <body>
 
 
-<div id="project" class="container-fluid" v-cloak>
+<div id="project" v-cloak>
     <div>
         <div class="col-md-12 column">
             <div class="tabbable" id="tabs-551353">
@@ -21,7 +22,7 @@
                             </button>
                             <ul class="dropdown-menu">
                                 <li v-for="group in groups">
-                                    <a @click="selectGroup(group)" href="#">{{group.name}}</a>
+                                    <a @click="selectGroup(group)" >{{group.name}}</a>
                                 </li>
                             </ul>
                         </div>
@@ -44,20 +45,40 @@
                     </div>
                     <div class="col-md-4 column">
                         <div class="btn-toolbar pull-right display-flex">
-                            <div class="btn-group search-div display-flex" :class="{'search-input':keyWord!==''?true:false}">
-                                <input v-model="keyWord" @keyup.enter="load" class="form-control"
+                            <div class="btn-group search-div display-flex" :class="{'search-input':keyword!==''?true:false}">
+                                <input v-model="keyword" @keyup.enter="query" class="form-control"
                                        placeholder="请输入查询关键字" />
                                 <button class="transparent-btn" type="button" title="查询" @click="query" >
                                     <img :src="icon_Search">
                                 </button>
                             </div>
-                            <button class="transparent-btn" type="button" title="新建项目"  @click="location('add')">
+                            <button class="transparent-btn" type="button" title="新建项目"  @click="addProject">
                                 <img :src="icon_Add">
                             </button>
-                            <button class="transparent-btn" type="button" title="通知">
-                                <img :src="icon_Notice">
-                            </button>
-                            <button class="transparent-btn" type="button" title="工作日志" @click="location('log')">
+                            <div class="btn-group">
+                                <button type="button" class="btn transparent-btn dropdown-toggle btn-lg"
+                                        title="通知" data-toggle="dropdown">
+                                    <img :src="icon_Notice">
+                                    <span v-show="unReadNotice!==0" class="unread-num">{{unReadNotice}}</span>
+                                </button>
+
+                                <div class="dropdown-menu dropdown-notice" role="menu">
+                                    <ul class="dropdown-slimScroll column">
+                                        <li v-for="(notice,index) in noticeDate" class="notice-li">
+                                            <div class="notice" @click="showNotice(notice)">
+                                                <div class="display-flex">
+                                                    <span :title="notice.noticeContent" class="notice-content">
+                                                        {{index+1}}.&nbsp;{{notice.noticeContent}}
+                                                    </span>
+                                                    <span class="notice-date">{{notice.noticeDate}}&nbsp;</span>
+                                                </div>
+                                                <div class="divider"></div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <button class="transparent-btn" type="button" title="工作日志" @click="openWorkLog">
                                 <img :src="icon_Log">
                             </button>
                         </div>
@@ -80,3 +101,4 @@
 #parse("include/footer.html")
 <script src="/statics/js/projectManage/projMan.js?_${date.systemTime}"></script>
 </body>
+</html>

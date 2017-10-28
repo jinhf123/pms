@@ -3,7 +3,7 @@
 <head>
     <title>项目风险问题管理</title>
     #parse("include/header.html")
-    <link rel="stylesheet" href="${rc.contextPath}/statics/css/projectManage/projRiskIssue.css">
+    <link rel="stylesheet" href="/statics/css/projectManage/projRiskIssue.css">
 </head>
 <body>
 <div id="dpLTE" class="clearfix" v-cloak>
@@ -20,13 +20,13 @@
             </div>
             <div class="input-group delSpan">
                 <span class="glyphicon glyphicon-remove unDisplay"
-                    onclick="delPropose"></span>
+                    onclick="delPropose()"></span>
                 <input v-model="param.proposeName" class="form-control" placeholder="所有提出人" style="width: 100px;"
                       @click="selectStaff('proposeName')" readonly />
             </div>
             <div class="input-group delSpan">
                 <span class="glyphicon glyphicon-remove unDisplay"
-                      onclick="delOnCharge"></span>
+                      onclick="delOnCharge()"></span>
                 <input v-model="param.onChargeName" class="form-control" placeholder="所有负责人" style="width: 100px;"
                        @click="selectStaff('onChargeName')" readonly/>
             </div>
@@ -41,8 +41,8 @@
         </div>
         <div class="col-md-3 column">
             <div class="btn-toolbar pull-right display-flex" >
-                <div class="btn-group search-div display-flex" :class="{'search-input':param.keyWord!==''?true:false}">
-                    <input v-model="param.keyWord" @keyup.enter="load" class="form-control" placeholder="请输入查询关键字!" />
+                <div class="btn-group search-div display-flex" :class="{'search-input':param.keyword!==''?true:false}">
+                    <input v-model="param.keyword" @keyup.enter="load" class="form-control" placeholder="请输入查询关键字!" />
                     <button class="transparent-btn" type="button" title="查询" @click="query" >
                         <img :src="icon_Search">
                     </button>
@@ -85,7 +85,7 @@
             <tr>
                <td class="formTitle">备注:</td>
                <td class="formValue" colspan="3">
-                   <textarea class="form-control" style="width: 700px;height: 80px;" v-model="remark" :readonly="isOperate"></textarea>
+                   <textarea class="form-control" title="" style="width: 700px;height: 80px;" v-model="remark" :readonly="isOperate"></textarea>
                </td>
            </tr>
             <tr v-show="isOperate">
@@ -106,6 +106,6 @@
 
 </div>
 #parse("include/footer.html")
-<script src="${rc.contextPath}/statics/js/projectManage/projRiskIssue.js?_${date.systemTime}"></script>
+<script src="/statics/js/projectManage/projRiskIssue.js?_${date.systemTime}"></script>
 </body>
 </html>

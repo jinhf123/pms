@@ -37,10 +37,10 @@
             <if test=" onChargeStaff != null and onChargeStaff != '' ">
                 and R.ON_CHARGE_STAFF = #{onChargeStaff}
             </if>
-            <if test=" keyWord != null and keyWord != '' ">
-                and (R.CONTENT LIKE '%'||#{keyWord}||'%'
-                or R.REMARK LIKE '%'||#{keyWord}||'%'
-                or R.RESOLVENT LIKE '%'||#{keyWord}||'%')
+            <if test=" keyword != null and keyword != '' ">
+                and (R.CONTENT LIKE '%'||#{keyword}||'%'
+                or R.REMARK LIKE '%'||#{keyword}||'%'
+                or R.RESOLVENT LIKE '%'||#{keyword}||'%')
             </if>
     </select>
 
@@ -83,10 +83,10 @@
         <if test=" onChargeStaff != null and onChargeStaff != '' ">
             and R.ON_CHARGE_STAFF = #{onChargeStaff}
         </if>
-        <if test=" keyWord != null and keyWord != '' ">
-            and (R.CONTENT LIKE '%'||#{keyWord}||'%'
-            or R.REMARK LIKE '%'||#{keyWord}||'%'
-            or R.RESOLVENT LIKE '%'||#{keyWord}||'%')
+        <if test=" keyword != null and keyword != '' ">
+            and (R.CONTENT LIKE '%'||#{keyword}||'%'
+            or R.REMARK LIKE '%'||#{keyword}||'%'
+            or R.RESOLVENT LIKE '%'||#{keyword}||'%')
         </if>
 
     </select>

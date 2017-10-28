@@ -48,13 +48,13 @@ function getDropdownData() {
 
 
 function getGrid() {
-    console.log("获取列表 \tgroup:"+ vm.activeGroup.value +"\ttype:"+ vm.activeType.value+"\tkeyWord:"+ vm.keyWord);
+    console.log("获取列表 \tgroup:"+ vm.activeGroup.value +"\ttype:"+ vm.activeType.value+"\tkeyword:"+ vm.keyword);
     $.ajax({
         url: '../../projMan/project/dataGrid?_' + $.now(),
         data: JSON.stringify({
             "group" : vm.activeGroup.value,
             "type" : vm.activeType.value,
-            "keyWord": vm.keyWord
+            "keyword": vm.keyword
         }),
         type: "post",
         dataType: "json",
@@ -105,7 +105,7 @@ var vm = new Vue({
 
 
 		// 默认值
-        keyWord : "",
+        keyword : "",
         length : 0,
 
         activeGroup: {name: '中国电信XXX项目组[2017]', value: '1' },//选中的所属项目组类型
@@ -170,8 +170,8 @@ var vm = new Vue({
             getGrid()
         },
         query:function () {
-            console.log("查询按钮" + vm.keyWord);
-            // alert(vm.keyWord);
+            console.log("查询按钮" + vm.keyword);
+            // alert(vm.keyword);
             getGrid();
         },
         showNotice:function (notice){
@@ -179,7 +179,7 @@ var vm = new Vue({
                 url: '../../projMan/notice/readNotice?_' + $.now(),
                 data: JSON.stringify({
                     "noticeId" : notice.noticeId,
-                    "isRead" : 1 ,
+                    "isRead" : 1
                 }),
                 type: "post",
                 dataType: "json",
@@ -216,15 +216,11 @@ var vm = new Vue({
                 }
             });
         },
-        location:function(act){
-            if(act==="add"){
-                //todo 跳转到新增页面
-                // window.location=url;
-            }
-            if(act==="log"){
-                //window.location("workLog.html");
-                window.open('workLog.html', '工作日志', 'height=500, width=1000, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=0, status=no');
-            }
+        addProject: function(){
+            //todo 跳转到新增项目页面
+        },
+        openWorkLog: function(){//打开工作日志窗口
+            window.open('workLog.html', '工作日志', 'height=500, width=1000, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=0, status=no');
         },
         showDetails:function(project){//跳转到项目详情页面
             vm.activeProject = project;

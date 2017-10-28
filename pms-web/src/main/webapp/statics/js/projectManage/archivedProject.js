@@ -21,13 +21,13 @@ function initialPage() {
 
 
 function getGrid() {
-   /* console.log("获取列表 \tgroup:"+ vm.activeGroup.value +"\ttype:"+ vm.activeType.value+"\tkeyWord:"+ vm.keyWord);
+   /* console.log("获取列表 \tgroup:"+ vm.activeGroup.value +"\ttype:"+ vm.activeType.value+"\tkeyword:"+ vm.keyword);
     $.ajax({
         url: '../../projMan/project/dataGrid?_' + $.now(),
         data: JSON.stringify({
             "group" : vm.activeGroup.value,
             "type" : vm.activeType.value,
-            "keyWord": vm.keyWord
+            "keyword": vm.keyword
         }),
         type: "post",
         dataType: "json",
@@ -56,13 +56,11 @@ var vm = new Vue({
         icon_Log    :"/statics/img/projectManage/u4.png",
         icon_FileQuery :"/statics/img/projectManage/u9.png",
         icon_EditTemp  :"/statics/img/projectManage/u10.png",
-
         styleObject:{height: ($(window).height()-45)+'px'},
-
         // 默认值
-        keyWord : "",
+        keyword: parent.vm.keyword,
+        groupId: parent.vm.groupId,
         length : 0,
-
         activeGroup: {name: '中国电信XXX项目组[2017]', value: '1' },//选中的所属项目组类型
         groups: [
             { name: '中国电信XXX项目组[2017]', value: '1' },

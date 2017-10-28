@@ -31,7 +31,7 @@ function getGrid() {
             params.state = vm.param.state;//状态，默认未选中
             params.startDate = vm.param.startDate;//开始时间
             params.endDate = vm.param.endDate;//结束时间
-            params.keyWord = vm.param.keyWord;//关键字
+            params.keyword = vm.param.keyword;//关键字
             return params;
         },
         columns: [{
@@ -196,7 +196,7 @@ vm = new Vue({
             state: "0",//状态，默认未选中
             endDate: formatDate(new Date(), "yyyy-MM-dd"),
             startDate: formatDate(new Date(), "yyyy-MM-dd"),
-            keyWord: ""
+            keyword: ""
         },
         riskId: "",//风险问题编号
         content: "",//风险内容

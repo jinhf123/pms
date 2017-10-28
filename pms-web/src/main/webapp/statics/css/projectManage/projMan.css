@@ -120,7 +120,51 @@ body{
 
 
 
-
+/*通知样式*/
+.unread-num{
+    position: absolute;
+    left: 10px;
+    top: -3px;
+    width: 15px;
+    height: 15px;
+    color: #ffffff;
+    font-size: 11px;
+    border-radius: 10px;
+    background-color: #D85550;
+}
+.dropdown-notice {
+    right: -35px;
+    left: auto;
+    width: 300px;
+    height: 290px
+}
+dropdown-slimScroll
+.notice{
+    height: 35px; padding: 10px 0 0 7px;
+}
+.notice-li{list-style:none;height: 35px; padding: 10px 0 0 7px;}
+.notice-content {
+    text-align: left;
+    width: 240px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.notice-date {
+    text-align: right;
+    width: 50px;
+    font-size: 13px;
+    font-style: normal;
+    color: #999999;
+}
+.notice .divider {
+    height: 1px;
+    overflow: hidden;
+    padding-left: 5px;
+    padding-right: 8px;
+    margin: 3px 5px 2px 0;
+    background-color: #e5e5e5;
+}
 
 
 
