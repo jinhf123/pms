@@ -25,4 +25,14 @@ public class ProjManManagerImpl implements ProjManManager {
         return projManMapper.listArchiveProject(params);
     }
 
+    @Override
+    public int projGroupCount(Map<String, Object> params) {
+        return projManMapper.projGroupCount(params);
+    }
+
+    @Override
+    public int addProjectGroup(Map<String, Object> params) {
+        return projManMapper.addProjectGroup(params);
+    }
+
 }

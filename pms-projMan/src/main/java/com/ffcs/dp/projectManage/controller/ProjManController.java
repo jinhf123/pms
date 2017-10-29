@@ -1,12 +1,12 @@
 package com.ffcs.dp.projectManage.controller;
 
-import com.ffcs.dp.base.entity.SysMacroEntity;
-import com.ffcs.dp.base.service.SysMacroService;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.ffcs.dp.common.annotation.SysLog;
 import com.ffcs.dp.common.constant.SystemConstant;
 import com.ffcs.dp.common.controller.AbstractController;
 import com.ffcs.dp.projectManage.entity.ProjManEntity;
 import com.ffcs.dp.projectManage.service.ProjManService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,9 +28,6 @@ public class ProjManController extends AbstractController {
 
     @Resource
     private ProjManService projManService;
-
-    @Autowired
-    private SysMacroService sysMacroService;
 
 
 /*    @RequestMapping("/list")
@@ -57,5 +54,36 @@ public class ProjManController extends AbstractController {
         params.put("userIdCreate", getUserId());
         return projManService.listArchiveProject(params);
     }
+
+
+
+
+    //新增项目组
+    @SysLog("新增字典-添加项目类型")
+    @RequestMapping("/addProjectGroup")
+    public JSON addProjectGroup(@RequestBody Map<String, Object> params){
+        JSONObject result = new JSONObject();
+        boolean success = true;
+        String msg="";
+        params.put("userId", getUserId());
+        try{
+            //判断项目组名称是否存在
+            int count = projManService.projGroupCount(params);
+            if(count>0){
+                success = false;
+                msg="项目组名称已存在！";
+            }else{
+                projManService.addProjectGroup(params);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            success = false;
+            msg="新增项目组失败！"+e.getMessage();
+        }
+        result.put("success",success);
+        result.put("msg",msg);
+        return result;
+    }
+
 
 }

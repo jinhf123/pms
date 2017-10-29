@@ -2,6 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ffcs.dp.projectManage.dao.ProjManMapper">
 
+	<!--
+
+select ltrim(max(sys_connect_by_path(username, ',')), ',') BIG_PROJ_MANAGER
+  from (select user_id, username, rownum t
+          from pms_sys_user
+         where INSTR((select ',' || '1047,1045,1046' || ',' from dual),
+                     ',' || TRIM(TO_CHAR(user_id)) || ',') > 0)
+connect by prior t = t - 1
+ start with t = 1;
+
+  //todo 待修改，大项目经理为多个人是查询会报错
+	-->
+
 	<!--查找项目列表-->
 	<select id="listProject" resultType="ProjManEntity" parameterType="Map">
 		with ss as
@@ -18,6 +31,9 @@
 			   i.proj_name,
 			   i.belo_proj_group,
 			   i.proj_type,
+		       (select username
+		          from pms_sys_user
+		         where user_id = s.BIG_PROJ_MANAGER) big_proj_manager,
 			   (select count(1)
 				  from pms_proj_risk_issue r
 				 where r.state = 0
@@ -31,6 +47,8 @@
 				  from ss
 				 where ss.proj_id = i.proj_id) complet_Rate
 		  from pms_project_info i
+		  left join pms_proj_stakeholder s
+		    on i.proj_id = s.proj_id
 		 where i.state = 0
            and i.belo_proj_group = #{group}
 		   and i.proj_type = #{type}
@@ -67,5 +85,49 @@
 			and i.proj_name like '%' || #{keyword} || '%'
 		</if>
 	</select>
+
+
+
+	<!--查找项目组名称是否存在-->
+	<select id="projGroupCount" resultType="int" parameterType="Map">
+		SELECT count(1)
+		FROM pms_sys_macro m
+		left join pms_sys_macro p
+		on m.parent_id = p.id
+		WHERE m.type = 1
+		and m.status = 1
+		and p.type = 0
+		and p.value = #{typeCodes}
+		and m.name = #{typeName}
+	</select>
+
+	<!--插入项目组名称到通用字典表-->
+	<insert id="addProjectGroup" parameterType="Map">
+		<selectKey keyProperty="id" resultType="long" order="BEFORE">
+			select pms_sys_macro_seq.nextval from dual
+		</selectKey>
+		INSERT INTO pms_sys_macro (
+		id,
+		parent_id,
+		name,
+		value,
+		status,
+		type,
+		order_num,
+		remark,
+		create_date
+		)
+		VALUES (
+		#{id},
+		(select id from pms_sys_macro where value=#{typeCodes} and parent_id = 0 ),
+		#{typeName},
+		#{id},
+		1,
+		1,
+		(select max(order_num)+1 from pms_sys_macro where parent_id =(select id from pms_sys_macro where value=#{typeCodes} and parent_id = 0 ) ),
+		'所属项目组备注',
+		sysdate
+		)
+	</insert>
 
 </mapper>

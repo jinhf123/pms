@@ -150,7 +150,7 @@
         <foreach item="item" index="index" collection="typeCodes" open="(" separator="," close=")">
             #{item}
         </foreach>
-        ORDER BY m.parent_id, m.order_num ASC
+        ORDER BY m.parent_id, m.order_num, m.id ASC
 	</select>
 
 

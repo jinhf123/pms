@@ -9,9 +9,11 @@ $(function () {
 
 function initialPage(){
     //初始化滚动条
+    $(".projGroup-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     $(".dropdown-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     $(window).resize(function() {//改变窗口大小后触发
         vm.styleObj.height = ($(window).height()-65)+"px";
+        $(".projGroup-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
         $(".dropdown-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     });
     getProjGroups();
@@ -40,14 +42,15 @@ function getProjGroups() {
     $.ajax({
         url: '/sys/macro/getMacroByCatalog?_' + $.now(),  //'../../projMan/project/projGroup?_' + $.now(),
         data: JSON.stringify({
-            "typeCodes": ['projType','projGroup']
+            "typeCodes": ['projGroup']
         }),
         type: "post",
         dataType: "json",
         contentType: 'application/json',
         success: function (data) {
-            debugger;
-            //vm.types = data.projType
+            vm.groups = data.projGroup?data.projGroup:[];
+            vm.activeGroup = data.projGroup[0]?data.projGroup[0]:{};
+            vm.groupId = data.projGroup[0].value?data.projGroup[0].value:"";
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             dialogLoading(false);
@@ -74,15 +77,13 @@ var vm = new Vue({
         //子页面iframe的vm
         iframeVm:"",
         //所属下拉菜单数据
-        activeGroup: { name: '中国电信XXX项目组[2017]', value: '1' },
-        groups: [
-            { name: '中国电信XXX项目组[2017]', value: '1' },
-            { name: '中国电信XXX项目组[2016]', value: '2' },
-            { name: '中国电信XXX项目组[2015]', value: '3' }
-        ],
+        activeGroup: {},
+        groups: [],
+        //新增项目组
+        groupName:"",
         //查询条件
         keyword: "",
-        groupId: "1"//选中的所属项目组类型
+        groupId: ""//选中的所属项目组类型
     },
     methods : {
         query: function(){//点击查询按钮
@@ -171,8 +172,45 @@ var vm = new Vue({
                     break;
             }
         },
-        addGroup: function(){
-
+        addGroup: function(){//新增所属项目组
+            dialogContent2({
+                title : "新增所属项目组",
+                width : '600px',
+                height : '180px',
+                content :  $("#addGroupPanel"),
+                btn : [ '确定', '取消' ],
+                yes : function(index) {
+                    if(isNullOrEmpty(vm.groupName)) {
+                        dialogAlert('项目组名称为空！','warn');
+                        return false;
+                    }
+                    $.ajax({
+                        url: '/projMan/project/addProjectGroup?_' + $.now(),
+                        data: JSON.stringify({
+                            "typeCodes": "projGroup",
+                            "typeName": vm.groupName
+                        }),
+                        type: "post",
+                        dataType: "json",
+                        contentType: 'application/json',
+                        success: function (data) {
+                            if (data.success) {
+                                layer.close(index);
+                                getProjGroups();
+                            } else {
+                                dialogAlert(data.msg, 'error');
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            dialogLoading(false);
+                            dialogAlert(errorThrown, 'error');
+                        }
+                    });
+                },
+                end:function(){
+                    vm.groupName = "";
+                }
+            });
         }
     },
     computed: {}

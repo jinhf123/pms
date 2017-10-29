@@ -61,7 +61,7 @@ var vm = new Vue({
         keyword: parent.vm.keyword,
         groupId: parent.vm.groupId,
         length : 0,
-
+        //选中的项目类型
         activeType :  { name: '改进类', value: '1', icon: '/statics/img/projectManage/u5.png'},//选中的项目类型
         types: [
             { name: '改进类', value: '1', icon: '/statics/img/projectManage/u5.png'},
@@ -69,20 +69,9 @@ var vm = new Vue({
             { name: '延续类', value: '3', icon: '/statics/img/projectManage/u7.png'},
             { name: '研究类', value: '4', icon: '/statics/img/projectManage/u8.png'}
         ],
-
-        activeProject: {
-            /*startDate: '2016-07-05', endDate: '2016-07-05',projName: '客户系统集团化升级', bigProjManager: '张三'*/
-            },//选中的项目类型
-        projects:[
-           /* {startDate: '2016-07-05', endDate: '2016-07-05',projName: '客户系统集团化升级', bigProjManager: '张三'},
-            {startDate: '2016-07-05', endDate: '2016-07-05',projName: '全面风险综合业务系统改造之项目管理系统优化实施', bigProjManager: '张三'},
-            {startDate: '2016-07-05', endDate: '2016-07-05',projName: '表外资产管理', bigProjManager: '张三'},
-            {startDate: '2016-07-05', endDate: '2016-07-05',projName: '关联与内部交易系统二期', bigProjManager: '张三'},
-            {startDate: '2016-07-05', endDate: '2016-07-05',projName: '押品管理和动态估值系统完善', bigProjManager: '张三'},
-            {startDate: '2016-07-05', endDate: '2016-07-05',projName: 'IFRS9减值与估值', bigProjManager: '张三'},
-            {startDate: '2016-07-05', endDate: '2016-07-05',projName: '非现场审计系统建设', bigProjManager: '张三'},
-            {startDate: '2016-07-05', endDate: '2016-07-05',projName: '核算三期', bigProjManager: '张三'}*/
-        ]
+        //选中的项目
+        activeProject: {},
+        projects:[]
     },
     methods : {
         query:function(){
@@ -92,6 +81,7 @@ var vm = new Vue({
         },
         selectType: function(type){
             vm.activeType = type;
+            getGrid();
         },
         showDetails:function(){//展示详情
 

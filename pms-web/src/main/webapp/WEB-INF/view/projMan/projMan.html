@@ -16,7 +16,24 @@
                 <div class="col-md-12 column">
                     <div class="col-md-4 column">
                         <div class="btn-group dropdown-group">
-                            <span style="margin: 7px 0;">{{activeGroup.name}}</span>
+                            <span style="margin: 7px 0;width: 200px">{{activeGroup.name}}</span>
+
+                            <!--<div class="btn-group">
+                                <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">
+                                    <span class="caret"></span>
+                                </button>
+                                <div class="dropdown-menu dropdown-group" role="menu">
+                                    <ul class="dropdown-slimScroll column">
+                                        <li v-for="group in groups">
+                                            <a @click="selectGroup(group)" >{{group.name}}</a>
+                                        </li>
+                                        <li>
+                                            <div class="divider"></div>
+                                            <div class="subTitle" style="height: 20px;" @click="addGroup">创建项目组</div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>-->
                             <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">
                                 <span class="caret"></span>
                             </button>
@@ -24,7 +41,13 @@
                                 <li v-for="group in groups">
                                     <a @click="selectGroup(group)" >{{group.name}}</a>
                                 </li>
+                                <li>
+                                    <div class="divider"></div>
+                                    <div class="subTitle" style="height: 20px;" @click="addGroup">创建项目组</div>
+                                </li>
                             </ul>
+
+
                         </div>
                     </div>
                     <div class="col-md-4 column">
@@ -95,6 +118,16 @@
 
             </div>
         </div>
+    </div>
+
+
+    <!--新增所属项目组面板-->
+    <div id="addGroupPanel" class="container-fluid" style="display: none;">
+        <table class="form">
+            <tr>
+                <td class="formValue"><input class="form-control" v-model="groupName" placeholder="请输入新建的项目组名称！" /></td>
+            </tr>
+        </table>
     </div>
 
 </div>

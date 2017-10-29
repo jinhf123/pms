@@ -10,4 +10,8 @@ public interface ProjManManager {
     List<ProjManEntity> listProject(Map<String, Object> params);
 
     List<ProjManEntity> listArchiveProject(Map<String, Object> params);
+
+    int projGroupCount(Map<String, Object> params);
+
+    int addProjectGroup(Map<String, Object> params);
 }
