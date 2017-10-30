@@ -1,5 +1,5 @@
 /**
- * 项目管理js
+ * 项目详情js
  */
 
 $(function () {
@@ -34,15 +34,10 @@ var vm = new Vue({
         icon_Notice :"/statics/img/projectManage/u3.png",
         icon_Log    :"/statics/img/projectManage/u4.png",
         styleObj:{height: ($(window).height()-50)+'px'},
-        projId:"1",//todo 开发时先默认为1
-
-
+        projId:"",
         iframeSrc:"projInfo.html?projectID="+getQueryString('projId'),
         iframeId:"projectInfo",
         iframeName:"projectInfo",
-
-
-
         projectInfo:{projectName:"",allStep:"",unCompStep:"",unCompTask:"",unCompSchedule:""}
     },
     methods : {
@@ -84,7 +79,7 @@ var vm = new Vue({
             }
         },
         backToList: function(){
-            toUrl('/projMan/projectList.html');
+            toUrl('/projMan/projMan.html');
         }
     },
     computed: {}

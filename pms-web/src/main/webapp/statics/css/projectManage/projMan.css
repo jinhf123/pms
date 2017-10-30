@@ -57,11 +57,17 @@ body{
 /*下拉按钮组样式*/
 .dropdown-group{
     display: inline-flex;
-    border: 1px solid rgb(221, 221, 221);
-    border-radius: 4px;
+   /* border: 1px solid rgb(221, 221, 221);
+    border-radius: 4px;*/
 }
-
-
+.dropdown-span{
+    width: 200px;
+    margin: 7px 0;
+    color: #999999;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
 /*搜索输入框样式*/
 .search-div{
     width: 230px;
@@ -100,6 +106,7 @@ body{
 .top-tabs{
     border-bottom:0;
 }
+.top-tabs >li >a {color: #999999;}
 .top-tabs>li>a:hover{
     border-color:#eee
 }
@@ -138,7 +145,7 @@ body{
     width: 300px;
     height: 290px
 }
-dropdown-slimScroll
+.dropdown-slimScroll{}
 .notice{
     height: 35px; padding: 10px 0 0 7px;
 }

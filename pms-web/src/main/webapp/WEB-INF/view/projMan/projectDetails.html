@@ -14,7 +14,7 @@
             <div class="tabbable" id="tabs">
 
                 <div class="col-md-4 column">
-                    <span style="line-height: 45px; vertical-align: middle;" @click="backToList">{{projectInfo.projectName}}</span>
+                    <span style="line-height: 45px; vertical-align: middle; color: #999999;" @click="backToList">{{projectInfo.projectName}}</span>
                 </div>
                 <div class="col-md-6 column">
                     <ul class="nav nav-tabs top-tabs">
@@ -44,6 +44,9 @@
                     </button>
                     <button class="transparent-btn" type="button" title="工作日志" @click="location('log')">
                         <img :src="icon_Log">
+                    </button>
+                    <button class="transparent-btn" type="button" title="返回项目首页" @click="backToList">
+                        <span class="fa fa-reply" style="color: #999999;font-size: 20px;"></span>
                     </button>
                 </div>
                 <div class="tab-content col-md-12 column">

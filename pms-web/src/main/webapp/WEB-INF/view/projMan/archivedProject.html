@@ -7,8 +7,8 @@
 </head>
 <body>
 <div id="archivedProject" class="container-fluid" v-cloak>
-
-        <div class="col-md-12 column" style="height: 35px;">
+    <div class="col-md-12 column display-flex">
+        <div class="col-md-11 column" style="height: 35px;width: calc(100% - 35px);">
             <div class="col-md-4 column subTitle" style="padding-top: 10px;">
                 归档项目共有<span style="color:#dc6d67">{{length}}</span>个
             </div>
@@ -19,6 +19,13 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-1 column" style="height: 35px;width: 35px;padding: 3px">
+            <button class="transparent-btn" type="button" title="返回项目首页" @click="backToList">
+                <span class="fa fa-reply" style="color: #999999;font-size: 20px;"></span>
+            </button>
+        </div>
+    </div>
+
         <div class="col-md-12 column projGrid" :style="styleObject">
             <div class="project-slimScroll">
                 <div v-for="project in projects" class="row clearfix projList"

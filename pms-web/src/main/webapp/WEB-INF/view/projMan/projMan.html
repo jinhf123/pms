@@ -16,7 +16,7 @@
                 <div class="col-md-12 column">
                     <div class="col-md-4 column">
                         <div class="btn-group dropdown-group">
-                            <span style="margin: 7px 0;width: 200px">{{activeGroup.name}}</span>
+                            <span class="dropdown-span">{{activeGroup.name}}</span>
 
                             <!--<div class="btn-group">
                                 <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">
@@ -34,20 +34,18 @@
                                     </ul>
                                 </div>
                             </div>-->
-                            <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">
-                                <span class="caret"></span>
+                            <button data-toggle="dropdown" class="btn btn-default dropdown-toggle" style="padding:0 12px; border: none;color: #999999;">
+                                <span class="fa fa-caret-down" style="font-size: 18px;"></span>
                             </button>
-                            <ul class="dropdown-menu">
-                                <li v-for="group in groups">
-                                    <a @click="selectGroup(group)" >{{group.name}}</a>
+                            <ul class="dropdown-menu" style="width: 233px;max-height:200px">
+                                <li v-for="group in groups" >
+                                    <a @click="selectGroup(group)">{{group.name}}</a>
                                 </li>
                                 <li>
                                     <div class="divider"></div>
-                                    <div class="subTitle" style="height: 20px;" @click="addGroup">创建项目组</div>
+                                    <div class="subTitle" style="height: 20px;text-align: center" @click="addGroup">创建项目组</div>
                                 </li>
                             </ul>
-
-
                         </div>
                     </div>
                     <div class="col-md-4 column">

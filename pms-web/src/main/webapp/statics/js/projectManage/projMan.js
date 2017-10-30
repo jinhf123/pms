@@ -9,11 +9,11 @@ $(function () {
 
 function initialPage(){
     //初始化滚动条
-    $(".projGroup-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
+    $(".projGroup-slimScroll").slimScroll({height: '200px', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     $(".dropdown-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     $(window).resize(function() {//改变窗口大小后触发
         vm.styleObj.height = ($(window).height()-65)+"px";
-        $(".projGroup-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
+        $(".projGroup-slimScroll").slimScroll({height: '200px', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
         $(".dropdown-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     });
     getProjGroups();
@@ -100,21 +100,21 @@ var vm = new Vue({
             vm.iframeVm.groupId = vm.groupId;
             vm.iframeVm.query();
         },
-        showNotice: function (notice){
+        showNotice: function (notice){//消息标记为已读后打开任务详情
             $.ajax({
                 url: '../../projMan/notice/readNotice?_' + $.now(),
                 data: JSON.stringify({
                     "noticeId" : notice.noticeId,
-                    "isRead" : 1 ,
+                    "isRead" : 1
                 }),
                 type: "post",
                 dataType: "json",
                 contentType: 'application/json',
                 success: function (data) {
                     if(data.success){
-                        vm.getTaskInfo(notice.taskId);
+                        vm.getTaskInfo(notice.taskId);//打开任务详情
                         getNotice();
-                    }else{
+                    } else {
                         dialogAlert("读取消息失败！错误信息："+data.msg,"error")
                     }
                 },
@@ -142,8 +142,10 @@ var vm = new Vue({
                 }
             });
         },
-        addProject: function(){
-            //todo 跳转到新增项目页面
+        addProject: function(){//跳转到新增项目页面
+            vm.iframeSrc="projAdd.html";
+            vm.iframeId="projAdd";
+            vm.iframeName="projAdd";
         },
         openWorkLog: function(){//打开工作日志窗口
             window.open('workLog.html', '工作日志', 'height=500, width=1000, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=0, status=no');

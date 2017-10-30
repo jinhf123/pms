@@ -46,10 +46,9 @@ body{
 .top-tabs{
     border-bottom:0;
 }
-.top-tabs>li>a:hover{
-    border-color:#eee
-}
-.top-tabs > li > a:focus, .top-tabs > li > a:hover {
+.top-tabs>li>a{color: #999999;}
+.top-tabs>li>a:hover{border-color:#eee}
+.top-tabs>li>a:focus, .top-tabs > li > a:hover {
     text-decoration: none;
     background-color: #fff;
 }

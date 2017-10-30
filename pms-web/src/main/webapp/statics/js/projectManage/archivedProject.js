@@ -1,5 +1,5 @@
 /**
- * 项目管理js
+ * 查询已归档项目js
  */
 
 $(function () {
@@ -75,7 +75,7 @@ var vm = new Vue({
     },
     methods : {
         query:function(){
-            console.log("点击查询按钮查询已归档项目列表 \tkeyword=" + vm.keyword + "  groupId="+ vm.groupId);
+            // console.log("点击查询按钮查询已归档项目列表 \tkeyword=" + vm.keyword + "  groupId="+ vm.groupId);
             //alert("点击查询按钮查询已归档项目列表 \tkeyword=" + vm.keyword + "  groupId="+ vm.groupId);
             getGrid();
         },
@@ -85,6 +85,9 @@ var vm = new Vue({
         },
         showDetails:function(){//展示详情
 
+        },
+        backToList: function(){
+            parent.window.location.href = '/projMan/projMan.html';
         }
     },
     computed: {

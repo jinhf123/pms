@@ -1,5 +1,5 @@
 /**
- * 项目管理js
+ * 项目列表js
  */
 $(function () {
     initialPage();
@@ -12,7 +12,6 @@ function initialPage() {
     $(".project-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     //窗口大小改变重新调整大小
     $(window).resize(function() {
-        console.log("重新调整窗口大小，窗口高度："+$(window).height());
         vm.styleObject.height = ($(window).height())+"px";
         $(".type-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
         $(".project-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
@@ -42,7 +41,6 @@ function getProjTypes() {
 
 //获取项目列表数据
 function getGrid() {
-    console.log("获取列表 \tkeyword:"+ vm.keyword+"\tgroup:"+ vm.groupId +"\ttype:"+ vm.activeType.value);
     $.ajax({
         url: '../../projMan/project/dataGrid?_' + $.now(),
         data: JSON.stringify({
@@ -90,36 +88,24 @@ var vm = new Vue({
     },
     methods : {
         query:function () {
-            console.log("点击查询按钮查询项目列表 \tkeyword=" + vm.keyword + "  groupId="+ vm.groupId);
-            //alert("点击查询按钮查询项目列表 \tkeyword=" + vm.keyword + "  groupId="+ vm.groupId);
             getGrid();
-        },
-        load: function() {
-            console.log("load");
-        },
-        addProject: function() {
-            alert("新增项目");
-        },
-        getOptions: function(code){//根据code获取下拉框的数据
-
         },
         projListOn : function (e) {
             // alert("选中列表中的记录projListOn"+e);
         },
         selectType:function(type){
             vm.activeType = type;
-            console.log("选中项目类型" + vm.activeType.text);
-            // alert("选中项目类型" + vm.activeType.text);
             getGrid()
         },
         showDetails:function(project){//跳转到项目详情页面
             vm.activeProject = project;
-            toUrl('/projMan/projectDetails.html?projId='+project.projId);
+            parent.window.location.href = '/projMan/projectDetails.html?projId='+project.projId;
+            // toUrl('/projMan/projectDetails.html?projId='+project.projId);
         },
-        archProjQuery: function(){//编辑项目模板
+        archProjQuery: function(){//跳转到归档项目查询页面
             toUrl('/projMan/archivedProject.html');
         },
-        editProjTemp: function(){//编辑项目模板
+        editProjTemp: function(){//编辑项目模板页面
             toUrl('/projMan/projectTemple.html');
         }
     },
