@@ -270,7 +270,7 @@ body {
     text-align: center;
 }
 
- .selected {
+.selected {
     background: #ececec;
 }
 
@@ -476,4 +476,30 @@ body {
 
 .datetimepicker {
     z-index: 999;
+}
+
+.add-content {
+    height: 750px;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+.button-confirm {
+    width: 108px;
+    background-color: #5bc0de;
+    border: none;
+    color: white;
+    font-weight: 400;
+    padding: 5px;
+    height: 35px;
+}
+
+.button-cancel {
+    background:none;
+    color: #999999;
+    width: 108px;
+    border: none;
+    font-weight: 400;
+    padding: 5px;
+    height: 35px;
 }

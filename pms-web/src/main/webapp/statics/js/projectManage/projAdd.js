@@ -17,12 +17,32 @@ Vue.component('modal', {
 var vm = new Vue({
     el: '#projAdd',
     data: {
+        project: {
+            projName: null,
+            projType: null,
+            tempId: null,
+            beloProjGroup: null,
+            projLevel: null,
+            consMode: null,
+            undertakeMode: null,
+            isCompletYear: null,
+            startDate: null,
+            endDate: null
+        },
+        stakeholder: {
+            projGroupManager: null,
+            bigProjManager: null,
+            projManager: null,
+            demaManager: null,
+            techManager: null,
+            projMembers: null
+        },
         showModal: false,
         isLoading: true,
         startDate: null,
         endDate: null,
-        projInfo: {},
-        steps: {},
+        // projInfo: {},
+        // steps: {},
         projType: ['新建类型', '旧类型'],
         consMode: ['独立项目', '合作项目'],
         projLevel: ['重点项目', '一般项目', '普通项目'],
@@ -48,13 +68,47 @@ var vm = new Vue({
         updateMebmersId: [],
         oldUpdateMembersId: [],
         memberIndex: null,
-        memberInfo: null
-        // projectWorkTime: 0,
-        // projectWorkCost: 0,
-        // outsourceWorkTime: 0,
-        // outsourceWorkCost: 0
+        memberInfo: null,
+        projCost: {
+            projectWorkTime: 0.000,
+            projectWorkCost: 0.000,
+            outsourceWorkTime: 0.000,
+            outsourceWorkCost: 0.000
+        }
     },
     methods: {
+        resetData: function () {
+            this.project = {
+                projName: null,
+                projType: null,
+                tempId: null,
+                beloProjGroup: null,
+                projLevel: null,
+                consMode: null,
+                undertakeMode: null,
+                isCompletYear: null,
+                startDate: null,
+                endDate: null
+            };
+            this.stakeholder = {
+                projGroupManager: null,
+                bigProjManager: null,
+                projManager: null,
+                demaManager: null,
+                techManager: null,
+                projMembers: null
+            };
+
+            this.projCost = {
+                projectWorkTime: 0.000,
+                projectWorkCost: 0.000,
+                outsourceWorkTime: 0.000,
+                outsourceWorkCost: 0.000
+            };
+
+            this.stepDate = [];
+
+        },
         dateDefind: function () {
             var d, s;
             var self = this;
@@ -311,8 +365,60 @@ var vm = new Vue({
         changeUserTime: function () {
 
         },
-        test: function () {
-            console.log(this.allMembersId);
+        submitForm: function () {
+            this.project.tempId = this.template[this.tempIndex].tempId;
+            this.project.startDate = this.startDate;
+            this.project.endDate = this.endDate;
+
+            this.stakeholder.projGroupManager = this.projGroupManagerId.join();
+            this.stakeholder.bigProjManager = this.bigProjManagerId.join();
+            this.stakeholder.projManager = this.projManagerId.join();
+            this.stakeholder.demaManager = this.demaManagerId.join();
+            this.stakeholder.techManager = this.techManagerId.join();
+            this.stakeholder.projMembers = this.projMembersId.join();
+
+            var worktime = [];
+            for (var i in this.allMembersId) {
+                if ('workTime' in this.allMembersId[i]) {
+                    for (var j in this.allMembersId[i].workTime) {
+                        this.allMembersId[i].workTime[j].userId = this.allMembersId[i].userId;
+                        worktime.push(this.allMembersId[i].workTime[j]);
+                    }
+                }
+            }
+            var params = {
+                projInfo: this.project,
+                projStep: this.stepDate,
+                projStakeholder: this.stakeholder,
+                projCost: this.projCost,
+                projUserWorkTime: worktime
+            };
+
+            this.$http.post("/projMan/proAdd", params)
+                .then(function (data) {
+                    var title;
+                    if (data.data.success) {
+                        title = "添加成功";
+                    } else {
+                        title = "添加失败";
+                    }
+                    top.layer.open({
+                        title: title,
+                        area: '338px',
+                        anim: -1,
+                        isOutAnim: false,
+                        move: false,
+                        closeBtn: 0,
+                        content: data.data.message,
+                        btn: ['确定'],
+                        yes: function () {
+                            top.layer.close(top.layer.index);
+                        }
+                    });
+                }, function (err) {
+                    console.log(err);
+                });
+
         }
     },
     mounted: function () {
@@ -361,12 +467,6 @@ var vm = new Vue({
                 this.memberInfo = this.allMembersId[val];
             }
         },
-        allMembersId: {
-            handler: function (val) {
-                console.log(val);
-            },
-            deep: true
-        },
         'memberInfo.workTime': {
             handler: function (val) {
                 var time = 0;
@@ -384,7 +484,21 @@ var vm = new Vue({
                 }
                 if (this.memberInfo !== null) {
                     this.memberInfo.time = (time / 30).toFixed(3);
+                    this.projCost.projectWorkTime = 0.000;
+                    this.projCost.projectWorkCost = 0.000;
+                    this.projCost.outsourceWorkTime = 0.000;
+                    this.projCost.outsourceWorkCost = 0.000;
+                    for (var member in this.allMembersId) {
+                        if (this.allMembersId[member].isOutsource === "0") {
+                            this.projCost.projectWorkTime = parseFloat(this.projCost.projectWorkTime) + parseFloat(this.allMembersId[member].time);
+                            this.projCost.projectWorkCost = parseFloat(this.projCost.projectWorkCost) + parseFloat(this.allMembersId[member].time * this.allMembersId[member].cost) / 10000;
+                        } else if (this.allMembersId[member].isOutsource === "1") {
+                            this.projCost.outsourceWorkTime = parseFloat(this.projCost.outsourceWorkTime) + parseFloat(this.allMembersId[member].time);
+                            this.projCost.outsourceWorkCost = parseFloat(this.projCost.outsourceWorkCost) + parseFloat(this.allMembersId[member].time * this.allMembersId[member].cost) / 10000;
+                        }
+                    }
                 }
+
             },
             deep: true
         }
@@ -452,31 +566,31 @@ var vm = new Vue({
                 names = names.substring(0, names.length - 1);
             }
             return names;
-        },
-        projectWorkTime: function () {
-            console.log("projectWorkTime");
-            var time = 0;
-            for (var member in  this.allMembersId) {
-                if (member.isOutsource === "0")
-                    time = time + member.time;
-            }
-            return time;
-        },
-        projectWorkCost: function () {
-            console.log("projectWorkCost");
-            var cost = 0;
-            return cost;
-        },
-        outsourceWorkTime: function () {
-            console.log("outsourceWorkTime");
-            var time = 0;
-            return time;
-        },
-        outsourceWorkCost: function () {
-            console.log("outsourceWorkCost");
-            var cost = 0;
-            return cost;
         }
+        // projectWorkTime: function () {
+        //     console.log("projectWorkTime");
+        //     var time = 0;
+        //     for (var member in  this.allMembersId) {
+        //         if (member.isOutsource === "0")
+        //             time = time + member.time;
+        //     }
+        //     return time;
+        // },
+        // projectWorkCost: function () {
+        //     console.log("projectWorkCost");
+        //     var cost = 0;
+        //     return cost;
+        // },
+        // outsourceWorkTime: function () {
+        //     console.log("outsourceWorkTime");
+        //     var time = 0;
+        //     return time;
+        // },
+        // outsourceWorkCost: function () {
+        //     console.log("outsourceWorkCost");
+        //     var cost = 0;
+        //     return cost;
+        // }
     }
 });
 
