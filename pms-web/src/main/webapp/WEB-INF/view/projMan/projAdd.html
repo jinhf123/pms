@@ -117,7 +117,7 @@
                             项目模版：
                         </td>
                         <td>
-                            <select class="form-control" v-model="tempIndex" >
+                            <select class="form-control" v-model="tempIndex">
                                 <option v-for="(item,index) in template" :value="index">{{item.tempName}}</option>
                             </select>
                         </td>
@@ -126,11 +126,17 @@
                 </table>
             </div>
         </div>
-        <div class="row clearfix" v-if="!isLoading">
-            <div class="col-md-12 column">
-                <div class="horizontal-divider"></div>
-                <div class="step display-flex">
-                    <div v-for="(item,index) in template[tempIndex].projTemplateStepEntities" class="display-flex">
+        <div class="row clearfix">
+            <div class="col-md-12 column" id="step-info">
+                <div v-if="!isLoading">
+                    <div class="horizontal-divider" v-if="template[tempIndex].projTemplateStepEntities.length !== 0" ></div>
+                </div>
+                <div class="step display-flex" v-if="!isLoading">
+                    <div class="step-scroll-left" @click="toPrev()" v-if="stepStart>0">
+                        <img src="/statics/img/step_left.png" alt="" class="left">
+                    </div>
+                    <div v-for="(item,index) in template[tempIndex].projTemplateStepEntities" class="display-flex"
+                         v-if="index >= stepStart && index < (stepCount  + stepStart)">
                         <div class="step-div">
                             <div class="step-title-div">
                                 {{item.stepName}}
@@ -144,6 +150,11 @@
                         </div>
                         <div class="step-horizontal-divider">&nbsp;</div>
                         <div class="step-vertical-divider">&nbsp;</div>
+                    </div>
+
+                    <div class="step-scroll-right" @click="toNext()"
+                         v-if="stepStart + stepCount < template[tempIndex].projTemplateStepEntities.length ">
+                        <img src="/statics/img/step_right.png" alt="" class="right">
                     </div>
                 </div>
             </div>

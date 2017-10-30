@@ -41,8 +41,6 @@ var vm = new Vue({
         isLoading: true,
         startDate: null,
         endDate: null,
-        // projInfo: {},
-        // steps: {},
         projType: [],
         consMode: [],
         projLevel: [],
@@ -74,7 +72,10 @@ var vm = new Vue({
             projectWorkCost: 0.000,
             outsourceWorkTime: 0.000,
             outsourceWorkCost: 0.000
-        }
+        },
+        stepWidth: 600,
+        stepStart: 0,
+        stepCount: 0
     },
     methods: {
         resetData: function () {
@@ -163,7 +164,6 @@ var vm = new Vue({
                             });
                         }
                     }
-                    //console.log(this.undertakeMode);
                 }, function (err) {
                     console.log(err);
                 });
@@ -236,8 +236,7 @@ var vm = new Vue({
             }
             var defaultDate;
             var stepList;
-            console.log(this.startDate === "");
-            console.log(this.template);
+
             for (stepList in this.template[this.tempIndex].projTemplateStepEntities) {
                 if (startDate !== null) {
                     if (this.stepDate[stepList].defaultDate !== null) {
@@ -480,12 +479,23 @@ var vm = new Vue({
                     console.log(err);
                 });
 
+        },
+        toPrev: function () {
+            this.stepStart--;
+        },
+        toNext: function () {
+            this.stepStart++;
         }
     },
     mounted: function () {
         this.dateDefind();
         this.loadTemplate();
         this.getMacro();
+        this.stepWidth = document.getElementById('step-info').clientWidth;
+        const that = this;
+        window.onresize = function () {
+            that.stepWidth = document.getElementById('step-info').clientWidth;
+        };
     },
     watch: {
         startDate: function (val) {
@@ -565,6 +575,10 @@ var vm = new Vue({
 
             },
             deep: true
+        },
+        stepWidth: function (val) {
+            var a = Math.floor((val-40) / 162);
+            this.stepCount = a;
         }
     },
     computed: {
@@ -631,48 +645,9 @@ var vm = new Vue({
             }
             return names;
         }
-        // projectWorkTime: function () {
-        //     console.log("projectWorkTime");
-        //     var time = 0;
-        //     for (var member in  this.allMembersId) {
-        //         if (member.isOutsource === "0")
-        //             time = time + member.time;
-        //     }
-        //     return time;
-        // },
-        // projectWorkCost: function () {
-        //     console.log("projectWorkCost");
-        //     var cost = 0;
-        //     return cost;
-        // },
-        // outsourceWorkTime: function () {
-        //     console.log("outsourceWorkTime");
-        //     var time = 0;
-        //     return time;
-        // },
-        // outsourceWorkCost: function () {
-        //     console.log("outsourceWorkCost");
-        //     var cost = 0;
-        //     return cost;
-        // }
     }
 });
 
-function renderLines(el) {
-    var d, s;
-    d = new Date();
-    s = d.getFullYear() + "-";             //取年份
-    s = s + (d.getMonth() + 1) + "-";//取月份
-    s += d.getDate();         //取日期
-    $('.step-date-div').datetimepicker({
-        startDate: s,
-        minView: "month", //选择日期后，不会再跳转去选择时分秒
-        language: 'zh-CN',
-        format: 'yyyy-mm-dd',
-        todayBtn: 1,
-        autoclose: 1
-    });
-}
 
 Vue.directive('datetimepicker', {
     bind: function (el, binding) {

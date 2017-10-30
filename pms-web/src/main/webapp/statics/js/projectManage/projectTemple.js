@@ -252,7 +252,7 @@ var vm = new Vue({
                 }
             ]
         },
-        options: ['foo', 'bar', 'baz'],
+        options: ['foo', 'bar', 'baz']
     },
     components: {
         "template-form":
