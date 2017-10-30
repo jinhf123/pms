@@ -43,13 +43,13 @@ var vm = new Vue({
         endDate: null,
         // projInfo: {},
         // steps: {},
-        projType: ['新建类型', '旧类型'],
-        consMode: ['独立项目', '合作项目'],
-        projLevel: ['重点项目', '一般项目', '普通项目'],
-        beloProjGroup: ['核心业务组', '常规业务组'],
-        undertakeMode: ['联合建设', '独立建设'],
+        projType: [],
+        consMode: [],
+        projLevel: [],
+        beloProjGroup: [],
+        undertakeMode: [],
         template: [],
-        tempIndex: null,
+        tempIndex: 0,
         stepDate: [],
         projGroupManager: [],
         projGroupManagerId: [],
@@ -108,6 +108,65 @@ var vm = new Vue({
 
             this.stepDate = [];
 
+        },
+        getMacro: function () {
+            this.$http.post("/sys/macro/getMacroByCatalog", {
+                "typeCodes":
+                    ['projType',
+                        'consMode',
+                        'projLevel',
+                        'projGroup',
+                        'undertakeMode']
+            })
+                .then(function (data) {
+                    if ("projType" in data.data) {
+                        for (var i in data.data["projType"]) {
+                            this.projType.push({
+                                name: data.data["projType"][i]["name"],
+                                value: data.data["projType"][i]["value"]
+                            });
+                        }
+                    }
+
+                    if ("consMode" in data.data) {
+                        for (var i in data.data["consMode"]) {
+                            this.consMode.push({
+                                name: data.data["projType"][i]["name"],
+                                value: data.data["projType"][i]["value"]
+                            });
+                        }
+                    }
+
+                    if ("projLevel" in data.data) {
+                        for (var i in data.data["projLevel"]) {
+                            this.projLevel.push({
+                                name: data.data["projLevel"][i]["name"],
+                                value: data.data["projLevel"][i]["value"]
+                            });
+                        }
+                    }
+
+                    if ("projGroup" in data.data) {
+                        for (var i in data.data["projGroup"]) {
+                            this.beloProjGroup.push({
+                                name: data.data["projGroup"][i]["name"],
+                                value: data.data["projGroup"][i]["value"]
+                            });
+                        }
+                    }
+
+                    if ("undertakeMode" in data.data) {
+                        for (var i in data.data["undertakeMode"]) {
+                            this.undertakeMode.push({
+                                name: data.data["undertakeMode"][i]["name"],
+                                value: data.data["undertakeMode"][i]["value"]
+                            });
+                        }
+                    }
+                    //console.log(this.undertakeMode);
+                }, function (err) {
+                    console.log(err);
+                });
         },
         dateDefind: function () {
             var d, s;
@@ -177,6 +236,8 @@ var vm = new Vue({
             }
             var defaultDate;
             var stepList;
+            console.log(this.startDate === "");
+            console.log(this.template);
             for (stepList in this.template[this.tempIndex].projTemplateStepEntities) {
                 if (startDate !== null) {
                     if (this.stepDate[stepList].defaultDate !== null) {
@@ -424,13 +485,16 @@ var vm = new Vue({
     mounted: function () {
         this.dateDefind();
         this.loadTemplate();
+        this.getMacro();
     },
     watch: {
         startDate: function (val) {
-            this.setStepDate();
+            if (val !== "" && val !== null)
+                this.setStepDate();
         },
         endDate: function (val) {
-            this.setStepDateByEndDate();
+            if (val !== "" && val !== null)
+                this.setStepDateByEndDate();
         },
         tempIndex: function (val) {
             this.stepDate = [];
