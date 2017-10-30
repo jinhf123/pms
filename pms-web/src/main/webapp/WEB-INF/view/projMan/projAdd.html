@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>项目信息</title>
+
+</head>
+<body>
+
+#parse("include/header.html")
+<link rel="stylesheet" href="${rc.contextPath}/statics/css/projectManage/projAdd.css">
+<div id="projAdd">
+    <div class="container-fluid add-content" v-cloak>
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th class="tableTitle">
+                            项目项目信息
+                        </th>
+                        <th colspan="5">
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="col-md-12 column">
+                <table class="table table-bordered ">
+                    <tbody>
+                    <tr>
+                        <td class="fieldLabel request">
+                            <span>*</span>项目名称：
+                        </td>
+                        <td colspan="5">
+                            <input class="form-control" v-model="project.projName">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fieldLabel request">
+                            <span>*</span>项目类型：
+                        </td>
+                        <td>
+                            <select class="form-control" v-model="project.projType">
+                                <option :value="index" v-for="(item ,index) in projType">{{item}}</option>
+                            </select>
+                        </td>
+                        <td class="fieldLabel">
+                            建设方式：
+                        </td>
+                        <td>
+                            <select class="form-control" v-model="project.consMode">
+                                <option :value="index" v-for="(item ,index) in consMode">{{item}}</option>
+                            </select>
+                        </td>
+                        <td class="fieldLabel">
+                            项目等级：
+                        </td>
+                        <td>
+                            <select class="form-control" v-model="project.projLevel">
+                                <option :value="index" v-for="(item ,index) in projLevel">{{item}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fieldLabel request">
+                            <span>*</span>归属项目群：
+                        </td>
+                        <td>
+                            <select class="form-control" v-model="project.beloProjGroup">
+                                <option :value="index" v-for="(item ,index) in beloProjGroup">{{item}}</option>
+                            </select>
+                        </td>
+                        <td class="fieldLabel request">
+                            <span>*</span>是否年内完成：
+                        </td>
+                        <td>
+                            <label class="radio-inline">
+                                <input type="radio" name="optradio" value="1" checked v-model="project.isCompletYear">是
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="optradio" value="0" v-model="project.isCompletYear">否
+                            </label>
+                        </td>
+                        <td class="fieldLabel">
+                            承接方式：
+                        </td>
+                        <td>
+                            <select class="form-control" v-model="project.undertakeMode">
+                                <option :value="index" v-for="(item ,index) in undertakeMode">{{item}}</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fieldLabel request">
+                            <span>*</span>项目开始时间：
+                        </td>
+                        <td>
+                            <div class="col-md-12 column display-flex">
+                                <input id="startDate" placeholder="项目开始时间" class="form-control" readonly
+                                       v-model="startDate">
+                                <i class="fa fa-calendar right"></i>
+                            </div>
+                        </td>
+                        <td class="fieldLabel request">
+                            <span>*</span>项目结束时间：
+                        </td>
+                        <td>
+                            <div class="col-md-12 column display-flex">
+                                <input id="endDate" placeholder="项目结束时间" class="form-control" readonly
+                                       v-model="endDate">
+                                <i class="fa fa-calendar right"></i>
+                            </div>
+                        </td>
+                        <td class="fieldLabel">
+                            项目模版：
+                        </td>
+                        <td>
+                            <select class="form-control" v-model="tempIndex">
+                                <template v-for="(item ,index) in template">
+                                    <option :value="index">{{item.tempName}}
+                                    </option>
+                                </template>
+                            </select>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row clearfix" v-if="!isLoading">
+            <div class="col-md-12 column">
+                <div class="horizontal-divider"></div>
+                <div class="step display-flex">
+                    <div v-for="(item,index) in template[tempIndex].projTemplateStepEntities" class="display-flex">
+                        <div class="step-div">
+                            <div class="step-title-div">
+                                {{item.stepName}}
+                            </div>
+                            <div class="step-date-div col-md-12 column display-flex">
+                                <input type="text" placeholder="日期" class="form-control" readonly
+                                       v-datetimepicker="['stepDate',index]"
+                                       v-model="stepDate[index].defaultDate">
+                                <i class="fa fa-calendar right"></i>
+                            </div>
+                        </div>
+                        <div class="step-horizontal-divider">&nbsp;</div>
+                        <div class="step-vertical-divider">&nbsp;</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th class="tableTitle">
+                            项目干系人
+                        </th>
+                        <th colspan="5">
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="col-md-12 column">
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <td class="fieldLabel request">
+                            <span>*</span>项目群经理：
+                        </td>
+                        <td>
+                            <div class="col-md-12 column display-flex">
+                                <input class="form-control" readonly @click="selectStaff('projGroupManager')"
+                                       v-model="projGroupManagerName">
+                                <i class="fa fa-user right"></i>
+                            </div>
+                        </td>
+                        <td class="fieldLabel">
+                            大项目经理：
+                        </td>
+                        <td>
+                            <div class="col-md-12 column display-flex">
+                                <input class="form-control" readonly @click="selectStaff('bigProjManager')"
+                                       v-model="bigProjManagerName">
+                                <i class="fa fa-user right"></i>
+                            </div>
+                        </td>
+                        <td class="fieldLabel">
+                            项目经理：
+                        </td>
+                        <td>
+                            <div class="col-md-12 column display-flex">
+                                <input class="form-control" readonly @click="selectStaff('projManager')"
+                                       v-model="projManagerName">
+                                <i class="fa fa-user right"></i>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fieldLabel request">
+                            <span>*</span>需求经理：
+                        </td>
+                        <td>
+                            <div class="col-md-12 column display-flex">
+                                <input class="form-control" readonly @click="selectStaff('demaManager')"
+                                       v-model="demaManagerName">
+                                <i class="fa fa-user right"></i>
+                            </div>
+                        </td>
+                        <td class="fieldLabel">
+                            技术经理：
+                        </td>
+                        <td colspan="3">
+                            <div class="col-md-12 column display-flex">
+                                <input class="form-control" readonly @click="selectStaff('techManager')"
+                                       v-model="techManagerName">
+                                <i class="fa fa-user right"></i>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fieldLabel request">
+                            <span>*</span>项目成员：
+                        </td>
+                        <td colspan="5">
+                            <div class="col-md-12 column display-flex">
+                                <input class="form-control" readonly @click="selectStaff('projMembers')"
+                                       v-model="projMembersName">
+                                <i class="fa fa-user right"></i>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th colspan="1" class="tableTitle">
+                            项目规模
+                        </th>
+                        <th colspan="5">
+                            <div class="config" @click="show(true)">配置人力资源预估</div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="col-md-12 column">
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <td class="fieldLabel request">
+                            <span>*</span>人力资源总需求：
+                        </td>
+                        <td>
+                            {{projCost.projectWorkTime}}人月
+                        </td>
+                        <td class="fieldLabel request">
+                            <span>*</span>资源成本估算：
+                        </td>
+                        <td>
+                            {{projCost.projectWorkCost}}万元
+                        </td>
+                        <td class="fieldLabel">
+                            外包工作量估算：
+                        </td>
+                        <td>
+                            {{projCost.outsourceWorkTime}}人月
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="fieldLabel">
+                            外包资源成本评估：
+                        </td>
+                        <td colspan="5">
+                            {{projCost.outsourceWorkCost}}万元
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row clearfix"
+             v-if="typeof Object.keys(allMembersId)[0] !== 'undefined' && typeof allMembersId[Object.keys(allMembersId)[0]].username !== 'undefined'">
+            <div class="col-md-12 column">
+                <label>人力资源列表</label>
+            </div>
+        </div>
+        <div class="row clearfix"
+             v-if="typeof Object.keys(allMembersId)[0] !== 'undefined' && typeof allMembersId[Object.keys(allMembersId)[0]].username !== 'undefined'">
+            <div class="col-md-12 column">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th style="width: 10%">姓名</th>
+                        <th style="width: 20%">职位</th>
+                        <th style="width: 20%">岗位</th>
+                        <th style="width: 10%">是否外包</th>
+                        <th style="width: 10%">成本【元/月】</th>
+                        <th style="width: 10%">预计时长【人月】</th>
+                        <th style="width: 20%">预计成本【元】</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="item in allMembersId" v-if="typeof(item.username) !== 'undefined'">
+                        <td style="width: 10%">{{item.username}}</td>
+                        <td style="width: 20%">{{item.position.join()}}</td>
+                        <td style="width: 20%">{{item.description}}</td>
+                        <td v-if="item.isOutsource === '1'" style="width: 10%">是</td>
+                        <td v-else style="width: 10%">否</td>
+                        <td style="width: 15%">{{item.cost}}</td>
+                        <td style="width: 10%">{{item.time}}</td>
+                        <td style="width: 15%">{{item.cost * item.time}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <modal v-if="showModal">
+            <div slot="body" class="container-fluid human-config">
+                <div class="config-detail-cancel" @click="close">
+                    <img src="/statics/img/project_add_cancel.png" alt="">
+                </div>
+                <div class="container-fluid col-md-8 human-config-left">
+                    <div class="row">
+                        <div class="col-md-6 human-total-left">
+                            <div class="message">
+                                <div class="col-md-4 first vertical-center">
+                                    人力总需求
+                                </div>
+                                <div class="col-md-4 second vertical-center">
+                                    <label>{{projCost.projectWorkTime}}</label>人月
+                                </div>
+                                <div class="col-md-4 third vertical-center">
+                                    <label>{{projCost.projectWorkCost}}</label>万元
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 human-total-right">
+                            <div class="message">
+                                <div class="col-md-4 first vertical-center">
+                                    外包人力总需求
+                                </div>
+                                <div class="col-md-4 second vertical-center">
+                                    <label>{{projCost.outsourceWorkTime}}</label>人月
+                                </div>
+                                <div class="col-md-4 third vertical-center">
+                                    <label>{{projCost.outsourceWorkCost}}</label>万元
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row human-config-table">
+                        <table class="table-bordered ">
+                            <thead>
+                            <tr>
+                                <th style="width: 10%">姓名</th>
+                                <th style="width: 20%">职位</th>
+                                <th style="width: 20%">岗位</th>
+                                <th style="width: 10%">是否外包</th>
+                                <th style="width: 10%">成本(元)</th>
+                                <th style="width: 10%">预计时长(人月)</th>
+                                <th style="width: 10%">预计人力成本(元)</th>
+                                <th style="width: 10%">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(item, key, index) in allMembersId"
+                                :class="[key === memberIndex ? 'selected':'' ]">
+                                <td>{{item.username}}</td>
+                                <td>{{item.position.join()}}</td>
+                                <td>{{item.description}}</td>
+                                <td v-if="item.isOutsource === '1'">是</td>
+                                <td v-else>否</td>
+                                <td>{{item.cost}}</td>
+                                <td>{{item.time}}</td>
+                                <td>{{item.cost * item.time}}</td>
+                                <td><a href="javascript:;" @click="changeWorkTime(key)">配置</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="container-fluid col-md-4" style="padding: 0">
+                    <div class="panel panel-default no-border config-detail">
+                        <div class="config-detail-title">
+                            <label>人员信息</label>
+                            <a v-if="typeof(memberIndex) !== 'undefined' && memberIndex!==null ">{{allMembersId[memberIndex].username}}</a>
+                        </div>
+                        <template v-if="typeof(memberIndex) !== 'undefined' && memberIndex!==null ">
+                            <div class="config-detail-info">
+                                <div><label>岗位：</label>{{memberInfo.description}}</div>
+                                <div><label>职位：</label>{{memberInfo.position.join()}}</div>
+                                <div>
+                                    <label>是否外包：</label>
+                                    <template v-if="memberInfo.isOutsource === '1'">
+                                        是
+                                    </template>
+                                    <template v-else>
+                                        否
+                                    </template>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <label>成本：</label>{{memberInfo.cost}}元/月
+                                </div>
+                            </div>
+                            <div class="config-detail-time">
+                                <label>预计使用</label>
+                                <a href="javascript:;" @click="addWorkTime">新增投入时段</a>
+                            </div>
+                            <div class="config-detail-time-info">
+                                <div v-for="(item,index) in memberInfo.workTime">
+                                    <div class="col-md-4">
+                                        <input class="form-control" v-datetimepicker="[memberIndex, 'start', index]"
+                                               v-model="item.start" placeholder="请选开始时间" readonly>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input class="form-control" v-datetimepicker="[memberIndex, 'end', index]"
+                                               v-model="item.end" placeholder="请选结束时间" readonly>
+                                    </div>
+                                    <div class="col-md-3"><input class="form-control" placeholder="投入比"
+                                                                 v-model.lazy="item.rate"></div>
+                                    <img src="/statics/img/step_delete.png" alt="">
+                                </div>
+                            </div>
+                            <div class="config-detail-time-button">
+                                <button @click="close">完成配置</button>
+                                <button class="cancel" @click="close">取消</button>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </modal>
+    </div>
+    <div class="container-fluid">
+        <button class="button-confirm" @click="submitForm">创建模板</button>
+        <button class="button-cancel">取消</button>
+    </div>
+</div>
+<script type="text/x-template" id="modal-template">
+    <transition name="modal">
+        <div class="modal-mask">
+            <div class="modal-wrapper">
+                <div class="modal-container">
+                    <div class="modal-body">
+                        <slot name="body">
+                            default body
+                        </slot>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </transition>
+</script>
+<script src="${rc.contextPath}/statics/libs/jquery.min.js"></script>
+<script src="${rc.contextPath}/statics/plugins/layer/layer.js"></script>
+<script src="${rc.contextPath}/statics/libs/vue.min.js"></script>
+<script src="${rc.contextPath}/statics/js/common.js"></script>
+<script src="/statics/libs/vue-resource.js"></script>
+<script src="/statics/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<!--#parse("include/footer.html")-->
+<script src="${rc.contextPath}/statics/js/projectManage/projAdd.js"></script>
+</body>
+</html>

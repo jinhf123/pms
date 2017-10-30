@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ffcs.dp.projectManage.dao.ProjAddMapper">
+    <select id="listUserCost" resultType="UserCostEntity" parameterType="java.util.List">
+        SELECT
+        t.user_id as user_id,
+        t.username as username,
+        t.cost_id as cost_id,
+        c.description as description,
+        nvl(c.cost, 0) as cost,
+        t.IS_OUTSOURCE as is_outsource
+        FROM pms_sys_user t, pms_stak_cost c
+        WHERE t.status = 1 AND t.USER_ID IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND t.cost_id = c.cost_id (+)
+    </select>
+
+    <select id="listUserCostById" resultType="UserCostEntity" parameterType="Long">
+        SELECT
+            t.user_id      AS user_id,
+            t.username     AS username,
+            t.cost_id      AS cost_id,
+            c.description  AS description,
+            nvl(c.cost, 0) AS cost
+        FROM pms_sys_user t, pms_stak_cost c
+        WHERE t.status = 1 AND t.USER_ID = #{id}
+              AND t.COST_ID = c.cost_id (+)
+    </select>
+
+    <insert id="saveProjInfo" parameterType="ProjManEntity">
+        <selectKey resultType="Long" keyProperty="projId" order="BEFORE">
+            SELECT PMS_PROJECT_INFO_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO PMS_PROJECT_INFO (PROJ_ID, TEMP_ID, PROJ_NAME, PROJ_TYPE, BELO_PROJ_GROUP, PROJ_LEVEL, CONS_MODE,
+        UNDERTAKE_MODE, IS_COMPLET_IN_A_YEAR, START_DATE, END_DATE, STATE, CREATOR, YEAR) VALUES (#{projId}, #{tempId},
+        #{projName}, #{projType}, #{beloProjGroup}, #{projLevel}, #{consMode}, #{undertakeMode}, #{isCompletYear},
+        #{startDate}, #{endDate}, #{state}, #{creator},#{year} )
+    </insert>
+
+    <insert id="saveProjStep" parameterType="StepEntity">
+        <selectKey resultType="Long" keyProperty="stepId" order="BEFORE">
+            SELECT PMS_PROJ_STEP_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO PMS_PROJ_STEP (STEP_ID, PROJ_ID, STEP_MOD, DEFAULT_DATE, STATE) VALUES (#{stepId}, #{projId},
+        #{stepMod}, #{defaultDate}, #{state} )
+    </insert>
+
+
+    <insert id="saveProjStakeholder" parameterType="StakeholderEntity">
+        <selectKey resultType="Long" keyProperty="projStakeholderId" order="BEFORE">
+            SELECT PMS_PROJ_STAKEHOLDER_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO PMS_PROJ_STAKEHOLDER (PROJ_STAKEHOLDER_ID, PROJ_ID, PROJ_GROUP_MANAGER, BIG_PROJ_MANAGER,
+        PROJ_MANAGER, DEMA_MANAGER, TECH_MANAGER, PROJ_MEMBERS)
+        VALUES (#{projStakeholderId}, #{projId}, #{projGroupManager}, #{bigProjManager}, #{projManager}, #{demaManager},
+        #{techManager}, #{projMembers} )
+    </insert>
+
+    <insert id="saveProjCost" parameterType="ProjCostEntity">
+        <selectKey resultType="Long" keyProperty="projScaleId" order="BEFORE">
+            SELECT PMS_PROJ_COST_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO PMS_PROJ_COST (PROJ_SCALE_ID, PROJ_ID, PERS_MONT_TOTAL, RESOURCE_COST, PERS_MONT_OUTSOURCE,
+        OUTSOURCE_COST)
+        VALUES (#{projScaleId}, #{projId}, #{persMountTotal}, #{resourceCost}, #{persMountOutsource}, #{outsourceCost})
+    </insert>
+
+    <insert id="saveProjUserWorktime" parameterType="WorktimeEntity">
+        <selectKey resultType="Long" keyProperty="worktimeId" order="BEFORE">
+            SELECT PMS_PROJ_USER_WORKTIME_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO PMS_PROJ_USER_WORKTIME (WORKTIME_ID, PROJ_ID, USER_ID, START_DATE, END_DATE, USE_RATE) VALUES
+        (#{worktimeId}, #{projId}, #{userId}, #{startDate}, #{endDate}, #{useRate} )
+    </insert>
+</mapper>
