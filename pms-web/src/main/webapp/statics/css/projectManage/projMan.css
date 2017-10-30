@@ -56,9 +56,29 @@ body{
 
 /*下拉按钮组样式*/
 .dropdown-group{
+    right: -22px;
+    left: auto;
+    width: 257px;
+    height: 250px
+}
+.dropdown-group .divider {
+    height: 1px;
+    overflow: hidden;
+    padding-left: 5px;
+    padding-right: 8px;
+    margin: 3px 5px 2px 0;
+    background-color: #e5e5e5;
+}
+#addGroupBtn{height: 20px; text-align: left;color: #999999;padding: 7px 0 7px 18px;}
+.group-li{list-style:none;height: 35px; padding: 7px 0 0 7px;}
+.group-li:hover{background-color: #f1f1f1;}
+.group-name{
+    text-align: left;
+    width: 230px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     display: inline-flex;
-   /* border: 1px solid rgb(221, 221, 221);
-    border-radius: 4px;*/
 }
 .dropdown-span{
     width: 200px;
@@ -113,6 +133,7 @@ body{
 .top-tabs > li > a:focus, .top-tabs > li > a:hover {
     text-decoration: none;
     background-color: #fff;
+    border-bottom: none;
 }
 .top-tabs > li.active > a, .top-tabs > li.active > a:focus, .top-tabs > li.active > a:hover {
     font-size: 16px;
@@ -121,6 +142,7 @@ body{
     background-color: #fff;
     border: 0;
     border-bottom-color: transparent;
+    border-bottom: none;
 }
 
 
@@ -145,7 +167,6 @@ body{
     width: 300px;
     height: 290px
 }
-.dropdown-slimScroll{}
 .notice{
     height: 35px; padding: 10px 0 0 7px;
 }

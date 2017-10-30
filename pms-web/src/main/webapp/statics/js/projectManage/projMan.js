@@ -9,11 +9,11 @@ $(function () {
 
 function initialPage(){
     //初始化滚动条
-    $(".projGroup-slimScroll").slimScroll({height: '200px', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
+    $(".group-slimScroll").slimScroll({height: '200px', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     $(".dropdown-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     $(window).resize(function() {//改变窗口大小后触发
         vm.styleObj.height = ($(window).height()-65)+"px";
-        $(".projGroup-slimScroll").slimScroll({height: '200px', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
+        $(".group-slimScroll").slimScroll({height: '200px', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
         $(".dropdown-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     });
     getProjGroups();
@@ -178,7 +178,7 @@ var vm = new Vue({
             dialogContent2({
                 title : "新增所属项目组",
                 width : '600px',
-                height : '180px',
+                height : '160px',
                 content :  $("#addGroupPanel"),
                 btn : [ '确定', '取消' ],
                 yes : function(index) {

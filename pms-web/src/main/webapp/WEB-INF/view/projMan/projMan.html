@@ -15,37 +15,26 @@
 
                 <div class="col-md-12 column">
                     <div class="col-md-4 column">
-                        <div class="btn-group dropdown-group">
+                        <div class="btn-group display-flex">
                             <span class="dropdown-span">{{activeGroup.name}}</span>
 
-                            <!--<div class="btn-group">
-                                <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">
-                                    <span class="caret"></span>
+                            <div class="btn-group">
+                                <button data-toggle="dropdown" class="btn btn-default dropdown-toggle" style="padding:10px 12px; border: none;color: #999999;">
+                                    <span class="fa fa-caret-down" style="font-size: 18px;"></span>
                                 </button>
                                 <div class="dropdown-menu dropdown-group" role="menu">
-                                    <ul class="dropdown-slimScroll column">
-                                        <li v-for="group in groups">
-                                            <a @click="selectGroup(group)" >{{group.name}}</a>
-                                        </li>
-                                        <li>
-                                            <div class="divider"></div>
-                                            <div class="subTitle" style="height: 20px;" @click="addGroup">创建项目组</div>
+                                    <ul class="group-slimScroll column">
+                                        <li v-for="group in groups" class="group-li" @click="selectGroup(group)">
+                                            <div :title="group.name" class="group-name">
+                                                <div style="width: 15px;color: #5bbfdd;"><span v-show="groupId===group.value" class="fa fa-check"></span></div>
+                                                <div><span>{{group.name}}</span></div>
+                                            </div>
                                         </li>
                                     </ul>
-                                </div>
-                            </div>-->
-                            <button data-toggle="dropdown" class="btn btn-default dropdown-toggle" style="padding:0 12px; border: none;color: #999999;">
-                                <span class="fa fa-caret-down" style="font-size: 18px;"></span>
-                            </button>
-                            <ul class="dropdown-menu" style="width: 233px;max-height:200px">
-                                <li v-for="group in groups" >
-                                    <a @click="selectGroup(group)">{{group.name}}</a>
-                                </li>
-                                <li>
                                     <div class="divider"></div>
-                                    <div class="subTitle" style="height: 20px;text-align: center" @click="addGroup">创建项目组</div>
-                                </li>
-                            </ul>
+                                    <div id="addGroupBtn" @click="addGroup">创建项目组</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-md-4 column">

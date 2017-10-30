@@ -342,7 +342,7 @@ dialogContent2 = function(opt){//当前层弹出窗口
         anim: -1,
         isOutAnim: false,
         shadeClose : false,
-        shade : 0.3,
+        shade : [0.1, '#fff'],
         area : [option.width, option.height],
         shift : 5,
         content : option.content,
