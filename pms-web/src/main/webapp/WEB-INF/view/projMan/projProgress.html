@@ -3,13 +3,13 @@
 <head>
     <title>项目管理</title>
     #parse("include/header.html")
-    <link rel="stylesheet" href="${rc.contextPath}/statics/css/projectManage/projProgress.css">
+    <link rel="stylesheet" href="/statics/css/projectManage/projProgress.css">
 </head>
 <body>
 <!--进度任务-->
 <div id="projProgress" class="clearfix" v-cloak>
     <!--步骤-->
-    <div class="col-md-2 column" :style="styleObj">
+    <div class="col-md-2 column" Style="width: 180px;" :style="styleObj">
         <div class="col-md-12 column left-panel-title">
             <div class="point color-blue"></div>
             <div class="point color-orange"></div>
@@ -46,7 +46,7 @@
         </div>
     </div>
     <!--列表-->
-    <div class="col-md-10" :style="styleObj">
+    <div class="col-md-10" Style="width: calc(100% - 180px);" :style="styleObj">
         <div class="center-panel-list" >
             <div class="center-panel-slimScroll">
                 <!--任务列表面板-->
@@ -117,7 +117,7 @@
                     <div class="col-md-12 column display-flex">
                         <div class="col-md-6 column display-flex">
                             <label><img :src="icon_Title"></label>
-                            <input v-model="taskTitle" class="form-control" id="taskTitle" :placeholder="parentTask===''?'请输入任务名称':'请输入二级任务名称'">
+                            <input v-model="taskTitle" class="form-control" id="taskTitle" title="" :placeholder="parentTask===''?'请输入任务名称':'请输入二级任务名称'">
                         </div>
                         <div class="col-md-3 column display-flex">
                             <label><img :src="icon_User"></label>
@@ -131,7 +131,7 @@
                     <div class="col-md-12 column display-flex">
                         <div class="col-md-6">
                             <button class="btn btn-sm btn-info" @click="saveTask">任务添加</button>&nbsp;&nbsp;&nbsp;&nbsp;
-                            <span><a url="#" @click="closeTaskPanel">取消</a></span>
+                            <span><a @click="closeTaskPanel">取消</a></span>
                         </div>
                         <div class="col-md-6 btn-link-group">
                             <a href="#" @click="addTask" >如果要对任务进行描述或者检查项，请点击此处</a>
@@ -150,12 +150,12 @@
                 </div>
                 <div class="col-md-12 column" id="panel-schedules" >
                     <div v-for="(item,index) in schedules" class="col-md-12 column">
-                        <div  class="col-md-1">{{item.scheduleDate}}</div>
-                        <div  class="col-md-10 column">
+                        <div  class="col-md-1" style="width: 70px;">{{item.scheduleDate}}</div>
+                        <div  class="col-md-10 column" style="width: calc(100% - 130px);">
                             <span>{{item.content}}</span>
                             <span class="label-gray">{{item.participantName}}</span>
                         </div>
-                        <div  class="col-md-1">
+                        <div  class="col-md-1" style="width: 50px;">
                             <button v-if="item.creator==item.userId" class="btn-delete-red" type="button"
                                     title="删除日程" @click="delSchedule(item.scheduleId)"></button>
                         </div>
@@ -181,7 +181,7 @@
                     <div class="col-md-12 column display-flex">
                         <div class="col-md-6">
                             <button class="btn btn-sm btn-info" @click="saveSche">添加日程</button>&nbsp;&nbsp;&nbsp;&nbsp;
-                            <span><a url="#" @click="closeSchePanel">取消</a></span>
+                            <span><a @click="closeSchePanel">取消</a></span>
                         </div>
                         <div class="col-md-6 btn-link-group">
                             <a href="#" @click="addSchedule">要配置其他日程属性？点击配置</a>
@@ -220,10 +220,10 @@
                             <td class="formTitle" colspan="2">&nbsp;</td>
                             <td class="formTitle" colspan="2">
                                 <div style="display: inline-flex;line-height: 2.25;text-align: right;">
-                                    <span><input type="checkbox" :checked="repeatFlag" @click="function(){repeatFlag=!repeatFlag;}" /></span>
+                                    <span><input type="checkbox" :checked="repeatFlag" @click="function(){repeatFlag=!repeatFlag;}" title=""/></span>
                                     <span>&nbsp;每月&nbsp;</span>
                                     <span><input type="number"  min="1" max="31" maxlength="2" onkeyup="repeatDay=value>31?31:value"
-                                                 class="form-control" style="width: 28px;" v-model="repeatDay" :readonly="!repeatFlag" /></span>
+                                                 class="form-control" style="width: 28px;" v-model="repeatDay" :readonly="!repeatFlag" title=""/></span>
                                     <span>&nbsp;号重复事件，直到截至时间</span>
                                 </div>
                             </td>
@@ -232,10 +232,10 @@
                             <td class="formTitle" colspan="2">&nbsp;</td>
                             <td class="formTitle" colspan="2">
                                 <div style="display: inline-flex;line-height: 2.25;text-align: right;">
-                                    <span><input type="checkbox" :checked="noticeFlag" @click="function(){noticeFlag=!noticeFlag;}"/></span>
+                                    <span><input type="checkbox" :checked="noticeFlag" @click="function(){noticeFlag=!noticeFlag;}" title=""/></span>
                                     <span>&nbsp;当日程结束前&nbsp;</span>
                                     <span><input type="number" min="1" max="31" maxlength="2" onkeyup="noticeDay=value>31?31:value"
-                                                 class="form-control" style="width:28px;" v-model="noticeDay" :readonly="!noticeFlag"/></span>
+                                                 class="form-control" style="width:28px;" v-model="noticeDay" :readonly="!noticeFlag" title=""/></span>
                                     <span>&nbsp;天，通知给参与人</span>
                                 </div>
                             </td>
@@ -252,6 +252,6 @@
     </div>
 </div>
 #parse("include/footer.html")
-<script src="${rc.contextPath}/statics/js/projectManage/projProgress.js?_${date.systemTime}"></script>
+<script src="/statics/js/projectManage/projProgress.js?_${date.systemTime}"></script>
 </body>
 </html>

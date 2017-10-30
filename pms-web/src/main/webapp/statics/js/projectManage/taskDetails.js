@@ -359,6 +359,10 @@ var vm = new Vue({
             });
         },
         saveTaskLog:function(){//发表评论
+            if(vm.taskLogContent===''){
+                dialogAlert("评论内容为空！","warn");
+                return;
+            }
             $.ajax({
                 url: '../../projMan/projDetail/saveTaskLog?_' + $.now(),
                 data: JSON.stringify({
@@ -371,14 +375,12 @@ var vm = new Vue({
                 contentType: 'application/json',
                 success: function (data) {
                     if(data.success){
-                        addToWorkLog();
-                        addToRiskIssues();
-                        addToWeeklyReport();
-                        dialogMsg("评论成功！");
+                        // addToWorkLog();
+                        // addToRiskIssues();
+                        // addToWeeklyReport();
+                        // dialogMsg("评论成功！");
                         vm.taskLogContent = "";
                         getTaskLogGrid();
-
-
                         if(vm.addToWorkLog&&vm.addToRiskIssues){
                             vm.addWorkLogs();
                         }else if(vm.addToRiskIssues)
@@ -386,8 +388,6 @@ var vm = new Vue({
                         if(vm.addToWorkLog&&!vm.addToRiskIssues){
                             vm.addWorkLogs();
                         }
-
-
                     }else{
                         dialogMsg("评论失败！"+data.msg,"error")
                     }
@@ -405,6 +405,10 @@ var vm = new Vue({
                 height : '200px',
                 content :  $("#workLogPanel"),
                 btn : [ '确定', '取消' ],
+                success: function(){
+                    //TODO 初始化时间控件
+                    // $("#finishDate").datetimepicker();
+                },
                 yes : function(index) {
                     if(isNullOrEmpty(vm.startDate)) {
                         dialogAlert('开始日期为空','info');
@@ -415,6 +419,7 @@ var vm = new Vue({
                         return false;
                     }
                     layer.close(index);
+                    //TODO 保存工作日志
                     /*$.ajax({
                         url: '../../FileMan/addFolderInfo?_' + $.now(),
                         data: JSON.stringify({

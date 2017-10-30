@@ -85,11 +85,11 @@ body{
 }
 
 .step{
-    padding-right: 30px;
+    padding:0 10px;
 }
 
 .step-div {
-    margin: 0 20px 10px 20px;
+    margin: 0 20px 10px 10px;
     height: 80px;
 }
 .step-title-div {

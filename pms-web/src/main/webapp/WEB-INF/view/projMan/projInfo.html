@@ -105,7 +105,7 @@
             <div class="horizontal-divider"></div>
             <div v-show="(steps.length>6 && end < steps.length)" class="stepPageBtn page-right" @click="stepToRight"><span class="fa fa-chevron-right"></span></div>
             <div class="step display-flex">
-                <div v-for="(item,index) in steps" class="display-flex" v-show="isShowStep(item.rownum)" >
+                <div v-for="(item,index) in steps" class="display-flex" :style="styleObj" v-show="isShowStep(item.rownum)" >
                     <div class="step-div">
                         <div class="step-title-div">
                             {{item.stepName}}
