@@ -41,15 +41,13 @@ var vm = new Vue({
         isLoading: true,
         startDate: null,
         endDate: null,
-        // projInfo: {},
-        // steps: {},
-        projType: ['新建类型', '旧类型'],
-        consMode: ['独立项目', '合作项目'],
-        projLevel: ['重点项目', '一般项目', '普通项目'],
-        beloProjGroup: ['核心业务组', '常规业务组'],
-        undertakeMode: ['联合建设', '独立建设'],
+        projType: [],
+        consMode: [],
+        projLevel: [],
+        beloProjGroup: [],
+        undertakeMode: [],
         template: [],
-        tempIndex: null,
+        tempIndex: 0,
         stepDate: [],
         projGroupManager: [],
         projGroupManagerId: [],
@@ -74,7 +72,10 @@ var vm = new Vue({
             projectWorkCost: 0.000,
             outsourceWorkTime: 0.000,
             outsourceWorkCost: 0.000
-        }
+        },
+        stepWidth: 600,
+        stepStart: 0,
+        stepCount: 0
     },
     methods: {
         resetData: function () {
@@ -108,6 +109,64 @@ var vm = new Vue({
 
             this.stepDate = [];
 
+        },
+        getMacro: function () {
+            this.$http.post("/sys/macro/getMacroByCatalog", {
+                "typeCodes":
+                    ['projType',
+                        'consMode',
+                        'projLevel',
+                        'projGroup',
+                        'undertakeMode']
+            })
+                .then(function (data) {
+                    if ("projType" in data.data) {
+                        for (var i in data.data["projType"]) {
+                            this.projType.push({
+                                name: data.data["projType"][i]["name"],
+                                value: data.data["projType"][i]["value"]
+                            });
+                        }
+                    }
+
+                    if ("consMode" in data.data) {
+                        for (var i in data.data["consMode"]) {
+                            this.consMode.push({
+                                name: data.data["projType"][i]["name"],
+                                value: data.data["projType"][i]["value"]
+                            });
+                        }
+                    }
+
+                    if ("projLevel" in data.data) {
+                        for (var i in data.data["projLevel"]) {
+                            this.projLevel.push({
+                                name: data.data["projLevel"][i]["name"],
+                                value: data.data["projLevel"][i]["value"]
+                            });
+                        }
+                    }
+
+                    if ("projGroup" in data.data) {
+                        for (var i in data.data["projGroup"]) {
+                            this.beloProjGroup.push({
+                                name: data.data["projGroup"][i]["name"],
+                                value: data.data["projGroup"][i]["value"]
+                            });
+                        }
+                    }
+
+                    if ("undertakeMode" in data.data) {
+                        for (var i in data.data["undertakeMode"]) {
+                            this.undertakeMode.push({
+                                name: data.data["undertakeMode"][i]["name"],
+                                value: data.data["undertakeMode"][i]["value"]
+                            });
+                        }
+                    }
+                }, function (err) {
+                    console.log(err);
+                });
         },
         dateDefind: function () {
             var d, s;
@@ -177,6 +236,7 @@ var vm = new Vue({
             }
             var defaultDate;
             var stepList;
+
             for (stepList in this.template[this.tempIndex].projTemplateStepEntities) {
                 if (startDate !== null) {
                     if (this.stepDate[stepList].defaultDate !== null) {
@@ -419,18 +479,32 @@ var vm = new Vue({
                     console.log(err);
                 });
 
+        },
+        toPrev: function () {
+            this.stepStart--;
+        },
+        toNext: function () {
+            this.stepStart++;
         }
     },
     mounted: function () {
         this.dateDefind();
         this.loadTemplate();
+        this.getMacro();
+        this.stepWidth = document.getElementById('step-info').clientWidth;
+        const that = this;
+        window.onresize = function () {
+            that.stepWidth = document.getElementById('step-info').clientWidth;
+        };
     },
     watch: {
         startDate: function (val) {
-            this.setStepDate();
+            if (val !== "" && val !== null)
+                this.setStepDate();
         },
         endDate: function (val) {
-            this.setStepDateByEndDate();
+            if (val !== "" && val !== null)
+                this.setStepDateByEndDate();
         },
         tempIndex: function (val) {
             this.stepDate = [];
@@ -501,6 +575,10 @@ var vm = new Vue({
 
             },
             deep: true
+        },
+        stepWidth: function (val) {
+            var a = Math.floor((val-40) / 162);
+            this.stepCount = a;
         }
     },
     computed: {
@@ -567,48 +645,9 @@ var vm = new Vue({
             }
             return names;
         }
-        // projectWorkTime: function () {
-        //     console.log("projectWorkTime");
-        //     var time = 0;
-        //     for (var member in  this.allMembersId) {
-        //         if (member.isOutsource === "0")
-        //             time = time + member.time;
-        //     }
-        //     return time;
-        // },
-        // projectWorkCost: function () {
-        //     console.log("projectWorkCost");
-        //     var cost = 0;
-        //     return cost;
-        // },
-        // outsourceWorkTime: function () {
-        //     console.log("outsourceWorkTime");
-        //     var time = 0;
-        //     return time;
-        // },
-        // outsourceWorkCost: function () {
-        //     console.log("outsourceWorkCost");
-        //     var cost = 0;
-        //     return cost;
-        // }
     }
 });
 
-function renderLines(el) {
-    var d, s;
-    d = new Date();
-    s = d.getFullYear() + "-";             //取年份
-    s = s + (d.getMonth() + 1) + "-";//取月份
-    s += d.getDate();         //取日期
-    $('.step-date-div').datetimepicker({
-        startDate: s,
-        minView: "month", //选择日期后，不会再跳转去选择时分秒
-        language: 'zh-CN',
-        format: 'yyyy-mm-dd',
-        todayBtn: 1,
-        autoclose: 1
-    });
-}
 
 Vue.directive('datetimepicker', {
     bind: function (el, binding) {

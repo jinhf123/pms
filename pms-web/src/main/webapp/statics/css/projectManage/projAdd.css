@@ -503,3 +503,46 @@ body {
     padding: 5px;
     height: 35px;
 }
+
+.step-scroll-left{
+    width: 40px;
+    height: 40px;
+    background-image: url("/statics/img/step_scroll.png");
+    position: absolute;
+    z-index: 4;
+    left: 0;
+}
+
+.step-scroll-left>img {
+    margin-left: 10px;
+    margin-top: 6px;
+    cursor: pointer;
+}
+
+.step-scroll-left>img:active {
+    margin-left: 8px;
+    margin-top: 6px;
+    cursor: pointer;
+}
+
+
+.step-scroll-right{
+    width: 40px;
+    height: 40px;
+    background-image: url("/statics/img/step_scroll.png");
+    position: absolute;
+    z-index: 4;
+    right: 0;
+}
+
+.step-scroll-right>img {
+    margin-right: 10px;
+    margin-top: 6px;
+    cursor: pointer;
+}
+
+.step-scroll-right>img:active {
+    margin-right: 8px;
+    margin-top: 6px;
+    cursor: pointer;
+}
