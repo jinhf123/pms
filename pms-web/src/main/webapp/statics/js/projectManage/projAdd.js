@@ -485,6 +485,9 @@ var vm = new Vue({
         },
         toNext: function () {
             this.stepStart++;
+        },
+        toProjMan: function () {
+            toUrl('/projMan/projectList.html');
         }
     },
     mounted: function () {
@@ -577,7 +580,7 @@ var vm = new Vue({
             deep: true
         },
         stepWidth: function (val) {
-            var a = Math.floor((val-40) / 162);
+            var a = Math.floor((val - 40) / 162);
             this.stepCount = a;
         }
     },

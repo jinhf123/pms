@@ -57,7 +57,9 @@ public class ProjAddController extends AbstractController {
         projManEntity.setIsCompletYear(projectInfo.getString("isCompletYear"));
         projManEntity.setStartDate(projectInfo.getDate("startDate"));
         projManEntity.setEndDate(projectInfo.getDate("endDate"));
-
+        projManEntity.setCreator(getUserId());
+        Calendar now = Calendar.getInstance();
+        projManEntity.setYear(String.valueOf(now.get(Calendar.YEAR)));
 
         stakeholderEntity.setProjGroupManager(projStakeholder.getString("projGroupManager"));
         stakeholderEntity.setBigProjManager(projStakeholder.getString("bigProjManager"));

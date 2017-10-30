@@ -10,13 +10,13 @@
 <body>
 <div class="container-fluid" id="dpTemple">
     <!--<div class="column is-12">-->
-        <!--<label class="label">Email</label>-->
-        <!--<p :class="{ 'control': true }">-->
-            <!--<input v-validate="'required|email'" :class="{'input': true, 'is-danger': errors.has('email') }"-->
-                   <!--name="email" type="text" placeholder="Email">-->
-            <!--<span v-show="errors.has('email')" class="help is-danger">{{ errors.first('email') }}</span>-->
-            <!--&lt;!&ndash;{{console.log(this.errors)}}&ndash;&gt;-->
-        <!--</p>-->
+    <!--<label class="label">Email</label>-->
+    <!--<p :class="{ 'control': true }">-->
+    <!--<input v-validate="'required|email'" :class="{'input': true, 'is-danger': errors.has('email') }"-->
+    <!--name="email" type="text" placeholder="Email">-->
+    <!--<span v-show="errors.has('email')" class="help is-danger">{{ errors.first('email') }}</span>-->
+    <!--&lt;!&ndash;{{console.log(this.errors)}}&ndash;&gt;-->
+    <!--</p>-->
     <!--</div>-->
     <div class="row-fluid col-sm-2 col-xs-2 col-md-2 col-lg-2">
         <div class="container-fluid">
@@ -48,7 +48,7 @@
     </div>
     <div v-if="!isLoading">
         <transition name="fade" mode="out-in">
-            <router-view :temp="temp" :options="options" :template="template" @submit-success="reloadTemplate"
+            <router-view :temp="temp" :options="templateNoticeUser" :template="template" @submit-success="reloadTemplate"
                          :key="$route.path"></router-view>
         </transition>
     </div>
@@ -131,13 +131,19 @@
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label">模板名称：</label>
                     <div class="col-sm-10" :class="{ 'has-error': errors.has('name')}">
-                        <input type="text" v-validate="'required'" class="form-control " placeholder="输入模板名称" v-model="temp.tempName" name="name">
+                        <input type="text" v-validate="'required'" class="form-control " placeholder="输入模板名称"
+                               v-model="temp.tempName" name="name">
+                        <i v-show="errors.has('name')" class="fa fa-warning is-danger"></i>
+                        <span v-show="errors.has('name')" class="help is-danger">{{ errors.first('name') }}</span>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-sm-2 col-form-label">详细描述：</label>
                     <div class="col-sm-10" :class="{ 'has-error': errors.has('description')}">
-                        <input type="text" v-validate="'required'" class="form-control" placeholder="输入模板描述" v-model="temp.description" name="description">
+                        <input type="text" v-validate="'required'" class="form-control" placeholder="输入模板描述"
+                               v-model="temp.description" name="description">
+                        <i v-show="errors.has('description')" class="fa fa-warning is-danger"></i>
+                        <span v-show="errors.has('description')" class="help is-danger ">{{ errors.first('description') }}</span>
                     </div>
                 </div>
             </div>
@@ -189,8 +195,8 @@
             </div>
         </div>
         <div class="form-group row">
-            <button @click="submitForm" class="btn btn-primary col-sm-2  ">创建模板</button>
-            <button class="btn  btn-default col-sm-2">取消</button>
+            <button @click="submitForm" class="button-confirm">创建模板</button>
+            <button class="button-cancel" >取消</button>
         </div>
     </div>
 </template>
@@ -199,18 +205,18 @@
     <div>
         <div class="flex-container">
             <div class="flex-left">
-                <label for="inlineFormCustomSelect">默认完成时间：上一环节偏移</label>
-                <input class="custom-control input-number" type="text" v-model.number="item.defaultMoveDate"/>
-                <select class="custom-select input-number" id="inlineFormCustomSelect">
-                    <option value="1" selected>月</option>
-                    <option value="2">天</option>
+                <label>默认完成时间：上一环节偏移</label>
+                <vue-numeric v-model.number="item.defaultMove" class="input-number"></vue-numeric>
+                <select class="custom-select input-number" v-model="item.dayMonth">
+                    <option value=30 selected>月</option>
+                    <option value=1>天</option>
                 </select>
                 <label class="">当离完成时间</label>
-                <input class="custom-control input-number" type="text" v-model="item.finishNoticeDate"/>
+                <vue-numeric v-model.number="item.finishNoticeDate" class="input-number"></vue-numeric>
                 <label class="">天,通知给</label>
             </div>
             <div class="flex-right white">
-                <v-select multiple v-model="item.noticeStaff" :options="options"></v-select>
+                <v-select multiple v-model="item.noticeStaffArray" :options="options"></v-select>
             </div>
         </div>
         <div class="form-line">
@@ -219,37 +225,38 @@
                     <label>当任务变更时，默认通知给</label>
                 </div>
                 <div class="flex-right white">
-                    <v-select multiple v-model="item.taskChangeStaff" :options="options"></v-select>
+                    <v-select multiple v-model="item.taskChangeStaffArray" :options="options"></v-select>
                 </div>
             </div>
         </div>
         <div class="form-line">
             <label>当日程结束前</label>
-            <input type="text" class="custom-control input-number" v-model="item.finishScheduleNoticeDate"/>
+            <vue-numeric v-model.number="item.finishScheduleNoticeDate" class="input-number"></vue-numeric>
             <label>天，通知给参与人</label>
         </div>
         <div>
-            <div class="flex-container">
+            <div class="flex-container attach">
                 <div class="flex-left flex-checkbox">
-                    <input type="checkbox" class="" v-model="item.isAttach"/>
+                    <input type="checkbox" class="" v-model="item.attach"/>
                 </div>
-                <div class="flex-right">
+                <div class="flex-right" v-if="item.attach">
                     <div class="form-line">
                         <label>本环节需要上传文档 对上传文档要求</label>
+                            <label> word</label>
+                            <vue-numeric v-model.number="item.attachWord" class="input-number"></vue-numeric>
 
-                        <label> word</label>
-                        <input type="text" class="custom-control input-number" placeholder="个数"
-                               v-model="item.attachWord"/>
-
-                        <label> excel</label>
-                        <input type="text" class="custom-control input-number" placeholder="个数"
-                               v-model="item.attachExcel"/>
-                        <!--<input type="checkbox" class="custom-control"  />-->
-                        <label> pdf</label>
-                        <input type="text" class="custom-control input-number" placeholder="个数"
-                               v-model="item.attachPdf"/>
+                            <label> excel</label>
+                            <vue-numeric v-model.number="item.attachExcel" class="input-number"></vue-numeric>
+                            <!--<input type="checkbox" class="custom-control"  />-->
+                            <label> pdf</label>
+                            <vue-numeric v-model.number="item.attachPdf" class="input-number"></vue-numeric>
                     </div>
                     <input type="text" class="form-control" placeholder=" 对上传的文档进行具体说明" v-model="item.attachContent">
+                </div>
+                <div class="flex-right" v-else>
+                    <div class="form-line">
+                        <label>本环节需要上传文档 对上传文档要求</label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -265,6 +272,9 @@
     </div>
 </template>
 #parse("include/footer.html")
+
+<script src="/statics/libs/accounting.umd.js"></script>
+<script src="/statics/libs/vue-numeric.min.js"></script>
 <script src="${rc.contextPath}/statics/libs/vue-router.min.js"></script>
 <script src="${rc.contextPath}/statics/libs/vue-resource.js"></script>
 <script src="${rc.contextPath}/statics/libs/vue-select.js"></script>
