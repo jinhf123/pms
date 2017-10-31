@@ -74,10 +74,15 @@
                         if ("userId" in data[i]) {
                             vm.selectData.push({
                                 userId: data[i].userId,
-                                username:data[i].username
+                                username: data[i].username
                             })
                         }
                     }
+                    var values = [];
+                    for (var i in vm.selectData) {
+                        values.push(vm.selectData[i].userId);
+                    }
+                    $('#dataGrid').bootstrapTable('checkBy', {field: "userId", values: values});
                 },
                 error: function (err) {
                     console.log(err);
@@ -169,10 +174,10 @@
         mounted: function () {
             var self = this;
             $('#dataGrid').on('check.bs.table', function (e, row) {
-                var exists = self.selectData.some(function (obj) {
-                    return obj.userId === row.userId;
-                });
-                if (!exists) {
+                var exists = self.selectData.map(function (x) {
+                    return x.userId;
+                }).indexOf(row.userId);
+                if (exists === -1) {
                     self.selectData.push({
                         userId: row.userId,
                         username: row.username
@@ -182,10 +187,11 @@
             });
 
             $('#dataGrid').on('uncheck.bs.table', function (e, row) {
-                var exists = self.selectData.some(function (obj) {
-                    return obj.userId === row.userId;
-                });
-                if (exists) {
+                var exists = self.selectData.map(function (x) {
+                    return x.userId;
+                }).indexOf(row.userId);
+
+                if (exists !== -1) {
                     self.selectData.splice(exists, 1);
                 }
 
@@ -194,11 +200,11 @@
 
             $('#dataGrid').on('check-all.bs.table', function (e, row) {
                 for (var i in row) {
-                    var exists = self.selectData.some(function (obj) {
-                        return obj.userId === row[i].userId;
-                    });
+                    var exists = self.selectData.map(function (x) {
+                        return x.userId;
+                    }).indexOf(row[i].userId);
 
-                    if (!exists) {
+                    if (exists === -1) {
                         self.selectData.push({
                             userId: row[i].userId,
                             username: row[i].username
@@ -210,14 +216,15 @@
 
             $('#dataGrid').on('uncheck-all.bs.table', function (e, row) {
                 for (var i in row) {
-                    var exists = self.selectData.some(function (obj) {
-                        return obj.userId === row[i].userId;
-                    });
+                    var exists = self.selectData.map(function (x) {
+                        return x.userId;
+                    }).indexOf(row[i].userId);
 
-                    if (exists) {
+                    if (exists !== -1) {
                         self.selectData.splice(exists, 1);
                     }
                 }
+
             });
         }
     })

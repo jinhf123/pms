@@ -7,7 +7,16 @@ Date.prototype.yyyymmdd = function () {
         (dd > 9 ? '' : '0') + dd
     ].join('-');
 };
+Vue.use(VueNumeric.default);
+const config = {
+    errorBagName: 'errors', // change if property conflicts.
+    delay: 0,
+    locale: 'zh_CN',
+    messages: null,
+    strict: true
+};
 
+Vue.use(VeeValidate, config);
 
 Vue.component('modal', {
     props: ['member'],
@@ -39,8 +48,8 @@ var vm = new Vue({
         },
         showModal: false,
         isLoading: true,
-        startDate: null,
-        endDate: null,
+        startDate: "",
+        endDate: "",
         projType: [],
         consMode: [],
         projLevel: [],
@@ -231,8 +240,10 @@ var vm = new Vue({
         setStepDate: function () {
             var startDate;
             var endDate;
-            if (this.startDate === null || isNaN(this.startDate) || this.startDate === "") {
+
+            if (this.startDate === null  || this.startDate === "") {
                 startDate = null;
+
             } else {
                 startDate = new Date(Date.parse(this.startDate.replace(/-/g, "/")));
             }
@@ -245,6 +256,7 @@ var vm = new Vue({
             var stepList;
 
             for (stepList in this.template[this.tempIndex].projTemplateStepEntities) {
+
                 if (startDate !== null) {
                     if (this.stepDate[stepList].defaultDate !== null) {
                         defaultDate = new Date(Date.parse(this.stepDate[stepList].defaultDate.replace(/-/g, "/")));
@@ -254,11 +266,13 @@ var vm = new Vue({
                         }
                     }
                     var moveDate = parseInt(this.template[this.tempIndex].projTemplateStepEntities[stepList].defaultMoveDate);
+
                     if (isNaN(moveDate)) {
                         startDate = null;
                         this.stepDate[stepList].defaultDate = null;
                     } else {
                         defaultDate = new Date(startDate.getTime() + moveDate * 24 * 60 * 60 * 1000);
+
                         if (defaultDate > endDate) {
                             startDate = null;
                             this.stepDate[stepList].defaultDate = null;
@@ -271,7 +285,7 @@ var vm = new Vue({
                     }
                 }
             }
-            if (this.endDate === null && this.stepDate.length > 0) {
+            if ((this.endDate === null || this.endDate ==="")  && this.stepDate.length > 0) {
                 this.endDate = this.stepDate[stepList].defaultDate;
             }
         },
@@ -438,7 +452,11 @@ var vm = new Vue({
 
         },
         submitForm: function () {
-
+            this.$validator.validateAll().then(function (result){
+                console.log(result);
+            });
+            console.log(this.$validator.errors);
+            return;
             this.project.tempId = this.template[this.tempIndex].tempId;
             this.project.startDate = this.startDate;
             this.project.endDate = this.endDate;
@@ -559,13 +577,13 @@ var vm = new Vue({
             this.stepDate = [];
             for (var stepList in this.template[this.tempIndex].projTemplateStepEntities) {
                 this.stepDate.push({
-                    stepName:this.template[this.tempIndex].projTemplateStepEntities[stepList].stepName,
+                    stepName: this.template[this.tempIndex].projTemplateStepEntities[stepList].stepName,
                     stepMod: this.template[this.tempIndex].projTemplateStepEntities[stepList].tempStepId,
                     noticeStaff: this.template[this.tempIndex].projTemplateStepEntities[stepList].noticeStaffId,
                     finishNoticeDate: this.template[this.tempIndex].projTemplateStepEntities[stepList].finishNoticeDate,
-                    defaultDate:"",
+                    defaultDate: "",
                     noticeDate: "",
-                    noticeId:[]
+                    noticeId: []
                 });
             }
             this.setStepDate();

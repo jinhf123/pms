@@ -7,7 +7,7 @@ const config = {
     messages: null,
     strict: true
 };
-// Vue.use(VeeValidate);
+
 Vue.use(VeeValidate, config);
 var templeStepForm = {
     props: [
