@@ -74,4 +74,13 @@
         INSERT INTO PMS_PROJ_USER_WORKTIME (WORKTIME_ID, PROJ_ID, USER_ID, START_DATE, END_DATE, USE_RATE) VALUES
         (#{worktimeId}, #{projId}, #{userId}, #{startDate}, #{endDate}, #{useRate} )
     </insert>
+
+    <insert id="saveProjNotice" parameterType="NoticeEntity">
+        <selectKey resultType="Long" keyProperty="noticeId" order="BEFORE">
+            SELECT PMS_PROJ_NOTICE_SEQ.NEXTVAL FROM DUAL
+        </selectKey>
+        INSERT INTO PMS_PROJ_NOTICE (NOTICE_ID, NOTICE_CREATOR, NOTICE_RECEIVER, NOTICE_TYPE, NOTICE_CONTENT,
+        CREATE_DATE, TASK_ID, IS_READ) VALUES(#{noticeId}, #{noticeCreator}, #{noticeReceiverName}, #{noticeType},
+        #{noticeContent}, #{createDate}, #{taskId},#{isRead})
+    </insert>
 </mapper>

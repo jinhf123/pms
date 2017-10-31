@@ -25,7 +25,7 @@ var vm = new Vue({
             projLevel: null,
             consMode: null,
             undertakeMode: null,
-            isCompletYear: null,
+            isCompletYear: 1,
             startDate: null,
             endDate: null
         },
@@ -62,7 +62,14 @@ var vm = new Vue({
         projMembers: [],
         projMembersId: [],
         allMembersId: {},
-        type: ['projGroupManager', 'bigProjManager', 'projManager', 'demaManager', 'techManager', 'projMembers'],
+        type: {
+            1: 'projGroupManager',
+            2: 'bigProjManager',
+            3: 'projManager',
+            4: 'demaManager',
+            5: 'techManager',
+            6: 'projMembers'
+        },
         updateMebmersId: [],
         oldUpdateMembersId: [],
         memberIndex: null,
@@ -288,7 +295,7 @@ var vm = new Vue({
         selectStaff: function (obj) {//添加任务选择人员
             var self = this;
             var userString = "";
-            if(self[obj + "Id"].length > 0){
+            if (self[obj + "Id"].length > 0) {
                 userString = "&userId=" + self[obj + "Id"].join();
             }
 
@@ -431,6 +438,7 @@ var vm = new Vue({
 
         },
         submitForm: function () {
+
             this.project.tempId = this.template[this.tempIndex].tempId;
             this.project.startDate = this.startDate;
             this.project.endDate = this.endDate;
@@ -442,6 +450,39 @@ var vm = new Vue({
             this.stakeholder.techManager = this.techManagerId.join();
             this.stakeholder.projMembers = this.projMembersId.join();
 
+            console.log(this.stepDate);
+            console.log(this.stakeholder);
+            for (var i in this.stepDate) {
+
+                if (this.stepDate[i].defaultDate !== null && this.stepDate[i].defaultDate !== "") {
+                    var noticeId = [];
+                    var moveDate = parseInt(this.stepDate[i].finishNoticeDate);
+                    if (isNaN(moveDate)) {
+                        moveDate = 0;
+                    }
+                    var defaultDate = new Date(Date.parse(this.stepDate[i].defaultDate.replace(/-/g, "/")));
+                    var noticeDate = new Date(defaultDate.getTime() + moveDate * 24 * 60 * 60 * 1000);
+                    this.stepDate[i].noticeDate = noticeDate.yyyymmdd();
+                    if (this.stepDate[i].noticeStaff !== "") {
+                        var type = this.stepDate[i].noticeStaff.split(",");
+                        for (var j in type) {
+                            for (var k in this[this.type[type[j]] + "Id"]) {
+                                var key = this[this.type[type[j]] + "Id"][k];
+                                var exists = noticeId.indexOf(key);
+                                // var exists = noticeId.some(function (obj) {
+                                //     return obj.userId === key;
+                                // });
+                                // console.log(exists);
+                                if (exists === -1) {
+                                    // noticeId.push({userId: key, noticeDate: noticeDate});
+                                    noticeId.push(key);
+                                }
+                            }
+                        }
+                        this.stepDate[i].noticeId = noticeId;
+                    }
+                }
+            }
             var worktime = [];
             for (var i in this.allMembersId) {
                 if ('workTime' in this.allMembersId[i]) {
@@ -518,8 +559,13 @@ var vm = new Vue({
             this.stepDate = [];
             for (var stepList in this.template[this.tempIndex].projTemplateStepEntities) {
                 this.stepDate.push({
+                    stepName:this.template[this.tempIndex].projTemplateStepEntities[stepList].stepName,
                     stepMod: this.template[this.tempIndex].projTemplateStepEntities[stepList].tempStepId,
-                    defaultDate: null
+                    noticeStaff: this.template[this.tempIndex].projTemplateStepEntities[stepList].noticeStaffId,
+                    finishNoticeDate: this.template[this.tempIndex].projTemplateStepEntities[stepList].finishNoticeDate,
+                    defaultDate:"",
+                    noticeDate: "",
+                    noticeId:[]
                 });
             }
             this.setStepDate();
