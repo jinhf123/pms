@@ -2,19 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ffcs.dp.projectManage.dao.ProjManMapper">
 
-	<!--
-
-select ltrim(max(sys_connect_by_path(username, ',')), ',') BIG_PROJ_MANAGER
-  from (select user_id, username, rownum t
-          from pms_sys_user
-         where INSTR((select ',' || '1047,1045,1046' || ',' from dual),
-                     ',' || TRIM(TO_CHAR(user_id)) || ',') > 0)
-connect by prior t = t - 1
- start with t = 1;
-
-  //todo 待修改，大项目经理为多个人是查询会报错
-	-->
-
 	<!--查找项目列表-->
 	<select id="listProject" resultType="ProjManEntity" parameterType="Map">
 		with ss as
@@ -31,9 +18,9 @@ connect by prior t = t - 1
 			   i.proj_name,
 			   i.belo_proj_group,
 			   i.proj_type,
-		       (select username
-		          from pms_sys_user
-		         where user_id = s.BIG_PROJ_MANAGER) big_proj_manager,
+			   (select WM_CONCAT(USERNAME)
+				  from PMS_SYS_USER
+				 where INSTR(s.proj_group_manager, USER_ID) > 0) big_proj_manager,
 			   (select count(1)
 				  from pms_proj_risk_issue r
 				 where r.state = 0
@@ -68,9 +55,9 @@ connect by prior t = t - 1
                i.proj_type,
                i.start_date,
                i.end_date,
-               (select username
-                  from pms_sys_user
-                 where user_id = s.BIG_PROJ_MANAGER) bigProjManager
+			   (select WM_CONCAT(USERNAME)
+			      from PMS_SYS_USER
+				 where INSTR(s.proj_group_manager, USER_ID) > 0) big_proj_manager
           from pms_project_info i
           left join pms_proj_stakeholder s
             on i.proj_id = s.proj_id

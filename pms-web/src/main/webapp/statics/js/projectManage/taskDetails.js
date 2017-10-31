@@ -14,7 +14,9 @@ function initialPage(){
     vm.stepId = getQueryString('stepId');
     vm.stepName = getQueryString('stepName');
     vm.taskId = getQueryString('taskId');
-    $("#finishDate").datetimepicker();
+    $("#finishDate").datetimepicker().on('change', function () {
+        vm.finishDate = $("#finishDate").val();
+    });
     $(".panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     $(window).resize(function() {
         vm.styleObj.height = ($(window).height())+"px";
@@ -132,40 +134,6 @@ function saveCheckItem(){
         }
     });
 }
-//添加到工作日志
-function addToWorkLog(){
-    if(vm.addToWorkLog)
-    $.ajax({
-        url: '../../projMan/workLog/saveWorkLog?_' + $.now(),
-        data: JSON.stringify({
-            "workLogDate" : formatDate(new Date(),"yyyy-MM-dd"),
-            "startTime" : "08:00",
-            "endTime" : "08:00",
-            "minutes" : 0,
-            "isProjectWork" : "1",
-            "project" : vm.projId,
-            "task" : vm.taskId,
-            "workDetails" : vm.taskLogContent
-        }),
-        type: "post",
-        dataType: "json",
-        contentType: 'application/json',
-        success: function (data) {
-        }
-    });
-}
-//添加到风险问题
-function addToRiskIssues(){
-    if(addToRiskIssues){
-        //TODO 添加到风险问题
-    }
-}
-//添加到本周周报
-function addToWeeklyReport(){
-    if(addToWeeklyReport){
-        //TODO 添加到本周周报
-    }
-}
 
 
 
@@ -193,7 +161,7 @@ var vm = new Vue({
         //评论选项
         addToWorkLog:false,
         addToRiskIssues:false,
-        addToWeeklyReport:false,
+        addToWeeklyReport:true,
 
         projId:"",
         stepId:"",
@@ -218,7 +186,8 @@ var vm = new Vue({
         //添加到工作日志，风险问题参数
         startDate:"",
         endDate:"",
-        resolveStaff:"",
+        onChargeStaff: "",
+        onChargeStaffName: "",
         resolveDate:"",
         isDialogOpen:"false",
 
@@ -318,15 +287,6 @@ var vm = new Vue({
             });
             saveTaskDetail(params);
         },
-        openAddTaskContent:function(){//打开\关闭新增项目详情面板
-            vm.isAddTaskContent = !vm.isAddTaskContent;
-        },
-        openAddCheckItem:function(){//打开\关闭新增检查项面板
-            vm.isAddCheckItem=!vm.isAddCheckItem;
-        },
-        cancelAddCheckItem:function(){//关闭新增检查项面板
-            vm.isAddCheckItem=false;
-        },
         addCheckItem:function(){//新增检查项保存
             if(vm.content==null||vm.content.trim()==""){
                 dialogMsg("请输入检查项内容!","warn");
@@ -378,7 +338,6 @@ var vm = new Vue({
                         // addToWorkLog();
                         // addToRiskIssues();
                         // addToWeeklyReport();
-                        // dialogMsg("评论成功！");
                         vm.taskLogContent = "";
                         getTaskLogGrid();
                         if(vm.addToWorkLog&&vm.addToRiskIssues){
@@ -388,6 +347,7 @@ var vm = new Vue({
                         if(vm.addToWorkLog&&!vm.addToRiskIssues){
                             vm.addWorkLogs();
                         }
+                        // dialogMsg("评论成功！");
                     }else{
                         dialogMsg("评论失败！"+data.msg,"error")
                     }
@@ -419,31 +379,28 @@ var vm = new Vue({
                         return false;
                     }
                     layer.close(index);
+                    return ;
                     //TODO 保存工作日志
-                    /*$.ajax({
-                        url: '../../FileMan/addFolderInfo?_' + $.now(),
+                    $.ajax({
+                        url: '../../projMan/workLog/saveWorkLog?_' + $.now(),
                         data: JSON.stringify({
-                            "projId" : vm.projId,
-                            "folderName" : vm.folderName,
-                            "description": vm.description
+                            "workLogDate" : formatDate(new Date(),"yyyy-MM-dd"),
+                            "startTime" : "08:00",
+                            "endTime" : "08:00",
+                            "minutes" : 0,
+                            "isProjectWork" : "1",
+                            "project" : vm.projId,
+                            "task" : vm.taskId,
+                            "workDetails" : vm.taskLogContent
                         }),
                         type: "post",
                         dataType: "json",
                         contentType: 'application/json',
                         success: function (data) {
-                            if(data.success){
-                                layer.close(index);
-                                dialogMsg("添加文件夹成功!", 'info');
-                                getFolderGrid();
-                            }else{
-                                dialogAlert("添加文件夹失败!"+data.msg, 'error');
-                            }
-                        },
-                        error: function (XMLHttpRequest, textStatus, errorThrown) {
-                            dialogLoading(false);
-                            dialogAlert(errorThrown, 'error');
                         }
-                    });*/
+                    });
+
+
                 },
                 end:function(){
                     if(vm.addToRiskIssues)
@@ -459,8 +416,17 @@ var vm = new Vue({
                 height : '200px',
                 content :  $("#riskIssuesPanel"),
                 btn : [ '确定', '取消' ],
+                success: function(){
+                    //TODO 初始化时间控件
+
+                    vm.resolveDate =  vm.addSevenDate;
+
+                    $("#resolveDate").datetimepicker().on('change', function () {
+                        vm.resolveDate = $("#resolveDate").val();
+                    });
+                },
                 yes : function(index) {
-                    if(isNullOrEmpty(vm.resolveStaff)) {
+                    if(isNullOrEmpty(vm.onChargeStaff)) {
                         dialogAlert('请指定解决人！','info');
                         return false;
                     }
@@ -468,39 +434,63 @@ var vm = new Vue({
                         dialogAlert('请指定解决日期','info');
                         return false;
                     }
-                    layer.close(index);
-                    /*$.ajax({
-                        url: '../../FileMan/addFolderInfo?_' + $.now(),
+                    $.ajax({
+                        url: '../../riskIssue/projRisk/saveRiskIssue',
                         data: JSON.stringify({
-                            "projId" : vm.projId,
-                            "folderName" : vm.folderName,
-                            "description": vm.description
+                            "projId":vm.projId,
+                            "taskId":vm.taskId,
+                            "content":vm.taskTitle+"-"+vm.taskLogContent,//风险内容
+                            "remark":"来自任务评论",//备注
+                            "resolventDate":vm.resolveDate,//解决时间  当前日期加7天
+                            "onChargeStaff":vm.onChargeStaff//负责人
                         }),
                         type: "post",
                         dataType: "json",
                         contentType: 'application/json',
                         success: function (data) {
                             if(data.success){
+                                dialogMsg("保存成功！");
                                 layer.close(index);
-                                dialogMsg("添加文件夹成功!", 'info');
-                                getFolderGrid();
                             }else{
-                                dialogAlert("添加文件夹失败!"+data.msg, 'error');
+                                dialogMsg("保存失败！"+data.msg,"error")
                             }
                         },
                         error: function (XMLHttpRequest, textStatus, errorThrown) {
                             dialogLoading(false);
-                            dialogAlert(errorThrown, 'error');
+                            dialogMsg(errorThrown, 'error');
                         }
-                    });*/
+                    });
                 },
                 end:function(){
                 }
             });
+        },
+        selectStaff: function(){
+            dialogOpen({
+                id: 'staffSelect',
+                title: '人员选择',
+                url: 'base/user/staff.html?singleSelect=true',
+                scroll : true,
+                width: "600px",
+                height: "600px",
+                yes : function(iframeId) {
+                    var userId=top.frames[iframeId].vm.userId;
+                    var userName = top.frames[iframeId].vm.userName;
+                    window.vm.onChargeStaff = userId;
+                    window.vm.onChargeStaffName = userName;
+                    top.layer.close(top.layer.getFrameIndex(iframeId));//先得到当前iframe层的索引再执行关闭
+                }
+            })
         }
 
     },
     computed: {
+        addSevenDate: function(){
+            var date = new Date();
+            date.setDate(date.getDate()+7);
+            var m = date.getMonth()+ 1;
+            return date.getFullYear()+ '-'+m+'-'+ date.getDate();
+        }
     }
 });
 

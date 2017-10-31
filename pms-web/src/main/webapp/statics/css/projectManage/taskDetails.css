@@ -107,8 +107,7 @@
 
 
 .comment-btn-group{display: inline-flex;}
-.comment-btn-group>span{padding-right:30px; padding-top:2px}
-.comment-btn-group>input{border: 1px solid #E4E4E4; height: 18px;width: 18px;}
+.comment-btn-group>div{padding-right:30px;}
 .comment-textarea-div{
     width: calc(100% - 10px);
     height: 125px;

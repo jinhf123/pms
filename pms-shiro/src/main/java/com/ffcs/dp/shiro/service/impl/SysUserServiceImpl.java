@@ -1,5 +1,6 @@
 package com.ffcs.dp.shiro.service.impl;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -38,6 +39,11 @@ public class SysUserServiceImpl implements SysUserService {
 		Page<SysUserEntity> page = new Page<>(form);
 		sysUserManager.staffSelectList(page, form);
 		return page;
+	}
+
+	@Override
+	public List<SysUserEntity> getUserNameById(List<Long> ids) {
+		return sysUserManager.getUserNameById(ids);
 	}
 
 	@Override

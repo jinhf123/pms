@@ -50,11 +50,11 @@
                     <div class="col-md-12 column btn-link-group">
                         <span>添加</span>
                         <span v-show="(taskInfo.taskContent!=''&&taskInfo.taskContent!=null)?false:true">
-                            <button type="button" class="btn btn-link column" @click="openAddTaskContent">任务详细</button>
+                            <button type="button" class="btn btn-link column" @click="isAddTaskContent = !isAddTaskContent;">任务详细</button>
                             或者
                         </span>
                         <span>
-                            <button type="button" class="btn btn-link column" @click="openAddCheckItem">检查项</button>
+                            <button type="button" class="btn btn-link column" @click="isAddCheckItem = !isAddCheckItem;">检查项</button>
                         </span>
                     </div>
                     <!--新增项目详情-->
@@ -62,7 +62,7 @@
                         <label><img :src="icon_Title"></label>
                         <input v-model="taskContent" class="form-control" placeholder="请输入项目详情!" required>
                         <button type="button" class="btn btn-sm btn-link " @click="addTaskContent">添加任务详细</button>
-                        <button type="button" class="btn btn-sm btn-link column" @click="openAddTaskContent">取消</button>
+                        <button type="button" class="btn btn-sm btn-link column" @click="isAddTaskContent = false;">取消</button>
                     </div>
                     <div class="col-md-12 column horizontal-divider"></div>
                     <!--检查项列表-->
@@ -76,7 +76,7 @@
                         <label><img :src="icon_Title"></label>
                         <input v-model="content" id="content" class="form-control" placeholder="请指输入检查项内容" required>
                         <button type="button" class="btn btn-link " @click="addCheckItem">添加检查项</button>
-                        <button type="button" class="btn btn-link column" @click="cancelAddCheckItem">取消</button>
+                        <button type="button" class="btn btn-link column" @click="isAddCheckItem = false;">取消</button>
                     </div>
 
                     <!--日志列表-->
@@ -98,9 +98,9 @@
                     <div class="col-md-12 column">
                         <div class="col-md-12 column display-flex">
                             <div class="col-md-10 column comment-btn-group">
-                                <input type="checkBox" :checked="addToWorkLog" @click="function(){addToWorkLog=!addToWorkLog;}"><span>&nbsp;添加工作日志</span>
-                                <input type="checkBox" :checked="addToRiskIssues" @click="function(){addToRiskIssues=!addToRiskIssues;}"><span>&nbsp;添加到风险问题</span>
-                                <input type="checkBox" :checked="addToWeeklyReport" @click="function(){addToWeeklyReport=!addToWeeklyReport;}"><span>&nbsp;添加到本周周报</span>
+                                <div @click="function(){addToWorkLog=!addToWorkLog;   }"><input type="checkBox" :checked="addToWorkLog" ><span>&nbsp;添加工作日志</span></div>
+                                <div @click="addToRiskIssues=!addToRiskIssues;"><input type="checkBox" :checked="addToRiskIssues"><span>&nbsp;添加到风险问题</span></div>
+                                <div @click="addToWeeklyReport=!addToWeeklyReport;"><input type="checkBox" :checked="addToWeeklyReport"><span>&nbsp;添加到本周周报</span></div>
                             </div>
                             <div class="col-md-2 column float-right">
                                 <button class="btn btn-sm btn-link" @click="upload"><span>上传附件</span></button>
@@ -182,9 +182,9 @@
         <table class="form">
             <tr>
                 <td class="formTitle">解决人:</td>
-                <td class="formValue"><input class="form-control" v-model="resolveStaff" placeholder="请选择解决人！" /></td>
+                <td class="formValue"><input class="form-control" v-model="onChargeStaffName" placeholder="请选择负责人！" @click="selectStaff"/></td>
                 <td class="formTitle">解决时间:</td>
-                <td class="formValue"><input class="form-control" v-model="resolveDate" placeholder="选择解决时间！" /></td>
+                <td class="formValue"><input class="form-control" v-model="resolveDate" id="resolveDate" placeholder="选择解决时间！" readonly /></td>
             </tr>
         </table>
     </div>

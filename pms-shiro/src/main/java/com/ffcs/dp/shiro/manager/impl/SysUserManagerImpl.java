@@ -49,6 +49,11 @@ public class SysUserManagerImpl implements SysUserManager {
 	}
 
 	@Override
+	public List<SysUserEntity> getUserNameById(List<Long> ids) {
+		return sysUserMapper.getUserNameById(ids);
+	}
+
+	@Override
 	public SysUserEntity getByUserName(String username) {
 		return sysUserMapper.getByUserName(username);
 	}

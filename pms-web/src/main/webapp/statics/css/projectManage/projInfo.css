@@ -142,7 +142,7 @@ body{
 }
 .step-vertical-divider{
     width: 1px;
-    margin: 17px 0 25px 1px;
+    margin: 17px 0 25px -1px;
     overflow: hidden;
     background-color: #e5e5e5;
 }

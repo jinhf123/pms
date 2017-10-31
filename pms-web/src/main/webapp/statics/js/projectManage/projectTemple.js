@@ -1,4 +1,5 @@
 Vue.component('v-select', VueSelect.VueSelect);
+Vue.use(VueNumeric.default);
 const config = {
     errorBagName: 'errors', // change if property conflicts.
     delay: 0,
@@ -52,15 +53,20 @@ var templeForm = {
             this.temp.stepList.push({
                 stepName: '双击修改',
                 status: "edit",
+                dayMonth: 30,
                 stepSort: null,
+                defaultMove: null,
                 defaultMoveDate: null,
                 finishNoticeDate: null,
+                noticeStaffArray:[],
                 noticeStaff: null,
                 noticeStaffId: null,
+                taskChangeStaffArray:[],
                 taskChangeStaff: null,
                 taskChangeStaffId: null,
                 finishScheduleNoticeDate: null,
                 finishScheduleStaff: null,
+                attach: false,
                 isAttach: null,
                 attachWord: 0,
                 attachExcel: 0,
@@ -81,64 +87,88 @@ var templeForm = {
         },
         submitForm: function () {
             var me = this;
-            // this.$validator.validateAll().then(function (result) {
-            //     console.log(result);
-            //     if (result) {
-            //         alert('From Submitted!');
-            //         return;
-            //     }
-            //
-            //     alert('Correct them errors!');
-            // });
+            this.$validator.validateAll().then(function (result) {
+                for (var i in me.temp.stepList) {
+                    me.temp.stepList[i].defaultMoveDate = parseInt(me.temp.stepList[i].defaultMove) * parseInt(me.temp.stepList[i].dayMonth);
+                    if (me.temp.stepList[i].attach === true) {
+                        me.temp.stepList[i].isAttach = "1";
+                    } else {
+                        me.temp.stepList[i].isAttach = "0";
+                    }
 
-            this.$http.post(
-                "/projMan/template",
-                {
-                    params: {
-                        tempName: this.temp.tempName,
-                        description: this.temp.description,
-                        stepList: this.temp.stepList
+                    var label = [];
+                    var value = [];
+                    for (var j in me.temp.stepList[i].taskChangeStaffArray) {
+                        label.push(me.temp.stepList[i].taskChangeStaffArray[j].label);
+                        value.push(me.temp.stepList[i].taskChangeStaffArray[j].value);
                     }
-                }).then(function (data) {
-                var title;
-                if (data.data.success) {
-                    title = "添加成功";
-                } else {
-                    title = "添加失败";
+                    me.temp.stepList[i].taskChangeStaffId = value.join();
+                    me.temp.stepList[i].taskChangeStaff = label.join();
+
+                    label = [];
+                    value = [];
+                    for (var j in me.temp.stepList[i].noticeStaffArray) {
+                        label.push(me.temp.stepList[i].noticeStaffArray[j].label);
+                        value.push(me.temp.stepList[i].noticeStaffArray[j].value);
+                    }
+                    me.temp.stepList[i].noticeStaffId = value.join();
+                    me.temp.stepList[i].noticeStaff = label.join();
                 }
-                top.layer.open({
-                    title: title,
-                    area: '338px',
-                    anim: -1,
-                    isOutAnim: false,
-                    move: false,
-                    closeBtn: 0,
-                    content: data.data.message,
-                    btn: ['确定'],
-                    yes: function () {
-                        me.$emit("submit-success");
-                        top.layer.close(top.layer.index);
-                    }
-                });
-            }, function (err) {
-                top.layer.open({
-                    title: '系统提示',
-                    area: '338px',
-                    icon: 3,
-                    anim: -1,
-                    isOutAnim: false,
-                    move: false,
-                    content: '发生错误,重新加载?',
-                    btn: ['确定', '取消'],
-                    btnAlign: 'c',
-                    yes: function () {
-                        dialogLoading(true);
-                        setTimeout(function () {
-                            toUrl('index.html#projMan/projectTemple.html?');
-                        }, 500);
-                    }
-                });
+
+                if (result) {
+                    me.$http.post(
+                        "/projMan/template",
+                        {
+                            params: {
+                                tempName: me.temp.tempName,
+                                description: me.temp.description,
+                                stepList: me.temp.stepList
+                            }
+                        }).then(function (data) {
+                        var title;
+                        if (data.data.success) {
+                            title = "添加成功";
+                        } else {
+                            title = "添加失败";
+                        }
+                        top.layer.open({
+                            title: title,
+                            area: '338px',
+                            anim: -1,
+                            isOutAnim: false,
+                            move: false,
+                            closeBtn: 0,
+                            content: data.data.message,
+                            btn: ['确定'],
+                            yes: function () {
+                                me.$emit("submit-success");
+                                top.layer.close(top.layer.index);
+                            }
+                        });
+                    }, function (err) {
+                        top.layer.open({
+                            title: '系统提示',
+                            area: '338px',
+                            icon: 3,
+                            anim: -1,
+                            isOutAnim: false,
+                            move: false,
+                            content: '发生错误,重新加载?',
+                            btn: ['确定', '取消'],
+                            btnAlign: 'c',
+                            yes: function () {
+                                dialogLoading(true);
+                                setTimeout(function () {
+                                    toUrl('index.html#projMan/projectTemple.html?');
+                                }, 500);
+                            }
+                        });
+                    });
+                    return;
+                }
+
             });
+
         }
     }, watch: {
         stepWidth: function (val) {
@@ -168,7 +198,6 @@ var templeList = {
     watch: {
         stepWidth: function (val) {
             var a = Math.floor((val - 100 - 2 - 20) / 122) + 1;
-            console.log(a);
             this.stepCount = a;
         }
     },
@@ -227,6 +256,7 @@ var vm = new Vue({
     data: {
         isLoading: null,
         template: [],
+        templateNoticeUser: [],
         temp: {
             tempName: null,
             description: null,
@@ -236,14 +266,19 @@ var vm = new Vue({
                     stepName: '列入计划',
                     status: "show",
                     stepSort: null,
+                    dayMonth: 30,
+                    defaultMove: null,
                     defaultMoveDate: null,
                     finishNoticeDate: null,
+                    noticeStaffArray:[],
                     noticeStaff: null,
                     noticeStaffId: null,
+                    taskChangeStaffArray:[],
                     taskChangeStaff: null,
                     taskChangeStaffId: null,
                     finishScheduleNoticeDate: null,
                     finishScheduleStaff: null,
+                    attach: false,
                     isAttach: null,
                     attachWord: null,
                     attachExcel: null,
@@ -252,7 +287,7 @@ var vm = new Vue({
                 }
             ]
         },
-        options: ['foo', 'bar', 'baz']
+        // options: ['foo', 'bar', 'baz']
     },
     components: {
         "template-form":
@@ -268,14 +303,19 @@ var vm = new Vue({
                     stepName: '列入计划',
                     status: "show",
                     stepSort: null,
+                    dayMonth: 30,
+                    defaultMove: null,
                     defaultMoveDate: null,
                     finishNoticeDate: null,
+                    noticeStaffArray:[],
                     noticeStaff: null,
                     noticeStaffId: null,
+                    taskChangeStaffArray:[],
                     taskChangeStaff: null,
                     taskChangeStaffId: null,
                     finishScheduleNoticeDate: null,
                     finishScheduleStaff: null,
+                    attach: false,
                     isAttach: null,
                     attachWord: 0,
                     attachExcel: 0,
@@ -326,14 +366,30 @@ var vm = new Vue({
                 }, function (err) {
                     console.log(err)
                 })
+        },
+        loadMacro: function () {
+            var self = this;
+            this.$http.post("/sys/macro/getMacroByCatalog", {"typeCodes": ['templateNoticeUser']})
+                .then(function (data) {
+                    if ("templateNoticeUser" in data.data) {
+                        for (var i in data.data["templateNoticeUser"]) {
+                            self.templateNoticeUser.push({
+                                label: data.data["templateNoticeUser"][i]["name"],
+                                value: data.data["templateNoticeUser"][i]["value"]
+                            });
+                        }
+                    }
+                }, function (err) {
+                    console.log(err);
+                });
         }
     },
-    created: function () {
+    mounted: function () {
         this.loadTemplate();
+        this.loadMacro();
     },
     watch: {
         template: function (val, oldVal) {
-            console.log(oldVal);
             if (oldVal.length < val.length && oldVal.length !== 0) {
                 this.$nextTick(function () {
                     var container = this.$el.querySelector(".template-nav");

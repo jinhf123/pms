@@ -53,14 +53,16 @@ public class RiskIssueController extends AbstractController {
     public JSON saveRiskIssue(@RequestBody Map<String, Object> params){
         JSONObject json = new JSONObject();
         String msg = "保存成功！";
+        boolean success = true;
         params.put("userId", getUserId());
         try{
             riskIssueService.saveRiskIssue(params);
         }catch (Exception e){
             e.printStackTrace();
+            success = false;
             msg = "保存失败"+e.getMessage();
         }
-        json.put("success",true);
+        json.put("success",success);
         json.put("msg",msg);
         return json;
     }

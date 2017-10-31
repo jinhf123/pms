@@ -70,23 +70,25 @@
         });
         //异步
         fileInputObj.on('fileerror', function(event, data, msg) { //异步上传失败处理
-            console.log(data.index);
+            /*console.log(data.index);
             console.log(data.reader);
             console.log(data.files.length);
             console.log(data.filenames.length);
             console.log(msg);
             var obj = data.response;
-            console.log(JSON.stringify(obj));
+            console.log(JSON.stringify(obj));*/
+            dialogAlert("上传失败!"+msg,"error")
         });
         fileInputObj.on("fileuploaded", function (event, data, previewId, index) {//异步上传成功处理
-            console.log(data.index);
+            /*console.log(data.index);
             console.log(data.reader);
             console.log(data.files.length);
             console.log(data.filenames.length);
             console.log(previewId);
             console.log(index);
             var obj = data.response;
-            console.log(JSON.stringify(obj));
+            console.log(JSON.stringify(obj));*/
+            dialogAlert("上传成功！","info");//
             dialogClose();//关闭弹窗
         });
     }

@@ -1,5 +1,6 @@
 package com.ffcs.dp.shiro.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.ffcs.dp.common.entity.Page;
@@ -11,26 +12,28 @@ import com.ffcs.dp.common.entity.SysUserEntity;
  */
 public interface SysUserService {
 
-	Page<SysUserEntity> listUser(Map<String, Object> params);
+    Page<SysUserEntity> listUser(Map<String, Object> params);
 
-	Page<SysUserEntity> staffSelectList(Map<String, Object> params);
-	
-	R saveUser(SysUserEntity user);
-	
-	R getUserById(Long userId);
-	
-	R updateUser(SysUserEntity user);
-	
-	R batchRemove(Long[] id);
-	
-	R listUserPerms(Long userId);
-	
-	R updatePswdByUser(SysUserEntity user);
-	
-	R updateUserEnable(Long[] id);
-	
-	R updateUserDisable(Long[] id);
-	
-	R updatePswd(SysUserEntity user);
-	
+    Page<SysUserEntity> staffSelectList(Map<String, Object> params);
+
+    List<SysUserEntity> getUserNameById(List<Long> ids);
+
+    R saveUser(SysUserEntity user);
+
+    R getUserById(Long userId);
+
+    R updateUser(SysUserEntity user);
+
+    R batchRemove(Long[] id);
+
+    R listUserPerms(Long userId);
+
+    R updatePswdByUser(SysUserEntity user);
+
+    R updateUserEnable(Long[] id);
+
+    R updateUserDisable(Long[] id);
+
+    R updatePswd(SysUserEntity user);
+
 }

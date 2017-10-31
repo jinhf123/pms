@@ -134,7 +134,7 @@ html {
 }
 
 .flex-checkbox {
-    margin-top: 20px;
+    margin-top: 17px;
     margin-right: 10px;
 }
 
@@ -263,3 +263,30 @@ a.router-link-active > .list-group-item-heading {
     cursor: pointer;
 }
 
+.button-confirm {
+    width: 108px;
+    background-color: #5bc0de;
+    border: none;
+    color: white;
+    font-weight: 400;
+    padding: 5px;
+    height: 35px;
+}
+
+.button-cancel {
+    background:none;
+    color: #999999;
+    width: 108px;
+    border: none;
+    font-weight: 400;
+    padding: 5px;
+    height: 35px;
+}
+
+.is-danger{
+    color: #a94442;
+}
+
+.attach{
+    height: 75px;
+}

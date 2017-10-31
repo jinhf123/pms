@@ -55,6 +55,7 @@ public class ProjTemplateController extends AbstractController {
             step.setNoticeStaff(ob.getString("noticeStaff"));
             step.setNoticeStaffId(ob.getString("noticeStaffId"));
             step.setTaskChangeStaff(ob.getString("taskChangeStaff"));
+            step.setTaskChangeStaffId(ob.getString("taskChangeStaffId"));
             step.setFinishScheduleNoticeDate(ob.getString("finishScheduleNoticeDate"));
             step.setFinishScheduleStaff(ob.getString("finishScheduleStaff"));
             step.setIsAttach(ob.getString("isAttach"));
