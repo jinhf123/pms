@@ -287,15 +287,20 @@ var vm = new Vue({
         },
         selectStaff: function (obj) {//添加任务选择人员
             var self = this;
+            var userString = "";
+            if(self[obj + "Id"].length > 0){
+                userString = "&userId=" + self[obj + "Id"].join();
+            }
+
             dialogOpen({
                 id: 'staffSelect',
                 title: '人员选择',
-                url: 'base/user/staff.html?singleSelect=false',
+                url: 'base/user/staff.html?singleSelect=false' + userString,
                 scroll: true,
                 width: "600px",
                 height: "600px",
                 yes: function (iframeId) {
-                    var users = top.frames[iframeId].vm.getSelections;
+                    var users = top.frames[iframeId].vm.selectData;
                     self[obj] = [];
                     self[obj + "Id"] = [];
                     for (var i = 0; i < users.length; i++) {

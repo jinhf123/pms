@@ -1,118 +1,228 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>人员选择</title> #parse("include/header.html")
-<style>
-body {
-	font-family: 'Microsoft Yahei', Helvetica, Arial, sans-serif;
-	font-size: 10px;
-	color: #333333;
-}
-/*.row{
-    margin: 0px;
-    padding: 2px;
-}*/
+    <title>人员选择</title> #parse("include/header.html")
+    <style>
+        body {
+            font-family: 'Microsoft Yahei', Helvetica, Arial, sans-serif;
+            font-size: 10px;
+            color: #333333;
+        }
 
-.fixed-table-pagination .pagination-detail, .fixed-table-pagination div.pagination{
-    padding-top: 5px;
-    padding-bottom: 5px;
-}
+        /*.row{
+            margin: 0px;
+            padding: 2px;
+        }*/
+
+        .fixed-table-pagination .pagination-detail, .fixed-table-pagination div.pagination {
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
 
 
-</style>
+    </style>
 </head>
 <body>
-	<div id="dpLTE" class="container-fluid" v-cloak>
-		<div id="staff" >
-			<div class="row">
-                <div class="form-inline pull-left" style="display: inline-flex;">
-                    <input v-model="keyword" @keyup.enter="load" class="form-control" placeholder="请输入查询关键字" style="width: 180px;" />&nbsp;&nbsp;&nbsp;
-                    <a class="btn btn-sm btn-info" @click="load"><i class="fa fa-search"></i>&nbsp;查询</a>
-                </div>
+<div id="dpLTE" class="container-fluid" v-cloak>
+    <div id="staff">
+        <div class="row">
+            <div class="form-inline pull-left" style="display: inline-flex;">
+                <input v-model="keyword" @keyup.enter="load" class="form-control" placeholder="请输入查询关键字"
+                       style="width: 180px;"/>&nbsp;&nbsp;&nbsp;
+                <a class="btn btn-sm btn-info" @click="load"><i class="fa fa-search"></i>&nbsp;查询</a>
             </div>
-            <div class="row" class="panel-slimScroll">
-				<table id="dataGrid"></table>
-			</div>
+        </div>
+        <div class="row" class="panel-slimScroll">
+            <table id="dataGrid"></table>
+        </div>
 
 
-
-
-		</div>
-	</div>
+    </div>
+</div>
 #parse("include/footer.html")
+<script src="/statics/libs/vue-select.js"></script>
 <script type="text/javascript">
 
-                $(function () {
-                    initialPage();
-                    getGrid();
-                });
+    $(function () {
+        initialPage();
+        getGrid();
+    });
 
-                function initialPage() {
+    function initialPage() {
 
-                    vm.singleSelect = getQueryString('singleSelect')=="true"?true:false;
+        vm.singleSelect = getQueryString('singleSelect') == "true" ? true : false;
+        var userString = getQueryString("userId");
 
-                    $(".panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
-                    $(window).resize(function() {
-                        $('#dataGrid').bootstrapTable('resetView', {height: $(window).height()-54});
-                        $(".panel-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
-                    });
+        if (userString !== null) {
+            var ids = [];
+            ids = userString.split(",");
+            var userId = [];
+            for (var i in ids) {
+                var number = parseInt(ids[i]);
+                if (!isNaN(number)) {
+                    userId.push(number);
                 }
-
-                function getGrid() {
-                    $('#dataGrid').bootstrapTableEx({
-                        url: '../../sys/user/staffSelectList?_' + $.now(),
-                        singleSelect : vm.singleSelect,
-                        maintainSelected : vm.singleSelect,//设置为 true 在点击分页按钮或搜索按钮时，将记住checkbox的选择项
-                        height: $(window).height()-54,
-                        paginationPreText: '<<',
-                        paginationNextText: '>>',
-
-                        queryParams: function(params){
-                            params.username = vm.keyword;
-                            return params;
-                        },
-                        columns: [{
-                            checkbox: true
-                        }, {
-                            field : "userId",
-                            title : "人员编号",
-                            width : "100px"
-                        }, {
-                            field : "username",
-                            title : "用户名",
-                            width : "150px"
-                        }],
-                        onClickRow: function (row) {
-                            vm.userId = row.userId;
-                            vm.userName = row.username;
+            }
+            $.ajax({
+                url: '/sys/user/getUserName',
+                data: JSON.stringify(userId),
+                type: "post",
+                dataType: "json",
+                contentType: 'application/json',
+                success: function (data) {
+                    for (var i in data) {
+                        if ("userId" in data[i]) {
+                            vm.selectData.push({
+                                userId: data[i].userId,
+                                username:data[i].username
+                            })
                         }
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+
+        $(".panel-slimScroll").slimScroll({
+            height: 'auto',
+            color: 'rgb(221, 221, 221)',
+            size: '10px',
+            distance: '2px',
+            wheelStep: 20
+        });
+        $(window).resize(function () {
+            $('#dataGrid').bootstrapTable('resetView', {height: $(window).height() - 54});
+            $(".panel-slimScroll").slimScroll({
+                height: 'auto',
+                color: 'rgb(221, 221, 221)',
+                size: '10px',
+                distance: '2px',
+                wheelStep: 20
+            });
+        });
+    }
+
+    function getGrid() {
+        $('#dataGrid').bootstrapTableEx({
+            url: '../../sys/user/staffSelectList?_' + $.now(),
+            singleSelect: vm.singleSelect,
+            maintainSelected: vm.singleSelect,//设置为 true 在点击分页按钮或搜索按钮时，将记住checkbox的选择项
+            height: $(window).height() - 54,
+            paginationPreText: '<<',
+            paginationNextText: '>>',
+
+            queryParams: function (params) {
+                params.username = vm.keyword;
+                return params;
+            },
+            columns: [{
+                checkbox: true
+            }, {
+                field: "userId",
+                title: "人员编号",
+                width: "100px"
+            }, {
+                field: "username",
+                title: "用户名",
+                width: "150px"
+            }],
+            onClickRow: function (row) {
+                vm.userId = row.userId;
+                vm.userName = row.username;
+            },
+            onPostBody: function () {
+                var values = [];
+                for (var i in vm.selectData) {
+                    values.push(vm.selectData[i].userId);
+                }
+                $('#dataGrid').bootstrapTable('checkBy', {field: "userId", values: values});
+
+            }
+        })
+    }
+
+    var vm = new Vue({
+        el: '#dpLTE',
+        data: {
+            singleSelect: true,
+            userId: "",
+            userName: "",
+            selectData: [],
+            userIds: [],
+            userNames: [],
+            keyword: null
+        },
+        methods: {
+            load: function () {
+                $('#dataGrid').bootstrapTable('refresh');
+            }
+
+        },
+        computed: {
+            getSelections: function () {
+//                vm.selectData = $('#dataGrid').bootstrapTable('getSelections');
+                return this.selectData;
+            }
+        },
+        mounted: function () {
+            var self = this;
+            $('#dataGrid').on('check.bs.table', function (e, row) {
+                var exists = self.selectData.findIndex(function (obj) {
+                    return obj.userId === row.userId;
+                });
+                if (exists === -1) {
+                    self.selectData.push({
+                        userId: row.userId,
+                        username: row.username
                     })
                 }
 
-                var vm = new Vue({
-                    el:'#dpLTE',
-                    data: {
-                        singleSelect:true,
-                        userId:"",
-                        userName:"",
-                        selectData:[],
-                        userIds:[],
-                        userNames:[],
-                        keyword: null
-                    },
-                    methods : {
-                        load: function() {
-                            $('#dataGrid').bootstrapTable('refresh');
-                        }
-                    },
-                    computed: {
-                        getSelections: function(){
-                            vm.selectData = $('#dataGrid').bootstrapTable('getSelections');
-                            return vm.selectData;
-                        }
-                    }
-                })
+            });
 
-			</script>
+            $('#dataGrid').on('uncheck.bs.table', function (e, row) {
+                var exists = self.selectData.findIndex(function (obj) {
+                    return obj.userId === row.userId;
+                });
+                if (exists !== -1) {
+                    self.selectData.splice(exists, 1);
+                }
+
+
+            });
+
+            $('#dataGrid').on('check-all.bs.table', function (e, row) {
+                for (var i in row) {
+                    var exists = self.selectData.findIndex(function (obj) {
+                        return obj.userId === row[i].userId;
+                    });
+
+                    if (exists === -1) {
+                        self.selectData.push({
+                            userId: row[i].userId,
+                            username: row[i].username
+                        })
+                    }
+                }
+
+            });
+
+            $('#dataGrid').on('uncheck-all.bs.table', function (e, row) {
+                for (var i in row) {
+                    var exists = self.selectData.findIndex(function (obj) {
+                        return obj.userId === row[i].userId;
+                    });
+
+                    if (exists !== -1) {
+                        self.selectData.splice(exists, 1);
+                    }
+                }
+            });
+        }
+    })
+
+</script>
+
 </body>
 </html>

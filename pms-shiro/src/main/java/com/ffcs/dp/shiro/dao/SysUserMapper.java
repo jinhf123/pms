@@ -30,5 +30,9 @@ public interface SysUserMapper extends BaseMapper<SysUserEntity> {
 
 	List<SysUserEntity> staffSelectList(Page<SysUserEntity> page, Query query);
 
+	List<SysUserEntity> getUserNameById(List<Long> ids);
+
+
+
 	
 }
