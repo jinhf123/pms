@@ -555,8 +555,15 @@ body {
     /*border:1px solid red;*/
 /*}*/
 .is-error{
-    color: red;
+    color: #a94442;
 }
 div.is-error{
-    border-color: red;
+    border-color: #a94442;
+}
+
+.percent{
+    position: relative;
+    right: -50px;
+    top:-20px;
+
 }

@@ -164,8 +164,8 @@
                             <div class="step-title-div">
                                 {{item.stepName}}
                             </div>
-                            <div class="step-date-div col-md-12 column display-flex"
-                                 :class="{ 'is-error': errors.has('step-'+index)}">
+                            <div class="step-date-div col-md-12 column display-flex">
+                                <!--:class="{ 'is-error': errors.has('step-'+index)}"-->
                                 <input type="text" placeholder="日期" class="form-control" readonly
                                        v-datetimepicker="['stepDate',index]"
                                        v-model="stepDate[index].defaultDate" v-validate="'required'"
@@ -183,6 +183,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
 
         <div class="row clearfix">
@@ -355,7 +356,7 @@
                     <tbody>
                     <tr v-for="item in allMembersId" v-if="typeof(item.username) !== 'undefined'">
                         <td style="width: 10%">{{item.username}}</td>
-                        <td style="width: 20%">{{item.position.join()}}</td>
+                        <td style="width: 20%">{{getPositionName(item.position)}}</td>
                         <td style="width: 20%">{{item.description}}</td>
                         <td v-if="item.isOutsource === '1'" style="width: 10%">是</td>
                         <td v-else style="width: 10%">否</td>
@@ -421,7 +422,7 @@
                             <tr v-for="(item, key, index) in allMembersId"
                                 :class="[key === memberIndex ? 'selected':'' ]">
                                 <td>{{item.username}}</td>
-                                <td>{{item.position.join()}}</td>
+                                <td>{{getPositionName(item.position)}}</td>
                                 <td>{{item.description}}</td>
                                 <td v-if="item.isOutsource === '1'">是</td>
                                 <td v-else>否</td>
@@ -443,7 +444,7 @@
                         <template v-if="typeof(memberIndex) !== 'undefined' && memberIndex!==null ">
                             <div class="config-detail-info">
                                 <div><label>岗位：</label>{{memberInfo.description}}</div>
-                                <div><label>职位：</label>{{memberInfo.position.join()}}</div>
+                                <div><label>职位：</label>{{getPositionName(memberInfo.position)}}</div>
                                 <div>
                                     <label>是否外包：</label>
                                     <template v-if="memberInfo.isOutsource === '1'">
@@ -470,9 +471,15 @@
                                         <input class="form-control" v-datetimepicker="[memberIndex, 'end', index]"
                                                v-model="item.end" placeholder="请选结束时间" readonly>
                                     </div>
-                                    <div class="col-md-3"><input class="form-control" placeholder="投入比"
-                                                                 v-model.lazy="item.rate"></div>
-                                    <img src="/statics/img/step_delete.png" alt="">
+                                    <div class="col-md-3">
+                                        <input class="form-control" placeholder="投入比"
+                                               v-model.lazy="item.rate" v-number="{min:0,max:100,index:index}" >
+                                        <div class="percent">%</div>
+                                        <!--<vue-numeric v-model.lazy="item.rate"-->
+                                        <!--class="form-control" v-bind:min="0" v-bind:max="100"></vue-numeric>-->
+                                    </div>
+                                    <img src="/statics/img/step_delete.png" alt="" style="cursor: pointer;"
+                                         @click="removeStep(index)">
                                 </div>
                             </div>
                             <div class="config-detail-time-button">
@@ -486,6 +493,16 @@
         </modal>
     </div>
     <div class="container-fluid">
+
+        <div v-show="errStep !== ''">
+            <i class="fa fa-warning is-error"></i>
+            <span class="help is-error"> {{errStep}} </span>
+        </div>
+
+        <div v-show="errMsg !== ''">
+            <i class="fa fa-warning is-error"></i>
+            <span class="help is-error">{{ errMsg }}</span>
+        </div>
         <button class="button-confirm" @click="submitForm">创建新项目</button>
         <button class="button-cancel" @click="toProjMan">取消</button>
     </div>
