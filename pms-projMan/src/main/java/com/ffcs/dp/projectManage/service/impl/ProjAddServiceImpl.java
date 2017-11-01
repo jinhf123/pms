@@ -35,7 +35,7 @@ public class ProjAddServiceImpl implements ProjAddService {
         return projAddManager.listUserCostById(id);
     }
 
-    @Transactional (propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
     @Override
     public void saveProjInfo(Map<String, Object> projInfo) {
         ProjManEntity projManEntity = (ProjManEntity) projInfo.get("projInfo");
@@ -55,6 +55,22 @@ public class ProjAddServiceImpl implements ProjAddService {
         for (StepEntity stepEntity : stepEntities) {
             stepEntity.setProjId(projManEntity.getProjId());
             projAddManager.saveProjStep(stepEntity);
+            for (Long id : stepEntity.getNoticeId()) {
+                String noticContent = "项目:" +
+                        projManEntity.getProjName() +
+                        "中的阶段:" +
+                        stepEntity.getStepName() +
+                        "即将完成";
+                NoticeEntity noticeEntity = new NoticeEntity();
+                noticeEntity.setNoticeCreator(projManEntity.getCreator());
+                noticeEntity.setNoticeReceiverName(id);
+                noticeEntity.setNoticeType("0");
+                noticeEntity.setNoticeContent(noticContent);
+                noticeEntity.setCreateDate(stepEntity.getNoticeDate());
+                noticeEntity.setTaskId(stepEntity.getStepId());
+                noticeEntity.setIsRead("0");
+                projAddManager.saveProjNotice(noticeEntity);
+            }
         }
 
         for (WorktimeEntity worktimeEntity : worktimeEntities) {

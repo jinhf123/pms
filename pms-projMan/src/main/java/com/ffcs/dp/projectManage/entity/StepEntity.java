@@ -1,6 +1,8 @@
 package com.ffcs.dp.projectManage.entity;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 public class StepEntity implements Serializable {
 
@@ -25,8 +27,24 @@ public class StepEntity implements Serializable {
     private String compTask;//已完成任务数
     private String allTask;//总任务数
 
+    private Date noticeDate;
+    private List<Long> noticeId;
 
+    public Date getNoticeDate() {
+        return noticeDate;
+    }
 
+    public void setNoticeDate(Date noticeDate) {
+        this.noticeDate = noticeDate;
+    }
+
+    public List<Long> getNoticeId() {
+        return noticeId;
+    }
+
+    public void setNoticeId(List<Long> noticeId) {
+        this.noticeId = noticeId;
+    }
 
     public StepEntity() {
         super();

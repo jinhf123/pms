@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -77,8 +78,19 @@ public class ProjAddController extends AbstractController {
         while (it.hasNext()) {
             StepEntity step = new StepEntity();
             JSONObject ob = (JSONObject) it.next();
+            step.setStepName(ob.getString("stepName"));
             step.setStepMod(ob.getLong("stepMod"));
             step.setDefaultDate(ob.getString("defaultDate"));
+            step.setNoticeDate(ob.getDate("noticeDate"));
+            JSONArray noticeId = (JSONArray) ob.get("noticeId");
+            List<Long> noticeArray = new ArrayList<Long>();
+
+            if (noticeId != null) {
+                for (int i=0;i< noticeId.size();i++){
+                    noticeArray.add(noticeId.getLong(i));
+                }
+            }
+            step.setNoticeId(noticeArray);
             stepEntities.add(step);
         }
 

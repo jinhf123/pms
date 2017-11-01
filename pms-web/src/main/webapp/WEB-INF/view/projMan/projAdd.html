@@ -31,24 +31,33 @@
                         <td class="fieldLabel request">
                             <span>*</span>项目名称：
                         </td>
-                        <td colspan="5">
-                            <input class="form-control" v-model="project.projName">
+                        <td colspan="5" :class="{ 'is-error': errors.has('projName')}">
+
+                            <input class="form-control" v-model="project.projName" v-validate="'required'"
+                                   name="projName">
+                            <i v-show="errors.has('projName')" class="fa fa-warning is-error"></i>
+                            <span v-show="errors.has('projName')"
+                                  class="help is-error">{{ errors.first('projName') }}</span>
                         </td>
                     </tr>
                     <tr>
                         <td class="fieldLabel request">
                             <span>*</span>项目类型：
                         </td>
-                        <td>
-                            <select class="form-control" v-model="project.projType">
+                        <td :class="{ 'is-error': errors.has('projType')}">
+                            <select class="form-control" v-model="project.projType" v-validate="'required'"
+                                    name="projType">
                                 <option :value="item.value" v-for="(item ,index) in projType">{{item.name}}</option>
                             </select>
+                            <i v-show="errors.has('projType')" class="fa fa-warning is-error"></i>
+                            <span v-show="errors.has('projType')"
+                                  class="help is-error">{{ errors.first('projType') }}</span>
                         </td>
                         <td class="fieldLabel">
                             建设方式：
                         </td>
                         <td>
-                            <select class="form-control" v-model="project.consMode">
+                            <select class="form-control" v-model="project.consMode" name="consMode">
                                 <option :value="item.value" v-for="(item ,index) in consMode">{{item.name}}</option>
                             </select>
                         </td>
@@ -56,7 +65,7 @@
                             项目等级：
                         </td>
                         <td>
-                            <select class="form-control" v-model="project.projLevel">
+                            <select class="form-control" v-model="project.projLevel" name="projLevel">
                                 <option :value="item.value" v-for="(item ,index) in projLevel">{{item.name}}</option>
                             </select>
                         </td>
@@ -66,27 +75,34 @@
                             <span>*</span>归属项目群：
                         </td>
                         <td>
-                            <select class="form-control" v-model="project.beloProjGroup">
+                            <select class="form-control" v-model="project.beloProjGroup" v-validate="'required'"
+                                    name="beloProjGroup">
                                 <option :value="item.value" v-for="(item ,index) in beloProjGroup">{{item.name}}
                                 </option>
                             </select>
+                            <i v-show="errors.has('beloProjGroup')" class="fa fa-warning is-error"></i>
+                            <span v-show="errors.has('beloProjGroup')" class="help is-error">{{ errors.first('beloProjGroup') }}</span>
                         </td>
                         <td class="fieldLabel request">
                             <span>*</span>是否年内完成：
                         </td>
                         <td>
                             <label class="radio-inline">
-                                <input type="radio" name="optradio" value="1" checked v-model="project.isCompletYear">是
+                                <input type="radio" value="1" checked v-model="project.isCompletYear"
+                                       v-validate="'required'" name="isCompletYear">是
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="optradio" value="0" v-model="project.isCompletYear">否
+                                <input type="radio" value="0" v-model="project.isCompletYear" v-validate="'required'"
+                                       name="isCompletYear">否
                             </label>
+                            <i v-show="errors.has('isCompletYear')" class="fa fa-warning is-error"></i>
+                            <span v-show="errors.has('isCompletYear')" class="help is-error">{{ errors.first('isCompletYear') }}</span>
                         </td>
                         <td class="fieldLabel">
                             承接方式：
                         </td>
                         <td>
-                            <select class="form-control" v-model="project.undertakeMode">
+                            <select class="form-control" v-model="project.undertakeMode" name="undertakeMode">
                                 <option :value="item.value" v-for="(item ,index) in undertakeMode">{{item.name}}
                                 </option>
                             </select>
@@ -99,9 +115,12 @@
                         <td>
                             <div class="col-md-12 column display-flex">
                                 <input id="startDate" placeholder="项目开始时间" class="form-control" readonly
-                                       v-model="startDate">
+                                       v-model="startDate" v-validate="'required'" name="startDate">
                                 <i class="fa fa-calendar right"></i>
                             </div>
+                            <i v-show="errors.has('startDate')" class="fa fa-warning is-error"></i>
+                            <span v-show="errors.has('startDate')"
+                                  class="help is-error">{{ errors.first('startDate') }}</span>
                         </td>
                         <td class="fieldLabel request">
                             <span>*</span>项目结束时间：
@@ -109,15 +128,18 @@
                         <td>
                             <div class="col-md-12 column display-flex">
                                 <input id="endDate" placeholder="项目结束时间" class="form-control" readonly
-                                       v-model="endDate">
+                                       v-model="endDate" v-validate="'required'" name="endDate">
                                 <i class="fa fa-calendar right"></i>
                             </div>
+                            <i v-show="errors.has('endDate')" class="fa fa-warning is-error"></i>
+                            <span v-show="errors.has('endDate')"
+                                  class="help is-error">{{ errors.first('endDate') }}</span>
                         </td>
                         <td class="fieldLabel">
                             项目模版：
                         </td>
                         <td>
-                            <select class="form-control" v-model="tempIndex">
+                            <select class="form-control" v-model="tempIndex" name="template" v-validate="'required'">
                                 <option v-for="(item,index) in template" :value="index">{{item.tempName}}</option>
                             </select>
                         </td>
@@ -129,22 +151,25 @@
         <div class="row clearfix">
             <div class="col-md-12 column" id="step-info">
                 <div v-if="!isLoading">
-                    <div class="horizontal-divider" v-if="template[tempIndex].projTemplateStepEntities.length !== 0" ></div>
+                    <div class="horizontal-divider"
+                         v-if="template[tempIndex].projTemplateStepEntities.length !== 0"></div>
                 </div>
                 <div class="step display-flex" v-if="!isLoading">
                     <div class="step-scroll-left" @click="toPrev()" v-if="stepStart>0">
                         <img src="/statics/img/step_left.png" alt="" class="left">
                     </div>
                     <div v-for="(item,index) in template[tempIndex].projTemplateStepEntities" class="display-flex"
-                         v-if="index >= stepStart && index < (stepCount  + stepStart)">
+                         v-show="index >= stepStart && index < (stepCount  + stepStart)">
                         <div class="step-div">
                             <div class="step-title-div">
                                 {{item.stepName}}
                             </div>
                             <div class="step-date-div col-md-12 column display-flex">
+                                <!--:class="{ 'is-error': errors.has('step-'+index)}"-->
                                 <input type="text" placeholder="日期" class="form-control" readonly
                                        v-datetimepicker="['stepDate',index]"
-                                       v-model="stepDate[index].defaultDate">
+                                       v-model="stepDate[index].defaultDate" v-validate="'required'"
+                                       :name="'step-'+index">
                                 <i class="fa fa-calendar right"></i>
                             </div>
                         </div>
@@ -158,6 +183,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
 
         <div class="row clearfix">
@@ -184,9 +210,12 @@
                         <td>
                             <div class="col-md-12 column display-flex">
                                 <input class="form-control" readonly @click="selectStaff('projGroupManager')"
-                                       v-model="projGroupManagerName">
+                                       v-model="projGroupManagerName" v-validate="'required'" name="projGroupManager">
                                 <i class="fa fa-user right"></i>
                             </div>
+                            <i v-show="errors.has('projGroupManager')" class="fa fa-warning is-error"></i>
+                            <span v-show="errors.has('projGroupManager')"
+                                  class="help is-error">{{ errors.first('projGroupManager') }}</span>
                         </td>
                         <td class="fieldLabel">
                             大项目经理：
@@ -194,7 +223,7 @@
                         <td>
                             <div class="col-md-12 column display-flex">
                                 <input class="form-control" readonly @click="selectStaff('bigProjManager')"
-                                       v-model="bigProjManagerName">
+                                       v-model="bigProjManagerName" name="bigProjManager">
                                 <i class="fa fa-user right"></i>
                             </div>
                         </td>
@@ -204,7 +233,7 @@
                         <td>
                             <div class="col-md-12 column display-flex">
                                 <input class="form-control" readonly @click="selectStaff('projManager')"
-                                       v-model="projManagerName">
+                                       v-model="projManagerName" name="projManager">
                                 <i class="fa fa-user right"></i>
                             </div>
                         </td>
@@ -216,9 +245,12 @@
                         <td>
                             <div class="col-md-12 column display-flex">
                                 <input class="form-control" readonly @click="selectStaff('demaManager')"
-                                       v-model="demaManagerName">
+                                       v-model="demaManagerName" v-validate="'required'" name="demaManager">
                                 <i class="fa fa-user right"></i>
                             </div>
+                            <i v-show="errors.has('demaManager')" class="fa fa-warning is-error"></i>
+                            <span v-show="errors.has('demaManager')"
+                                  class="help is-error">{{ errors.first('demaManager') }}</span>
                         </td>
                         <td class="fieldLabel">
                             技术经理：
@@ -226,7 +258,7 @@
                         <td colspan="3">
                             <div class="col-md-12 column display-flex">
                                 <input class="form-control" readonly @click="selectStaff('techManager')"
-                                       v-model="techManagerName">
+                                       v-model="techManagerName" name="techManager">
                                 <i class="fa fa-user right"></i>
                             </div>
                         </td>
@@ -238,9 +270,12 @@
                         <td colspan="5">
                             <div class="col-md-12 column display-flex">
                                 <input class="form-control" readonly @click="selectStaff('projMembers')"
-                                       v-model="projMembersName">
+                                       v-model="projMembersName" v-validate="'required'" name="projMembers">
                                 <i class="fa fa-user right"></i>
                             </div>
+                            <i v-show="errors.has('projMembers')" class="fa fa-warning is-error"></i>
+                            <span v-show="errors.has('projMembers')"
+                                  class="help is-error">{{ errors.first('projMembers') }}</span>
                         </td>
                     </tr>
                     </tbody>
@@ -321,7 +356,7 @@
                     <tbody>
                     <tr v-for="item in allMembersId" v-if="typeof(item.username) !== 'undefined'">
                         <td style="width: 10%">{{item.username}}</td>
-                        <td style="width: 20%">{{item.position.join()}}</td>
+                        <td style="width: 20%">{{getPositionName(item.position)}}</td>
                         <td style="width: 20%">{{item.description}}</td>
                         <td v-if="item.isOutsource === '1'" style="width: 10%">是</td>
                         <td v-else style="width: 10%">否</td>
@@ -387,7 +422,7 @@
                             <tr v-for="(item, key, index) in allMembersId"
                                 :class="[key === memberIndex ? 'selected':'' ]">
                                 <td>{{item.username}}</td>
-                                <td>{{item.position.join()}}</td>
+                                <td>{{getPositionName(item.position)}}</td>
                                 <td>{{item.description}}</td>
                                 <td v-if="item.isOutsource === '1'">是</td>
                                 <td v-else>否</td>
@@ -409,7 +444,7 @@
                         <template v-if="typeof(memberIndex) !== 'undefined' && memberIndex!==null ">
                             <div class="config-detail-info">
                                 <div><label>岗位：</label>{{memberInfo.description}}</div>
-                                <div><label>职位：</label>{{memberInfo.position.join()}}</div>
+                                <div><label>职位：</label>{{getPositionName(memberInfo.position)}}</div>
                                 <div>
                                     <label>是否外包：</label>
                                     <template v-if="memberInfo.isOutsource === '1'">
@@ -436,9 +471,15 @@
                                         <input class="form-control" v-datetimepicker="[memberIndex, 'end', index]"
                                                v-model="item.end" placeholder="请选结束时间" readonly>
                                     </div>
-                                    <div class="col-md-3"><input class="form-control" placeholder="投入比"
-                                                                 v-model.lazy="item.rate"></div>
-                                    <img src="/statics/img/step_delete.png" alt="">
+                                    <div class="col-md-3">
+                                        <input class="form-control" placeholder="投入比"
+                                               v-model.lazy="item.rate" v-number="{min:0,max:100,index:index}" >
+                                        <div class="percent">%</div>
+                                        <!--<vue-numeric v-model.lazy="item.rate"-->
+                                        <!--class="form-control" v-bind:min="0" v-bind:max="100"></vue-numeric>-->
+                                    </div>
+                                    <img src="/statics/img/step_delete.png" alt="" style="cursor: pointer;"
+                                         @click="removeStep(index)">
                                 </div>
                             </div>
                             <div class="config-detail-time-button">
@@ -452,6 +493,16 @@
         </modal>
     </div>
     <div class="container-fluid">
+
+        <div v-show="errStep !== ''">
+            <i class="fa fa-warning is-error"></i>
+            <span class="help is-error"> {{errStep}} </span>
+        </div>
+
+        <div v-show="errMsg !== ''">
+            <i class="fa fa-warning is-error"></i>
+            <span class="help is-error">{{ errMsg }}</span>
+        </div>
         <button class="button-confirm" @click="submitForm">创建新项目</button>
         <button class="button-cancel" @click="toProjMan">取消</button>
     </div>
@@ -477,6 +528,10 @@
 <script src="${rc.contextPath}/statics/js/common.js"></script>
 <script src="/statics/libs/vue-resource.js"></script>
 <script src="/statics/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script src="/statics/libs/accounting.umd.js"></script>
+<script src="/statics/libs/vue-numeric.min.js"></script>
+<script src="/statics/libs/vee-validate.min.js"></script>
+<script src="/statics/libs/zh_CN.js"></script>
 <!--#parse("include/footer.html")-->
 <script src="${rc.contextPath}/statics/js/projectManage/projAdd.js"></script>
 </body>

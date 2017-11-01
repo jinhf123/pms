@@ -49,4 +49,9 @@ public class ProjAddManagerImpl implements ProjAddManager {
     public void saveProjUserWorktime(WorktimeEntity worktimeEntity) {
         projAddMapper.saveProjUserWorktime(worktimeEntity);
     }
+
+    @Override
+    public void saveProjNotice(NoticeEntity noticeEntity) {
+        projAddMapper.saveProjNotice(noticeEntity);
+    }
 }

@@ -10,11 +10,18 @@ import java.util.List;
 @Repository
 public interface ProjAddMapper {
     List<UserCostEntity> listUserCost(List<Long> ids);
+
     UserCostEntity listUserCostById(Long id);
+
     void saveProjInfo(ProjManEntity projManEntity);
+
     void saveProjStep(StepEntity stepEntity);
+
     void saveProjStakeholder(StakeholderEntity stakeholderEntity);
+
     void saveProjCost(ProjCostEntity projCostEntity);
+
     void saveProjUserWorktime(WorktimeEntity worktimeEntity);
 
+    void saveProjNotice(NoticeEntity noticeEntity);
 }

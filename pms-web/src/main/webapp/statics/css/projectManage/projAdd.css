@@ -546,3 +546,24 @@ body {
     margin-top: 6px;
     cursor: pointer;
 }
+
+/*.table-bordered>tbody>tr>td.is-error{*/
+    /*border:1px solid red;*/
+/*}*/
+
+/*.is-error{*/
+    /*border:1px solid red;*/
+/*}*/
+.is-error{
+    color: #a94442;
+}
+div.is-error{
+    border-color: #a94442;
+}
+
+.percent{
+    position: relative;
+    right: -50px;
+    top:-20px;
+
+}
