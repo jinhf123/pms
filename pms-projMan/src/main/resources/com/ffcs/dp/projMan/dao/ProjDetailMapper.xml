@@ -205,6 +205,7 @@
 			   T.TASK_ID,
 		       T.TASK_TITLE,
 			   T.TASK_STAFF,
+			   T.TASK_DATE,
 		       T.FINISH_DATE,
 			   T.TASK_CONTENT,
 			   STATE

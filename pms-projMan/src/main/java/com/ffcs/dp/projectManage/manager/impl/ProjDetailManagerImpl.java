@@ -18,7 +18,7 @@ public class ProjDetailManagerImpl implements ProjDetailManager {
 
     @Override
     public Map getProjInfo(Map<String, Object> params) {
-        Map<String,Object> resultMap = new HashMap();
+        Map<String,Object> resultMap = new HashMap<>();
         Map map = projDetailMapper.getProjInfo(params);
         //项目信息
         resultMap.put("tempName",map.get("TEMP_NAME"));
@@ -53,7 +53,7 @@ public class ProjDetailManagerImpl implements ProjDetailManager {
 
     @Override
     public Map getProjectInfo(Map<String, Object> params) {
-        Map<String,Object> resultMap = new HashMap();
+        Map<String,Object> resultMap = new HashMap<>();
         Map map = projDetailMapper.getProjectInfo(params);
         resultMap.put("projectName",map.get("PROJ_NAME"));
         resultMap.put("allStep",map.get("ALL_STEP"));
@@ -122,7 +122,7 @@ public class ProjDetailManagerImpl implements ProjDetailManager {
     public int saveTask(Map<String, Object> params) {
         int count = projDetailMapper.insertTask(params);
         try {
-            Map<String,Object> map = new HashMap();
+            Map<String,Object> map = new HashMap<>();
             map.put("taskId",params.get("taskId"));
             map.put("content","创建任务");
             map.put("userId",params.get("userId"));
@@ -172,13 +172,14 @@ public class ProjDetailManagerImpl implements ProjDetailManager {
 
     @Override
     public Map getTaskInfo(Map<String, Object> params) {
-        Map<String,Object> resultMap = new HashMap();
+        Map<String,Object> resultMap = new HashMap<>();
         Map<String,Object> map = projDetailMapper.getTaskInfo(params);
         resultMap.put("projId",map.get("PROJ_ID"));
         resultMap.put("stepId",map.get("STEP_ID"));
         resultMap.put("stepName",map.get("STEP_NAME"));
         resultMap.put("taskTitle",map.get("TASK_TITLE"));
         resultMap.put("taskStaff",map.get("TASK_STAFF"));
+        resultMap.put("taskDate",map.get("TASK_DATE"));
         resultMap.put("finishDate",map.get("FINISH_DATE"));
         resultMap.put("taskContent",map.get("TASK_CONTENT"));
         resultMap.put("state",map.get("STATE"));
@@ -189,7 +190,7 @@ public class ProjDetailManagerImpl implements ProjDetailManager {
     public int saveTaskInfo(Map<String, Object> params) {
         int count = projDetailMapper.updateTaskInfo(params);
         try {
-            Map<String,Object> map = new HashMap();
+            Map<String,Object> map = new HashMap<>();
             String operateType = "3";
             String content = "修改任务";
             map.put("taskId",params.get("taskId"));
@@ -234,7 +235,7 @@ public class ProjDetailManagerImpl implements ProjDetailManager {
             content = "添加检查项:"+params.get("content").toString();
         }
         try {
-            Map<String,Object> map = new HashMap();
+            Map<String,Object> map = new HashMap<>();
             String operateType = "3";
 
             map.put("taskId",params.get("taskId"));

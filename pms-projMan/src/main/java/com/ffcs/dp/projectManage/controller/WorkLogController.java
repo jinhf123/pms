@@ -1,8 +1,10 @@
 package com.ffcs.dp.projectManage.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ffcs.dp.common.controller.AbstractController;
+import com.ffcs.dp.common.utils.DateUtils;
 import com.ffcs.dp.common.utils.ExcelUtil;
 import com.ffcs.dp.projectManage.entity.WorkLogEntity;
 import com.ffcs.dp.projectManage.service.WorkLogService;
@@ -20,8 +22,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -184,7 +184,6 @@ public class WorkLogController extends AbstractController {
     @RequestMapping("/importExcel")
     @ResponseBody
     private void importExcel(HttpServletRequest request, HttpServletResponse response) throws IOException {
-//        @RequestParam(value = "excelFile", required = false) MultipartFile file,
         JSONObject jsonObject = new JSONObject();
         Boolean result = true;
         String message = "";
@@ -194,7 +193,6 @@ public class WorkLogController extends AbstractController {
             MultipartFile excelFile=multipartRequest.getFile("excelFile");
             if(excelFile!=null){
                 List<List<String>> datas = ExcelUtil.readXls(excelFile.getInputStream());
-                //TODO: 读到的数据都在datas里面，根据实际业务逻辑做相应处理<br> // .............
                 if(datas!=null && datas.size()>0){
                     List<Map<String, Object>> list = new ArrayList<>();
 
@@ -208,10 +206,10 @@ public class WorkLogController extends AbstractController {
                         workLog.put("minutes",getMinutes(data.get(1),data.get(2)));//计算时长
                         String isProjectWork = "是".equals(data.get(3))?"1":"0";//是：1  否：0
                         workLog.put("isProjectWork",isProjectWork);
-                        if(isProjectWork == "1"){
+                        if("1".equals(isProjectWork)){
                             String projName = data.get(4);
                             String taskName = data.get(5);
-                            Map<String, Object> params = new HashMap();
+                            Map<String, Object> params = new HashMap<>();
                             params.put("projName",projName!=null?projName.trim():"");
                             params.put("taskName",taskName!=null?taskName.trim():"");
                             //查询项目Id和任务Id
@@ -270,7 +268,7 @@ public class WorkLogController extends AbstractController {
 
 
     //计算时间差（分钟）
-    public static int getMinutes(String startTime, String endTime){
+    private static int getMinutes(String startTime, String endTime){
         int minutes = 0;
         String pattern = "(?:(?:[0-2][0-3])|(?:[0-1][0-9])):[0-5][0-9]";
         if(Pattern.matches(pattern, startTime)&&Pattern.matches(pattern, endTime)){
@@ -286,6 +284,56 @@ public class WorkLogController extends AbstractController {
             minutes = (int)((cal2.getTimeInMillis() -  cal1.getTimeInMillis())/60/1000);
         }
         return minutes;
+    }
+
+
+
+    //批量保存工作日志（来自任务详情评论时添加到工作日志）
+    @RequestMapping("/batchSaveWorkLog")
+    public JSON batchSaveWorkLog(@RequestBody Map<String, Object> params){
+        JSONObject json = new JSONObject();
+        Boolean success = true;
+        String msg = "保存成功！";
+        Long userId = getUserId();
+        try{
+            JSONArray dateTimeList = (JSONArray) params.get("dateList");
+            for(int i=0;i<dateTimeList.size();i++){
+                Map dateMap = (Map) dateTimeList.get(i);
+                String startDateTime = dateMap.get("startDate").toString();//DateUtils.format(startDate,DateUtils.DATE_TIME_PATTERN);
+                String endDateTime = dateMap.get("endDate").toString();//DateUtils.format(endDate,DateUtils.DATE_TIME_PATTERN);
+                String startWorkLogDate = startDateTime.substring(0,10);
+                String endWorkLogDate = endDateTime.substring(0,10);
+                String startTime = startDateTime.substring(11,16);
+                String endTime = endDateTime.substring(11,16);
+
+                Date startDate = DateUtils.strToDate(startDateTime,DateUtils.DATE_TIME_PATTERN);
+                Date endDate = DateUtils.strToDate(endDateTime,DateUtils.DATE_TIME_PATTERN);
+
+                int days = DateUtils.timeDifference(startDate,endDate);
+                for(int j = 0; j<=days; j++){
+                    Map<String, Object> map = new HashMap<>();
+                    String workLogDate = DateUtils.strDatePlus(startWorkLogDate,j);//日期加1天
+                    map.put("workLogDate",workLogDate);
+                    map.put("startTime",startTime);
+                    map.put("endTime",endTime);
+                    map.put("minutes",getMinutes(startTime,endTime)-120);//8点到18点减去中午2小时
+                    map.put("isProjectWork",params.get("isProjectWork"));
+                    map.put("project",params.get("project"));
+                    map.put("task",params.get("task"));
+                    map.put("workDetails",params.get("workDetails"));
+                    map.put("userId",userId);
+//                    System.out.print("workLogDate="+workLogDate+"\tstartTime="+startTime+"\tendTime="+endTime+"\tminutes="+getMinutes(startTime,endTime)+"\n");
+                    workLogManService.saveWorkLog(map);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            success = false;
+            msg = "保存失败"+e.getMessage();
+        }
+        json.put("success",success);
+        json.put("message",msg);
+        return json;
     }
 
 

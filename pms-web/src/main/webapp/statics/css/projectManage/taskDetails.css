@@ -1,6 +1,6 @@
 .column{
-    padding-left:0px;
-    padding-right: 0px;
+    padding-left:0;
+    padding-right: 0;
 }
 
 .fa-color{
@@ -16,11 +16,16 @@
     display: inline-flex;
 }
 
+.iconInput-group{display: inline-flex;padding:0;}
+.iconInput-group>input[readonly] {background-color: #ffffff;}
+.iconInput-group>i{margin: 10px 0;position: absolute;right: 8px;}
+
+
 /*按钮样式*/
 .transparent-btn {
     display: inline-block;
-    margin: 4px 0px;
-    padding: 0px;
+    margin: 4px 0;
+    padding: 0;
     font-size: 14px;
     font-weight: 400;
     line-height: 1.4285;
@@ -50,7 +55,7 @@
 
 .task-edit-div{width: 100%;display: inline-flex;}
 .task-edit-div>div{display: inline-flex;padding:5px;}
-.task-content-edit-div{padding:0px 5px 5px 25px;}
+.task-content-edit-div{padding:0 5px 5px 25px;}
 
 
 
@@ -66,9 +71,9 @@
     width: 84px;
     height: 20px;
     margin: auto 10px;
-    padding: 2px 0px;
+    padding: 2px 0;
     text-align: center;
-    font-family: "微软雅黑 Regular", "微软雅黑";
+    font-family: "微软雅黑 Regular", "微软雅黑", sans-serif;
     font-weight: 400;
     font-style: normal;
     font-size: 12px;
@@ -151,7 +156,7 @@
     padding-right: 10px;
 }
 .send-meg-div>select{width: 200px;height: 25px;border: 1px solid #E4E4E4;border-radius: 5px;background: transparent;}
-select::-ms-expand {border: 0px solid transparent; background: transparent; }
+select::-ms-expand {border: 0 solid transparent; background: transparent; }
 
 
 

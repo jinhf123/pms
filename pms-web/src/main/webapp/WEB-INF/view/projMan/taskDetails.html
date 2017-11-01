@@ -3,7 +3,7 @@
 <head>
     <title>任务详情</title>
     #parse("include/header.html")
-    <link rel="stylesheet" href="${rc.contextPath}/statics/css/projectManage/taskDetails.css">
+    <link rel="stylesheet" href="/statics/css/projectManage/taskDetails.css">
 </head>
 <body>
 <div id="taskDetails" class="clearfix" v-cloak>
@@ -43,7 +43,7 @@
                         <div class="col-md-12 column display-flex">
                             <div class="col-md-12">
                                 <button class="btn btn-sm btn-info" @click="saveTaskInfo">保存</button>&nbsp;&nbsp;&nbsp;&nbsp;
-                                <span><a url="#" @click="cancelEdit">取消</a></span>
+                                <span><a @click="isEdit=false;">取消</a></span>
                             </div>
                         </div>
                     </div>
@@ -68,7 +68,7 @@
                     <!--检查项列表-->
                     <div class="col-md-12 column">
                         <div v-for="data in checkItems" class="col-md-12 column check-item">
-                            <input type="radio" :checked="data.state=='1'?true:false"  @click="checkRadio(data)">&nbsp; <span>{{data.content}}</span>
+                            <input type="radio" :checked="data.state=='1'?true:false" title="" @click="checkRadio(data)">&nbsp; <span>{{data.content}}</span>
                         </div>
                     </div>
                     <!--新增检查项-->
@@ -98,9 +98,9 @@
                     <div class="col-md-12 column">
                         <div class="col-md-12 column display-flex">
                             <div class="col-md-10 column comment-btn-group">
-                                <div @click="function(){addToWorkLog=!addToWorkLog;   }"><input type="checkBox" :checked="addToWorkLog" ><span>&nbsp;添加工作日志</span></div>
-                                <div @click="addToRiskIssues=!addToRiskIssues;"><input type="checkBox" :checked="addToRiskIssues"><span>&nbsp;添加到风险问题</span></div>
-                                <div @click="addToWeeklyReport=!addToWeeklyReport;"><input type="checkBox" :checked="addToWeeklyReport"><span>&nbsp;添加到本周周报</span></div>
+                                <div @click="function(){addToWorkLog=!addToWorkLog;}"><input type="checkBox" :checked="addToWorkLog"  title=""><span>&nbsp;添加工作日志</span></div>
+                                <div @click="addToRiskIssues=!addToRiskIssues;"><input type="checkBox" :checked="addToRiskIssues"  title=""><span>&nbsp;添加到风险问题</span></div>
+                                <div @click="addToWeeklyReport=!addToWeeklyReport;"><input type="checkBox" :checked="addToWeeklyReport"  title=""><span>&nbsp;添加到本周周报</span></div>
                             </div>
                             <div class="col-md-2 column float-right">
                                 <button class="btn btn-sm btn-link" @click="upload"><span>上传附件</span></button>
@@ -116,7 +116,7 @@
                                 <button class="btn btn-sm btn-link" @click="backTaskInfo" title="返回任务列表"><span>返回</span></button>
                             </div>
                             <div class="col-md-6 column send-meg-div">
-                                <span>发送通知给:</span><select class="select"></select>
+                                <span>发送通知给:</span><select class="select" title=""></select>
                             </div>
                         </div>
                     </div>
@@ -160,17 +160,29 @@
     <!--添加到工作日志-->
     <div id="workLogPanel" class="container-fluid" style="display: none;">
         请确认本项目任务具体的工作时长
+        <div class="time-slimScroll" >
+            <div style="width: 100%;padding-left: 50px;text-align: left;" v-for="(item, index) in dateList">
+                    <span>工作时段{{index+1}}:&nbsp;{{item.startDate}}~{{item.endDate}}</span>
+            </div>
+        </div>
         <table class="form">
             <tr>
                 <td class="formTitle">工作时间:</td>
-                <td class="formValue"><input class="form-control" v-model="startDate" placeholder="请选择开始时间！" /></td>
-                <td style="text-align: center;width: 50px;"> -- </td>
-                <td class="formValue"><input class="form-control" v-model="endDate" placeholder="请选择结束时间！" /></td>
-            </tr>
-            <tr>
-                <td colspan="3">&nbsp;</td>
+                <td colspan="5">
+                    <div class="col-md-5 iconInput-group">
+                        <input id="startDate" placeholder="请选择开始时间" class="form-control" readonly
+                               v-model="startDate">
+                        <i class="fa fa-calendar right"></i>
+                    </div>
+                    <div class="col-md-2" style="text-align: center;padding: 5px 0;"><span> -- </span></div>
+                    <div class="col-md-5 iconInput-group">
+                        <input id="endDate" placeholder="请选择结束时间" class="form-control" readonly
+                               v-model="endDate">
+                        <i class="fa fa-calendar right"></i>
+                    </div>
+                </td>
                 <td class="float-right">
-                    <button class="btn btn-sm btn-link" onclick="alert('添加时段')">添加时段</button>
+                    <button class="btn btn-sm btn-link" @click="addTimes">添加时段</button>
                 </td>
             </tr>
         </table>
@@ -182,15 +194,25 @@
         <table class="form">
             <tr>
                 <td class="formTitle">解决人:</td>
-                <td class="formValue"><input class="form-control" v-model="onChargeStaffName" placeholder="请选择负责人！" @click="selectStaff"/></td>
+                <td class="formValue">
+                    <div class="col-md-12 iconInput-group">
+                        <input class="form-control" v-model="onChargeStaffName" placeholder="请选择负责人！" @click="selectOnChargeStaff" readonly/>
+                        <i class="fa fa-user right"></i>
+                    </div>
+                </td>
                 <td class="formTitle">解决时间:</td>
-                <td class="formValue"><input class="form-control" v-model="resolveDate" id="resolveDate" placeholder="选择解决时间！" readonly /></td>
+                <td class="formValue">
+                    <div class="col-md-12 iconInput-group">
+                        <input class="form-control" v-model="resolveDate" id="resolveDate" placeholder="选择解决时间！" readonly />
+                        <i class="fa fa-calendar right"></i>
+                    </div>
+                </td>
             </tr>
         </table>
     </div>
 
 </div>
 #parse("include/footer.html")
-<script src="${rc.contextPath}/statics/js/projectManage/taskDetails.js?_${date.systemTime}"></script>
+<script src="/statics/js/projectManage/taskDetails.js?_${date.systemTime}"></script>
 </body>
 </html>

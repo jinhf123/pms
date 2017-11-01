@@ -28,7 +28,7 @@ function getTaskInfo(){
     $.ajax({
         url: '../../projMan/projDetail/getTaskInfo?_' + $.now(),
         data: JSON.stringify({
-            "taskId" : vm.taskId,
+            "taskId" : vm.taskId
         }),
         type: "post",
         dataType: "json",
@@ -51,7 +51,7 @@ function getCheckItemGrid(){
     $.ajax({
         url: '../../projMan/projDetail/getCheckItemList?_' + $.now(),
         data: JSON.stringify({
-            "taskId" : vm.taskId,
+            "taskId" : vm.taskId
         }),
         type: "post",
         dataType: "json",
@@ -68,7 +68,7 @@ function getTaskLogGrid(){
     $.ajax({
         url: '../../projMan/projDetail/getTaskLogList?_' + $.now(),
         data: JSON.stringify({
-            "taskId" : vm.taskId,
+            "taskId" : vm.taskId
         }),
         type: "post",
         dataType: "json",
@@ -91,7 +91,6 @@ function saveTaskDetail(params){
         success: function (data) {
             if(data.success){
                 dialogMsg("操作成功！");
-                isEdit:false;
                 vm.isEdit=false;
                 vm.isAddTaskContent=false;
                 vm.load();
@@ -119,7 +118,7 @@ function saveCheckItem(){
         contentType: 'application/json',
         success: function (data) {
             if(data.success){
-                dialogMsg("保存成功！")
+                dialogMsg("保存成功！");
                 vm.isAddCheckItem=false;
                 vm.checkItemId="";
                 vm.content="";
@@ -149,7 +148,6 @@ var vm = new Vue({
         icon_oper_2: "/statics/img/projectManage/u18_2.png",
         icon_oper_3: "/statics/img/projectManage/u18_3.png",
         icon_oper_4: "/statics/img/projectManage/u18_4.png",
-        icon_oper_0: "/statics/img/projectManage/u18_0.png",
         icon_btn_finish: "/statics/img/projectManage/u19_0.png",
         icon_btn_start : "/statics/img/projectManage/u19_1.png",
         icon_btn_delete: "/statics/img/projectManage/u19_2.png",
@@ -186,10 +184,13 @@ var vm = new Vue({
         //添加到工作日志，风险问题参数
         startDate:"",
         endDate:"",
+        dateList:[],
+        workLogContent:"",
         onChargeStaff: "",
         onChargeStaffName: "",
         resolveDate:"",
         isDialogOpen:"false",
+        riskIssueContent:"",
 
         //发表评论
         taskLogContent:""
@@ -200,7 +201,8 @@ var vm = new Vue({
             getTaskInfo();
             getCheckItemGrid();
             getTaskLogGrid();
-        },backTaskInfo: function(){//跳转回到任务进度页面
+        },
+        backTaskInfo: function(){//跳转回到任务进度页面
             toUrl('projProgress.html?projId='+vm.projId+'&stepId='+vm.stepId);
         },
         selectStaff: function() {//打开人员选择面板
@@ -219,10 +221,8 @@ var vm = new Vue({
                 }
             })
         },
-
         changeTaskState:function(type){//修改任务状态
-            // 完成
-            if(type=="finish"&&vm.taskInfo.state!=="2"){
+            if(type==="finish"&&vm.taskInfo.state!=="2"){
                 var params = JSON.stringify({
                     "taskId" : vm.taskId,
                     "state" : "2"
@@ -230,12 +230,12 @@ var vm = new Vue({
                 saveTaskDetail(params);
             }
             // 标记开始
-            if(type=="start"&&vm.taskInfo.state=="0"){
-                var params = JSON.stringify({
+            if(type==="start"&&vm.taskInfo.state=="0"){
+                var params1 = JSON.stringify({
                     "taskId" : vm.taskId,
                     "state" : "1"
                 });
-                saveTaskDetail(params);
+                saveTaskDetail(params1);
             }
         },
         delTaskState:function(){//删除
@@ -267,9 +267,6 @@ var vm = new Vue({
             vm.taskState = vm.taskInfo.state;
             vm.isEdit=true;
         },
-        cancelEdit:function(){//取消编辑任务信息
-            vm.isEdit=false;
-        },
         addTaskContent:function(){
             var params = JSON.stringify({
                 "taskId" : vm.taskId,
@@ -288,14 +285,14 @@ var vm = new Vue({
             saveTaskDetail(params);
         },
         addCheckItem:function(){//新增检查项保存
-            if(vm.content==null||vm.content.trim()==""){
+            if(vm.content===null||vm.content.trim()==""){
                 dialogMsg("请输入检查项内容!","warn");
                 return;
             }
             saveCheckItem();
         },
         checkRadio:function(data){//完成检查项保存
-            if(data.state=="0")
+            if(data.state==="0")
             dialogConfirm("请确认检查项：\n\""+data.content+"\"\n是否完成!", function(){
                 vm.checkItemId = data.checkItemId;
                 vm.content = data.content;
@@ -313,13 +310,11 @@ var vm = new Vue({
                 width: "600px",
                 height: "420px",
                 btn: false,
-                end: function() {
-
-                }
+                end: function() { }
             });
         },
         saveTaskLog:function(){//发表评论
-            if(vm.taskLogContent===''){
+            if(vm.taskLogContent.trim()===''){
                 dialogAlert("评论内容为空！","warn");
                 return;
             }
@@ -335,19 +330,19 @@ var vm = new Vue({
                 contentType: 'application/json',
                 success: function (data) {
                     if(data.success){
-                        // addToWorkLog();
-                        // addToRiskIssues();
-                        // addToWeeklyReport();
-                        vm.taskLogContent = "";
-                        getTaskLogGrid();
+                        vm.riskIssueContent = vm.taskTitle+"-"+vm.taskLogContent;//风险内容
+                        vm.workLogContent = vm.taskLogContent;//工作日志内容
                         if(vm.addToWorkLog&&vm.addToRiskIssues){
                             vm.addWorkLogs();
-                        }else if(vm.addToRiskIssues)
-                            vm.addriskIssues();
+                        }else if(vm.addToRiskIssues){
+                            vm.addRiskIssues();
+                        }
                         if(vm.addToWorkLog&&!vm.addToRiskIssues){
                             vm.addWorkLogs();
                         }
-                        // dialogMsg("评论成功！");
+                        getTaskLogGrid();//刷新任务日志列表
+                        dialogMsg("评论成功！");
+                        vm.taskLogContent = "";
                     }else{
                         dialogMsg("评论失败！"+data.msg,"error")
                     }
@@ -362,53 +357,81 @@ var vm = new Vue({
             dialogContent2({
                 title : "添加到工作日志",
                 width : '600px',
-                height : '200px',
+                height : '240px',
                 content :  $("#workLogPanel"),
                 btn : [ '确定', '取消' ],
                 success: function(){
-                    //TODO 初始化时间控件
-                    // $("#finishDate").datetimepicker();
+                    //初始化滚动条
+                    $(".time-slimScroll").slimScroll({height: '60px', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
+                    vm.startDate = formatDate(vm.taskInfo.taskDate,"yyyy-MM-dd")+" 08:00:00";
+                    vm.endDate = formatDate(new Date(),"yyyy-MM-dd")+" 18:00:00";
+                    //初始化时间控件
+                    $("#startDate").datetimepicker({
+                        format:'yyyy-mm-dd 08:00:00'
+                    }).on('change', function () {
+                        vm.startDate = $("#startDate").val();
+                    });
+                    $("#endDate").datetimepicker({
+                        format:'yyyy-mm-dd 18:00:00'
+                    }).on('change', function () {
+                        vm.endDate = $("#endDate").val();
+                    });
                 },
                 yes : function(index) {
-                    if(isNullOrEmpty(vm.startDate)) {
-                        dialogAlert('开始日期为空','info');
+                    if(vm.dateList.length ===0) {
+                        dialogAlert('任务时间段为空,清闲添加时段','warn');
                         return false;
                     }
-                    if(isNullOrEmpty(vm.endDate)) {
-                        dialogAlert('结束日期为空','info');
-                        return false;
-                    }
-                    layer.close(index);
-                    return ;
-                    //TODO 保存工作日志
+                    // 保存工作日志
                     $.ajax({
-                        url: '../../projMan/workLog/saveWorkLog?_' + $.now(),
+                        url: '../../projMan/workLog/batchSaveWorkLog?_' + $.now(),
                         data: JSON.stringify({
-                            "workLogDate" : formatDate(new Date(),"yyyy-MM-dd"),
-                            "startTime" : "08:00",
-                            "endTime" : "08:00",
-                            "minutes" : 0,
-                            "isProjectWork" : "1",
-                            "project" : vm.projId,
-                            "task" : vm.taskId,
-                            "workDetails" : vm.taskLogContent
+                            "dateList": vm.dateList,
+                            "workLogDate": formatDate(new Date(),"yyyy-MM-dd"),
+                            "isProjectWork": "1",
+                            "project": vm.projId,
+                            "task": vm.taskId,
+                            "workDetails": vm.workLogContent
                         }),
                         type: "post",
                         dataType: "json",
                         contentType: 'application/json',
                         success: function (data) {
+                            if(data.success){
+                                dialogAlert("保存日志成功！");
+                                layer.close(index);
+                            }else{
+                                dialogAlert("保存日志失败！"+data.message,"error");
+                            }
                         }
                     });
-
-
                 },
                 end:function(){
-                    if(vm.addToRiskIssues)
-                        vm.addriskIssues();
+                    vm.dateList=[];
+                    vm.startDate="";
+                    vm.endDate="";
+                    if(vm.addToRiskIssues){vm.addRiskIssues();}
                 }
             });
         },
-        addriskIssues:function(){
+        addTimes: function(){//添加时间段
+            if(isNullOrEmpty(vm.startDate)) {
+                dialogAlert('开始日期为空','warn');
+                return false;
+            }
+            if(isNullOrEmpty(vm.endDate)) {
+                dialogAlert('结束日期为空','warn');
+                return false;
+            }
+            if(convertStringToDate(vm.startDate.substr(0,10)) > convertStringToDate(vm.endDate.substr(0,10))){
+                dialogLoading('开始时间不能大于结束时间','warn');
+                return;
+            }
+            vm.dateList.push({startDate:vm.startDate,endDate:vm.endDate});
+            vm.startDate="";
+            vm.endDate="";
+        },
+        addRiskIssues:function(){
             vm.isDialogOpen=true;
             dialogContent2({
                 title : "添加到风险问题",
@@ -417,10 +440,7 @@ var vm = new Vue({
                 content :  $("#riskIssuesPanel"),
                 btn : [ '确定', '取消' ],
                 success: function(){
-                    //TODO 初始化时间控件
-
-                    vm.resolveDate =  vm.addSevenDate;
-
+                    vm.resolveDate =  vm.addSevenDate;//设置默认解决时间 当前日期加上7天
                     $("#resolveDate").datetimepicker().on('change', function () {
                         vm.resolveDate = $("#resolveDate").val();
                     });
@@ -439,7 +459,7 @@ var vm = new Vue({
                         data: JSON.stringify({
                             "projId":vm.projId,
                             "taskId":vm.taskId,
-                            "content":vm.taskTitle+"-"+vm.taskLogContent,//风险内容
+                            "content":vm.riskIssueContent,//风险内容
                             "remark":"来自任务评论",//备注
                             "resolventDate":vm.resolveDate,//解决时间  当前日期加7天
                             "onChargeStaff":vm.onChargeStaff//负责人
@@ -465,7 +485,7 @@ var vm = new Vue({
                 }
             });
         },
-        selectStaff: function(){
+        selectOnChargeStaff: function(){
             dialogOpen({
                 id: 'staffSelect',
                 title: '人员选择',
