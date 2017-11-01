@@ -83,4 +83,16 @@
         CREATE_DATE, TASK_ID, IS_READ) VALUES(#{noticeId}, #{noticeCreator}, #{noticeReceiverName}, #{noticeType},
         #{noticeContent}, #{createDate}, #{taskId},#{isRead})
     </insert>
+
+    <select id="getStakeholder" parameterType="Long" resultType="SysUserEntity">
+        select user_id, username
+        from pms_sys_user
+        where INSTR((select ',' || s.proj_group_manager || ',' ||
+                            s.big_proj_manager || ',' || s.proj_manager || ',' ||
+                            s.dema_manager || ',' || s.tech_manager || ',' ||
+                            s.proj_members || ',' members
+                     from pms_proj_stakeholder s
+                     where s.proj_id = #{id} ),
+                    ',' || TRIM(TO_CHAR(user_id)) || ',') > 0
+    </select>
 </mapper>

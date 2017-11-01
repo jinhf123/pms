@@ -1,5 +1,6 @@
 package com.ffcs.dp.projectManage.dao;
 
+import com.ffcs.dp.common.entity.SysUserEntity;
 import com.ffcs.dp.projectManage.entity.*;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.stereotype.Repository;
@@ -24,4 +25,6 @@ public interface ProjAddMapper {
     void saveProjUserWorktime(WorktimeEntity worktimeEntity);
 
     void saveProjNotice(NoticeEntity noticeEntity);
+
+    List<SysUserEntity> getStakeholder(Long id);
 }

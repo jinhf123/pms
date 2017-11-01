@@ -1,5 +1,6 @@
 package com.ffcs.dp.projectManage.manager.impl;
 
+import com.ffcs.dp.common.entity.SysUserEntity;
 import com.ffcs.dp.projectManage.dao.ProjAddMapper;
 import com.ffcs.dp.projectManage.dao.ProjTemplateMapper;
 import com.ffcs.dp.projectManage.entity.*;
@@ -53,5 +54,10 @@ public class ProjAddManagerImpl implements ProjAddManager {
     @Override
     public void saveProjNotice(NoticeEntity noticeEntity) {
         projAddMapper.saveProjNotice(noticeEntity);
+    }
+
+    @Override
+    public List<SysUserEntity> getStakeholder(Long id) {
+        return projAddMapper.getStakeholder(id);
     }
 }

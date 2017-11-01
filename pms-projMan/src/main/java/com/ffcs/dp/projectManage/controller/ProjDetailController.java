@@ -276,6 +276,7 @@ public class ProjDetailController extends AbstractController {
         JSONObject result = new JSONObject();
         String msg = "";
         params.put("userId", getUserId());
+        params.put("username", getUser().getUsername());
         try{
             projDetailService.saveTaskLog(params);
         }catch (Exception e){

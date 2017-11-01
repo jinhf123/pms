@@ -135,6 +135,7 @@ function saveCheckItem(){
 }
 
 
+Vue.component('v-select', VueMultiselect.Multiselect);
 
 var vm = new Vue({
     el:'#taskDetails',
@@ -193,8 +194,11 @@ var vm = new Vue({
         riskIssueContent:"",
 
         //发表评论
-        taskLogContent:""
+        taskLogContent:"",
 
+        //项目干系人
+        stakeholder:[],
+        noticeUser:[]
     },
     methods : {
         load: function() {
@@ -293,12 +297,12 @@ var vm = new Vue({
         },
         checkRadio:function(data){//完成检查项保存
             if(data.state==="0")
-            dialogConfirm("请确认检查项：\n\""+data.content+"\"\n是否完成!", function(){
-                vm.checkItemId = data.checkItemId;
-                vm.content = data.content;
-                vm.state = "1";
-                saveCheckItem();
-            });
+                dialogConfirm("请确认检查项：\n\""+data.content+"\"\n是否完成!", function(){
+                    vm.checkItemId = data.checkItemId;
+                    vm.content = data.content;
+                    vm.state = "1";
+                    saveCheckItem();
+                });
             getCheckItemGrid();
         },
         upload:function () {
@@ -314,16 +318,22 @@ var vm = new Vue({
             });
         },
         saveTaskLog:function(){//发表评论
+
             if(vm.taskLogContent.trim()===''){
                 dialogAlert("评论内容为空！","warn");
                 return;
+            }
+            var noticeUser = [];
+            for(var i in this.noticeUser){
+                noticeUser.push(this.noticeUser[i].userId)
             }
             $.ajax({
                 url: '../../projMan/projDetail/saveTaskLog?_' + $.now(),
                 data: JSON.stringify({
                     "taskId" : vm.taskId,
                     "content" : vm.taskLogContent,
-                    "operateType" : "0"
+                    "operateType" : "0",
+                    "noticeUser":noticeUser
                 }),
                 type: "post",
                 dataType: "json",
@@ -501,8 +511,29 @@ var vm = new Vue({
                     top.layer.close(top.layer.getFrameIndex(iframeId));//先得到当前iframe层的索引再执行关闭
                 }
             })
+        },
+        getStakeholder: function () {
+            var self = this;
+            $.ajax({
+                url: '/projMan/stakeholder/' + this.projId,
+                type: "get",
+                dataType: "json",
+                contentType: 'application/json',
+                success: function (data) {
+                    for(var i in data){
+                        if("userId" in data[i]){
+                            self.stakeholder.push({
+                                userId: data[i].userId,
+                                username: data[i].username,
+                            })
+                        }
+                    }
+                    console.log(self.stakeholder);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                }
+            })
         }
-
     },
     computed: {
         addSevenDate: function(){
@@ -511,6 +542,10 @@ var vm = new Vue({
             var m = date.getMonth()+ 1;
             return date.getFullYear()+ '-'+m+'-'+ date.getDate();
         }
+    },
+    mounted: function () {
+        this.projId = getQueryString('projId');
+        this.getStakeholder();
     }
 });
 

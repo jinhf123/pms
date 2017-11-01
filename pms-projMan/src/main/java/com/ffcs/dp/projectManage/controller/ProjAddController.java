@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ffcs.dp.common.controller.AbstractController;
+import com.ffcs.dp.common.entity.SysUserEntity;
 import com.ffcs.dp.projectManage.entity.*;
 import com.ffcs.dp.projectManage.service.ProjAddService;
 import com.ffcs.dp.projectManage.service.ProjTemplateService;
@@ -124,5 +125,10 @@ public class ProjAddController extends AbstractController {
 
         json.put("message", msg);
         return json;
+    }
+
+    @RequestMapping(value = "/stakeholder/{id}", method = RequestMethod.GET)
+    public List<SysUserEntity> getStakeholder(@PathVariable Long id) {
+        return projAddService.getStakeholder(id);
     }
 }

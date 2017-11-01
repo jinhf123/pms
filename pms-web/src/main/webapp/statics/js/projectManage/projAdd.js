@@ -405,7 +405,7 @@ var vm = new Vue({
                                 //TODo:判断数据为空情况
                                 if ('userId' in cost) {
                                     var member = {};
-                                    member.position = self.allMembersId[cost['userId']].position
+                                    member.position = self.allMembersId[cost['userId']].position;
                                     member.userId = cost.userId;
                                     member.username = cost.username;
                                     member.description = cost.description;

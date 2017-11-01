@@ -1,5 +1,6 @@
 package com.ffcs.dp.projectManage.service;
 
+import com.ffcs.dp.common.entity.SysUserEntity;
 import com.ffcs.dp.projectManage.entity.NoticeEntity;
 import com.ffcs.dp.projectManage.entity.ProjTemplateEntity;
 import com.ffcs.dp.projectManage.entity.UserCostEntity;
@@ -14,4 +15,6 @@ public interface ProjAddService {
     UserCostEntity listUserCostById(Long id);
 
     void saveProjInfo(Map<String, Object> projInfo);
+
+    List<SysUserEntity> getStakeholder(Long id);
 }

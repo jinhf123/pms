@@ -3,6 +3,7 @@
 <head>
     <title>任务详情</title>
     #parse("include/header.html")
+    <link rel="stylesheet" href="/statics/css/vue-multiselect.min.css">
     <link rel="stylesheet" href="/statics/css/projectManage/taskDetails.css">
 </head>
 <body>
@@ -116,7 +117,17 @@
                                 <button class="btn btn-sm btn-link" @click="backTaskInfo" title="返回任务列表"><span>返回</span></button>
                             </div>
                             <div class="col-md-6 column send-meg-div">
-                                <span>发送通知给:</span><select class="select" title=""></select>
+                                <span>发送通知给:</span>
+                                <!--<select class="select" title=""></select>-->
+                                <v-select  v-model="noticeUser"
+                                            :options="stakeholder"
+                                            :multiple="true"
+                                            label="username"
+                                            track-by="username"
+                                            :preserve-search="true"
+                                            :hide-selected="true"
+                                            :close-on-select="false">
+                                </v-select>
                             </div>
                         </div>
                     </div>
@@ -213,6 +224,7 @@
 
 </div>
 #parse("include/footer.html")
+<script src="/statics/libs/vue-multiselect.min.js"></script>
 <script src="/statics/js/projectManage/taskDetails.js?_${date.systemTime}"></script>
 </body>
 </html>

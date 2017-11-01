@@ -1,5 +1,6 @@
 package com.ffcs.dp.projectManage.service.impl;
 
+import com.ffcs.dp.common.entity.SysUserEntity;
 import com.ffcs.dp.projectManage.entity.*;
 import com.ffcs.dp.projectManage.manager.ProjAddManager;
 import com.ffcs.dp.projectManage.manager.ProjTemplateManager;
@@ -77,5 +78,10 @@ public class ProjAddServiceImpl implements ProjAddService {
             worktimeEntity.setProjId(projManEntity.getProjId());
             projAddManager.saveProjUserWorktime(worktimeEntity);
         }
+    }
+
+    @Override
+    public List<SysUserEntity> getStakeholder(Long id) {
+        return projAddManager.getStakeholder(id);
     }
 }

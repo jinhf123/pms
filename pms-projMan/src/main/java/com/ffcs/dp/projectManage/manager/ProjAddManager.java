@@ -1,5 +1,6 @@
 package com.ffcs.dp.projectManage.manager;
 
+import com.ffcs.dp.common.entity.SysUserEntity;
 import com.ffcs.dp.projectManage.entity.*;
 
 import java.util.List;
@@ -21,4 +22,6 @@ public interface ProjAddManager {
     void saveProjUserWorktime(WorktimeEntity worktimeEntity);
 
     void saveProjNotice(NoticeEntity noticeEntity);
+
+    List<SysUserEntity> getStakeholder(Long id);
 }
