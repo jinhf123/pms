@@ -1,7 +1,7 @@
 Vue.component('v-select', VueSelect.VueSelect);
 Vue.use(VueNumeric.default);
 const config = {
-    errorBagName: 'errors', // change if property conflicts.
+    errorBagName: 'errors',
     delay: 0,
     locale: 'zh_CN',
     messages: null,
@@ -25,13 +25,15 @@ var templateStepList = {
 };
 
 var templeForm = {
-    props: ['temp', 'options'],
+    props: ['options', 'template','templateinfo'],
     template: "#templateForm",
     components: {
         "template-step-form": templeStepForm
     },
     data: function () {
         return {
+            type:"add",
+            templateInfo: [],
             stepActive: 0,
             stepStart: 0,
             stepWidth: 600,
@@ -50,7 +52,7 @@ var templeForm = {
             $('.nav-step li:eq(' + (index - this.stepStart) + ') a').tab('show');
         },
         addNewStep: function () {
-            this.temp.stepList.push({
+            this.templateInfo.projTemplateStepEntities.push({
                 stepName: '双击修改',
                 status: "edit",
                 dayMonth: 30,
@@ -58,10 +60,10 @@ var templeForm = {
                 defaultMove: null,
                 defaultMoveDate: null,
                 finishNoticeDate: null,
-                noticeStaffArray:[],
+                noticeStaffArray: [],
                 noticeStaff: null,
                 noticeStaffId: null,
-                taskChangeStaffArray:[],
+                taskChangeStaffArray: [],
                 taskChangeStaff: null,
                 taskChangeStaffId: null,
                 finishScheduleNoticeDate: null,
@@ -73,46 +75,51 @@ var templeForm = {
                 attachPdf: 0,
                 attachContent: null
             });
-            if (this.temp.stepList.length - this.stepStart > this.stepCount)
+            if (this.templateInfo.projTemplateStepEntities.length - this.stepStart > this.stepCount)
                 this.stepStart++;
         },
         removeStep: function (index) {
-            this.temp.stepList.splice(index, 1);
+
+            this.templateInfo.projTemplateStepEntities.splice(index, 1);
         },
         show: function (index) {
-            this.temp.stepList[index].status = "show";
+            var step = JSON.parse(JSON.stringify(this.templateInfo.projTemplateStepEntities[index]));
+            step.status = "show";
+            Vue.set(this.templateInfo.projTemplateStepEntities,index,step);
         },
         edit: function (index) {
-            this.temp.stepList[index].status = "edit";
+            var step = JSON.parse(JSON.stringify(this.templateInfo.projTemplateStepEntities[index]));
+            step.status = "edit";
+            Vue.set(this.templateInfo.projTemplateStepEntities,index,step);
         },
         submitForm: function () {
             var me = this;
             this.$validator.validateAll().then(function (result) {
-                for (var i in me.temp.stepList) {
-                    me.temp.stepList[i].defaultMoveDate = parseInt(me.temp.stepList[i].defaultMove) * parseInt(me.temp.stepList[i].dayMonth);
-                    if (me.temp.stepList[i].attach === true) {
-                        me.temp.stepList[i].isAttach = "1";
+                for (var i in me.temp.projTemplateStepEntities) {
+                    me.temp.projTemplateStepEntities[i].defaultMoveDate = parseInt(me.temp.projTemplateStepEntities[i].defaultMove) * parseInt(me.temp.projTemplateStepEntities[i].dayMonth);
+                    if (me.temp.projTemplateStepEntities[i].attach === true) {
+                        me.temp.projTemplateStepEntities[i].isAttach = "1";
                     } else {
-                        me.temp.stepList[i].isAttach = "0";
+                        me.temp.projTemplateStepEntities[i].isAttach = "0";
                     }
 
                     var label = [];
                     var value = [];
-                    for (var j in me.temp.stepList[i].taskChangeStaffArray) {
-                        label.push(me.temp.stepList[i].taskChangeStaffArray[j].label);
-                        value.push(me.temp.stepList[i].taskChangeStaffArray[j].value);
+                    for (var j in me.temp.projTemplateStepEntities[i].taskChangeStaffArray) {
+                        label.push(me.temp.projTemplateStepEntities[i].taskChangeStaffArray[j].label);
+                        value.push(me.temp.projTemplateStepEntities[i].taskChangeStaffArray[j].value);
                     }
-                    me.temp.stepList[i].taskChangeStaffId = value.join();
-                    me.temp.stepList[i].taskChangeStaff = label.join();
+                    me.temp.projTemplateStepEntities[i].taskChangeStaffId = value.join();
+                    me.temp.projTemplateStepEntities[i].taskChangeStaff = label.join();
 
                     label = [];
                     value = [];
-                    for (var j in me.temp.stepList[i].noticeStaffArray) {
-                        label.push(me.temp.stepList[i].noticeStaffArray[j].label);
-                        value.push(me.temp.stepList[i].noticeStaffArray[j].value);
+                    for (var j in me.temp.projTemplateStepEntities[i].noticeStaffArray) {
+                        label.push(me.temp.projTemplateStepEntities[i].noticeStaffArray[j].label);
+                        value.push(me.temp.projTemplateStepEntities[i].noticeStaffArray[j].value);
                     }
-                    me.temp.stepList[i].noticeStaffId = value.join();
-                    me.temp.stepList[i].noticeStaff = label.join();
+                    me.temp.projTemplateStepEntities[i].noticeStaffId = value.join();
+                    me.temp.projTemplateStepEntities[i].noticeStaff = label.join();
                 }
 
                 if (result) {
@@ -122,7 +129,7 @@ var templeForm = {
                             params: {
                                 tempName: me.temp.tempName,
                                 description: me.temp.description,
-                                stepList: me.temp.stepList
+                                projTemplateStepEntities: me.temp.projTemplateStepEntities
                             }
                         }).then(function (data) {
                         var title;
@@ -164,7 +171,6 @@ var templeForm = {
                             }
                         });
                     });
-                    return;
                 }
 
             });
@@ -172,11 +178,102 @@ var templeForm = {
         }
     }, watch: {
         stepWidth: function (val) {
-            var a = Math.floor((val - 100 - 2 - 40 - 102) / 122) + 1;
-            this.stepCount = a;
+            this.stepCount = Math.floor((val - 100 - 2 - 40 - 102) / 122) + 1;
         }
     },
-    mounted: function () {
+    created: function () {
+        if(typeof this.$route.params.type !== "undefined"){
+            this.type = this.$route.params.type
+        }
+
+        if (this.type === "edit") {
+            var templateInfo = this.template[this.$route.params.index];
+            for (var i in templateInfo.projTemplateStepEntities) {
+                var isAttach = templateInfo.projTemplateStepEntities[i].isAttach;
+                var defaultMoveDate = parseInt(templateInfo.projTemplateStepEntities[i].defaultMoveDate);
+                var noticeStaffId = templateInfo.projTemplateStepEntities[i].noticeStaffId;
+                var taskChangeStaffId = templateInfo.projTemplateStepEntities[i].taskChangeStaffId;
+                var j, value, exists;
+                templateInfo.projTemplateStepEntities[i].attach = false;
+                templateInfo.projTemplateStepEntities[i].noticeStaffArray = [];
+                templateInfo.projTemplateStepEntities[i].taskChangeStaffArray = [];
+                templateInfo.projTemplateStepEntities[i].dayMonth = 1;
+                templateInfo.projTemplateStepEntities[i].defaultMove = defaultMoveDate;
+                templateInfo.projTemplateStepEntities[i].status = "show";
+                if (isAttach === "1") {
+                    templateInfo.projTemplateStepEntities[i].attach = true;
+                }
+
+                if (defaultMoveDate % 30 === 0) {
+                    templateInfo.projTemplateStepEntities[i].dayMonth = 30;
+                    templateInfo.projTemplateStepEntities[i].defaultMove = defaultMoveDate / 30;
+                }
+
+                var noticeStaffArray = [];
+                if (noticeStaffId !== null) {
+                    noticeStaffArray = noticeStaffId.split(",");
+                }
+                for (j in noticeStaffArray) {
+                    value = noticeStaffArray[j];
+                    exists = this.options.map(function (x) {
+                        return x.value;
+                    }).indexOf(value);
+                    if (exists !== -1) {
+                        templateInfo.projTemplateStepEntities[i].noticeStaffArray.push(this.options[exists]);
+                    }
+                }
+                var taskChangeStaffArray = [];
+                if (taskChangeStaffId !== null) {
+                    taskChangeStaffArray = taskChangeStaffId.split(",");
+                }
+                for (j in taskChangeStaffArray) {
+                    value = taskChangeStaffArray[j];
+                    exists = this.options.map(function (x) {
+                        return x.value;
+                    }).indexOf(value);
+                    if (exists !== -1) {
+                        templateInfo.projTemplateStepEntities[i].taskChangeStaffArray.push(this.options[exists]);
+                    }
+                }
+            }
+
+            this.templateInfo = JSON.parse(JSON.stringify(templateInfo));
+        } else if (this.type === "add") {
+            this.templateInfo = {
+                tempName: null,
+                description: null,
+                is_default: null,
+                projTemplateStepEntities: [
+                    {
+                        stepName: '列入计划',
+                        status: "show",
+                        stepSort: null,
+                        dayMonth: 30,
+                        defaultMove: null,
+                        defaultMoveDate: null,
+                        finishNoticeDate: null,
+                        noticeStaffArray: [],
+                        noticeStaff: null,
+                        noticeStaffId: null,
+                        taskChangeStaffArray: [],
+                        taskChangeStaff: null,
+                        taskChangeStaffId: null,
+                        finishScheduleNoticeDate: null,
+                        finishScheduleStaff: null,
+                        attach: false,
+                        isAttach: null,
+                        attachWord: null,
+                        attachExcel: null,
+                        attachPdf: null,
+                        attachContent: null
+                    }
+                ]
+            };
+        }
+        console.log(this.templateInfo);
+    },
+    mounted:function () {
+
         this.stepWidth = this.$refs.step.clientWidth;
         const that = this;
         window.onresize = function () {
@@ -184,6 +281,7 @@ var templeForm = {
         };
     }
 };
+
 var templeList = {
     props: ['template', 'options', 'temp'],
     template: "#templateList",
@@ -234,15 +332,15 @@ const routes = [
     {
         path: '/',
         // redirect: '/template/0',
-        redirect: 'addTemplate'
+        redirect: '/template/add'
     },
     {
-        path: '/addTemplate',
+        path: '/template/:type',
         component: templeForm
     },
     {
-        path: '/template/:index',
-        component: templeList
+        path: '/template/:type/:index',
+        component: templeForm
     }
 ];
 
@@ -254,40 +352,10 @@ var vm = new Vue({
     el: '#dpTemple',
     router: router,
     data: {
+        templateinfo:[],
         isLoading: null,
         template: [],
-        templateNoticeUser: [],
-        temp: {
-            tempName: null,
-            description: null,
-            is_default: null,
-            stepList: [
-                {
-                    stepName: '列入计划',
-                    status: "show",
-                    stepSort: null,
-                    dayMonth: 30,
-                    defaultMove: null,
-                    defaultMoveDate: null,
-                    finishNoticeDate: null,
-                    noticeStaffArray:[],
-                    noticeStaff: null,
-                    noticeStaffId: null,
-                    taskChangeStaffArray:[],
-                    taskChangeStaff: null,
-                    taskChangeStaffId: null,
-                    finishScheduleNoticeDate: null,
-                    finishScheduleStaff: null,
-                    attach: false,
-                    isAttach: null,
-                    attachWord: null,
-                    attachExcel: null,
-                    attachPdf: null,
-                    attachContent: null
-                }
-            ]
-        },
-        // options: ['foo', 'bar', 'baz']
+        templateNoticeUser: []
     },
     components: {
         "template-form":
@@ -298,7 +366,7 @@ var vm = new Vue({
         resetData: function () {
             this.temp.tempName = null;
             this.temp.description = null;
-            this.temp.stepList = [
+            this.temp.projTemplateStepEntities = [
                 {
                     stepName: '列入计划',
                     status: "show",
@@ -307,10 +375,10 @@ var vm = new Vue({
                     defaultMove: null,
                     defaultMoveDate: null,
                     finishNoticeDate: null,
-                    noticeStaffArray:[],
+                    noticeStaffArray: [],
                     noticeStaff: null,
                     noticeStaffId: null,
-                    taskChangeStaffArray:[],
+                    taskChangeStaffArray: [],
                     taskChangeStaff: null,
                     taskChangeStaffId: null,
                     finishScheduleNoticeDate: null,
@@ -337,7 +405,7 @@ var vm = new Vue({
         },
         reloadTemplate: function () {
             this.loadTemplate();
-            this.resetData();
+            //this.resetData();
         },
         setDefault: function (tempId) {
             var self = this;
@@ -407,19 +475,3 @@ Vue.directive('focus', {
         el.select();
     }
 });
-
-// Vue.directive('click-outside', {
-//     bind: function (el, binding, vnode) {
-//         el.event = function (event) {
-//             // here I check that click was outside the el and his childrens
-//             if (!(el == event.target || el.contains(event.target))) {
-//                 // and if it did, call method provided in attribute value
-//                 vnode.context[binding.expression](event);
-//             }
-//         };
-//         document.body.addEventListener('click', el.event)
-//     },
-//     unbind: function (el) {
-//         document.body.removeEventListener('click', el.event)
-//     }
-// });

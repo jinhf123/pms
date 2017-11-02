@@ -41,7 +41,7 @@ public class ProjTemplateController extends AbstractController {
         JSONObject json = new JSONObject();
         String msg = "保存成功！";
         Map<String, Object> template = (Map<String, Object>) params.get("params");
-        JSONArray StepList = (JSONArray) template.get("stepList");
+        JSONArray StepList = (JSONArray) template.get("projTemplateStepEntities");
         Iterator<Object> it = StepList.iterator();
         List<ProjTemplateStepEntity> stepEntities = new ArrayList<ProjTemplateStepEntity>();
         int i = 0;
