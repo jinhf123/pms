@@ -160,5 +160,41 @@ select::-ms-expand {border: 0 solid transparent; background: transparent; }
 
 
 
+.multiselect__tag{
+    background-color: #5bc0de;
+}
 
+.multiselect__option--highlight{
+    background-color: #5bc0de;
+}
+.multiselect__option--highlight:after {
+    content: attr(data-select);
+    background: #5bc0de;
+    color: #fff
+}
 
+.multiselect {
+    min-height: 30px;
+}
+
+.multiselect{
+    min-height: 30px;
+}
+
+.multiselect__select{
+    height: 30px;
+}
+.multiselect__tags{
+    padding-top: 3px;
+    min-height: 20px;
+}
+
+.multiselect__tag{
+    margin-bottom: 2px;
+    height: 19px;
+    font-size: 12px;
+}
+
+.multiselect__input{
+    margin-bottom: 5px;
+}

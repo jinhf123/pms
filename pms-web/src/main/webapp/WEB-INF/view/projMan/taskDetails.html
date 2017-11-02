@@ -112,21 +112,24 @@
                         </div>
 
                         <div class="col-md-12 column display-flex center-bottom-bar">
-                            <div class="col-md-6 column display-flex">
+                            <div class="col-md-6 column display-flex" style="height: 30px">
                                 <button class="btn btn-sm btn-info" @click="saveTaskLog"><span>发表评论</span></button>&nbsp;
                                 <button class="btn btn-sm btn-link" @click="backTaskInfo" title="返回任务列表"><span>返回</span></button>
                             </div>
-                            <div class="col-md-6 column send-meg-div">
-                                <span>发送通知给:</span>
-                                <!--<select class="select" title=""></select>-->
+                            <div class="col-md-6 column  send-meg-div display-flex">
+                                <span style="margin-top: 5px;margin-right: 10px">发送通知给:</span>
                                 <v-select  v-model="noticeUser"
-                                            :options="stakeholder"
-                                            :multiple="true"
-                                            label="username"
-                                            track-by="username"
-                                            :preserve-search="true"
-                                            :hide-selected="true"
-                                            :close-on-select="false">
+                                           placeholder="选择通知人"
+                                           select-label="按enter选择"
+                                           :options="stakeholder"
+                                           :multiple="true"
+                                           label="username"
+                                           track-by="username"
+                                           :preserve-search="true"
+                                           :hide-selected="true"
+                                           :close-on-select="false"
+                                           style="flex: 1;">
+
                                 </v-select>
                             </div>
                         </div>
