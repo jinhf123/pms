@@ -25,14 +25,15 @@
                         <p class="list-group-item-text two-line">
                             {{item.description}}
                         </p>
+                        <img src="/statics/img/step_delete.png" class="delete-template" @click="deleteTemplate(item.tempId)">
                     </router-link>
+
                     <div class="default-template" v-if="item.isDefault === '1'">
                         默认
                     </div>
                     <div class="set-default-template" @click="setDefault(item.tempId)" v-else>
                         设为默认
                     </div>
-                    <!--<img src="/statics/img/template_default.png" class="set-default">-->
                 </template>
             </div>
         </div>
@@ -86,7 +87,7 @@
                                 <img src="/statics/img/step_left.png" alt="" class="left">
                             </div>
                             <li v-for="(item, index) in templateInfo.projTemplateStepEntities" :class="[index==stepActive ? 'active' : '']"
-                                v-if="index >= stepStart && index < (stepCount  + stepStart)">
+                                v-if="index >= stepStart && index < (stepCount  + stepStart) ">
                                 <img class="badge-notify" @click="removeStep(index)"
                                      src="/statics/img/step_delete.png"/>
                                 <a :href="'#' + index +'-pills'" data-toggle="tab" :title="item.stepName "
@@ -119,7 +120,9 @@
             </div>
         </div>
         <div class="form-group row">
-            <button @click="submitForm" class="button-confirm">创建模板</button>
+
+            <button @click="submitForm" class="button-confirm" v-if="type === 'add'">创建模板</button>
+            <button @click="submitForm" class="button-confirm" v-if="type === 'edit'">修改模板</button>
             <button class="button-cancel" >取消</button>
         </div>
     </div>

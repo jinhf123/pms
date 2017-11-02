@@ -25,15 +25,16 @@ var templateStepList = {
 };
 
 var templeForm = {
-    props: ['options', 'template','templateinfo'],
+    props: ['options', 'template', 'templateinfo'],
     template: "#templateForm",
     components: {
         "template-step-form": templeStepForm
     },
     data: function () {
         return {
-            type:"add",
+            type: "add",
             templateInfo: [],
+            deleteStep: [],
             stepActive: 0,
             stepStart: 0,
             stepWidth: 600,
@@ -80,63 +81,177 @@ var templeForm = {
         },
         removeStep: function (index) {
 
+            if (typeof this.templateInfo.projTemplateStepEntities[index].tempStepId !== "undefined") {
+                this.deleteStep.push(this.templateInfo.projTemplateStepEntities[index].tempStepId);
+            }
             this.templateInfo.projTemplateStepEntities.splice(index, 1);
+
         },
         show: function (index) {
             var step = JSON.parse(JSON.stringify(this.templateInfo.projTemplateStepEntities[index]));
             step.status = "show";
-            Vue.set(this.templateInfo.projTemplateStepEntities,index,step);
+            Vue.set(this.templateInfo.projTemplateStepEntities, index, step);
         },
         edit: function (index) {
             var step = JSON.parse(JSON.stringify(this.templateInfo.projTemplateStepEntities[index]));
             step.status = "edit";
-            Vue.set(this.templateInfo.projTemplateStepEntities,index,step);
+            Vue.set(this.templateInfo.projTemplateStepEntities, index, step);
+        },
+        setProject: function () {
+            for (var i in this.templateInfo.projTemplateStepEntities) {
+                this.templateInfo.projTemplateStepEntities[i].defaultMoveDate = parseInt(this.templateInfo.projTemplateStepEntities[i].defaultMove) * parseInt(this.templateInfo.projTemplateStepEntities[i].dayMonth);
+                if (this.templateInfo.projTemplateStepEntities[i].attach === true) {
+                    this.templateInfo.projTemplateStepEntities[i].isAttach = "1";
+                } else {
+                    this.templateInfo.projTemplateStepEntities[i].isAttach = "0";
+                }
+
+                var label = [];
+                var value = [];
+                for (var j in this.templateInfo.projTemplateStepEntities[i].taskChangeStaffArray) {
+                    label.push(this.templateInfo.projTemplateStepEntities[i].taskChangeStaffArray[j].label);
+                    value.push(this.templateInfo.projTemplateStepEntities[i].taskChangeStaffArray[j].value);
+                }
+                this.templateInfo.projTemplateStepEntities[i].taskChangeStaffId = value.join();
+                this.templateInfo.projTemplateStepEntities[i].taskChangeStaff = label.join();
+
+                label = [];
+                value = [];
+                for (var j in this.templateInfo.projTemplateStepEntities[i].noticeStaffArray) {
+                    label.push(this.templateInfo.projTemplateStepEntities[i].noticeStaffArray[j].label);
+                    value.push(this.templateInfo.projTemplateStepEntities[i].noticeStaffArray[j].value);
+                }
+                this.templateInfo.projTemplateStepEntities[i].noticeStaffId = value.join();
+                this.templateInfo.projTemplateStepEntities[i].noticeStaff = label.join();
+            }
+        },
+        getProject: function () {
+            if (this.type === "add") {
+                this.templateInfo = {
+                    tempName: null,
+                    description: null,
+                    is_default: null,
+                    projTemplateStepEntities: [
+                        {
+                            stepName: '列入计划',
+                            status: "show",
+                            stepSort: null,
+                            dayMonth: 30,
+                            defaultMove: null,
+                            defaultMoveDate: null,
+                            finishNoticeDate: null,
+                            noticeStaffArray: [],
+                            noticeStaff: null,
+                            noticeStaffId: null,
+                            taskChangeStaffArray: [],
+                            taskChangeStaff: null,
+                            taskChangeStaffId: null,
+                            finishScheduleNoticeDate: null,
+                            finishScheduleStaff: null,
+                            attach: false,
+                            isAttach: null,
+                            attachWord: null,
+                            attachExcel: null,
+                            attachPdf: null,
+                            attachContent: null
+                        }
+                    ]
+                };
+            } else if (this.type === "edit") {
+                var templateInfo = this.template[this.$route.params.index];
+                for (var i in templateInfo.projTemplateStepEntities) {
+                    var isAttach = templateInfo.projTemplateStepEntities[i].isAttach;
+                    var defaultMoveDate = parseInt(templateInfo.projTemplateStepEntities[i].defaultMoveDate);
+                    var noticeStaffId = templateInfo.projTemplateStepEntities[i].noticeStaffId;
+                    var taskChangeStaffId = templateInfo.projTemplateStepEntities[i].taskChangeStaffId;
+                    var j, value, exists;
+                    templateInfo.projTemplateStepEntities[i].attach = false;
+                    templateInfo.projTemplateStepEntities[i].noticeStaffArray = [];
+                    templateInfo.projTemplateStepEntities[i].taskChangeStaffArray = [];
+                    templateInfo.projTemplateStepEntities[i].dayMonth = 1;
+                    templateInfo.projTemplateStepEntities[i].defaultMove = defaultMoveDate;
+                    templateInfo.projTemplateStepEntities[i].status = "show";
+                    if (isAttach === "1") {
+                        templateInfo.projTemplateStepEntities[i].attach = true;
+                    }
+
+                    if (defaultMoveDate % 30 === 0) {
+                        templateInfo.projTemplateStepEntities[i].dayMonth = 30;
+                        templateInfo.projTemplateStepEntities[i].defaultMove = defaultMoveDate / 30;
+                    }
+
+                    var noticeStaffArray = [];
+                    if (noticeStaffId !== null) {
+                        noticeStaffArray = noticeStaffId.split(",");
+                    }
+                    for (j in noticeStaffArray) {
+                        value = noticeStaffArray[j];
+                        exists = this.options.map(function (x) {
+                            return x.value;
+                        }).indexOf(value);
+                        if (exists !== -1) {
+                            templateInfo.projTemplateStepEntities[i].noticeStaffArray.push(this.options[exists]);
+                        }
+                    }
+                    var taskChangeStaffArray = [];
+                    if (taskChangeStaffId !== null) {
+                        taskChangeStaffArray = taskChangeStaffId.split(",");
+                    }
+                    for (j in taskChangeStaffArray) {
+                        value = taskChangeStaffArray[j];
+                        exists = this.options.map(function (x) {
+                            return x.value;
+                        }).indexOf(value);
+                        if (exists !== -1) {
+                            templateInfo.projTemplateStepEntities[i].taskChangeStaffArray.push(this.options[exists]);
+                        }
+                    }
+                }
+                this.templateInfo = JSON.parse(JSON.stringify(templateInfo));
+            }
         },
         submitForm: function () {
             var me = this;
             this.$validator.validateAll().then(function (result) {
-                for (var i in me.temp.projTemplateStepEntities) {
-                    me.temp.projTemplateStepEntities[i].defaultMoveDate = parseInt(me.temp.projTemplateStepEntities[i].defaultMove) * parseInt(me.temp.projTemplateStepEntities[i].dayMonth);
-                    if (me.temp.projTemplateStepEntities[i].attach === true) {
-                        me.temp.projTemplateStepEntities[i].isAttach = "1";
-                    } else {
-                        me.temp.projTemplateStepEntities[i].isAttach = "0";
-                    }
-
-                    var label = [];
-                    var value = [];
-                    for (var j in me.temp.projTemplateStepEntities[i].taskChangeStaffArray) {
-                        label.push(me.temp.projTemplateStepEntities[i].taskChangeStaffArray[j].label);
-                        value.push(me.temp.projTemplateStepEntities[i].taskChangeStaffArray[j].value);
-                    }
-                    me.temp.projTemplateStepEntities[i].taskChangeStaffId = value.join();
-                    me.temp.projTemplateStepEntities[i].taskChangeStaff = label.join();
-
-                    label = [];
-                    value = [];
-                    for (var j in me.temp.projTemplateStepEntities[i].noticeStaffArray) {
-                        label.push(me.temp.projTemplateStepEntities[i].noticeStaffArray[j].label);
-                        value.push(me.temp.projTemplateStepEntities[i].noticeStaffArray[j].value);
-                    }
-                    me.temp.projTemplateStepEntities[i].noticeStaffId = value.join();
-                    me.temp.projTemplateStepEntities[i].noticeStaff = label.join();
-                }
-
                 if (result) {
-                    me.$http.post(
-                        "/projMan/template",
-                        {
-                            params: {
-                                tempName: me.temp.tempName,
-                                description: me.temp.description,
-                                projTemplateStepEntities: me.temp.projTemplateStepEntities
-                            }
-                        }).then(function (data) {
+                    me.setProject();
+                    var params = {};
+                    var url = "";
+                    if (me.type === "add") {
+                        url = "/projMan/template";
+                        params = {
+                            tempName: me.templateInfo.tempName,
+                            description: me.templateInfo.description,
+                            projTemplateStepEntities: me.templateInfo.projTemplateStepEntities
+                        };
+                    } else if (me.type === "edit") {
+                        url = "/projMan/template/update";
+                        params = {
+                            tempId: me.templateInfo.tempId,
+                            tempName: me.templateInfo.tempName,
+                            description: me.templateInfo.description,
+                            projTemplateStepEntities: me.templateInfo.projTemplateStepEntities,
+                            deleteStep: me.deleteStep
+                        };
+                    } else {
+                        return;
+                    }
+                    console.log(params);
+                    me.$http.post(url, params).then(function (data) {
                         var title;
                         if (data.data.success) {
-                            title = "添加成功";
+                            if (me.type === "add") {
+                                title = "添加成功";
+                            } else {
+                                title = "修改成功";
+                            }
+
                         } else {
-                            title = "添加失败";
+                            if (me.type === "add") {
+                                title = "添加失败";
+                            } else {
+                                title = "修改失败";
+                            }
                         }
                         top.layer.open({
                             title: title,
@@ -182,98 +297,12 @@ var templeForm = {
         }
     },
     created: function () {
-        if(typeof this.$route.params.type !== "undefined"){
+        if (typeof this.$route.params.type !== "undefined") {
             this.type = this.$route.params.type
         }
-
-        if (this.type === "edit") {
-            var templateInfo = this.template[this.$route.params.index];
-            for (var i in templateInfo.projTemplateStepEntities) {
-                var isAttach = templateInfo.projTemplateStepEntities[i].isAttach;
-                var defaultMoveDate = parseInt(templateInfo.projTemplateStepEntities[i].defaultMoveDate);
-                var noticeStaffId = templateInfo.projTemplateStepEntities[i].noticeStaffId;
-                var taskChangeStaffId = templateInfo.projTemplateStepEntities[i].taskChangeStaffId;
-                var j, value, exists;
-                templateInfo.projTemplateStepEntities[i].attach = false;
-                templateInfo.projTemplateStepEntities[i].noticeStaffArray = [];
-                templateInfo.projTemplateStepEntities[i].taskChangeStaffArray = [];
-                templateInfo.projTemplateStepEntities[i].dayMonth = 1;
-                templateInfo.projTemplateStepEntities[i].defaultMove = defaultMoveDate;
-                templateInfo.projTemplateStepEntities[i].status = "show";
-                if (isAttach === "1") {
-                    templateInfo.projTemplateStepEntities[i].attach = true;
-                }
-
-                if (defaultMoveDate % 30 === 0) {
-                    templateInfo.projTemplateStepEntities[i].dayMonth = 30;
-                    templateInfo.projTemplateStepEntities[i].defaultMove = defaultMoveDate / 30;
-                }
-
-                var noticeStaffArray = [];
-                if (noticeStaffId !== null) {
-                    noticeStaffArray = noticeStaffId.split(",");
-                }
-                for (j in noticeStaffArray) {
-                    value = noticeStaffArray[j];
-                    exists = this.options.map(function (x) {
-                        return x.value;
-                    }).indexOf(value);
-                    if (exists !== -1) {
-                        templateInfo.projTemplateStepEntities[i].noticeStaffArray.push(this.options[exists]);
-                    }
-                }
-                var taskChangeStaffArray = [];
-                if (taskChangeStaffId !== null) {
-                    taskChangeStaffArray = taskChangeStaffId.split(",");
-                }
-                for (j in taskChangeStaffArray) {
-                    value = taskChangeStaffArray[j];
-                    exists = this.options.map(function (x) {
-                        return x.value;
-                    }).indexOf(value);
-                    if (exists !== -1) {
-                        templateInfo.projTemplateStepEntities[i].taskChangeStaffArray.push(this.options[exists]);
-                    }
-                }
-            }
-
-            this.templateInfo = JSON.parse(JSON.stringify(templateInfo));
-        } else if (this.type === "add") {
-            this.templateInfo = {
-                tempName: null,
-                description: null,
-                is_default: null,
-                projTemplateStepEntities: [
-                    {
-                        stepName: '列入计划',
-                        status: "show",
-                        stepSort: null,
-                        dayMonth: 30,
-                        defaultMove: null,
-                        defaultMoveDate: null,
-                        finishNoticeDate: null,
-                        noticeStaffArray: [],
-                        noticeStaff: null,
-                        noticeStaffId: null,
-                        taskChangeStaffArray: [],
-                        taskChangeStaff: null,
-                        taskChangeStaffId: null,
-                        finishScheduleNoticeDate: null,
-                        finishScheduleStaff: null,
-                        attach: false,
-                        isAttach: null,
-                        attachWord: null,
-                        attachExcel: null,
-                        attachPdf: null,
-                        attachContent: null
-                    }
-                ]
-            };
-        }
-        console.log(this.templateInfo);
+        this.getProject();
     },
-    mounted:function () {
-
+    mounted: function () {
         this.stepWidth = this.$refs.step.clientWidth;
         const that = this;
         window.onresize = function () {
@@ -352,7 +381,7 @@ var vm = new Vue({
     el: '#dpTemple',
     router: router,
     data: {
-        templateinfo:[],
+        templateinfo: [],
         isLoading: null,
         template: [],
         templateNoticeUser: []
@@ -406,6 +435,46 @@ var vm = new Vue({
         reloadTemplate: function () {
             this.loadTemplate();
             //this.resetData();
+        },
+        deleteTemplate: function (tempId) {
+            var self = this;
+            top.layer.open({
+                title: "警告",
+                area: '338px',
+                anim: -1,
+                isOutAnim: false,
+                move: false,
+                content: "确认删除该模板吗",
+                btn: ['确定', '取消'],
+                yes: function () {
+                    self.$http.post("/projMan/template/delete", tempId)
+                        .then(function (data) {
+                            top.layer.close(top.layer.index);
+                            var title;
+                            if (data.data.success) {
+                                title = "删除成功";
+                            } else {
+                                title = "删除失败";
+                            }
+                            top.layer.open({
+                                title: title,
+                                area: '338px',
+                                anim: -1,
+                                isOutAnim: false,
+                                move: false,
+                                closeBtn: 0,
+                                content: data.data.message,
+                                btn: ['确定'],
+                                yes: function () {
+                                    self.loadTemplate();
+                                    top.layer.close(top.layer.index);
+                                }
+                            });
+                        }, function (err) {
+                            console.log(err)
+                        })
+                }
+            });
         },
         setDefault: function (tempId) {
             var self = this;
@@ -462,7 +531,7 @@ var vm = new Vue({
                 this.$nextTick(function () {
                     var container = this.$el.querySelector(".template-nav");
                     container.scrollTop = container.scrollHeight;
-                    this.$router.push({path: '/template/' + (val.length - 1)})
+                    this.$router.push({path: '/template/edit/' + (val.length - 1)})
                 })
             }
         }

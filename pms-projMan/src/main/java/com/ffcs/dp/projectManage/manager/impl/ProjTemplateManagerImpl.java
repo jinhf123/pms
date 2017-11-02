@@ -44,5 +44,30 @@ public class ProjTemplateManagerImpl implements ProjTemplateManager {
         projTemplateMapper.updateSetDefault(tempId);
     }
 
+    @Override
+    public void updateTemplate(ProjTemplateEntity projTemplateEntity) {
+        projTemplateMapper.updateTemplate(projTemplateEntity);
+    }
+
+    @Override
+    public void updateTemplateStep(ProjTemplateStepEntity projTemplateStepEntity) {
+        projTemplateMapper.updateTemplateStep(projTemplateStepEntity);
+    }
+
+    @Override
+    public void updateTemplateState(Long tempId) {
+        projTemplateMapper.updateTemplateState(tempId);
+    }
+
+    @Override
+    public void updateTemplateStepState(Long tempStepId) {
+        projTemplateMapper.updateTemplateStepState(tempStepId);
+    }
+
+    @Override
+    public List<Long> getTemplateInProj(Long tempId) {
+        return projTemplateMapper.getTemplateInProj(tempId);
+    }
+
 
 }

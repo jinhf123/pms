@@ -10,7 +10,6 @@ import java.util.Map;
 public interface ProjTemplateService {
 
 
-
     List<ProjTemplateEntity> listTemplate();
 
 
@@ -18,4 +17,9 @@ public interface ProjTemplateService {
 
     void updateSetDefault(Long tempId);
 
+    void updateTemplate(ProjTemplateEntity projTemplateEntity);
+
+    void updateTemplateState(Long tempId);
+
+    List<Long> getTemplateInProj(Long tempId);
 }

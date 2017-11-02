@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 
 /**
@@ -35,7 +36,7 @@ public class ProjTemplateServiceImpl implements ProjTemplateService {
         return projTemplateManager.listTemplate();
     }
 
-    @Transactional (propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
     @Override
     public void saveTemplate(ProjTemplateEntity projTemplateEntity) {
         projTemplateManager.saveTemplate(projTemplateEntity);
@@ -46,11 +47,41 @@ public class ProjTemplateServiceImpl implements ProjTemplateService {
         }
     }
 
-    @Transactional (propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
     @Override
     public void updateSetDefault(Long tempId) {
         projTemplateManager.updateDefault();
         projTemplateManager.updateSetDefault(tempId);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Throwable.class)
+    @Override
+    public void updateTemplate(ProjTemplateEntity projTemplateEntity) {
+        projTemplateManager.updateTemplate(projTemplateEntity);
+        List<ProjTemplateStepEntity> projTemplateStepEntities = projTemplateEntity.getProjTemplateStepEntities();
+        for (ProjTemplateStepEntity projTemplateStepEntitie : projTemplateStepEntities) {
+            if (Objects.equals(projTemplateStepEntitie.getState(), "0")) {
+                projTemplateManager.updateTemplateStepState(projTemplateStepEntitie.getTempStepId());
+            } else {
+                if(projTemplateStepEntitie.getTempStepId() == null){
+                    projTemplateManager.saveTemplateStep(projTemplateStepEntitie);
+                }else{
+                    projTemplateManager.updateTemplateStep(projTemplateStepEntitie);
+                }
+
+            }
+
+        }
+    }
+
+    @Override
+    public void updateTemplateState(Long tempId) {
+        projTemplateManager.updateTemplateState(tempId);
+    }
+
+    @Override
+    public List<Long> getTemplateInProj(Long tempId) {
+        return projTemplateManager.getTemplateInProj(tempId);
     }
 
 }

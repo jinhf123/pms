@@ -156,6 +156,7 @@ html {
 
 .list-group-item {
     width: 95%;
+    margin-top: 10px;
     margin-bottom: 30px;
     padding-bottom: 20px;
     height: 80px;
@@ -197,6 +198,15 @@ a.router-link-active > .list-group-item-heading {
     text-align: center;
     line-height: 34px;
     color: #ffffff;
+}
+
+.delete-template {
+    position: absolute;
+    top:-8px;
+    right: -8px;
+    cursor: pointer;
+    height: 16px;
+    width: 16px;
 }
 
 .set-default-template {

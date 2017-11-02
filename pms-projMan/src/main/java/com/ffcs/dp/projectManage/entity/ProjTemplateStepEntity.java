@@ -1,8 +1,8 @@
 package com.ffcs.dp.projectManage.entity;
 
 public class ProjTemplateStepEntity {
-    private long tempStepId;
-    private long tempId;
+    private Long tempStepId;
+    private Long tempId;
     private String stepName;
     private String stepSort;
     private String defaultMoveDate;
@@ -18,20 +18,37 @@ public class ProjTemplateStepEntity {
     private Long attachExcel;
     private Long attachPdf;
     private String attachContent;
+    private String state;
 
-    public long getTempStepId() {
-        return tempStepId;
-    }
-
-    public void setTempStepId(long tempStepId) {
-        this.tempStepId = tempStepId;
-    }
-
-    public long getTempleId() {
+    public Long getTempId() {
         return tempId;
     }
 
-    public void setTempleId(long templeId) {
+    public void setTempId(Long tempId) {
+        this.tempId = tempId;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public Long getTempStepId() {
+        return tempStepId;
+    }
+
+    public void setTempStepId(Long tempStepId) {
+        this.tempStepId = tempStepId;
+    }
+
+    public Long getTempleId() {
+        return tempId;
+    }
+
+    public void setTempleId(Long templeId) {
         this.tempId = templeId;
     }
 

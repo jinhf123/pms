@@ -18,5 +18,13 @@ public interface ProjTemplateManager {
 
     void updateSetDefault(Long tempId);
 
+    void updateTemplate(ProjTemplateEntity projTemplateEntity);
 
+    void updateTemplateStep(ProjTemplateStepEntity projTemplateStepEntity);
+
+    void updateTemplateState(Long tempId);
+
+    void updateTemplateStepState(Long tempStepId);
+
+    List<Long> getTemplateInProj(Long tempId);
 }

@@ -31,33 +31,93 @@
     <select id="listTemplate" resultMap="ProjTemplateResultMap">
         SELECT *
         FROM
-            pms_proj_template,
-            PMS_PROJ_TEMPLET_STEP
-        WHERE pms_proj_template.state = 1 AND pms_proj_template.temp_id = PMS_PROJ_TEMPLET_STEP.temp_id (+) ORDER BY PMS_PROJ_TEMPLATE.TEMP_ID ,to_number(PMS_PROJ_TEMPLET_STEP.step_sort)
+            pms_proj_template t,
+            (SELECT *
+             FROM PMS_PROJ_TEMPLET_STEP
+             WHERE PMS_PROJ_TEMPLET_STEP.state = 1) s
+        WHERE t.state = 1 AND t.temp_id = s.temp_id (+)
+        ORDER BY t.TEMP_ID, to_number(s.step_sort)
     </select>
 
 
-    <insert id="saveTemplate" parameterType="ProjTemplateEntity" >
+    <insert id="saveTemplate" parameterType="ProjTemplateEntity">
         <selectKey resultType="Long" keyProperty="tempId" order="BEFORE">
             SELECT PMS_PROJ_TEMPLATE_SEQ.NEXTVAL FROM DUAL
         </selectKey>
-        INSERT INTO PMS_PROJ_TEMPLATE (TEMP_ID, TEMP_NAME, DESCRIPTION, CONTENT, IS_DEFAULT, STATE) VALUES (#{tempId}, #{tempName}, #{description}, #{content}, #{isDefault}, 1)
+        INSERT INTO PMS_PROJ_TEMPLATE (TEMP_ID, TEMP_NAME, DESCRIPTION, CONTENT, IS_DEFAULT, STATE) VALUES (#{tempId},
+        #{tempName}, #{description}, #{content}, #{isDefault}, 1)
     </insert>
 
     <insert id="saveTemplateStep" parameterType="ProjTemplateStepEntity">
         INSERT INTO PMS_PROJ_TEMPLET_STEP (TEMP_STEP_ID, TEMP_ID, STEP_NAME, STEP_SORT, DEFAULT_MOVE_DATE, FINISH_NOTICE_DATE, NOTICE_STAFF, NOTICE_STAFF_ID, TASK_CHANGE_STAFF, TASK_CHANGE_STAFF_ID, FINISH_SCHEDULE_NOTICE_DATE, FINISH_SCHEDULE_STAFF, IS_ATTACH, ATTACH_WORD, ATTACH_EXCEL, ATTACH_PDF, ATTACH_CONTENT, STATE)
-        VALUES (PMS_PROJ_TEMPLET_STEP_SEQ.NEXTVAL, #{tempId}, #{stepName}, #{stepSort}, #{defaultMoveDate}, #{finishNoticeDate},
-                               #{noticeStaff}, #{noticeStaffId}, #{taskChangeStaff}, #{taskChangeStaffId},
-                               #{finishScheduleNoticeDate}, #{finishScheduleStaff}, #{isAttach}, #{attachWord},
+        VALUES (PMS_PROJ_TEMPLET_STEP_SEQ.NEXTVAL, #{tempId}, #{stepName}, #{stepSort}, #{defaultMoveDate},
+                                                   #{finishNoticeDate},
+                                                   #{noticeStaff}, #{noticeStaffId}, #{taskChangeStaff},
+                                                   #{taskChangeStaffId},
+                                                   #{finishScheduleNoticeDate}, #{finishScheduleStaff}, #{isAttach},
+                #{attachWord},
                 #{attachExcel}, #{attachPdf}, #{attachContent}, 1)
     </insert>
-    
-    <update id="updateDefault" >
-        update PMS_PROJ_TEMPLATE set IS_DEFAULT = '0'  where IS_DEFAULT = '1'
+
+    <update id="updateDefault">
+        UPDATE PMS_PROJ_TEMPLATE
+        SET IS_DEFAULT = '0'
+        WHERE IS_DEFAULT = '1'
     </update>
 
-    <update id="updateSetDefault" parameterType="Long" >
-        update PMS_PROJ_TEMPLATE set IS_DEFAULT = '1'  where TEMP_ID = #{tempId}
+    <update id="updateSetDefault" parameterType="Long">
+        UPDATE PMS_PROJ_TEMPLATE
+        SET IS_DEFAULT = '1'
+        WHERE TEMP_ID = #{tempId}
     </update>
 
+    <update id="updateTemplate" parameterType="ProjTemplateEntity">
+        UPDATE PMS_PROJ_TEMPLATE
+        <set>
+            <if test="tempName != null and tempName != ''">TEMP_NAME = #{tempName} ,</if>
+            <if test="description != null and description != ''">DESCRIPTION = #{description}</if>
+        </set>
+        WHERE TEMP_ID = #{tempId}
+    </update>
+
+    <update id="updateTemplateStep" parameterType="ProjTemplateStepEntity">
+        UPDATE PMS_PROJ_TEMPLET_STEP
+        <set>
+            STEP_NAME = #{stepName} ,
+            STEP_SORT = #{stepSort} ,
+            DEFAULT_MOVE_DATE = #{defaultMoveDate} ,
+            FINISH_NOTICE_DATE = #{finishNoticeDate} ,
+            NOTICE_STAFF = #{noticeStaff} ,
+            NOTICE_STAFF_ID = #{noticeStaffId} ,
+            TASK_CHANGE_STAFF = #{taskChangeStaff} ,
+            TASK_CHANGE_STAFF_ID = #{taskChangeStaffId} ,
+            FINISH_SCHEDULE_NOTICE_DATE = #{finishScheduleNoticeDate} ,
+            FINISH_SCHEDULE_STAFF = #{finishScheduleStaff} ,
+            IS_ATTACH = #{isAttach} ,
+            ATTACH_WORD = #{attachWord} ,
+            ATTACH_EXCEL = #{attachExcel} ,
+            ATTACH_PDF = #{attachPdf} ,
+            ATTACH_CONTENT = #{attachContent}
+        </set>
+        WHERE TEMP_STEP_ID = #{tempStepId}
+    </update>
+
+    <update id="updateTemplateState" parameterType="Long">
+        UPDATE PMS_PROJ_TEMPLATE
+        SET STATE = '0'
+        WHERE TEMP_ID = #{tempId}
+    </update>
+
+    <update id="updateTemplateStepState" parameterType="Long">
+        UPDATE PMS_PROJ_TEMPLET_STEP
+        SET STATE     = '0',
+            STEP_SORT = '0'
+        WHERE TEMP_STEP_ID = #{tempStepId}
+    </update>
+
+    <select id="getTemplateInProj" parameterType="Long" resultType="Long">
+        SELECT PROJ_ID
+        FROM PMS_PROJECT_INFO
+        WHERE TEMP_ID = #{tempId}
+    </select>
 </mapper>
