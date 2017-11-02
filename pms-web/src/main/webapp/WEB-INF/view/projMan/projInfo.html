@@ -40,19 +40,19 @@
                             <span>*</span>项目类型：
                         </td>
                         <td>
-                            {{projInfo.projType}}
+                            {{projType}}
                         </td>
                         <td class="fieldLabel">
                             建设方式：
                         </td>
                         <td>
-                            {{projInfo.consMode}}
+                            {{consMode}}
                         </td>
                         <td class="fieldLabel">
                             项目等级：
                         </td>
                         <td>
-                            {{projInfo.projLevel}}
+                            {{projLevel}}
                         </td>
                     </tr>
                     <tr>
@@ -60,19 +60,19 @@
                             <span>*</span>归属项目群：
                         </td>
                         <td>
-                            {{projInfo.beloProjGroup}}
+                            {{beloProjGroup}}
                         </td>
                         <td class="fieldLabel request">
                             <span>*</span>是否年内完成：
                         </td>
                         <td>
-                            {{projInfo.isCompletInAYear}}
+                            {{isCompletInAYear}}
                         </td>
                         <td class="fieldLabel">
                             承接方式：
                         </td>
                         <td>
-                            {{projInfo.undertakeMode}}
+                            {{undertakeMode}}
                         </td>
                     </tr>
                     <tr>
@@ -101,7 +101,9 @@
     </div>
     <div class="row clearfix">
         <div class="col-md-12 column">
-            <div v-show="(steps.length >6 && start>1)" class="stepPageBtn page-left" @click="stepToLeft"><span class="fa fa-chevron-left" ></span></div>
+            <div v-show="(steps.length >6 && start>1)" class="stepPageBtn page-left" @click="stepToLeft">
+                <span class="fa fa-chevron-left" ></span>
+            </div>
             <div class="horizontal-divider"></div>
             <div v-show="(steps.length>6 && end < steps.length)" class="stepPageBtn page-right" @click="stepToRight"><span class="fa fa-chevron-right"></span></div>
             <div class="step display-flex">

@@ -1,4 +1,4 @@
-body{
+body {
     font-family: "微软雅黑 Regular", "微软雅黑";
     font-size: 14px;
     font-weight: 400;
@@ -8,71 +8,92 @@ body{
     overflow-x: visible;
 }
 
-.subTitle{
+.subTitle {
     font-size: 13px;
     font-style: normal;
     color: #999999;
 }
 
-.column{
-    padding-left:0;
+.column {
+    padding-left: 0;
     padding-right: 0;
 }
 
-.fa-color{
+.fa-color {
     color: #1cae99
 }
 
-.float-right{
+.float-right {
     float: right;
     text-align: right;
 }
 
-.display-flex{
+.display-flex {
     display: inline-flex;
 }
 
-.color-blue{
-   background-color: #5BC0DE;
+.color-blue {
+    background-color: #5BC0DE;
 }
-
 
 .table > thead > tr > th {
     vertical-align: bottom;
     border-bottom: 2px solid #5BC0DE;
 }
-.tableTitle{
+
+.tableTitle {
     width: 140px;
     text-align: center;
     color: #ffffff;
     background-color: #5BC0DE;
 }
-.fieldLabel{
+
+.fieldLabel {
     background-color: #F2F2F2;
     font-size: 13px;
     text-align: right;
     width: 140px;
 }
-.request>span{color: #ff0000}
 
+.request > span {
+    color: #ff0000
+}
 
-
-.stepPageBtn{
+.stepPageBtn {
     position: absolute;
-    top: -15px;
+    /*top: -15px;*/
     width: 30px;
     height: 65px;
-    padding-top: 20px;
+    padding-top: 6px;
     font-size: 20px;
     color: #999999;
     text-align: center;
     /*line-height: 3.4;*/
     background-color: #ffffff;
 }
-.page-left{left: 5px;}
-.page-right{right: 5px;}
-.stepPageBtn:hover{border: 1px solid #dddddd;background-color: #f1f1f1;}
 
+.page-left {
+    left: 5px;
+    width: 40px;
+    height: 40px;
+    background-image: url("/statics/img/step_scroll.png");
+}
+
+.page-right {
+    right: 5px;
+    width: 40px;
+    height: 40px;
+    background-image: url("/statics/img/step_scroll.png");
+}
+
+/*.stepPageBtn:hover{border: 1px solid #dddddd;background-color: #f1f1f1;}*/
+
+.page-right.stepPageBtn:active{
+    padding-left: 10px;
+}
+.page-left.stepPageBtn:active{
+    padding-right: 10px;
+}
 .horizontal-divider {
     position: relative;
     top: 18px;
@@ -84,14 +105,15 @@ body{
     z-index: -1;
 }
 
-.step{
-    padding:0 10px;
+.step {
+    padding: 0 10px;
 }
 
 .step-div {
     margin: 0 20px 10px 10px;
     height: 80px;
 }
+
 .step-title-div {
     margin-left: 30px;
     margin-bottom: 20px;
@@ -112,7 +134,8 @@ body{
     text-align: center;
     padding: 6px 0;
 }
-.step-date-div{
+
+.step-date-div {
     width: 120px;
     height: 22px;
     background: inherit;
@@ -129,8 +152,7 @@ body{
     text-align: center;
 }
 
-
-.step-horizontal-divider{
+.step-horizontal-divider {
     position: relative;
     top: 64px;
     height: 1px;
@@ -140,7 +162,8 @@ body{
     overflow: hidden;
     background-color: #e5e5e5;
 }
-.step-vertical-divider{
+
+.step-vertical-divider {
     width: 1px;
     margin: 17px 0 25px -1px;
     overflow: hidden;

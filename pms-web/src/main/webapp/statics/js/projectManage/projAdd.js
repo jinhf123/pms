@@ -78,7 +78,8 @@ var vm = new Vue({
             beloProjGroup: [],
             undertakeMode: [],
             template: [],
-            tempIndex: 0,
+            tempIndex: null,
+            defaultDate: 0,
             stepDate: [],
             projGroupManager: [],
             projGroupManagerId: [],
@@ -125,10 +126,8 @@ var vm = new Vue({
                 }
             ,
             stepWidth: 600,
-            stepStart:
-                0,
-            stepCount:
-                0
+            stepStart: 0,
+            stepCount: 0
         },
         methods: {
             resetData: function () {
@@ -269,10 +268,15 @@ var vm = new Vue({
                     .then(function (data) {
                         me.isLoading = false;
                         me.template = data.data;
-                        for (var temp in data.data) {
-                            if (data.data[temp].isDefault === '1')
-                                me.tempIndex = temp;
+                        var exist = me.template.map(function (x) {
+                            return x.isDefault;
+                        }).indexOf("1");
+                        if (exist !== -1) {
+                            me.tempIndex = exist;
+                        } else {
+                            me.tempIndex = 0;
                         }
+
                     }, function (err) {
                         console.log(err);
                     })
@@ -524,7 +528,7 @@ var vm = new Vue({
                             return;
                         }
                     }
-                    self.errStep="";
+                    self.errStep = "";
 
                     self.errStep = "";
                     if (result) {
