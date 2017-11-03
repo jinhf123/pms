@@ -181,7 +181,7 @@ a.router-link-active > .list-group-item-heading {
 }
 
 .template-nav {
-    height: 90vh;
+    height: 95vh;
     overflow-x: auto;
     overflow-y: auto;
 }
@@ -299,4 +299,60 @@ a.router-link-active > .list-group-item-heading {
 
 .attach{
     height: 75px;
+}
+
+.panel-default>.panel-heading{
+    background-color: white;
+    border: none;
+    font-size: 14px;
+    font-weight: 700;
+}
+.panel-default>.panel-heading>img{
+    position: absolute;
+    left: 0;
+    margin-top: 3px;
+}
+
+.panel-default>.panel-body{
+
+}
+
+.template-list{
+    border-right:1px solid #e4e4e4;
+}
+
+.multiselect__tag{
+    background-color: #5bc0de;
+}
+
+.multiselect__option--highlight{
+    background-color: #5bc0de;
+}
+.multiselect__option--highlight:after {
+    content: attr(data-select);
+    background: #5bc0de;
+    color: #fff
+}
+
+.multiselect{
+    min-height: 30px;
+    background-color: rgba(228, 245, 250, 1);
+}
+
+.multiselect__select{
+    height: 30px;
+}
+.multiselect__tags{
+    padding-top: 3px;
+    min-height: 20px;
+}
+
+.multiselect__tag{
+    margin-bottom: 2px;
+    height: 19px;
+    font-size: 12px;
+}
+
+.multiselect__input{
+    margin-bottom: 5px;
 }

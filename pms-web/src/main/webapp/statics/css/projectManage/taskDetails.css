@@ -173,10 +173,6 @@ select::-ms-expand {border: 0 solid transparent; background: transparent; }
     color: #fff
 }
 
-.multiselect {
-    min-height: 30px;
-}
-
 .multiselect{
     min-height: 30px;
 }

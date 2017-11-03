@@ -17,7 +17,7 @@
             <result property="noticeStaff" column="notice_staff"/>
             <result property="noticeStaffId" column="notice_staff_id"/>
             <result property="taskChangeStaff" column="task_change_staff"/>
-            <result property="taskChangeStaffId" column="task_change_staffId"/>
+            <result property="taskChangeStaffId" column="task_change_staff_Id"/>
             <result property="finishScheduleNoticeDate" column="finish_schedule_notice_date"/>
             <result property="finishScheduleStaff" column="finish_schedule_staff"/>
             <result property="isAttach" column="is_attach"/>

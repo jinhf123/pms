@@ -1,4 +1,5 @@
-Vue.component('v-select', VueSelect.VueSelect);
+// Vue.component('v-select', VueSelect.VueSelect);
+Vue.component('v-select', VueMultiselect.Multiselect);
 Vue.use(VueNumeric.default);
 const config = {
     errorBagName: 'errors',
@@ -236,7 +237,6 @@ var templeForm = {
                     } else {
                         return;
                     }
-                    console.log(params);
                     me.$http.post(url, params).then(function (data) {
                         var title;
                         if (data.data.success) {
@@ -245,28 +245,30 @@ var templeForm = {
                             } else {
                                 title = "修改成功";
                             }
-
+                            dialogMsg(title);
+                            me.$emit("submit-success");
                         } else {
                             if (me.type === "add") {
                                 title = "添加失败";
                             } else {
                                 title = "修改失败";
                             }
+                            top.layer.open({
+                                title: title,
+                                area: '338px',
+                                anim: -1,
+                                isOutAnim: false,
+                                move: false,
+                                closeBtn: 0,
+                                content: data.data.message,
+                                btn: ['确定'],
+                                yes: function () {
+                                    me.$emit("submit-success");
+                                    top.layer.close(top.layer.index);
+                                }
+                            });
                         }
-                        top.layer.open({
-                            title: title,
-                            area: '338px',
-                            anim: -1,
-                            isOutAnim: false,
-                            move: false,
-                            closeBtn: 0,
-                            content: data.data.message,
-                            btn: ['确定'],
-                            yes: function () {
-                                me.$emit("submit-success");
-                                top.layer.close(top.layer.index);
-                            }
-                        });
+
                     }, function (err) {
                         top.layer.open({
                             title: '系统提示',
@@ -382,7 +384,7 @@ var vm = new Vue({
     router: router,
     data: {
         templateinfo: [],
-        isLoading: null,
+        isLoading: true,
         template: [],
         templateNoticeUser: []
     },
@@ -453,23 +455,25 @@ var vm = new Vue({
                             var title;
                             if (data.data.success) {
                                 title = "删除成功";
+                                self.loadTemplate();
+                                dialogMsg(title);
                             } else {
                                 title = "删除失败";
+                                top.layer.open({
+                                    title: title,
+                                    area: '338px',
+                                    anim: -1,
+                                    isOutAnim: false,
+                                    move: false,
+                                    closeBtn: 0,
+                                    content: data.data.message,
+                                    btn: ['确定'],
+                                    yes: function () {
+                                        self.loadTemplate();
+                                        top.layer.close(top.layer.index);
+                                    }
+                                });
                             }
-                            top.layer.open({
-                                title: title,
-                                area: '338px',
-                                anim: -1,
-                                isOutAnim: false,
-                                move: false,
-                                closeBtn: 0,
-                                content: data.data.message,
-                                btn: ['确定'],
-                                yes: function () {
-                                    self.loadTemplate();
-                                    top.layer.close(top.layer.index);
-                                }
-                            });
                         }, function (err) {
                             console.log(err)
                         })
@@ -519,6 +523,12 @@ var vm = new Vue({
                 }, function (err) {
                     console.log(err);
                 });
+        },
+        copyStep:function () {
+            console.log("copy");
+        },
+        pasteStep:function () {
+            console.log("paste");
         }
     },
     mounted: function () {
@@ -533,6 +543,8 @@ var vm = new Vue({
                     container.scrollTop = container.scrollHeight;
                     this.$router.push({path: '/template/edit/' + (val.length - 1)})
                 })
+            }else if(oldVal.length > val.length){
+                this.$router.push({path: '/template/edit/' + (parseInt(this.$route.params.index) - 1)})
             }
         }
     }

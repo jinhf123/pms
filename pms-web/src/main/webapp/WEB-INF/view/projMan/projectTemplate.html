@@ -3,13 +3,13 @@
 <head>
     <title>项目列表</title>
     #parse("include/header.html")
-    <link rel="stylesheet" href="${rc.contextPath}/statics/css/projectManage/select2.min.css">
-    <link rel="stylesheet" href="${rc.contextPath}/statics/css/projectManage/projectTemple.css">
+    <link rel="stylesheet" href="/statics/css/vue-multiselect.min.css">
+    <link rel="stylesheet" href="/statics/css/projectManage/projectTemplate.css">
 
 </head>
 <body>
 <div class="container-fluid" id="dpTemple">
-    <div class="row-fluid col-sm-2 col-xs-2 col-md-2 col-lg-2">
+    <div class="row-fluid col-sm-2 col-xs-2 col-md-2 col-lg-2 template-list">
         <div class="container-fluid">
             <p class="pull-right">
                 <router-link to="/template/add">新增模板</router-link>
@@ -50,20 +50,21 @@
     <div class="row-fluid col-sm-10 col-xs-10 col-md-10 col-lg-10">
         <div class="panel panel-default no-border">
             <div class="panel-heading">
+                <img src="/statics/img/template_head_sign.png">
                 模板信息
             </div>
             <div class="panel-body">
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">模板名称：</label>
+                    <p class="col-sm-2 col-form-label">模板名称：</p>
                     <div class="col-sm-10" :class="{ 'has-error': errors.has('name')}">
                         <input type="text" v-validate="'required'" class="form-control " placeholder="输入模板名称"
                                v-model="templateInfo.tempName" name="name">
                         <i v-show="errors.has('name')" class="fa fa-warning is-danger"></i>
-                        <span v-show="errors.has('name')" class="help is-danger">{{ errors.first('name') }}</span>
+                        <span v-show="errors.has('npame')" class="help is-danger">{{ errors.first('name') }}</span>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">详细描述：</label>
+                    <p class="col-sm-2 col-form-label">详细描述：</p>
                     <div class="col-sm-10" :class="{ 'has-error': errors.has('description')}">
                         <input type="text" v-validate="'required'" class="form-control" placeholder="输入模板描述"
                                v-model="templateInfo.description" name="description">
@@ -77,6 +78,7 @@
         <div class="form-group row">
             <div class="panel panel-default no-border">
                 <div class="panel-heading">
+                    <img src="/statics/img/template_head_sign.png">
                     阶段配置
                 </div>
                 <!-- /.panel-heading -->
@@ -142,8 +144,20 @@
                 <vue-numeric v-model.number="item.finishNoticeDate" class="input-number"></vue-numeric>
                 <label class="">天,通知给</label>
             </div>
-            <div class="flex-right white">
-                <v-select multiple v-model="item.noticeStaffArray" :options="options"></v-select>
+            <div class="flex-right">
+                <v-select multiple
+                          v-model="item.noticeStaffArray"
+                          :options="options"
+                          placeholder="选择通知人"
+                          select-label="按enter选择"
+                          :multiple="true"
+                          label="label"
+                          track-by="label"
+                          :preserve-search="true"
+                          :hide-selected="true"
+                          :close-on-select="false">
+
+                </v-select>
             </div>
         </div>
         <div class="form-line">
@@ -152,7 +166,18 @@
                     <label>当任务变更时，默认通知给</label>
                 </div>
                 <div class="flex-right white">
-                    <v-select multiple v-model="item.taskChangeStaffArray" :options="options"></v-select>
+                    <v-select multiple
+                              v-model="item.taskChangeStaffArray"
+                              :options="options"
+                              placeholder="选择通知人"
+                              select-label="按enter选择"
+                              :multiple="true"
+                              label="label"
+                              track-by="label"
+                              :preserve-search="true"
+                              :hide-selected="true"
+                              :close-on-select="false">
+                    </v-select>
                 </div>
             </div>
         </div>
@@ -194,12 +219,12 @@
 
 <script src="/statics/libs/accounting.umd.js"></script>
 <script src="/statics/libs/vue-numeric.min.js"></script>
-<script src="${rc.contextPath}/statics/libs/vue-router.min.js"></script>
-<script src="${rc.contextPath}/statics/libs/vue-resource.js"></script>
-<script src="${rc.contextPath}/statics/libs/vue-select.js"></script>
+<script src="/statics/libs/vue-router.min.js"></script>
+<script src="/statics/libs/vue-resource.js"></script>
+<script src="/statics/libs/vue-multiselect.min.js"></script>
 <script src="/statics/libs/vee-validate.min.js"></script>
 <script src="/statics/libs/zh_CN.js"></script>
-<script src="${rc.contextPath}/statics/js/projectManage/projectTemple.js"></script>
+<script src="/statics/js/projectManage/projectTemplate.js"></script>
 
 
 </body>
