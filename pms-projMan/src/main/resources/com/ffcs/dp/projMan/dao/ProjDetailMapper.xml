@@ -47,8 +47,8 @@
 			   PMS_PROJ_COST        c,
 			   PMS_PROJ_STAKEHOLDER s
 		 where p.temp_id = t.temp_id
-		   and p.proj_scale_id = c.proj_scale_id
-		   and p.proj_stakeholder_id = s.proj_stakeholder_id
+		   and c.PROJ_ID = #{projId}
+		   and s.PROJ_ID = #{projId}
 		   and P.PROJ_ID = #{projId}
 	</select>
 

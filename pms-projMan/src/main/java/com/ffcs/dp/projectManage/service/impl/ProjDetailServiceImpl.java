@@ -112,17 +112,18 @@ public class ProjDetailServiceImpl implements ProjDetailService {
         return projDetailManager.saveCheckItem(params);
     }
 
+
     @Override
     public int saveTaskLog(Map<String, Object> params) {
         JSONArray noticeUser = (JSONArray) params.get("noticeUser");
         for (int i = 0; i < noticeUser.size(); i++) {
             NoticeEntity noticeEntity = new NoticeEntity();
             noticeEntity.setNoticeCreator((Long) params.get("userId"));
-            noticeEntity.setNoticeReceiverName(noticeUser.getLong(1));
+            noticeEntity.setNoticeReceiverName(noticeUser.getLong(i));
             noticeEntity.setNoticeType("1");
-            noticeEntity.setNoticeContent((String) params.get("username") + "添加了评论并通知了您");
+            noticeEntity.setNoticeContent((String) params.get("username") + "添加了评论'" + (String) params.get("content") + "',并通知了您");
             noticeEntity.setCreateDate(new Date());
-            noticeEntity.setTaskId(Long.parseLong((String) params.get("taskId")) );
+            noticeEntity.setTaskId(Long.parseLong((String) params.get("taskId")));
             noticeEntity.setIsRead("0");
             projAddManager.saveProjNotice(noticeEntity);
         }

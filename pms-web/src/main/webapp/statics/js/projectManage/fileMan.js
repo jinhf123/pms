@@ -24,7 +24,7 @@ function initialPage() {
 //获取文件夹列表
 function getFolderGrid(){
     $.ajax({
-        url: '../../FileMan/getFolderList?_' + $.now(),
+        url: '/FileMan/getFolderList?_' + $.now(),
         data: JSON.stringify({
             "projId" : vm.projId
         }),
@@ -44,7 +44,7 @@ function getFolderGrid(){
 //获取文件列表
 function getFileGrid(){
     $.ajax({
-        url: '../../FileMan/getFileManList?_' + $.now(),
+        url: '/FileMan/getFileManList?_' + $.now(),
         data: JSON.stringify({
             "projId" : vm.projId,
             "fileType" : "1",
@@ -67,7 +67,7 @@ function getFileGrid(){
 //删除文档 或 删除文件夹
 function deleteFileMan(){
     $.ajax({
-        url: '../../FileMan/deleteFileMan?_' + $.now(),
+        url: '/FileMan/deleteFileMan?_' + $.now(),
         data: JSON.stringify({
             "fileId" : vm.deleteId
         }),
@@ -161,7 +161,7 @@ var vm = new Vue({
             dialogOpen({
                 id: 'staffSelect',
                 title: '文件上传',
-                url: 'base/util/upload.html?projId=' + vm.projId + '&folderId='+vm.activeFolderId+'&folderName=' + vm.activeFolderName,
+                url: '/base/util/upload.html?projId=' + vm.projId + '&folderId='+vm.activeFolderId+'&folderName=' + vm.activeFolderName,
                 scroll : true,
                 width: "600px",
                 height: "420px",

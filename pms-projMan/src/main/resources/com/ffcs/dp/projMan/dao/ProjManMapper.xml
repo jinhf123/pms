@@ -30,7 +30,7 @@
 				 where t.state != '2'
 				   and t.parent_task is null
 				   and t.proj_id = i.proj_id) un_Finish_Task,
-			   (select trunc((sum(ss.compCheck)/sum(ss.allCheck)*100), 2)
+			   (select trunc((sum(ss.compCheck)/decode(sum(ss.allCheck)*100,0,1,sum(ss.allCheck)*100)), 2)
 				  from ss
 				 where ss.proj_id = i.proj_id) complet_Rate
 		  from pms_project_info i

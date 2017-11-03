@@ -7,25 +7,25 @@ $(function () {
 });
 
 function initialPage(){
-    if(getQueryString('projId')!=null)vm.projId = getQueryString('projId');
+    if(getQueryString('projId')!==null)vm.projId = getQueryString('projId');
     $(window).resize(function() {
         vm.styleObj.height = ($(window).height()-50)+"px";
     });
     //获取项目信息
-    $.ajax({
-        url: '../../projMan/projDetail/getProjectInfo?_' + $.now(),
-        data: JSON.stringify({
-            "projId" : vm.projId,
-        }),
-        type: "post",
-        dataType: "json",
-        contentType: 'application/json',
-        success: function (data) {
-            vm.projectInfo = data;
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-        }
-    });
+    // $.ajax({
+    //     url: '../../projMan/projDetail/getProjectInfo?_' + $.now(),
+    //     data: JSON.stringify({
+    //         "projId" : vm.projId
+    //     }),
+    //     type: "post",
+    //     dataType: "json",
+    //     contentType: 'application/json',
+    //     success: function (data) {
+    //         vm.projectInfo = data;
+    //     },
+    //     error: function (XMLHttpRequest, textStatus, errorThrown) {
+    //     }
+    // });
 }
 
 var vm = new Vue({
@@ -35,7 +35,7 @@ var vm = new Vue({
         icon_Log    :"/statics/img/projectManage/u4.png",
         styleObj:{height: ($(window).height()-50)+'px'},
         projId:"",
-        iframeSrc:"projInfo.html?projectID="+getQueryString('projId'),
+        iframeSrc:"projInfo.html?projId="+getQueryString('projId'),
         iframeId:"projectInfo",
         iframeName:"projectInfo",
         projectInfo:{projectName:"",allStep:"",unCompStep:"",unCompTask:"",unCompSchedule:""}
@@ -44,7 +44,7 @@ var vm = new Vue({
         load: function(id) {
         },location: function(act){
             var url;
-            if(act=="log"){
+            if(act==="log"){
                 url = "workLog.html";
             }
             window.location=url;

@@ -350,6 +350,7 @@ var vm = new Vue({
                         if(vm.addToWorkLog&&!vm.addToRiskIssues){
                             vm.addWorkLogs();
                         }
+                        vm.noticeUser = null;
                         getTaskLogGrid();//刷新任务日志列表
                         dialogMsg("评论成功！");
                         vm.taskLogContent = "";
@@ -528,7 +529,6 @@ var vm = new Vue({
                             })
                         }
                     }
-                    console.log(self.stakeholder);
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                 }

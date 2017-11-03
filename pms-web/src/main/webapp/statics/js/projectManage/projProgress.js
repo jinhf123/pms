@@ -53,7 +53,7 @@ function getProjectInfo(){
 //获取项目步骤数据
 function getStepList() {
     $.ajax({
-        url: '../../projMan/projDetail/getStepList?_' + $.now(),
+        url: '/projMan/projDetail/getStepList?_' + $.now(),
         data: JSON.stringify({
             "projId": vm.projId
         }),
@@ -86,7 +86,7 @@ function getStepList() {
 function getTaskGrid(param) {
     vm.styleObj.height = ($(window).height()-5)+"px";
     $.ajax({
-        url: '../../projMan/projDetail/getTaskList?_' + $.now(),
+        url: '/projMan/projDetail/getTaskList?_' + $.now(),
         data: JSON.stringify(param),
         type: "post",
         async: false,
@@ -100,7 +100,7 @@ function getTaskGrid(param) {
 //获取日程数据列表
 function getScheGrid(param) {
     $.ajax({
-        url: '../../schedule/projSche/getProjScheList?_' + $.now(),
+        url: '/schedule/projSche/getProjScheList?_' + $.now(),
         data: JSON.stringify(param),
         type: "post",
         async: false,
@@ -132,7 +132,7 @@ function saveTask(){
         "finishDate":vm.finishDate
     };
     $.ajax({
-        url: '../../projMan/projDetail/saveTask?_' + $.now(),
+        url: '/projMan/projDetail/saveTask?_' + $.now(),
         data: JSON.stringify(param),
         type: "post",
         async: false,
@@ -258,7 +258,7 @@ var vm = new Vue({
             dialogOpen({
                 id: 'staffSelect',
                 title: '人员选择',
-                url: 'base/user/staff.html?singleSelect=true',
+                url: '/base/user/staff.html?singleSelect=true',
                 scroll: true,
                 width: "600px",
                 height: "600px",
@@ -274,7 +274,7 @@ var vm = new Vue({
             dialogOpen({
                 id: 'staffSelect',
                 title: '人员选择',
-                url: 'base/user/staff.html?singleSelect=false',
+                url: '/base/user/staff.html?singleSelect=false',
                 scroll: true,
                 width: "600px",
                 height: "600px",
@@ -301,7 +301,7 @@ var vm = new Vue({
                 return;
             }
             $.ajax({
-                url: '../../projMan/projDetail/finishStage?_' + $.now(),
+                url: '/projMan/projDetail/finishStage?_' + $.now(),
                 data: JSON.stringify({
                     "projId": vm.projId,//完成本阶段后自动开始下阶段用
                     "stepId": step.stepId
