@@ -125,7 +125,7 @@
 
             <button @click="submitForm" class="button-confirm" v-if="type === 'add'">创建模板</button>
             <button @click="submitForm" class="button-confirm" v-if="type === 'edit'">修改模板</button>
-            <button class="button-cancel" >取消</button>
+            <button class="button-cancel" @click="toProjMan">取消</button>
         </div>
     </div>
 </template>
@@ -224,7 +224,7 @@
 <script src="/statics/libs/vue-multiselect.min.js"></script>
 <script src="/statics/libs/vee-validate.min.js"></script>
 <script src="/statics/libs/zh_CN.js"></script>
-<script src="/statics/js/projectManage/projectTemplate.js"></script>
+<script src="/statics/js/projectManage/projectTemplate.js?_${date.systemTime}"></script>
 
 
 </body>

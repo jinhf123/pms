@@ -283,7 +283,7 @@ var templeForm = {
                             yes: function () {
                                 dialogLoading(true);
                                 setTimeout(function () {
-                                    toUrl('index.html#projMan/projectTemple.html?');
+                                    toUrl('index.html#projMan/projectTemplate.html?');
                                 }, 500);
                             }
                         });
@@ -292,6 +292,9 @@ var templeForm = {
 
             });
 
+        },
+        toProjMan: function () {
+            toUrl('/projMan/projectList.html');
         }
     }, watch: {
         stepWidth: function (val) {
@@ -426,7 +429,7 @@ var vm = new Vue({
         loadTemplate: function () {
             var me = this;
             me.isLoading = true;
-            this.$http.get("/projMan/template")
+            this.$http.get("/projMan/template?_" + $.now())
                 .then(function (data) {
                     me.isLoading = false;
                     me.template = data.data;
@@ -524,10 +527,10 @@ var vm = new Vue({
                     console.log(err);
                 });
         },
-        copyStep:function () {
+        copyStep: function () {
             console.log("copy");
         },
-        pasteStep:function () {
+        pasteStep: function () {
             console.log("paste");
         }
     },
@@ -543,7 +546,7 @@ var vm = new Vue({
                     container.scrollTop = container.scrollHeight;
                     this.$router.push({path: '/template/edit/' + (val.length - 1)})
                 })
-            }else if(oldVal.length > val.length){
+            } else if (oldVal.length > val.length) {
                 this.$router.push({path: '/template/edit/' + (parseInt(this.$route.params.index) - 1)})
             }
         }

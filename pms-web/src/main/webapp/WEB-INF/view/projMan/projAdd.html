@@ -494,12 +494,12 @@
     </div>
     <div class="container-fluid">
 
-        <div v-show="errStep !== ''">
+        <div v-if="errStep !== ''">
             <i class="fa fa-warning is-error"></i>
             <span class="help is-error"> {{errStep}} </span>
         </div>
 
-        <div v-show="errMsg !== ''">
+        <div v-if="errMsg !== ''">
             <i class="fa fa-warning is-error"></i>
             <span class="help is-error">{{ errMsg }}</span>
         </div>
@@ -533,6 +533,6 @@
 <script src="/statics/libs/vee-validate.min.js"></script>
 <script src="/statics/libs/zh_CN.js"></script>
 <!--#parse("include/footer.html")-->
-<script src="${rc.contextPath}/statics/js/projectManage/projAdd.js"></script>
+<script src="${rc.contextPath}/statics/js/projectManage/projAdd.js?_${date.systemTime}"></script>
 </body>
 </html>

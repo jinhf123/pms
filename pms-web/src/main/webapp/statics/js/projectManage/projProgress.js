@@ -350,12 +350,15 @@ var vm = new Vue({
         },
         finishTask: function (task) {
             var subList = task.subTaskList;
-            for (var i = 0; i < subList.length; i++) {//若有子任务未完成则弹窗提醒
-                if (subList[i].state !== '2') {
-                    dialogAlert("该一级任务有二级任务未完成，不能完成此任务!", "warn");
-                    return;
+            if(subList !== null){
+                for (var i = 0; i < subList.length; i++) {//若有子任务未完成则弹窗提醒
+                    if (subList[i].state !== '2') {
+                        dialogAlert("该一级任务有二级任务未完成，不能完成此任务!", "warn");
+                        return;
+                    }
                 }
             }
+
             $.ajax({
                 url: '../../projMan/projDetail/updateTaskState?_' + $.now(),
                 data: JSON.stringify({

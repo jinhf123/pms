@@ -106,7 +106,7 @@ var vm = new Vue({
             toUrl('/projMan/archivedProject.html');
         },
         editProjTemp: function(){//编辑项目模板页面
-            toUrl('/projMan/projectTemple.html');
+            toUrl('/projMan/projectTemplate.html');
         }
     },
     computed: {

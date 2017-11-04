@@ -118,9 +118,11 @@ public class ProjAddController extends AbstractController {
 
         try {
             projAddService.saveProjInfo(projInfo);
+            json.put("projId", projManEntity.getProjId());
+            json.put("success", true);
         } catch (Exception e) {
             e.printStackTrace();
-            json.put("success", true);
+            json.put("success", false);
             msg = "保存失败" + e.getMessage();
         }
 

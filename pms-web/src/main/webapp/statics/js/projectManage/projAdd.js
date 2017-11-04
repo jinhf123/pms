@@ -601,22 +601,25 @@ var vm = new Vue({
                                     var title;
                                     if (data.data.success) {
                                         title = "添加成功";
+                                        dialogMsg(title);
+                                        toUrl("/projMan/projectDetails.html?projId="+ data.data.projId);
                                     } else {
                                         title = "添加失败";
+                                        top.layer.open({
+                                            title: title,
+                                            area: '338px',
+                                            anim: -1,
+                                            isOutAnim: false,
+                                            move: false,
+                                            closeBtn: 0,
+                                            content: data.data.message,
+                                            btn: ['确定'],
+                                            yes: function () {
+                                                top.layer.close(top.layer.index);
+                                            }
+                                        });
                                     }
-                                    top.layer.open({
-                                        title: title,
-                                        area: '338px',
-                                        anim: -1,
-                                        isOutAnim: false,
-                                        move: false,
-                                        closeBtn: 0,
-                                        content: data.data.message,
-                                        btn: ['确定'],
-                                        yes: function () {
-                                            top.layer.close(top.layer.index);
-                                        }
-                                    });
+
                                 }, function (err) {
                                     console.log(err);
                                 });
