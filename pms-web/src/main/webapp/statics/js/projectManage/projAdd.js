@@ -264,7 +264,7 @@ var vm = new Vue({
             loadTemplate: function () {
                 var me = this;
                 me.isLoading = true;
-                this.$http.get("/projMan/template")
+                this.$http.get("/projMan/template?_" + $.now())
                     .then(function (data) {
                         me.isLoading = false;
                         me.template = data.data;
