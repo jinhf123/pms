@@ -117,4 +117,32 @@
 		)
 	</insert>
 
+
+
+	<!--查找所有项目下拉框-->
+	<select id="getProjNameList" resultType="ProjManEntity" parameterType="Map">
+		select i.proj_id,
+		i.proj_name
+		from pms_project_info i
+		where i.state = 0
+	</select>
+
+	<!--查找所有任务下拉框-->
+	<select id="getTaskNameList" resultType="TaskEntity" parameterType="Map">
+		select k.task_id,
+		k.task_title
+		from pms_proj_task k
+		where k.proj_id = #{projId}
+	</select>
+
+
+	<!--查找所有任务下拉框-->
+	<select id="getTaskNameList2" resultType="TaskEntity" parameterType="Map">
+		select i.proj_id, i.proj_name, k.task_id, k.task_title
+		from pms_proj_task k
+		right join pms_project_info i
+		on k.proj_id = i.proj_id
+		order by i.proj_id,k.task_id
+	</select>
+
 </mapper>

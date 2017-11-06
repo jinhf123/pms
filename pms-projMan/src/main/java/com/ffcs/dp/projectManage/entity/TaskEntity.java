@@ -22,6 +22,7 @@ public class TaskEntity implements Serializable {
     private Long cteateStaff;//人物创建人
 
     private Boolean expand;//是否展开
+    private String projName;//项目名称
 
     private List<TaskEntity> subTaskList;
 
@@ -148,5 +149,13 @@ public class TaskEntity implements Serializable {
 
     public void setExpand(Boolean expand) {
         this.expand = expand;
+    }
+
+    public String getProjName() {
+        return projName;
+    }
+
+    public void setProjName(String projName) {
+        this.projName = projName;
     }
 }

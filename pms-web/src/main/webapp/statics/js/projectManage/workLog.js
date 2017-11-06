@@ -11,7 +11,7 @@ $(function () {
 
 function initialPage() {
     //初始化日期框
-    $("#workLogDate").datetimepicker().on('change', function () {
+    $('#workLogDate').datetimepicker().on('change', function () {
         vm.workLogDate = $("#workLogDate").val();
         getGrid();
     });
@@ -25,9 +25,6 @@ function initialPage() {
         getWorkHoursGrid();
         $("#startDate").datetimepicker('setEndDate',getDateLimit($("#endDate").val(),"24:00"));
     });
-
-
-
     $("#startTime").datetimepicker({
         format:'hh:ii',
         minView:0,
@@ -56,18 +53,17 @@ function initialPage() {
         vm.endTime = $("#endTime").val();
         vm.minutes = getTimeDiff(vm.startTime,vm.endTime);
     });
-
-
     //初始化滚动条
     $(".center-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     $(".right-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
-
-
     $(window).resize(function() {
         vm.styleObject.height = ($(window).height()-45)+"px";
         $(".center-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
         $(".right-slimScroll").slimScroll({height: 'auto', color: 'rgb(221, 221, 221)',size: '10px', distance: '2px',wheelStep :20});
     });
+
+    getProjNameList();
+
 }
 
 function getGrid() {
@@ -127,7 +123,7 @@ function initUpload(ctrlName, uploadUrl) {//上传控件初始化
         allowedFileExtensions: ["xls", "xlsx"], //接收的文件后缀
         maxFileCount: 1,//最大上传文件数限制
         previewFileIconSettings: {
-            'docx': '<i ass="fa fa-file-word-o text-primary"></i>',
+            'docx': '<i class="fa fa-file-word-o text-primary"></i>',
             'xlsx': '<i class="fa fa-file-excel-o text-success"></i>',
             'xls': '<i class="fa fa-file-excel-o text-success"></i>',
             'pptx': '<i class="fa fa-file-powerpoint-o text-danger"></i>',
@@ -143,16 +139,16 @@ function initUpload(ctrlName, uploadUrl) {//上传控件初始化
     // $("#excelFile").on("fileuploaded", function (event, data, previewId, index) { });
     //异步
     control.on('fileerror', function(event, data, msg) { //异步上传失败处理
-        console.log(data.index);
-        console.log(data.reader);
-        console.log(data.files.length);
-        console.log(data.filenames.length);
+        // console.log(data.index);
+        // console.log(data.reader);
+        // console.log(data.files.length);
+        // console.log(data.filenames.length);
         console.log(msg);
         var obj = data.response;
         console.log(JSON.stringify(obj));
     });
     control.on("fileuploaded", function (event, data, previewId, index) {//异步上传成功处理
-        if(data.response.success == true){
+        if(data.response.success === true){
             dialogAlert(data.files[index].name + "导入成功!","info");
             //关闭
             layer.close(layer.index);//关闭弹窗
@@ -161,17 +157,81 @@ function initUpload(ctrlName, uploadUrl) {//上传控件初始化
         }else{
             dialogAlert(data.files[index].name + "上传失败!" + data.response.message,"error");
             //重置
-            $("#excelFile").fileinput("clear");
-            $("#excelFile").fileinput("reset");
-            $('#excelFile').fileinput('refresh');
-            $('#excelFile').fileinput('enable');
+            // $("#excelFile").fileinput("clear");
+            // $("#excelFile").fileinput("reset");
+            // $('#excelFile').fileinput('refresh');
+            // $('#excelFile').fileinput('enable');
+        }
+    });
+}
+
+//获取下拉框数据
+function getProjNameList() {
+    $.ajax({//获取项目及项目任务
+        url: '/projMan/project/getTaskNameList2?_' + $.now(),
+        data: JSON.stringify({}),
+        type: "post",
+        dataType: "json",
+        contentType: 'application/json',
+        success: function (data) {
+            vm.projects = data;
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            dialogLoading(false);
+            dialogMsg(errorThrown, 'error');
+        }
+    });
+    $.ajax({//获取非项目任务
+        url: '/projMan/project/getTaskNameList?_' + $.now(),
+        data: JSON.stringify({
+            "projId": 0
+        }),
+        type: "post",
+        dataType: "json",
+        contentType: 'application/json',
+        success: function (data) {
+            vm.otherTasks = data;
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+            dialogLoading(false);
+            dialogMsg(errorThrown, 'error');
         }
     });
 }
 
 
 
+function initUpdateSelect(){
+    $('.selectpicker').selectpicker('refresh');
+    $('#project').on('changed.bs.select',function(){
+        for (var i in vm.projects) {
+            if(vm.project===vm.projects[i].value){
+                vm.tasks = vm.projects[i].tasks;
+                $('#task').selectpicker('refresh');
+                break;
+            }else{
+                vm.tasks = [];
+            }
+        }
+    });
+    $('#project').on('hidden.bs.select',function(){
+        $('#task').selectpicker('refresh');
+    });
 
+    //修改下拉框赋值
+    $('#project').selectpicker('val',vm.project);
+    $('#isProjectWork').selectpicker('val',vm.isProjectWork);
+    $('#project').selectpicker('refresh');
+    $('#isProjectWork').selectpicker('refresh');
+    for (var i in vm.projects) {
+        if(vm.project===vm.projects[i].value){
+            vm.tasks = vm.projects[i].tasks;
+            $('#task').selectpicker('refresh');
+            break;
+        }
+    }
+    setTimeout("$('#task').selectpicker('val',vm.task);$('#task').selectpicker('refresh');",200);
+}
 
 var vm = new Vue({
     el:'#dpLTE',
@@ -187,29 +247,30 @@ var vm = new Vue({
         workHours:[],
         isAdd:false,
         isEdit:false,
-
         //导出参数
         xlsStartDate: formatDate(new Date(),"yyyy-MM-dd"),
         xlsEndDate: formatDate(new Date(),"yyyy-MM-dd"),
         //导入参数
         xlsPath:"",
-
-        //新增保存参数
+        //下拉框数据
+        projects :[],
+        tasks :[],
+        otherTasks:[],
+        //保存参数
         workLogId:"",
         startTime:"",
         endTime:"",
         minutes:"",
+        workDetails:"",
         isProjectWork:1,
         project :"",
         task:"",
-        workDetails:"",
-        projects :[{text: "项目１", value: 1},{text: "项目2", value: 2},{text: "项目3", value: 3}],
-        projTasks :[{text: "项目任务1", value: 1},{text: "项目任务2", value: 2},{text: "项目任务3", value: 3}],
-        tasks:[{text: "任务１", value: 1},{text: "任务2", value: 2},{text: "任务3", value: 3}]
+        otherTask:""
     },
     methods : {
         add: function() {
             if(vm.isAdd){return;}
+            vm.tasks = [];
             vm.isAdd = true;
             vm.isEdit = false;
             //清空输入内容
@@ -220,23 +281,57 @@ var vm = new Vue({
             vm.isProjectWork = 1;
             vm.project  = "";
             vm.task = "";
+            vm.otherTask = "";
             vm.workDetails = "";
+            $('#projectAdd').selectpicker('val',null);
+            $('#otherTaskAdd').selectpicker('val',null);
+            $('#taskAdd').selectpicker('val',null);
+            $('#projectAdd').selectpicker('refresh');
+            $('#otherTaskAdd').selectpicker('refresh');
+            setTimeout( "$('#taskAdd').selectpicker('refresh')",100);
         },
         save: function() {
             dialogLoading(true);
+            var projId;
+            var taskId;
+            if(vm.isAdd){
+                if(vm.isProjectWork===1){
+                    projId = parseInt($('#projectAdd').val());
+                    taskId = parseInt($('#taskAdd').val());
+                }else{
+                    projId = 0;//非项目标志
+                    taskId = parseInt($('#otherTaskAdd').val());//非项目任务
+                }
+            }else{
+                if(vm.isProjectWork==='1'){
+                    projId = vm.project;
+                    taskId = vm.task;
+                }else{
+                    projId = 0;//非项目标志
+                    taskId = vm.otherTask;//非项目任务
+                }
+            }
+            if(!taskId){
+                dialogAlert("请选择任务！","warn")
+                return;
+            }
+            // dialogAlert("project:"+projId+"\ttask:"+taskId);
+            // if(1===1){return;}
+            var params = {
+                "workLogId" : vm.workLogId,
+                "workLogDate" : vm.workLogDate,
+                "startTime" : vm.startTime,
+                "endTime" : vm.endTime,
+                "minutes" : vm.minutes,
+                "isProjectWork" : vm.isProjectWork,
+                "project" : projId,
+                "task" : taskId,
+                "workDetails" : vm.workDetails
+            };
+
             $.ajax({
                 url: '../../projMan/workLog/saveWorkLog?_' + $.now(),
-                data: JSON.stringify({
-                    "workLogId" : vm.workLogId,
-                    "workLogDate" : vm.workLogDate,
-                    "startTime" : vm.startTime,
-                    "endTime" : vm.endTime,
-                    "minutes" : vm.minutes,
-                    "isProjectWork" : (vm.isProjectWork?"1":"0"),
-                    "project" : vm.project,
-                    "task" : vm.task,
-                    "workDetails" : vm.workDetails
-                }),
+                data: JSON.stringify(params),
                 type: "post",
                 dataType: "json",
                 contentType: 'application/json',
@@ -251,6 +346,7 @@ var vm = new Vue({
                     vm.task="";
                     vm.workDetails="";
                     getGrid();
+                    dialogLoading(false);
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     dialogLoading(false);
@@ -269,10 +365,26 @@ var vm = new Vue({
                 vm.startTime = data.startTime;
                 vm.endTime = data.endTime;
                 vm.minutes = data.minutes;
-                vm.isProjectWork = (data.isProjectWork === 1);
+                vm.isProjectWork = data.isProjectWork;
                 vm.project  = data.projId;
                 vm.task = data.taskId;
                 vm.workDetails = data.workDetails;
+
+                /*$('.selectpicker').selectpicker('refresh');
+                $('#project').selectpicker('val',vm.project);
+                $('#isProjectWork').selectpicker('val',vm.isProjectWork);
+                $('#project').selectpicker('refresh');
+                $('#isProjectWork').selectpicker('refresh');
+                for (var i in vm.projects) {
+                    if(vm.project===vm.projects[i].value){
+                        vm.tasks = vm.projects[i].tasks;
+                        $('#task').selectpicker('refresh');
+                        break;
+                    }
+                }*/
+                // setTimeout("$('#task').selectpicker('val',vm.task);$('#task').selectpicker('refresh');",500);
+                setTimeout("initUpdateSelect();",100);
+
             }
             $("#startTime2").datetimepicker({
                 format:'hh:ii',
@@ -304,6 +416,7 @@ var vm = new Vue({
             });
         },
         changeWorkLogType: function() {//是否项目任务 动作
+            vm.isProjectWork = (vm.isProjectWork===1)?0:1;
             vm.task="";
         },
         plusDate: function(){//翻页动作，日期加一天
@@ -368,12 +481,9 @@ var vm = new Vue({
                     vm.xlsPath = "";
                 }
             });
-
-
-
         }
-    }
-    ,computed: {
+    },
+    computed: {
         lastDay: function () {//上一天日期
             var date = new Date(this.workLogDate);
             date.setDate(date.getDate()-1);
@@ -390,6 +500,22 @@ var vm = new Vue({
             return formatDate(date,"MM");
         }
 
+    },
+    mounted: function () {
+        $('#projectAdd').on('changed.bs.select',function(){
+            for (var i in vm.projects) {
+                if(parseInt($('#projectAdd').val())===vm.projects[i].value){
+                    vm.tasks = vm.projects[i].tasks;
+                    $('#taskAdd').selectpicker('refresh');
+                    break;
+                }else{
+                    vm.tasks = [];
+                }
+            }
+        });
+        $('#projectAdd').on('hidden.bs.select',function(){
+            $('#taskAdd').selectpicker('refresh');
+        });
     }
 });
 

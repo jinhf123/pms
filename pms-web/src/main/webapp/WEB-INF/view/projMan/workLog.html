@@ -3,9 +3,8 @@
 <head>
 <title>工作日志</title>
 #parse("include/header.html")
-    <link rel="stylesheet" href="${rc.contextPath}/statics/plugins/bootstrap-fileinput/fileinput.css">
-    <link rel="stylesheet" href="${rc.contextPath}/statics/css/projectManage/workLog.css">
-
+    <link rel="stylesheet" href="/statics/plugins/bootstrap-fileinput/fileinput.css">
+    <link rel="stylesheet" href="/statics/css/projectManage/workLog.css">
 </head>
 <body>
 <div id="dpLTE" class="container-fluid" v-cloak>
@@ -48,10 +47,11 @@
             </div>
 
             <!--中间面板工作日志展示-->
-            <div class="col-md-8 column">
+            <div class="col-md-8 column center-panel-container">
                 <div class="clearfix">
-                    <div class="col-md-6 column">
-                        <input id="workLogDate" v-model="workLogDate" class="form-control datePicker" />{{workLogId}}
+                    <div class="col-md-6 column iconInput-group">
+                        <input id="workLogDate" v-model="workLogDate" class="datePicker form-control" title="" readonly/>
+                        <i class="fa fa-calendar right"></i>
                     </div>
                     <div class="col-md-6 column center-btn-group-top">
                         <button type="button" class="btn btn-sm btn-link" @click="edit">{{isEdit?'退出编辑':'编辑'}}</button>
@@ -64,47 +64,57 @@
                     <div class="col-md-12 column center-panel-grid">
                         <!--日志内容列表显示-->
                         <div class="center-slimScroll">
-
                             <div id="workLogGrid">
                                 <li v-for="(data,index) in workLogs" class="row clearfix for-li" >
-                                    <div class="for-li-div">
-                                        <div class="center-li-index">{{index+1}}</div>
+                                    <div class="col-md-12 column for-li-div">
+                                        <div v-show="!isEdit||workLogId!=data.id" class="center-li-index">{{index+1}}</div>
                                         <div v-show="workLogId!=data.id" class="for-li-div" @click="startEdit(data)">
                                             <div> {{data.startTime}} - {{data.endTime}}</div>
                                             <div class="li-projectWork-label"
                                                  :class="{'label-color-blue':(data.isProjectWork == 1) ,
                                               'label-color-orange':(data.isProjectWork == 0)}">
-                                                {{data.isProjectWork === 1 ? '项目工作' : '非项目工作'}}
+                                                {{data.isProjectWork == '1' ? '项目工作' : '非项目工作'}}
                                             </div>
                                             <div>
                                                 <!--{{data.projId}}{{data.taskId}}-->
                                                 {{data.workDetails}}
                                             </div>
                                         </div>
-                                        <div v-show="isEdit && workLogId==data.id">
+                                        <!--修改-->
+                                        <div v-if="isEdit && workLogId==data.id" class="col-md-12 column">
                                             <div class="col-md-9 column for-li-div">
-                                                <input id="startTime2" v-model="startTime" class="form-control datePicker" />
-                                                <span style="padding:7px;"> - </span>
-                                                <input id="endTime2" v-model="endTime" class="form-control datePicker" />
+                                                <div class="timePickerDiv iconInput-group">
+                                                    <input id="startTime2" v-model="startTime" class="datePicker form-control" title="" placeholder="开始时间！" readonly/>
+                                                    <i class="fa fa-calendar right"></i>
+                                                </div>
+                                                <span style="padding-right:12px;"> - </span>
+                                                <div class="timePickerDiv iconInput-group">
+                                                    <input id="endTime2" v-model="endTime" class="datePicker form-control" title="" placeholder="结束时间！" readonly/>
+                                                    <i class="fa fa-calendar right"></i>
+                                                </div>
                                                 <span style="padding:5px;" v-show="minutes>0&&minutes<60" >共{{minutes}}分钟</span>
                                                 <span style="padding:5px;" v-show="minutes>=60" >共{{Math.floor(minutes/60)}}小时{{minutes%60}}分钟</span>
                                             </div>
                                             <div class="col-md-1 column isProjectWork">
-                                                <input id="isProjectWork2" type="checkbox" v-model="isProjectWork" @click="changeWorkLogType"/>
+                                                <input type="checkbox" v-model="isProjectWork" :checked="isProjectWork==1" @click="changeWorkLogType" title=""/>
                                             </div>
                                             <div class="col-md-2 column">
-                                                <apan>是否项目工作</apan>
+                                                <span @click="changeWorkLogType" >是否项目工作</span>
                                             </div>
                                             <div v-show="isProjectWork==1">
                                                 <div class="col-md-10 column">
-                                                    <select v-model="project" class="select-project">
+                                                    <select id="project" v-model="project" class="selectpicker select-project"
+                                                            data-size="8"
+                                                            title="">
                                                         <option v-for="option in projects" :value="option.value">
-                                                            {{ option.text }}
+                                                            {{ option.name }}
                                                         </option>
                                                     </select>
-                                                    <select v-model="task" class="select-projTask">
-                                                        <option v-for="option in projTasks" :value="option.value">
-                                                            {{ option.text }}
+                                                    <select id="task" v-model="task" class="selectpicker select-task"
+                                                            data-size="8"
+                                                            data-live-search="true" title="">
+                                                        <option v-for="option in tasks" :value="option.value">
+                                                            {{ option.name }}
                                                         </option>
                                                     </select>
                                                 </div>
@@ -113,9 +123,9 @@
                                             </div>
                                             <div v-show="isProjectWork!=1">
                                                 <div class="col-md-10 column ">
-                                                    <select v-model="task" class="select-task">
-                                                        <option v-for="option in tasks" :value="option.value">
-                                                            {{ option.text }}
+                                                    <select id="otherTask" v-model="otherTask" class="selectpicker select-otherTask" title="">
+                                                        <option v-for="option in otherTasks" :value="option.value">
+                                                            {{ option.name }}
                                                         </option>
                                                     </select>
                                                 </div>
@@ -123,45 +133,53 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-10 column">
-                                                <input id="workDetails2" v-model="workDetails" class="input-workDetails" placeholder="请输入工作详情"/>
+                                                <input id="workDetails2" v-model="workDetails" class="input-workDetails" placeholder="工作详情"/>
                                             </div>
-                                            <div class="col-md-2 column ">
+                                            <div class="col-md-2 column" style="margin-top: 10px">
                                                 <button type="button" class="btn btn-sm btn-blue" @click="save">保存</button>
                                                 <button type="button" class="btn btn-sm" @click="workLogId=''">取消</button>
                                             </div>
-
                                         </div>
+
                                     </div>
-
-
                                     <div class="col-md-12 column center-panel-divider"></div>
                                 </li>
 
-                                <li v-show="isAdd" style="height: 120px;">
-
+                                <!--新增-->
+                                <li v-show="isAdd" style="height: 120px;list-style-type:none;">
                                     <div class="col-md-9 column for-li-div">
-                                        <input id="startTime" v-model="startTime" class="form-control datePicker" title="" />
-                                        <span style="padding:7px;"> - </span>
-                                        <input id="endTime" v-model="endTime" class="form-control datePicker" title=""/>
+                                        <div class="timePickerDiv iconInput-group">
+                                            <input id="startTime" v-model="startTime" class="datePicker form-control" title="" placeholder="开始时间！" readonly/>
+                                            <i class="fa fa-calendar right"></i>
+                                        </div>
+                                        <span> - </span>
+                                        <div class="timePickerDiv iconInput-group">
+                                            <input id="endTime" v-model="endTime" class="datePicker form-control" title="" placeholder="结束时间！" readonly/>
+                                            <i class="fa fa-calendar right"></i>
+                                        </div>
                                         <span style="padding:5px;" v-show="minutes>0&&minutes<60" >共{{minutes}}分钟</span>
                                         <span style="padding:5px;" v-show="minutes>=60" >共{{Math.floor(minutes/60)}}小时{{minutes%60}}分钟</span>
                                     </div>
                                     <div class="col-md-1 column isProjectWork">
-                                        <input id="isProjectWork" type="checkbox" v-model="isProjectWork" @click="changeWorkLogType" title=""/>
+                                        <input id="isProjectWork" type="checkbox" v-model="isProjectWork" :checked="isProjectWork==1" @click="changeWorkLogType" title=""/>
                                     </div>
                                     <div class="col-md-2 column">
-                                        <span>是否项目工作</span>
+                                        <span @click="changeWorkLogType">是否项目工作</span>
                                     </div>
                                     <div v-show="isProjectWork==1">
                                         <div class="col-md-10 column">
-                                            <select v-model="project" class="select-project">
+                                            <select id="projectAdd" class="selectpicker select-project"
+                                                    data-size="8"
+                                                    title="">
                                                 <option v-for="option in projects" :value="option.value">
-                                                    {{ option.text }}
+                                                    {{ option.name }}
                                                 </option>
                                             </select>
-                                            <select v-model="task" class="select-projTask">
-                                                <option v-for="option in projTasks" :value="option.value">
-                                                    {{ option.text }}
+                                            <select id="taskAdd" class="selectpicker select-task"
+                                                    data-size="8"
+                                                    data-live-search="true" title="">
+                                                <option v-for="option in tasks" :value="option.value">
+                                                    {{ option.name }}
                                                 </option>
                                             </select>
                                         </div>
@@ -170,9 +188,9 @@
                                     </div>
                                     <div v-show="isProjectWork!=1">
                                         <div class="col-md-10 column ">
-                                            <select v-model="task" class="select-task">
-                                                <option v-for="option in tasks" :value="option.value">
-                                                    {{ option.text }}
+                                            <select id="otherTaskAdd" class="selectpicker select-otherTask" title="">
+                                                <option v-for="option in otherTasks" :value="option.value">
+                                                    {{ option.name }}
                                                 </option>
                                             </select>
                                         </div>
@@ -182,7 +200,7 @@
                                     <div class="col-md-10 column">
                                         <input id="workDetails" v-model="workDetails" class="input-workDetails" placeholder="请输入工作详情"/>
                                     </div>
-                                    <div class="col-md-2 column ">
+                                    <div class="col-md-2 column " style="margin-top: 10px">
                                         <button type="button" class="btn btn-sm btn-blue" @click="save">保存</button>
                                         <button type="button" class="btn btn-sm btn-blue" @click="isAdd=false">取消</button>
                                     </div>
@@ -208,9 +226,17 @@
                         <span >工时统计</span>
                 </div>
                 <div class="clearfix right-panel-serach">
-                    <input id="startDate" v-model="startDate" class="form-control datePicker" />
-                    <span style="padding:7px;"> - </span>
-                    <input id="endDate" v-model="endDate" class="form-control datePicker" />
+
+                    <div class="iconInput-group">
+                        <input id="startDate" v-model="startDate" class="form-control datePicker" title="" readonly/>
+                        <i class="fa fa-calendar right"></i>
+                    </div>
+
+                    <span style="padding-right:12px;"> - </span>
+                    <div class="iconInput-group">
+                        <input id="endDate" v-model="endDate" class="form-control datePicker" title="" readonly/>
+                        <i class="fa fa-calendar right"></i>
+                    </div>
                 </div>
                 <div class="clearfix right-panel-grid">
                    <!--工时统计查询结果显示列表-->
@@ -262,9 +288,8 @@
 
 </div>
 #parse("include/footer.html")
-<script src="${rc.contextPath}/statics/plugins/bootstrap-fileinput/fileinput.js"></script>
-<script src="${rc.contextPath}/statics/plugins/bootstrap-fileinput/locale/zh.js"></script>
-<script src="${rc.contextPath}/statics/js/projectManage/workLog.js?_${date.systemTime}"></script>
-
+<script src="/statics/plugins/bootstrap-fileinput/fileinput.js"></script>
+<script src="/statics/plugins/bootstrap-fileinput/locale/zh.js"></script>
+<script src="/statics/js/projectManage/workLog.js?_${date.systemTime}"></script>
 </body>
 </html>
