@@ -1,7 +1,7 @@
 // Vue.component('v-select', VueSelect.VueSelect);
 Vue.component('v-select', VueMultiselect.Multiselect);
 Vue.use(VueNumeric.default);
-const config = {
+var config = {
     errorBagName: 'errors',
     delay: 0,
     locale: 'zh_CN',
@@ -309,7 +309,7 @@ var templeForm = {
     },
     mounted: function () {
         this.stepWidth = this.$refs.step.clientWidth;
-        const that = this;
+        var that = this;
         window.onresize = function () {
             that.stepWidth = that.$refs.step.clientWidth;
         };
@@ -338,16 +338,12 @@ var templeList = {
     },
     mounted: function () {
         this.stepWidth = document.getElementById('nav-step').clientWidth;
-        const that = this;
+        var that = this;
         window.onresize = function () {
             that.stepWidth = document.getElementById('nav-step').clientWidth;
         };
     },
     methods: {
-        getCss: function () {
-            console.log(this.stepCount);
-            console.log(this);
-        },
         toPrev: function () {
             this.stepStart--;
         },
@@ -362,7 +358,7 @@ var templeList = {
 
 };
 
-const routes = [
+var routes = [
     {
         path: '/',
         // redirect: '/template/0',
@@ -378,7 +374,7 @@ const routes = [
     }
 ];
 
-const router = new VueRouter({
+var router = new VueRouter({
     routes: routes
 });
 
