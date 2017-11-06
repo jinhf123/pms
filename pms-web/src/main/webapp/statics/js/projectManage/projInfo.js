@@ -100,7 +100,7 @@ var vm = new Vue({
             return this.projInfo.isCompletInAYear === "1" ? "是" : "否";
         },
         projType: function () {
-            if (this.macro !== null) {
+            if (this.macro !== null&& this.projInfo.hasOwnProperty("tempName")) {
                 var exist = this.macro.projType.map(function (t) {
                     return t.value;
                 }).indexOf(this.projInfo.projType);
@@ -111,7 +111,7 @@ var vm = new Vue({
             }
         },
         consMode: function () {
-            if (this.macro !== null) {
+            if (this.macro !== null&& this.projInfo.hasOwnProperty("tempName")) {
                 var exist = this.macro.consMode.map(function (t) {
                     return t.value;
                 }).indexOf(this.projInfo.consMode);
@@ -122,7 +122,7 @@ var vm = new Vue({
             }
         },
         projLevel: function () {
-            if (this.macro !== null) {
+            if (this.macro !== null&& this.projInfo.hasOwnProperty("tempName")) {
                 var exist = this.macro.projLevel.map(function (t) {
                     return t.value;
                 }).indexOf(this.projInfo.projLevel);
@@ -133,7 +133,7 @@ var vm = new Vue({
             }
         },
         beloProjGroup: function () {
-            if (this.macro !== null) {
+            if (this.macro !== null&& this.projInfo.hasOwnProperty("tempName")) {
                 var exist = this.macro.projGroup.map(function (t) {
                     return t.value;
                 }).indexOf(this.projInfo.beloProjGroup.toString());
@@ -145,7 +145,7 @@ var vm = new Vue({
 
         },
         undertakeMode: function () {
-            if (this.macro !== null) {
+            if (this.macro !== null&& this.projInfo.hasOwnProperty("tempName")) {
                 var exist = this.macro.undertakeMode.map(function (t) {
                     return t.value;
                 }).indexOf(this.projInfo.undertakeMode);

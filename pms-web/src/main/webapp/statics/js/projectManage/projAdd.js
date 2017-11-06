@@ -8,7 +8,7 @@ Date.prototype.yyyymmdd = function () {
     ].join('-');
 };
 Vue.use(VueNumeric.default);
-const config = {
+var config = {
     errorBagName: 'errors', // change if property conflicts.
     delay: 0,
     locale: 'zh_CN',
@@ -264,7 +264,7 @@ var vm = new Vue({
             loadTemplate: function () {
                 var me = this;
                 me.isLoading = true;
-                this.$http.get("/projMan/template")
+                this.$http.get("/projMan/template?_" + $.now())
                     .then(function (data) {
                         me.isLoading = false;
                         me.template = data.data;
@@ -648,7 +648,7 @@ var vm = new Vue({
             this.loadTemplate();
             this.getMacro();
             this.stepWidth = document.getElementById('step-info').clientWidth;
-            const that = this;
+            var that = this;
             window.onresize = function () {
                 that.stepWidth = document.getElementById('step-info').clientWidth;
             };
