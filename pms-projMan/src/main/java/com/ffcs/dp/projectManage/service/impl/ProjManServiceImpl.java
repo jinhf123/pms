@@ -1,5 +1,6 @@
 package com.ffcs.dp.projectManage.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.ffcs.dp.common.entity.R;
 import com.ffcs.dp.projectManage.manager.ProjManManager;
 import com.ffcs.dp.projectManage.entity.ProjManEntity;
@@ -44,5 +45,18 @@ public class ProjManServiceImpl implements ProjManService {
         return projManManager.addProjectGroup(params);
     }
 
+    @Override
+    public JSONArray getProjNameList(Map<String, Object> params) {
+        return projManManager.getProjNameList(params);
+    }
 
+    @Override
+    public JSONArray getTaskNameList(Map<String, Object> params) {
+        return projManManager.getTaskNameList(params);
+    }
+
+    @Override
+    public JSONArray getTaskNameList2(Map<String, Object> params) {
+        return projManManager.getTaskNameList2(params);
+    }
 }

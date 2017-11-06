@@ -15,10 +15,12 @@
 			   K.TASK_TITLE TASK_NAME,
 			   T.WORK_DETAILS,
 			   T.CREATOR
-		  FROM PMS_PROJ_WORK_LOG T, PMS_PROJECT_INFO P, PMS_PROJ_TASK K
-		 WHERE T.PROJ_ID = P.PROJ_ID
-		   AND T.TASK_ID = K.TASK_ID
-		   AND T.CREATOR = #{userId}
+		  FROM PMS_PROJ_WORK_LOG T LEFT JOIN
+			   PMS_PROJECT_INFO P
+		    ON T.PROJ_ID = P.PROJ_ID
+		  LEFT JOIN PMS_PROJ_TASK K
+		    ON T.TASK_ID = K.TASK_ID
+		 WHERE T.CREATOR = #{userId}
 		<if test=" workLogDate != '' ">
 		   AND T.WORK_DATE = #{workLogDate}
 		</if>

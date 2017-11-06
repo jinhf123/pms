@@ -12,7 +12,7 @@ select{
     padding-right: 0px;
 }
 .datePicker{
-    width: 120px;
+    width: 120px !important;;
     background-color: #fff;
     border: 1px solid #ccc;
     height: 30px;
@@ -66,6 +66,10 @@ select{
     text-decoration: none;
 }
 
+.timePickerDiv{ width: 120px !important;}
+.iconInput-group{display: inline-flex;padding:0;}
+.iconInput-group>input[readonly] {background-color: #ffffff;}
+.iconInput-group>i{margin: 10px 0;position: relative;right: 17px;}
 
 
 .left-panel-container{
@@ -134,15 +138,13 @@ select{
 
 
 
-.for-li{
-    list-style-type:none;
-}
-.for-li-div{
-    display: inline-flex;
-}
+
+.for-li{list-style-type:none;}
+.for-li-div{display: inline-flex;}
 
 
 
+.center-panel-container{width: calc(100% - 340px)}
 
 .center-btn-group-top{
     text-align: right;
@@ -157,9 +159,7 @@ select{
     background: inherit;
     background-color: rgba(255, 255, 255, 1);
     box-sizing: border-box;
-    border-width: 1px;
-    border-style: solid;
-    border-color: rgba(91, 192, 222, 1);
+    border: 1px solid rgba(91, 192, 222, 1);
     border-radius: 4px;
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
@@ -203,16 +203,34 @@ select{
 
 
 
-
+select::-ms-expand {border: 0 solid transparent; background: transparent; }
 .select-project{
-    width: 30%;
+    width: calc(30% - 7px) !important;
+    margin-bottom: 0px;
+    border-radius: 4px;
 }
-.select-projTask{
-    width: calc(70% - 13px);
+.select-project>button.btn-default:hover{
+    background-color: #ffffff !important;
 }
 .select-task{
-    width: calc(100% - 12px);
+    width: calc(70% - 7px) !important;
 }
+.select-task>button.btn-default:hover{
+    background-color: #ffffff !important;
+}
+.select-otherTask{
+    width: calc(100% - 12px) !important;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+.select-otherTask>button.btn-default:hover{
+    background-color: #ffffff !important;
+}
+
+
+
+
+
 .isProjectWork{
     text-align: right;
     padding-right: 10px;
@@ -226,7 +244,8 @@ select{
     line-height: 32px;
     vertical-align: middle;
     margin-bottom: 10px;
-    /*border-radius: 4px;*/
+    border-radius: 4px;
+    margin-top: 10px;
 }
 
 
@@ -254,13 +273,15 @@ select{
 
 
 .right-panel{
+    width: 270px;
     border-left: 1px solid rgb(221, 221, 221);
 }
 .right-panel-serach{
     display: inline-flex;
     border-top: 1px solid rgb(221, 221, 221);
-    padding: 10px 0px 0px 20px;
+    padding: 10px 0px 0px 0px;
 }
+.right-panel-serach>div{width: 130px !important;}
 .right-panel-title {
     padding:14px 5px;
     font-family: "Arial Normal", "Arial";
