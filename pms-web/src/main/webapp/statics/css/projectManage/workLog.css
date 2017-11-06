@@ -8,8 +8,8 @@ select{
     color: #555;
 }
 .column{
-    padding-left:0px;
-    padding-right: 0px;
+    padding-left:0;
+    padding-right: 0;
 }
 .datePicker{
     width: 120px !important;;
@@ -23,7 +23,7 @@ select{
 }
 .title {
     text-align: left;
-    font-family: "微软雅黑 Regular", "微软雅黑";
+    font-family: "微软雅黑 Regular", "微软雅黑", sans-serif;
     font-weight: 400;
     font-style: normal;
     font-size: 18px;
@@ -37,8 +37,8 @@ select{
 
 .transparent-btn {
     display: inline-block;
-    margin: 4px 0px;
-    padding: 0px;
+    margin: 4px 0;
+    padding: 0;
     font-size: 14px;
     font-weight: 400;
     line-height: 1.4285;
@@ -175,7 +175,7 @@ select{
     margin: auto 10px;
     padding-top: 3px;
     text-align: center;
-    font-family: "微软雅黑 Regular", "微软雅黑";
+    font-family: "微软雅黑 Regular", "微软雅黑", sans-serif;
     font-weight: 400;
     font-style: normal;
     font-size: 12px;
@@ -206,7 +206,7 @@ select{
 select::-ms-expand {border: 0 solid transparent; background: transparent; }
 .select-project{
     width: calc(30% - 7px) !important;
-    margin-bottom: 0px;
+    margin-bottom: 0;
     border-radius: 4px;
 }
 .select-project>button.btn-default:hover{
@@ -279,12 +279,12 @@ select::-ms-expand {border: 0 solid transparent; background: transparent; }
 .right-panel-serach{
     display: inline-flex;
     border-top: 1px solid rgb(221, 221, 221);
-    padding: 10px 0px 0px 0px;
+    padding: 10px 0 0 0;
 }
 .right-panel-serach>div{width: 130px !important;}
 .right-panel-title {
     padding:14px 5px;
-    font-family: "Arial Normal", "Arial";
+    font-family: "Arial Normal", "Arial",sans-serif;
     font-weight: 400;
     font-style: normal;
     font-size: 13px;
@@ -297,7 +297,7 @@ select::-ms-expand {border: 0 solid transparent; background: transparent; }
 }
 .workHours-title {
     padding:10px 5px 5px 5px;
-    font-family: "Arial Normal", "Arial";
+    font-family: "Arial Normal", "Arial",sans-serif;
     font-weight: 600;
     font-style: normal;
     font-size: 13px;
@@ -307,12 +307,12 @@ select::-ms-expand {border: 0 solid transparent; background: transparent; }
 }
 .workHours-divider {
     height: 1px;
-    margin: 0px -5px 10px 5px;
+    margin: 0 -5px 10px 5px;
     overflow: hidden;
     background-color: #e5e5e5;
 }
 .workHours-content{
-    padding:0px 0px 0px 10px;
+    padding:0 0 0 10px;
     font-size: 13px;
 }
 .align-right{

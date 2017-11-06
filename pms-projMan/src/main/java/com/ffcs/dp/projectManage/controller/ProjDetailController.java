@@ -5,27 +5,24 @@ import com.alibaba.fastjson.JSONObject;
 import com.ffcs.dp.common.controller.AbstractController;
 import com.ffcs.dp.projectManage.entity.*;
 import com.ffcs.dp.projectManage.service.ProjDetailService;
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 /**
  * 项目详情
- *
  */
-@Controller
-@ResponseBody
+@RestController
 @RequestMapping("/projMan/projDetail")
 public class ProjDetailController extends AbstractController {
 
 
-    @Resource
+    @Autowired
     private ProjDetailService projDetailService;
 
 

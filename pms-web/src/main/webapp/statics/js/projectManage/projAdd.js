@@ -602,7 +602,7 @@ var vm = new Vue({
                                     if (data.data.success) {
                                         title = "添加成功";
                                         dialogMsg(title);
-                                        toUrl("/projMan/projectDetails.html?projId="+ data.data.projId);
+                                        toUrl("/projectManage/projectDetails.html?projId="+ data.data.projId);
                                     } else {
                                         title = "添加失败";
                                         top.layer.open({
@@ -639,7 +639,7 @@ var vm = new Vue({
             }
             ,
             toProjMan: function () {
-                toUrl('/projMan/projectList.html');
+                toUrl('/projectManage/projectList.html');
             }
         }
         ,

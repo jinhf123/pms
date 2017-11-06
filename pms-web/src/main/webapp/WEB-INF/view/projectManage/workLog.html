@@ -3,8 +3,8 @@
 <head>
 <title>工作日志</title>
 #parse("include/header.html")
-    <link rel="stylesheet" href="/statics/plugins/bootstrap-fileinput/fileinput.css">
-    <link rel="stylesheet" href="/statics/css/projectManage/workLog.css">
+    <link rel="stylesheet" href="${rc.contextPath}/statics/plugins/bootstrap-fileinput/fileinput.css">
+    <link rel="stylesheet" href="${rc.contextPath}/statics/css/projectManage/workLog.css">
 </head>
 <body>
 <div id="dpLTE" class="container-fluid" v-cloak>
@@ -288,8 +288,8 @@
 
 </div>
 #parse("include/footer.html")
-<script src="/statics/plugins/bootstrap-fileinput/fileinput.js"></script>
-<script src="/statics/plugins/bootstrap-fileinput/locale/zh.js"></script>
-<script src="/statics/js/projectManage/workLog.js?_${date.systemTime}"></script>
+<script src="${rc.contextPath}/statics/plugins/bootstrap-fileinput/fileinput.js"></script>
+<script src="${rc.contextPath}/statics/plugins/bootstrap-fileinput/locale/zh.js"></script>
+<script src="${rc.contextPath}/statics/js/projectManage/workLog.js?_${date.systemTime}"></script>
 </body>
 </html>

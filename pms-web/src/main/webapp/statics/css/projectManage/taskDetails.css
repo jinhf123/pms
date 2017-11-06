@@ -117,7 +117,7 @@
     width: calc(100% - 10px);
     height: 125px;
     background: inherit;
-    background: url("/statics/img/projectManage/u18.png") no-repeat;
+    background: url("../../img/projectManage/u18.png") no-repeat;
     padding-top: 23px;
     background-color: #FFFFFF;
     box-sizing: border-box;

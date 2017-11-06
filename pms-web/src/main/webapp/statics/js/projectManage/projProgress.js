@@ -37,7 +37,7 @@ function initialPage() {
 //获取项目信息
 function getProjectInfo(){
     $.ajax({
-        url: '../../projMan/projDetail/getProjectInfo?_' + $.now(),
+        url: '../projMan/projDetail/getProjectInfo?_' + $.now(),
         data: JSON.stringify({
             "projId" : vm.projId
         }),
@@ -53,7 +53,7 @@ function getProjectInfo(){
 //获取项目步骤数据
 function getStepList() {
     $.ajax({
-        url: '/projMan/projDetail/getStepList?_' + $.now(),
+        url: '../projMan/projDetail/getStepList?_' + $.now(),
         data: JSON.stringify({
             "projId": vm.projId
         }),
@@ -86,7 +86,7 @@ function getStepList() {
 function getTaskGrid(param) {
     vm.styleObj.height = ($(window).height()-5)+"px";
     $.ajax({
-        url: '/projMan/projDetail/getTaskList?_' + $.now(),
+        url: '../projMan/projDetail/getTaskList?_' + $.now(),
         data: JSON.stringify(param),
         type: "post",
         async: false,
@@ -100,7 +100,7 @@ function getTaskGrid(param) {
 //获取日程数据列表
 function getScheGrid(param) {
     $.ajax({
-        url: '/schedule/projSche/getProjScheList?_' + $.now(),
+        url: '../schedule/projSche/getProjScheList?_' + $.now(),
         data: JSON.stringify(param),
         type: "post",
         async: false,
@@ -132,7 +132,7 @@ function saveTask(){
         "finishDate":vm.finishDate
     };
     $.ajax({
-        url: '/projMan/projDetail/saveTask?_' + $.now(),
+        url: '../projMan/projDetail/saveTask?_' + $.now(),
         data: JSON.stringify(param),
         type: "post",
         async: false,
@@ -170,7 +170,7 @@ function saveSche(){
         "scheEndDate":vm.scheDate
     };
     $.ajax({
-        url: '/schedule/projSche/saveProjSche?_' + $.now(),
+        url: '../schedule/projSche/saveProjSche?_' + $.now(),
         data: JSON.stringify(param),
         type: "post",
         async: false,
@@ -201,9 +201,9 @@ var vm = new Vue({
     el: '#projProgress',
     data: {
         styleObj: {height: ($(window).height() - 5) + 'px'},
-        icon_Title: "/statics/img/projectManage/u15.png",
-        icon_User: "/statics/img/projectManage/u16.png",
-        icon_Date: "/statics/img/projectManage/u17.png",
+        icon_Title: "../statics/img/projectManage/u15.png",
+        icon_User: "../statics/img/projectManage/u16.png",
+        icon_Date: "../statics/img/projectManage/u17.png",
         isEdit: false,
         isAddTask: false,
         isAddSche: false,
@@ -301,7 +301,7 @@ var vm = new Vue({
                 return;
             }
             $.ajax({
-                url: '/projMan/projDetail/finishStage?_' + $.now(),
+                url: '../projMan/projDetail/finishStage?_' + $.now(),
                 data: JSON.stringify({
                     "projId": vm.projId,//完成本阶段后自动开始下阶段用
                     "stepId": step.stepId
@@ -329,7 +329,7 @@ var vm = new Vue({
         },
         startTask: function (id) {//开始任务
             $.ajax({
-                url: '../../projMan/projDetail/updateTaskState?_' + $.now(),
+                url: '../projMan/projDetail/updateTaskState?_' + $.now(),
                 data: JSON.stringify({
                     operation: "start",
                     taskId: id
@@ -360,7 +360,7 @@ var vm = new Vue({
             }
 
             $.ajax({
-                url: '../../projMan/projDetail/updateTaskState?_' + $.now(),
+                url: '../projMan/projDetail/updateTaskState?_' + $.now(),
                 data: JSON.stringify({
                     operation: "finish",
                     taskId: task.taskId
@@ -381,7 +381,7 @@ var vm = new Vue({
                 return;
             }
             $.ajax({
-                url: '../../projMan/projDetail/deleteTask?_' + $.now(),
+                url: '../projMan/projDetail/deleteTask?_' + $.now(),
                 data: JSON.stringify({
                     taskId: id
                 }),
@@ -429,7 +429,7 @@ var vm = new Vue({
         },
         delSchedule: function (scheduleId) {
             $.ajax({
-                url: '/schedule/projSche/deleteProjSche?_' + $.now(),
+                url: '../schedule/projSche/deleteProjSche?_' + $.now(),
                 data: JSON.stringify({
                     "scheduleId": scheduleId
                 }),
@@ -482,7 +482,7 @@ var vm = new Vue({
                 "scheEndDate": vm.scheEndDate
             };
             $.ajax({
-                url: '/schedule/projSche/saveProjSche?_' + $.now(),
+                url: '../schedule/projSche/saveProjSche?_' + $.now(),
                 data: JSON.stringify(param),
                 type: "post",
                 async: false,
@@ -517,13 +517,5 @@ var vm = new Vue({
         }
     },
     computed: {
-        init:function(){//去除idea中的unused提示，稍后删除
-            if(1!==1){
-                vm.closeSchedule();vm.saveSchedule();vm.addSchedule();vm.closeSchePanel();
-                vm.delSchedule();vm.addSchePanel();vm.queryAllSche();vm.closeTaskPanel();
-                vm.addTask();vm.addTaskPanel();vm.delTask();vm.finishTask();vm.startTask();vm.editTask();
-                vm.queryAllTask();vm.finishStage();vm.selectScheStaff();saveSche();
-            }
-        }
     }
 });

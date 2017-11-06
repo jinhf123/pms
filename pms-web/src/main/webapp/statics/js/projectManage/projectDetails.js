@@ -13,7 +13,7 @@ function initialPage(){
     });
     //获取项目信息
     // $.ajax({
-    //     url: '../../projMan/projDetail/getProjectInfo?_' + $.now(),
+    //     url: '../projMan/projDetail/getProjectInfo?_' + $.now(),
     //     data: JSON.stringify({
     //         "projId" : vm.projId
     //     }),
@@ -31,8 +31,8 @@ function initialPage(){
 var vm = new Vue({
     el:'#dpLTE',
     data: {
-        icon_Notice :"/statics/img/projectManage/u3.png",
-        icon_Log    :"/statics/img/projectManage/u4.png",
+        icon_Notice :"../statics/img/projectManage/u3.png",
+        icon_Log    :"../statics/img/projectManage/u4.png",
         styleObj:{height: ($(window).height()-50)+'px'},
         projId:"",
         iframeSrc:"projInfo.html?projId="+getQueryString('projId'),
@@ -62,12 +62,12 @@ var vm = new Vue({
                     vm.iframeName="projProgress";
                     break;
                 case 3:
-                    vm.iframeSrc="developing.html?projId="+vm.projId;;
+                    vm.iframeSrc="developing.html?projId="+vm.projId;
                     vm.iframeId="developing";
                     vm.iframeName="developing";
                     break;
                 case 4:
-                    vm.iframeSrc="projRiskIssue.html?projId="+vm.projId;;
+                    vm.iframeSrc="projRiskIssue.html?projId="+vm.projId;
                     vm.iframeId="projRiskIssue";
                     vm.iframeName="projRiskIssue";
                     break;
@@ -79,7 +79,7 @@ var vm = new Vue({
             }
         },
         backToList: function(){
-            toUrl('/projMan/projMan.html');
+            toUrl('../projectManage/projMan.html');
         }
     },
     computed: {}

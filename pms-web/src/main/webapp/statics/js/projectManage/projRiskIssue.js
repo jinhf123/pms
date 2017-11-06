@@ -22,7 +22,7 @@ function initialPage() {
 
 function getGrid() {
     $('#dataGrid').bootstrapTableEx({
-        url: '/riskIssue/projRisk/list?_' + $.now(),
+        url: '../riskIssue/projRisk/list?_' + $.now(),
         height: $(window).height()-54,
         queryParams: function(params){
             params.projId = vm.projId;
@@ -183,8 +183,8 @@ vm = new Vue({
     el: '#dpLTE',
     catch: false,
     data: {
-        icon_Search: "/statics/img/projectManage/u1.png",
-        icon_Add: "/statics/img/projectManage/u2.png",
+        icon_Search: "../statics/img/projectManage/u1.png",
+        icon_Add: "../statics/img/projectManage/u2.png",
         projId: "",
         isOperate: true,
         selectRow: {},
@@ -270,10 +270,8 @@ vm = new Vue({
                     return;
                 }
             }
-
-
             $.ajax({
-                url: '/riskIssue/projRisk/saveRiskIssue',
+                url: '../riskIssue/projRisk/saveRiskIssue',
                 data: JSON.stringify({
                     "projId":vm.projId,
                     "riskId":vm.riskId,//风险问题编号

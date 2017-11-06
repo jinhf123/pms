@@ -3,7 +3,7 @@
 <head>
     <title>归档项目</title>
     #parse("include/header.html")
-    <link rel="stylesheet" href="/statics/css/projectManage/archivedProject.css">
+    <link rel="stylesheet" href="${rc.contextPath}/statics/css/projectManage/archivedProject.css">
 </head>
 <body>
 <div id="archivedProject" class="container-fluid" v-cloak>
@@ -53,6 +53,6 @@
 
 </div>
 #parse("include/footer.html")
-<script src="/statics/js/projectManage/archivedProject.js?_${date.systemTime}"></script>
+<script src="${rc.contextPath}/statics/js/projectManage/archivedProject.js?_${date.systemTime}"></script>
 </body>
 </html>

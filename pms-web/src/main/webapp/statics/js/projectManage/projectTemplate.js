@@ -294,7 +294,7 @@ var templeForm = {
 
         },
         toProjMan: function () {
-            toUrl('/projMan/projectList.html');
+            toUrl('/projectManage/projectList.html');
         }
     }, watch: {
         stepWidth: function (val) {

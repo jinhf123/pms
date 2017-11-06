@@ -21,7 +21,7 @@ function initialPage(){
 
 function getNotice(){//获取未读通知列表
     $.ajax({
-        url: '/projMan/notice/unReadList?_' + $.now(),
+        url: '../projMan/notice/unReadList?_' + $.now(),
         data: JSON.stringify({}),
         type: "post",
         dataType: "json",
@@ -40,7 +40,7 @@ function getNotice(){//获取未读通知列表
 //获取项目类型数据
 function getProjGroups() {
     $.ajax({
-        url: '/sys/macro/getMacroByCatalog?_' + $.now(),  //'../../projMan/project/projGroup?_' + $.now(),
+        url: '../sys/macro/getMacroByCatalog?_' + $.now(),  //'../projMan/project/projGroup?_' + $.now(),
         data: JSON.stringify({
             "typeCodes": ['projGroup']
         }),
@@ -62,10 +62,10 @@ function getProjGroups() {
 var vm = new Vue({
     el:'#project',
     data: {
-        icon_Search :"/statics/img/projectManage/u1.png",
-        icon_Add    :"/statics/img/projectManage/u2.png",
-        icon_Notice :"/statics/img/projectManage/u3.png",
-        icon_Log    :"/statics/img/projectManage/u4.png",
+        icon_Search :"../statics/img/projectManage/u1.png",
+        icon_Add    :"../statics/img/projectManage/u2.png",
+        icon_Notice :"../statics/img/projectManage/u3.png",
+        icon_Log    :"../statics/img/projectManage/u4.png",
         styleObj: {height: ($(window).height()-65)+'px'},
         //通知信息
         unReadNotice:0,
@@ -102,7 +102,7 @@ var vm = new Vue({
         },
         showNotice: function (notice){//消息标记为已读后打开任务详情
             $.ajax({
-                url: '../../projMan/notice/readNotice?_' + $.now(),
+                url: '../projMan/notice/readNotice?_' + $.now(),
                 data: JSON.stringify({
                     "noticeId" : notice.noticeId,
                     "isRead" : 1
@@ -126,7 +126,7 @@ var vm = new Vue({
         },
         getTaskInfo: function(taskId){
             $.ajax({
-                url: '../../projMan/projDetail/getTaskInfo?_' + $.now(),
+                url: '../projMan/projDetail/getTaskInfo?_' + $.now(),
                 data: JSON.stringify({
                     "taskId" : taskId
                 }),
@@ -187,7 +187,7 @@ var vm = new Vue({
                         return false;
                     }
                     $.ajax({
-                        url: '/projMan/project/addProjectGroup?_' + $.now(),
+                        url: '../projMan/project/addProjectGroup?_' + $.now(),
                         data: JSON.stringify({
                             "typeCodes": "projGroup",
                             "typeName": vm.groupName

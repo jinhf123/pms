@@ -26,7 +26,7 @@ function initialPage(){
 //获取任务信息
 function getTaskInfo(){
     $.ajax({
-        url: '../../projMan/projDetail/getTaskInfo?_' + $.now(),
+        url: '../projMan/projDetail/getTaskInfo?_' + $.now(),
         data: JSON.stringify({
             "taskId" : vm.taskId
         }),
@@ -49,7 +49,7 @@ function getTaskInfo(){
 //获取检查项列表
 function getCheckItemGrid(){
     $.ajax({
-        url: '../../projMan/projDetail/getCheckItemList?_' + $.now(),
+        url: '../projMan/projDetail/getCheckItemList?_' + $.now(),
         data: JSON.stringify({
             "taskId" : vm.taskId
         }),
@@ -66,7 +66,7 @@ function getCheckItemGrid(){
 //获取任务日志列表
 function getTaskLogGrid(){
     $.ajax({
-        url: '../../projMan/projDetail/getTaskLogList?_' + $.now(),
+        url: '../projMan/projDetail/getTaskLogList?_' + $.now(),
         data: JSON.stringify({
             "taskId" : vm.taskId
         }),
@@ -83,7 +83,7 @@ function getTaskLogGrid(){
 //保存任务详细
 function saveTaskDetail(params){
     $.ajax({
-        url: '../../projMan/projDetail/saveTaskInfo?_' + $.now(),
+        url: '../projMan/projDetail/saveTaskInfo?_' + $.now(),
         data: params,
         type: "post",
         dataType: "json",
@@ -106,7 +106,7 @@ function saveTaskDetail(params){
 //保存检查项
 function saveCheckItem(){
     $.ajax({
-        url: '../../projMan/projDetail/saveCheckItem?_' + $.now(),
+        url: '../projMan/projDetail/saveCheckItem?_' + $.now(),
         data: JSON.stringify({
             "checkItemId" : vm.checkItemId,
             "taskId" : vm.taskId,
@@ -141,18 +141,18 @@ var vm = new Vue({
     el:'#taskDetails',
     data: {
         styleObj:{height: ($(window).height())+'px'},
-        icon_Title : "/statics/img/projectManage/u15.png",
-        icon_User  : "/statics/img/projectManage/u16.png",
-        icon_Date  : "/statics/img/projectManage/u17.png",
-        icon_oper_0: "/statics/img/projectManage/u18_0.png",
-        icon_oper_1: "/statics/img/projectManage/u18_1.png",
-        icon_oper_2: "/statics/img/projectManage/u18_2.png",
-        icon_oper_3: "/statics/img/projectManage/u18_3.png",
-        icon_oper_4: "/statics/img/projectManage/u18_4.png",
-        icon_btn_finish: "/statics/img/projectManage/u19_0.png",
-        icon_btn_start : "/statics/img/projectManage/u19_1.png",
-        icon_btn_delete: "/statics/img/projectManage/u19_2.png",
-        icon_btn_edit  : "/statics/img/projectManage/u19_3.png",
+        icon_Title : "../statics/img/projectManage/u15.png",
+        icon_User  : "../statics/img/projectManage/u16.png",
+        icon_Date  : "../statics/img/projectManage/u17.png",
+        icon_oper_0: "../statics/img/projectManage/u18_0.png",
+        icon_oper_1: "../statics/img/projectManage/u18_1.png",
+        icon_oper_2: "../statics/img/projectManage/u18_2.png",
+        icon_oper_3: "../statics/img/projectManage/u18_3.png",
+        icon_oper_4: "../statics/img/projectManage/u18_4.png",
+        icon_btn_finish: "../statics/img/projectManage/u19_0.png",
+        icon_btn_start : "../statics/img/projectManage/u19_1.png",
+        icon_btn_delete: "../statics/img/projectManage/u19_2.png",
+        icon_btn_edit  : "../statics/img/projectManage/u19_3.png",
 
         isEdit:false,
         isAddCheckItem:false,
@@ -244,7 +244,7 @@ var vm = new Vue({
         },
         delTaskState:function(){//删除
             $.ajax({
-                url: '../../projMan/projDetail/deleteTask?_' + $.now(),
+                url: '../projMan/projDetail/deleteTask?_' + $.now(),
                 data: JSON.stringify({
                     "taskId" : vm.taskId
                 }),
@@ -328,7 +328,7 @@ var vm = new Vue({
                 noticeUser.push(this.noticeUser[i].userId)
             }
             $.ajax({
-                url: '../../projMan/projDetail/saveTaskLog?_' + $.now(),
+                url: '../projMan/projDetail/saveTaskLog?_' + $.now(),
                 data: JSON.stringify({
                     "taskId" : vm.taskId,
                     "content" : vm.taskLogContent,
@@ -395,7 +395,7 @@ var vm = new Vue({
                     }
                     // 保存工作日志
                     $.ajax({
-                        url: '../../projMan/workLog/batchSaveWorkLog?_' + $.now(),
+                        url: '../projMan/workLog/batchSaveWorkLog?_' + $.now(),
                         data: JSON.stringify({
                             "dateList": vm.dateList,
                             "workLogDate": formatDate(new Date(),"yyyy-MM-dd"),
@@ -466,7 +466,7 @@ var vm = new Vue({
                         return false;
                     }
                     $.ajax({
-                        url: '../../riskIssue/projRisk/saveRiskIssue',
+                        url: '../riskIssue/projRisk/saveRiskIssue',
                         data: JSON.stringify({
                             "projId":vm.projId,
                             "taskId":vm.taskId,
@@ -516,7 +516,7 @@ var vm = new Vue({
         getStakeholder: function () {
             var self = this;
             $.ajax({
-                url: '/projMan/stakeholder/' + this.projId,
+                url: '../projMan/stakeholder/' + this.projId,
                 type: "get",
                 dataType: "json",
                 contentType: 'application/json',

@@ -23,7 +23,7 @@ function initialPage() {
 function getGrid() {
     // console.log("获取列表 \tgroup:"+ vm.activeGroup.value +"\ttype:"+ vm.activeType.value+"\tkeyword:"+ vm.keyword);
     $.ajax({
-        url: '../../projMan/project/archiveDataGrid?_' + $.now(),
+        url: '../projMan/project/archiveDataGrid?_' + $.now(),
         data: JSON.stringify({
             "group" : vm.groupId,
             "type" : vm.activeType.value,
@@ -50,12 +50,12 @@ function getGrid() {
 var vm = new Vue({
     el:'#archivedProject',
     data: {
-        icon_Search :"/statics/img/projectManage/u1.png",
-        icon_Add    :"/statics/img/projectManage/u2.png",
-        icon_Notice :"/statics/img/projectManage/u3.png",
-        icon_Log    :"/statics/img/projectManage/u4.png",
-        icon_FileQuery :"/statics/img/projectManage/u9.png",
-        icon_EditTemp  :"/statics/img/projectManage/u10.png",
+        icon_Search :"../statics/img/projectManage/u1.png",
+        icon_Add    :"../statics/img/projectManage/u2.png",
+        icon_Notice :"../statics/img/projectManage/u3.png",
+        icon_Log    :"../statics/img/projectManage/u4.png",
+        icon_FileQuery :"../statics/img/projectManage/u9.png",
+        icon_EditTemp  :"../statics/img/projectManage/u10.png",
         styleObject:{height: ($(window).height()-45)+'px'},
         // 默认值
         keyword: parent.vm.keyword,

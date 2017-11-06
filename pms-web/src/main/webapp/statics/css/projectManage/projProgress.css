@@ -100,7 +100,7 @@ body{
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    background: url("/statics/img/projectManage/u12.png") no-repeat;
+    background: url("../../img/projectManage/u12.png") no-repeat;
     border: 1px solid transparent;
     border-radius: 4px;
 }
@@ -121,7 +121,7 @@ body{
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    background: url("/statics/img/projectManage/u13.png") no-repeat;
+    background: url("../../img/projectManage/u13.png") no-repeat;
     border: 1px solid transparent;
     border-radius: 4px;
 }
@@ -142,7 +142,7 @@ body{
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    background: url("/statics/img/projectManage/u14.png") no-repeat;
+    background: url("../../img/projectManage/u14.png") no-repeat;
     border: 1px solid transparent;
     border-radius: 4px;
 }
@@ -193,7 +193,7 @@ label img{padding:5px;}
     padding: 2px 0;
     text-align: center;
     white-space: nowrap;
-    background: url("/statics/img/projectManage/u11.png") no-repeat;
+    background: url("../../img/projectManage/u11.png") no-repeat;
 }
 .triangle-orange{
     width:0;

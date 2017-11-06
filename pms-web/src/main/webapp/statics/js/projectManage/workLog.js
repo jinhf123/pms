@@ -68,7 +68,7 @@ function initialPage() {
 
 function getGrid() {
     $.ajax({
-        url: '../../projMan/workLog/getWorkLogList?_' + $.now(),
+        url: '../projMan/workLog/getWorkLogList?_' + $.now(),
         data: JSON.stringify({
             "workLogDate" : vm.workLogDate
         }),
@@ -88,7 +88,7 @@ function getGrid() {
 function getWorkHoursGrid() {
     if (vm.startDate !== "" && vm.endDate !== "") {
         $.ajax({
-            url: '../../projMan/workLog/getWorkHoursList?_' + $.now(),
+            url: '../projMan/workLog/getWorkHoursList?_' + $.now(),
             data: JSON.stringify({
                 "startDate": vm.startDate,
                 "endDate": vm.endDate
@@ -136,13 +136,8 @@ function initUpload(ctrlName, uploadUrl) {//上传控件初始化
         msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！"
     });
 
-    // $("#excelFile").on("fileuploaded", function (event, data, previewId, index) { });
     //异步
     control.on('fileerror', function(event, data, msg) { //异步上传失败处理
-        // console.log(data.index);
-        // console.log(data.reader);
-        // console.log(data.files.length);
-        // console.log(data.filenames.length);
         console.log(msg);
         var obj = data.response;
         console.log(JSON.stringify(obj));
@@ -156,19 +151,14 @@ function initUpload(ctrlName, uploadUrl) {//上传控件初始化
             getWorkHoursGrid();
         }else{
             dialogAlert(data.files[index].name + "上传失败!" + data.response.message,"error");
-            //重置
-            // $("#excelFile").fileinput("clear");
-            // $("#excelFile").fileinput("reset");
-            // $('#excelFile').fileinput('refresh');
-            // $('#excelFile').fileinput('enable');
         }
     });
 }
 
 //获取下拉框数据
 function getProjNameList() {
-    $.ajax({//获取项目及项目任务
-        url: '/projMan/project/getTaskNameList2?_' + $.now(),
+    $.ajax({
+        url: '../projMan/project/getTaskNameList2?_' + $.now(),//获取项目及项目任务
         data: JSON.stringify({}),
         type: "post",
         dataType: "json",
@@ -181,8 +171,8 @@ function getProjNameList() {
             dialogMsg(errorThrown, 'error');
         }
     });
-    $.ajax({//获取非项目任务
-        url: '/projMan/project/getTaskNameList?_' + $.now(),
+    $.ajax({
+        url: '../projMan/project/getTaskNameList?_' + $.now(),//获取非项目任务
         data: JSON.stringify({
             "projId": 0
         }),
@@ -236,8 +226,8 @@ function initUpdateSelect(){
 var vm = new Vue({
     el:'#dpLTE',
     data: {
-        icon_Notice :"/statics/img/projectManage/u3.png",
-        icon_Log    :"/statics/img/projectManage/u4.png",
+        icon_Notice :"../statics/img/projectManage/u3.png",
+        icon_Log    :"../statics/img/projectManage/u4.png",
         styleObject:{height: ($(window).height()-45)+'px'},
         today: formatDate(new Date(),"yyyy-MM-dd"),
         workLogDate: formatDate(new Date(),"yyyy-MM-dd"),
@@ -330,7 +320,7 @@ var vm = new Vue({
             };
 
             $.ajax({
-                url: '../../projMan/workLog/saveWorkLog?_' + $.now(),
+                url: '../projMan/workLog/saveWorkLog?_' + $.now(),
                 data: JSON.stringify(params),
                 type: "post",
                 dataType: "json",
@@ -369,22 +359,7 @@ var vm = new Vue({
                 vm.project  = data.projId;
                 vm.task = data.taskId;
                 vm.workDetails = data.workDetails;
-
-                /*$('.selectpicker').selectpicker('refresh');
-                $('#project').selectpicker('val',vm.project);
-                $('#isProjectWork').selectpicker('val',vm.isProjectWork);
-                $('#project').selectpicker('refresh');
-                $('#isProjectWork').selectpicker('refresh');
-                for (var i in vm.projects) {
-                    if(vm.project===vm.projects[i].value){
-                        vm.tasks = vm.projects[i].tasks;
-                        $('#task').selectpicker('refresh');
-                        break;
-                    }
-                }*/
-                // setTimeout("$('#task').selectpicker('val',vm.task);$('#task').selectpicker('refresh');",500);
                 setTimeout("initUpdateSelect();",100);
-
             }
             $("#startTime2").datetimepicker({
                 format:'hh:ii',
@@ -452,7 +427,7 @@ var vm = new Vue({
                         dialogAlert('开始日期不能大于结束日期！','info');
                         return false;
                     }
-                    window.open("../../projMan/workLog/exportExcel?startDate="+vm.xlsStartDate+"&endDate="+vm.xlsEndDate);
+                    window.open("../projMan/workLog/exportExcel?startDate="+vm.xlsStartDate+"&endDate="+vm.xlsEndDate);
                     layer.close(index);
                 },
                 success:function(){
@@ -462,7 +437,6 @@ var vm = new Vue({
                     $("#xlsEndDate").datetimepicker().on('hide', function () {
                         vm.xlsEndDate = $("#xlsEndDate").val();
                     });
-
                 },
                 end:function(){}
             });
@@ -475,7 +449,7 @@ var vm = new Vue({
                 content :  $("#importPanel"),
                 btn : false,//[ '确定', '取消' ],
                 success:function(){
-                    initUpload("excelFile", "../../projMan/workLog/importExcel?startDate");
+                    initUpload("excelFile", "../projMan/workLog/importExcel?startDate");
                 },
                 end:function(){
                     vm.xlsPath = "";

@@ -24,7 +24,7 @@ function initialPage() {
 //获取文件夹列表
 function getFolderGrid(){
     $.ajax({
-        url: '/FileMan/getFolderList?_' + $.now(),
+        url: '../FileMan/getFolderList?_' + $.now(),
         data: JSON.stringify({
             "projId" : vm.projId
         }),
@@ -44,7 +44,7 @@ function getFolderGrid(){
 //获取文件列表
 function getFileGrid(){
     $.ajax({
-        url: '/FileMan/getFileManList?_' + $.now(),
+        url: '../FileMan/getFileManList?_' + $.now(),
         data: JSON.stringify({
             "projId" : vm.projId,
             "fileType" : "1",
@@ -67,7 +67,7 @@ function getFileGrid(){
 //删除文档 或 删除文件夹
 function deleteFileMan(){
     $.ajax({
-        url: '/FileMan/deleteFileMan?_' + $.now(),
+        url: '../FileMan/deleteFileMan?_' + $.now(),
         data: JSON.stringify({
             "fileId" : vm.deleteId
         }),
@@ -89,9 +89,9 @@ function deleteFileMan(){
 var vm = new Vue({
     el:'#dpLTE',
     data: {
-        icon_dot :"/statics/img/projectManage/u20c.png",
-        icon_Folder :"/statics/img/projectManage/u20.png",
-        icon_File :"/statics/img/projectManage/u20_1.png",
+        icon_dot :"../statics/img/projectManage/u20c.png",
+        icon_Folder :"../statics/img/projectManage/u20.png",
+        icon_File :"../statics/img/projectManage/u20_1.png",
         styleObject:{height: ($(window).height()-15)+'px'},
         projId:"",
         //添加文件夹参数
@@ -131,7 +131,7 @@ var vm = new Vue({
                         return false;
                     }
                     $.ajax({
-                        url: '../../FileMan/addFolderInfo?_' + $.now(),
+                        url: '../FileMan/addFolderInfo?_' + $.now(),
                         data: JSON.stringify({
                             "projId" : vm.projId,
                             "folderName" : vm.folderName,

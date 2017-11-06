@@ -16,7 +16,7 @@ function initialPage() {
 
 function load() {
     $.ajax({
-        url: '/sys/macro/getMacroByCatalog',
+        url: '../sys/macro/getMacroByCatalog',
         data: JSON.stringify({
             "typeCodes":
                 ['projType',
@@ -37,7 +37,7 @@ function load() {
     });
 
     $.ajax({
-        url: '../../projMan/projDetail/getProjInfo?_' + $.now(),
+        url: '../projMan/projDetail/getProjInfo?_' + $.now(),
         data: JSON.stringify({
             "projId": vm.projId
         }),
@@ -54,7 +54,7 @@ function load() {
 
 
     $.ajax({
-        url: '../../projMan/projDetail/getStepList?_' + $.now(),
+        url: '../projMan/projDetail/getStepList?_' + $.now(),
         data: JSON.stringify({
             "projId": vm.projId
         }),

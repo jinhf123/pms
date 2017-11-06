@@ -3,8 +3,8 @@
 <head>
     <title>任务详情</title>
     #parse("include/header.html")
-    <link rel="stylesheet" href="/statics/css/vue-multiselect.min.css">
-    <link rel="stylesheet" href="/statics/css/projectManage/taskDetails.css">
+    <link rel="stylesheet" href="${rc.contextPath}/statics/css/vue-multiselect.min.css">
+    <link rel="stylesheet" href="${rc.contextPath}/statics/css/projectManage/taskDetails.css">
 </head>
 <body>
 <div id="taskDetails" class="clearfix" v-cloak>
@@ -129,7 +129,6 @@
                                            :hide-selected="true"
                                            :close-on-select="false"
                                            style="flex: 1;">
-
                                 </v-select>
                             </div>
                         </div>
@@ -227,7 +226,7 @@
 
 </div>
 #parse("include/footer.html")
-<script src="/statics/libs/vue-multiselect.min.js"></script>
-<script src="/statics/js/projectManage/taskDetails.js?_${date.systemTime}"></script>
+<script src="${rc.contextPath}/statics/libs/vue-multiselect.min.js"></script>
+<script src="${rc.contextPath}/statics/js/projectManage/taskDetails.js?_${date.systemTime}"></script>
 </body>
 </html>

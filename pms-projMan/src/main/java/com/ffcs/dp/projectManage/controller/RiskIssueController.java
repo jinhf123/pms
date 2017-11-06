@@ -4,31 +4,25 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ffcs.dp.common.controller.AbstractController;
 import com.ffcs.dp.common.entity.Page;
-import com.ffcs.dp.common.entity.SysUserEntity;
 import com.ffcs.dp.projectManage.entity.RiskIssueEntity;
-import com.ffcs.dp.projectManage.entity.ScheduleEntity;
-import com.ffcs.dp.projectManage.service.ProjScheService;
 import com.ffcs.dp.projectManage.service.RiskIssueService;
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 
 /**
  * 风险问题
- *
  */
-@Controller
-@ResponseBody
+@RestController
 @RequestMapping("/riskIssue/projRisk")
 public class RiskIssueController extends AbstractController {
 
 
-    @Resource
+    @Autowired
     private RiskIssueService riskIssueService;
 
 
